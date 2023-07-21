@@ -1,0 +1,84 @@
+.webFormItemError {
+    margin-top: -2px;
+    position: absolute;
+}
+
+#webForm.form-wrap {
+    -webkit-transition: 0.1s all ease-in-out;
+    -o-transition: 0.1s all ease-in-out;
+    transition: 0.1s all ease-in-out;
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+    left: 0px;
+    top: 0px;
+    display: none;
+}
+
+#webForm #career-container {
+    box-shadow: 1px 1px 12px rgba(60, 60, 60, 0.3);
+    background-color: #ffffff;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    overflow: hidden;
+    height: 500px;
+    width: 800px;
+    left: 50%;
+    top: 50%;
+    padding: 15px;
+}
+#webForm #select_salon_metro {
+    margin-top: 42px;
+    margin-left: -94px;
+}
+#webForm .webFormItemField select {
+    height: 50px;
+    margin-top: 14px
+}
+#webForm .box-title {
+    padding: 0 0 0 16px;
+    margin-top: 0;
+}
+#webForm .heading {
+    position: relative;
+    text-align: center;
+    line-height: 50px;
+    font-size: 18px;
+    height: 50px;
+}
+#webForm .close {
+    background: url(/bitrix/templates/dresscodeV2/images/gray-exit.png) 0 0 no-repeat transparent;
+    position: absolute;
+    display: block;
+    height: 21px;
+    width: 21px;
+    right: 20px;
+    top: 15px;
+}
+#webForm .row {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+#webForm .lg-box {
+    padding: 16px;
+    background-color: #f7f7f7;
+    width: 100%;
+    border: none;
+    border-radius: 2px;
+	box-sizing: border-box;
+}
+#webForm .lg-box:focus {
+    border: 1px solid #e20074;
+    padding: 15px;
+}
+#webForm #select_salon {
+    width: 100%;
+}
+@media screen and (max-width: 1023px) {
+    #webForm #career-container {
+        width: 100%;
+        overflow: scroll!important;
+    }
+}

@@ -1,0 +1,54 @@
+.modal_main form input[type="submit"] {
+	border: 1px solid #d92222;
+	background-color: #d92222;
+	color: #fff;
+}
+.modal_main h3{
+	color: #d92222;
+}
+.modal_main h3 span{
+	color: #f5b730;
+}
+.button_ok{
+	border: 1px solid #d92222;
+	background-color: #d92222;
+	color: #fff;
+}
+	
+.modal_main form input[type="submit"]:hover,
+.button_ok:hover{
+	border: 1px solid #e43131;
+	background-color: #e43131;
+}
+/**/
+.sc-modal {
+	background: url('images/bg-top-red.png') right 0 no-repeat;
+}
+.sc-modalInner {
+	background: url('images/bg-bottom-red.png') 0 bottom no-repeat;
+}
+.sc-toggle {
+	background: url('images/bg-toggle-red.png') 0 0 no-repeat;
+}
+.sc-mail {
+    background: url('images/icon-mail-red.png') center 67px no-repeat;
+}
+.sc-gift {
+	background: url('images/icon-gift-red.png') 0 0 no-repeat;	
+}
+.sc-modalHead p {
+	color: #ff0000;
+}
+.sc-toggle,
+.sc-row2,
+.sc-row3,
+.sc-mail {
+	color: #d61212;
+}
+.sc-modal input[type="submit"],
+.sc-mailBtn {
+	background: #D61212;
+}
+.sc-muted a, .sc-muted a:hover {
+	color:#d61212;
+}

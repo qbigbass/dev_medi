@@ -1,0 +1,111 @@
+.pink-span {
+  color: #ed008c;
+}
+.pink-link {
+  color: #ed008c;
+}
+.text-right {
+  font-weight: 700;
+  color: #25303b;
+  font-size: 12px;
+}
+.top-phone {
+  color: #aebcc5;
+  font-size: 18px;
+}
+.woman {
+  background-image: url('../img/woman.jpg');
+  min-height: 380px;
+}
+.pink-block {
+  max-width: 300px;
+  min-height: 100px;
+  background-color: #ed008c;
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  padding: 10px;
+  margin-top: 245px;
+}
+.link-block {
+  vertical-align: middle;
+  background-color: #576d7e;
+}
+.link-block p a {
+  color: #fff;
+}
+.best {
+  background-color: #f3f3f3;
+}
+.best tr {
+  background-color: #f3f3f3;
+}
+.best tr td {
+  background-color: #f3f3f3;
+}
+#no-margin-b {
+  margin-bottom: 0px !important;
+}
+.best-item {
+  font-weight: 700;
+  font-size: 16px;
+  color: #25303b;
+}
+.item-description {
+  color: #25303b;
+}
+.item-description span {
+  color: #868686;
+  font-size: 11px;
+}
+.summ {
+  color: #25303b;
+  font-weight: 700;
+}
+.summ-sale {
+  color: #ed008c;
+  text-decoration: none;
+  font-weight: 700;
+}
+.summ-sale span {
+  color: #ed008c;
+  text-decoration: line-through;
+  color: #25303b;
+  font-weight: 700;
+}
+#item {
+  border: 1px solid #cbcbcb;
+}
+#item-color {
+  background-color: #fff !important;
+}
+.footer-img-txt {
+  font-size: 12px;
+  color: #25303b;
+  font-weight: 700;
+}
+#footer {
+  background-color: #2e3b49;
+  border: 1px solid transparent !important;
+}
+#footer p {
+  color: #fff;
+  font-size: 12px;
+}
+#footer p a {
+  color: #fff;
+  text-decoration: underline;
+}
+table {
+  margin-bottom: 0 !important;
+}
+table thead,
+table tbody,
+table tfoot {
+  border: 1px solid transparent !important;
+  background-color: transparent !important;
+}
+.best > table tbody th,
+table tbody td {
+  padding: 0.5rem 0.425rem 0.625rem;
+}

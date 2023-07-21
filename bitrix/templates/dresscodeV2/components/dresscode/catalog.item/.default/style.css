@@ -1,0 +1,53 @@
+.product .marker {
+    margin-right: 5px;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    border: 0 !important;
+    display: inline-block;
+}
+.product .markerContainer {
+
+ }
+.item_colors {display: none}
+
+@media screen and (max-width: 1024px) {
+    .item_colors {
+        display: flex;
+        width: 25px;
+        position: absolute;
+        top: -5px;
+        right: 0;
+        height: 100%;
+        max-height: 200px;
+        flex-direction: column;
+    }
+
+    .item_colors .item_color {
+        display: inline-block;
+        list-style-type: none;
+        width: 20px;
+        height: 20px;
+        margin: 2px;
+        overflow: hidden;
+        opacity: 0.8;
+    }
+    .item_colors .item_color img {width: 100%;}
+}
+.product .marker.m-sale{
+
+    border: 0 !important;
+    font-family: robotomedium !important;
+    font-size: 16px !important;
+}
+.product .marker.m-hit {
+    text-align: center;
+    color:#fff!important;
+    background: #ed8b00 !important;
+}
+@media screen and (min-width: 700px) {
+    .m-sale, .m-dscnt-20, .m-percent, .m-hit {
+
+        border: 0 !important;
+        font-size: 15px !important;
+    }
+}

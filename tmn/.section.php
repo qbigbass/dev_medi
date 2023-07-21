@@ -1,0 +1,6 @@
+<?
+$sSectionName = "Тюмень";
+$arDirProperties = array(
+
+);
+?>

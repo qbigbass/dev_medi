@@ -1,0 +1,143 @@
+
+#relatedArticles .mob {
+    display: none;
+}
+
+#relatedArticles .desk {
+    display: block;
+}
+
+.related-flex {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.related-card:hover {
+    box-shadow: none;
+}
+
+#relatedArticlesSlider ul {
+    padding: 0;
+    margin-top: 16px;
+}
+
+#relatedArticlesSlider ul li {
+    display: block;
+    float: left;
+}
+
+.related-card {
+    background: #fff;
+    border-radius: 11px;
+    box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1);
+    display: flex;
+    width: 30%;
+    margin-bottom: 20px;
+    min-height: 135px;
+}
+
+.related-card img {
+    width: 30%;
+    border-radius: 11px 0 0 11px;
+    object-fit: cover;
+}
+
+.related-text {
+    font-size: 18px;
+    color: #E20074;
+    padding: 25px;
+    text-decoration-line: underline;
+    line-height: 21px;
+    align-items: center;
+    display: inline-flex;
+}
+
+#relatedArticles {
+    margin-top: 12px;
+}
+
+#relatedArticlesSlider .realtedArticlesBtnLeft,
+#relatedArticlesSlider .realtedArticlesBtnRight {
+    background: url("images/slideArrowSmallgrey.png") 0 0 no-repeat transparent;
+    position: absolute;
+    transform: translateY(-50%);
+    display: block;
+    height: 70px;
+    width: 35px;
+    top: 50%;
+
+}
+
+#relatedArticlesSlider .realtedArticlesBtnLeft {
+    background-position: 0 0;
+    left: 0px;
+}
+
+#relatedArticlesSlider .realtedArticlesBtnLeft:hover {
+    right: 0;
+}
+
+#relatedArticlesSlider .realtedArticlesBtnLeft:active {
+    background-position: -70px 0;
+}
+
+#relatedArticlesSlider .realtedArticlesBtnRight {
+    background-position: 0 -70px;
+    right: 0px;
+}
+
+#relatedArticlesSlider .realtedArticlesBtnRight:hover {
+    background-position: -35px -70px;
+}
+
+#relatedArticlesSlider .realtedArticlesBtnRight:active {
+    background-position: -70px -70px;
+}
+
+@media all and (max-width: 1024px) {
+    #relatedArticles .mob {
+        display: block;
+    }
+
+    #relatedArticles .desk {
+        display: none;
+    }
+
+    .related-flex {
+        display: none;
+    }
+
+    .for-ipad {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media all and (max-width: 992px) {
+    .related-card img {
+        width: 30%;
+    }
+
+    .related-card {
+        width: 83%;
+        min-height: 100px;
+        margin: 0 auto;
+    }
+
+    .related-text {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .custom-ul {
+        max-width: 470px;
+        justify-content: flex-start !important;
+    }
+
+    #relatedArticles {
+        padding: 3% !important;
+    }
+}

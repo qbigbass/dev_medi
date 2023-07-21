@@ -1,0 +1,85 @@
+<style>
+	.new_menu_item .title {
+		line-height: 20px;
+	}
+</style>
+<?
+$specMenu = [
+    [
+    'link' => '/catalog/ortopediya/filter/body_part-is-9c554d0c-9441-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Шея',
+    'img' => '/upload/menu/ortho/1.png',
+    ],
+    [
+    'link' => '/catalog/ortopediya/filter/body_part-is-7f7867cf-9441-11e9-8110-e03f49499b1d-or-77eeced9-9441-11e9-8110-e03f49499b1d-or-865a8dd8-9441-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Локоть и кисть',
+    'img' => '/upload/menu/ortho/2.png',
+    ],
+    [
+    'link' => '/catalog/ortopediya/filter/body_part-is-21d2b35b-9441-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Колено',
+    'img' => '/upload/menu/ortho/3.png',
+    ],
+    [
+    'link' => '/catalog/ortopediya/filter/body_part-is-9269997d-9441-11e9-8110-e03f49499b1d-or-9269997e-9441-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Плечо и ключица',
+    'img' => '/upload/menu/ortho/4.png',
+    ],
+    [
+    'link' => '/catalog/ortopediya/filter/body_part-is-865a8dd9-9441-11e9-8110-e03f49499b1d-or-49868878-9441-11e9-8110-e03f49499b1d-or-a76ce76f-9441-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Спина и таз',
+    'img' => '/upload/menu/ortho/5.png',
+    ],
+    [
+    'link' => '/catalog/ortopediya/filter/body_part-is-6f2f7518-9441-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Голень и стопа',
+    'img' => '/upload/menu/ortho/6.png',
+    ],
+];
+?>
+<div class="desktop_menu">
+    <div class="limiter">
+        <div class="new_menu">
+            <div class="new_menu_col">
+                <?foreach($specMenu as $s=>$smenu ){?>
+                <div class="new_menu_item">
+                    <a href="<?=$smenu['link']?>" class="image"><img class="lazy" data-lazy="<?=$smenu['img']?>"/></a>
+                    <a href="<?=$smenu['link']?>" class="title"><?=$smenu['title']?></a>
+                </div>
+                <?}?>
+            </div>
+            <div class="new_menu_col">
+                <?if ($nextElement['ADDLINK'] && $nextElement['ADDPHOTO'] && in_array(SITE_ID, ['s1','s2','s6'])) {?>
+                <div class="new_menu_item">
+                    <a href="<?=$nextElement['ADDLINK']?>" class="image spec"><img class="lazy" data-lazy="<?=$nextElement['ADDPHOTO']['SRC']?>"/></a>
+                    <a href="<?=$nextElement['ADDLINK']?>" class="title"><?=$nextElement['ADDNAME']?></a>
+                </div>
+                <?}?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile_menu">
+    <div class="limiter">
+    <?foreach($specMenu as $next2Column):?>
+        <?if(!empty($next2Column)):?>
+            <ul class="nextColumn <?if($nextElement['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+                    <li>
+                        <a href="<?=$next2Column["link"]?>" class="menu2Link">
+                            <?=$next2Column["title"]?>
+                        </a>
+                    </li>
+            </ul>
+
+        <?endif;?>
+    <?endforeach;?>
+
+    <?if ($nextElement['ADDLINK'] && $nextElement['ADDPHOTO'] && in_array(SITE_ID, ['s1','s2','s6'])) {?>
+    <ul class="nextColumn <?if($nextElement['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+    <li>
+        <a href="<?=$nextElement['ADDLINK']?>" class="speclink menu2Link"><?=$nextElement['ADDNAME']?></a>
+    </li>
+    </ul>
+    <?}?>
+</div>
+</div>

@@ -1,0 +1,4 @@
+<?
+$MESS['VAMPIRUS.YANDEXKASSA_NOTIFY_ERROR'] = "Ошибка уведомления";
+
+$MESS['VAMPIRUS.YANDEXKASSA_ERROR_CODE'] = "Код ошибки ";

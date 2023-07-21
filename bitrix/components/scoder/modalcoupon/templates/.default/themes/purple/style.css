@@ -1,0 +1,31 @@
+.sc-modal {
+	background: url('images/bg-top-purple.png') right 0 no-repeat;
+}
+.sc-modalInner {
+	background: url('images/bg-bottom-purple.png') 0 bottom no-repeat;
+}
+.sc-toggle {
+	background: url('images/bg-toggle-purple.png') 0 0 no-repeat;
+}
+.sc-mail {
+    background: url('images/icon-mail-purple.png') center 67px no-repeat;
+}
+.sc-gift {
+	background: url('images/icon-gift-purple.png') 0 0 no-repeat;	
+}
+.sc-modalHead p {
+	color: #CC00D1;
+}
+.sc-toggle,
+.sc-row2,
+.sc-row3,
+.sc-mail {
+	color: #a600aa;
+}
+.sc-modal input[type="submit"],
+.sc-mailBtn {
+	background: #a600aa;
+}
+.sc-muted a, .sc-muted a:hover {
+	color:#a600aa;
+}

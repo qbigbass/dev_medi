@@ -1,0 +1,143 @@
+#relatedArticlesSlider {
+    margin: 36px 0;
+    position: relative;
+    display: none;
+}
+
+#relatedArticlesSlider .wrap,
+#relatedArticlesSlider .limiter {
+    position: relative;
+    overflow: hidden;
+}
+
+#relatedArticlesSlider ul {
+    position: relative;
+}
+
+#relatedArticlesSlider ul li {
+    display: block;
+    float: left;
+}
+
+#relatedArticlesSlider ul li img {
+    vertical-align: middle;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+#relatedArticlesSlider ol {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    position: absolute;
+    left: 50%;
+    bottom: -30px;
+}
+
+#relatedArticlesSlider ol li {
+    background: url(images/slideButton.png) 0 0 no-repeat transparent;
+    margin-right: 4px;
+    width: 18px;
+    height: 18px;
+    float: left;
+    cursor: pointer;
+}
+
+#relatedArticlesSlider ol li:hover {
+    background: url(images/slideButton.png) -18px 0 no-repeat transparent;
+}
+
+#relatedArticlesSlider ol li:active {
+    background: url(images/slideButton.png) -36px 0 no-repeat transparent;
+}
+
+#relatedArticlesSlider ol li.selected {
+    background: url(images/slideButton.png) -54px 0 no-repeat transparent;
+}
+
+#relatedArticlesSlider ol li.selected:hover {
+    background: url(images/slideButton.png) -72px 0 no-repeat transparent;
+}
+
+#relatedArticlesSlider ol li.selected:active {
+    background: url(images/slideButton.png) -90px 0 no-repeat transparent;
+}
+
+#relatedArticlesSlider .relatedArticlesSliderBtnLeft,
+#relatedArticlesSlider .relatedArticlesSliderBtnRight {
+    background: url(/bitrix/templates/dresscodeV2/images/slideArrowSmallBlack.png) 0 0 no-repeat transparent;
+    position: absolute;
+    transform: translateY(-50%);
+    display: block;
+    height: 70px;
+    width: 35px;
+    top: 50%;
+
+}
+
+#relatedArticlesSlider .relatedArticlesSliderBtnLeft {
+    background-position: 0 0;
+    left: 0px;
+}
+
+#relatedArticlesSliderr .relatedArticlesSliderBtnLeft:hover {
+    right: 0;
+}
+
+#relatedArticlesSliderr .relatedArticlesSliderBtnLeft:active {
+    background-position: -70px 0;
+}
+
+#relatedArticlesSliderr .relatedArticlesSliderBtnRight {
+    background-position: 0 -70px;
+    right: 0px;
+}
+
+#relatedArticlesSlider .relatedArticlesSliderBtnRight:hover {
+    background-position: -35px -70px;
+}
+
+#relatedArticlesSlider .relatedArticlesSliderBtnRight:active {
+    background-position: -70px -70px;
+}
+
+.slideBox .tb {
+    height: 100%;
+}
+
+.tb {
+    border-collapse: collapse;
+    table-layout: fixed;
+    display: table;
+    width: 100%;
+}
+
+.text-wrap {
+    padding-left: 18px;
+    color: #000;
+}
+
+.text-wrap *:last-child {
+    margin-bottom: 0;
+}
+
+.head_bg_lining {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+}
+
+.h2 {
+    margin-bottom: 8px;
+    display: inline-block;
+    line-height: 25px;
+    max-height: 75px;
+    overflow: hidden;
+}
+
+.descr {
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 15px;
+    max-height: 45px;
+    overflow: hidden;
+}
