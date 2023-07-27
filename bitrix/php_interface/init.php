@@ -18,6 +18,7 @@ include("include/const.php");
 
 define("VK_PRICE_LIST_ID", 136797);
 define("MYTARGET_FEED_ID", 102);
+define("DAYS_END_ACTION", 5); // За какое кол-во дней до окончания активности акции показывать таймер
 
 if (!function_exists("wl")) {
     function wl($data, $dump = 1, $file = __FILE__)

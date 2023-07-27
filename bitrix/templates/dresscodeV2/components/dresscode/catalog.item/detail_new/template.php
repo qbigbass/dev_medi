@@ -1238,46 +1238,46 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                 <div id="elementTools" class="column">
                     <div class="fixContainer">
                         <? if (!empty($arResult["EXTRA_SETTINGS"]["SHOW_TIMER"])): ?>
-                            <div class="specialTime smallSpecialTime"
-                                 id="timer_<?= $arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"]; ?>_<?= $uniqID ?>">
-                                <div class="specialTimeItem">
-                                    <div class="specialTimeItemValue timerDayValue">0</div>
-                                    <div class="specialTimeItemlabel"><?= GetMessage("TIMER_DAY_LABEL") ?></div>
-                                </div>
-                                <div class="specialTimeItem">
-                                    <div class="specialTimeItemValue timerHourValue">0</div>
-                                    <div class="specialTimeItemlabel"><?= GetMessage("TIMER_HOUR_LABEL") ?></div>
-                                </div>
-                                <div class="specialTimeItem">
-                                    <div class="specialTimeItemValue timerMinuteValue">0</div>
-                                    <div class="specialTimeItemlabel"><?= GetMessage("TIMER_MINUTE_LABEL") ?></div>
-                                </div>
-                                <div class="specialTimeItem">
-                                    <div class="specialTimeItemValue timerSecondValue">0</div>
-                                    <div class="specialTimeItemlabel"><?= GetMessage("TIMER_SECOND_LABEL") ?></div>
-                                </div>
-                            </div>
+<!--                            <div class="specialTime smallSpecialTime"-->
+<!--                                 id="timer_--><?//= $arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"]; ?><!--_--><?//= $uniqID ?><!--">-->
+<!--                                <div class="specialTimeItem">-->
+<!--                                    <div class="specialTimeItemValue timerDayValue">0</div>-->
+<!--                                    <div class="specialTimeItemlabel">--><?//= GetMessage("TIMER_DAY_LABEL") ?><!--</div>-->
+<!--                                </div>-->
+<!--                                <div class="specialTimeItem">-->
+<!--                                    <div class="specialTimeItemValue timerHourValue">0</div>-->
+<!--                                    <div class="specialTimeItemlabel">--><?//= GetMessage("TIMER_HOUR_LABEL") ?><!--</div>-->
+<!--                                </div>-->
+<!--                                <div class="specialTimeItem">-->
+<!--                                    <div class="specialTimeItemValue timerMinuteValue">0</div>-->
+<!--                                    <div class="specialTimeItemlabel">--><?//= GetMessage("TIMER_MINUTE_LABEL") ?><!--</div>-->
+<!--                                </div>-->
+<!--                                <div class="specialTimeItem">-->
+<!--                                    <div class="specialTimeItemValue timerSecondValue">0</div>-->
+<!--                                    <div class="specialTimeItemlabel">--><?//= GetMessage("TIMER_SECOND_LABEL") ?><!--</div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         <? endif; ?>
                         <? if (!empty($arResult["PROPERTIES"]["TIMER_LOOP"]["VALUE"])): ?>
                             <script type="text/javascript">
-                                $(document).ready(function () {
-                                    $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
-                                        timerLoop: "<?=$arResult["PROPERTIES"]["TIMER_LOOP"]["VALUE"]?>",
-                                        <?if(empty($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"])):?>
-                                        startDate: "<?=MakeTimeStamp($arResult["DATE_CREATE"], "DD.MM.YYYY HH:MI:SS")?>"
-                                        <?else:?>
-                                        startDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
-                                        <?endif;?>
-                                    });
-                                });
+                                //$(document).ready(function () {
+                                //    $("#timer_<?//=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>//_<?//=$uniqID?>//").dwTimer({
+                                //        timerLoop: "<?//=$arResult["PROPERTIES"]["TIMER_LOOP"]["VALUE"]?>//",
+                                //        <?//if(empty($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"])):?>
+                                //        startDate: "<?//=MakeTimeStamp($arResult["DATE_CREATE"], "DD.MM.YYYY HH:MI:SS")?>//"
+                                //        <?//else:?>
+                                //        startDate: "<?//=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>//"
+                                //        <?//endif;?>
+                                //    });
+                                //});
                             </script>
                         <? elseif (!empty($arResult["EXTRA_SETTINGS"]["SHOW_TIMER"]) && !empty($arResult["PROPERTIES"]["TIMER_DATE"]["VALUE"])): ?>
                             <script type="text/javascript">
-                                $(document).ready(function () {
-                                    $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
-                                        endDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
-                                    });
-                                });
+                                //$(document).ready(function () {
+                                //    $("#timer_<?//=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>//_<?//=$uniqID?>//").dwTimer({
+                                //        endDate: "<?//=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>//"
+                                //    });
+                                //});
                             </script>
                         <? endif; ?>
                         <? require($_SERVER["DOCUMENT_ROOT"] . "/" . $templateFolder . "/include/right_section.php"); ?>
