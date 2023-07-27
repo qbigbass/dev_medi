@@ -359,7 +359,7 @@ h1.changeName {
 }
 
 #smallElementTools .smallSpecialTime {
-    display: none;
+    /*display: none;*/
 }
 
 .smallElementToolsContainer {
@@ -2947,9 +2947,20 @@ h1.changeName {
     padding-left: 28px;
 }
 
+.action-wrapper {
+    border: 1px solid #e20074;
+    border-top: none;
+}
+
+.timer {
+    display: table-caption;
+    border: 1px solid #e20074;
+    border-bottom: none;
+}
+
 .smallSpecialTime {
     padding-bottom: 12px;
-    color: #ffffff;
+    color: #e20074;
     font-size: 0;
     line-height: 0;
 }
@@ -2965,6 +2976,7 @@ h1.changeName {
     line-height: 14px;
     height: 42px;
     width: 48px;
+    background: #FFF!important;
 }
 
 .smallSpecialTime .specialTimeItem:first-child {

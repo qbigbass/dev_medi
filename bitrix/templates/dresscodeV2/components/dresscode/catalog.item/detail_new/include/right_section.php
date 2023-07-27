@@ -120,24 +120,79 @@
                 <div class="ff-medium row h3">Товар участвует в
                     акци<?= (count($arResult['ACTION_BLOCK']) > 1 ? 'ях' : 'и') ?>:
                 </div>
-                <? foreach ($arResult['ACTION_BLOCK'] as $sact) {
-                    ?>
+                <?
+                $timerOn = false;
+                ?>
+                <? foreach ($arResult['ACTION_BLOCK'] as $sact) {?>
                     <?
                     $hide_link = $sact['PROPERTY_HIDE_VALUE'] == 'Да' ? 'Y' : 'N';
-                    $dayDiff = '';
-                    if ($sact['DATE_ACTIVE_TO'] > 0) {
-                        $date = DateTime::createFromFormat('d.m.Y H:i:s', $sact['DATE_ACTIVE_TO']);
-                        $now = new DateTime();
-                        if ($date) {
-                            $dayDiff = $date->diff($now)->format('%a');
-                            if ($dayDiff > 0) {
-                                $sDeclension = new Declension('день', 'дня', 'дней');
-                                $dayDiff_str = '<br/><span class="action_over">Заканчивается через ' . $dayDiff . '&nbsp;' . $sDeclension->get($dayDiff) . '</span>';
-                            }
+//                    $dayDiff = '';
+//
+//                    if ($sact['DATE_ACTIVE_TO'] > 0) {
+//                        $date = DateTime::createFromFormat('d.m.Y H:i:s', $sact['DATE_ACTIVE_TO']);
+//                        $now = new DateTime();
+//                        if ($date) {
+//                            $dayDiff = $date->diff($now)->format('%a');
+//                            if ($dayDiff > 0) {
+//                                $sDeclension = new Declension('день', 'дня', 'дней');
+//                                $dayDiff_str = '<br/><span class="action_over">Заканчивается через ' . $dayDiff . '&nbsp;' . $sDeclension->get($dayDiff) . '</span>';
+//                            }
+//                        }
+//                    }
+                    $date = DateTime::createFromFormat('d.m.Y H:i:s', $sact['ACTIVE_TO']);
+                    $now = new DateTime();
+                    $daysLeft = $date->diff($now)->format('%a'); // Кол-во дней до окончания акции
+
+                    $showAction = false;
+                    if ( (int)$sact['PROPERTY_CNT_DAYS_TIMER_VALUE'] > 0 && $daysLeft <= (int)$sact['PROPERTY_CNT_DAYS_TIMER_VALUE'] ) {
+                        $showAction = true;
+                    } else {
+                        if ($daysLeft <= DAYS_END_ACTION) {
+                            $showAction = true;
                         }
                     }
+
+                    if ($sact['PROPERTY_TIMER_ON_VALUE'] === 'Да' && $sact['ACTIVE_TO'] > 0 && !$timerOn && $showAction) {
+                        $timerUniqId = $this->randString();
+                        $endDate = MakeTimeStamp($sact['ACTIVE_TO'], "DD.MM.YYYY HH:MI:SS");
+                        $timerOn = true;
+                    } else {
+                        $timerOn = false;
+                    }
                     ?>
-                    <div class="tb row">
+                    <div class="tb row <?if($timerOn):?>action-wrapper<?endif;?>">
+                        <!-- Таймер окончания акции -->
+                        <? if ($timerOn):?>
+                            <div class="timer">
+                                <div class="specialTime smallSpecialTime"
+                                     id="timer_<?= $timerUniqId; ?>_<?= $uniqID ?>">
+                                    <div class="specialTimeItem">
+                                        <div class="specialTimeItemValue timerDayValue">0</div>
+                                        <div class="specialTimeItemlabel"><?= GetMessage("TIMER_DAY_LABEL") ?></div>
+                                    </div>
+                                    <div class="specialTimeItem">
+                                        <div class="specialTimeItemValue timerHourValue">0</div>
+                                        <div class="specialTimeItemlabel"><?= GetMessage("TIMER_HOUR_LABEL") ?></div>
+                                    </div>
+                                    <div class="specialTimeItem">
+                                        <div class="specialTimeItemValue timerMinuteValue">0</div>
+                                        <div class="specialTimeItemlabel"><?= GetMessage("TIMER_MINUTE_LABEL") ?></div>
+                                    </div>
+                                    <div class="specialTimeItem">
+                                        <div class="specialTimeItemValue timerSecondValue">0</div>
+                                        <div class="specialTimeItemlabel"><?= GetMessage("TIMER_SECOND_LABEL") ?></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+                                    $("#timer_<?=$timerUniqId;?>_<?=$uniqID?>").dwTimer({
+                                        endDate: "<?=$endDate?>"
+                                    });
+                                });
+                            </script>
+                        <?endif;?>
+
                         <div class="tc bindActionImage"><? if ($hide_link == 'N'){
                             ?><a href="<?= $sact['DETAIL_PAGE_URL'] ?>" target="_blank"><?
                                 } ?><span class="image"></span><? if ($hide_link == 'N'){
@@ -147,9 +202,11 @@
                             ?><a href="<?= $sact['DETAIL_PAGE_URL'] ?>" target="_blank"><?
                                 } ?><?= $sact['NAME'] ?><? if ($hide_link == 'N'){
                                 ?></a><?
-                        } ?><? if ($dayDiff > 0) {
-                                echo $dayDiff_str;
-                            } ?></div>
+                        } ?><?
+//                            if ($dayDiff > 0) {
+//                                echo $dayDiff_str;
+//                            }
+                            ?></div>
                     </div>
                     <?
                 } ?>
