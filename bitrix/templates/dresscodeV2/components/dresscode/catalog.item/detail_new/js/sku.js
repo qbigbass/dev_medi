@@ -466,6 +466,94 @@ $(function () {
                     $qtyBox.data("enable-trace", "N");
                 }
 
+                // Модификация текста в блоке "delivery_methods"
+                if (typeof jsonData[0]["PRODUCT"]["storeamounts"] != "undefined" && jsonData[0]["PRODUCT"]["storeamounts"] != "") {
+                    let stores = jsonData[0]["PRODUCT"]["storeamounts"];
+
+                    if ($("div").is(".delivery_methods")) {
+                        let arrStoresOnline = [];
+                        let location = $("[data-location-id]").text();
+                        let strCity = '';
+
+                        if (location.match(/Москва/)) {
+                            arrStoresOnline = ['6','46','48','51','52','65','83']; // Склады для ИМ в Москве
+                            strCity = 'Москве';
+                        } else if (location.match(/Санкт-Петербург/)) {
+                            arrStoresOnline = ['66','67']; // Склады для ИМ в С-Петербурге
+                            strCity = 'Санкт-Петербургу';
+                        }
+
+                        if (arrStoresOnline.length > 0) {
+                            let avaiProductSalon = [];
+                            let avaiProductStore = [];
+
+                            for (let key in stores) {
+                                let storeId = stores[key].ID;
+                                let amount = Number(stores[key].PRODUCT_AMOUNT);
+
+                                if (amount > 0) {
+                                    if (arrStoresOnline.indexOf(storeId) >= 0) {
+                                        avaiProductStore.push(storeId);
+                                    } else {
+                                        avaiProductSalon.push(storeId);
+                                    }
+                                }
+                            }
+
+                            let deliveryMessage = '';
+
+                            if (avaiProductSalon.length > 0 && avaiProductStore.length === 0) {
+                                deliveryMessage = 'доступен только для самовывоза';
+                            } else {
+                                // Проверяем стоимость товара
+                                if (typeof jsonData[0]["PRODUCT"]["PRICE"]["RESULT_PRICE"]["DISCOUNT_PRICE"] != "undefined" &&
+                                    jsonData[0]["PRODUCT"]["PRICE"]["RESULT_PRICE"]["DISCOUNT_PRICE"] != "") {
+
+                                    let price = jsonData[0]["PRODUCT"]["PRICE"]["RESULT_PRICE"]["DISCOUNT_PRICE"];
+                                    let curHours;
+                                    let deliveryTerm = 'завтра';
+
+                                    $.ajax({
+                                        url: "/ajax/catalog/?action=time",
+                                        type: "post",
+                                        dataType: "json",
+                                        success: function (data) {
+                                            let time = parseInt(data) * 1000;
+                                            let d = new Date($time);
+                                            curHours = d.getHours();
+
+                                            if (curHours >= 14) {
+                                                deliveryTerm = 'послезавтра';
+                                            }
+
+                                            if (price < 1000) {
+                                                deliveryMessage = '250 рублей доставка по ' + strCity +
+                                                    ' и области &ndash; <span class="delivery_term">' +
+                                                    deliveryTerm + '</span>'
+                                            } else {
+                                                deliveryMessage = 'Бесплатная доставка по ' + strCity +
+                                                    ' и области &ndash; <span class="delivery_term">' +
+                                                    deliveryTerm + '</span>';
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+
+                            function setDeliveryMessage() {
+                                if (deliveryMessage != "") {
+                                    $(".delivery_methods p").html(deliveryMessage);
+                                }
+                            }
+
+                            setTimeout(setDeliveryMessage,1000);
+                        }
+                    }
+                } else {
+                    $(".delivery_methods").css('display','none');
+                }
+
+
                 //stores component
 
                 //storesTab
