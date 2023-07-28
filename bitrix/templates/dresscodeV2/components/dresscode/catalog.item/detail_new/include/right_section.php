@@ -163,33 +163,57 @@
         }
         ?>
     <? endif; ?>
-    
-    
-    
+
+    <?
+    // Проверим наличие SKU на складах и в салонах
+    $offerId = $arResult['ID'];
+    $storeAmounts = $arResult['SKU_OFFERS'][$offerId]['storeamounts'];
+    $arrStoresOnline = [];
+
+    if (!empty($storeAmounts) && !$checkAvailable) {
+        if (SITE_ID == 's1') {
+            $arrStoresOnline = ['6','46','48','51','52','65','83']; // Склады для ИМ в Москве
+            $strCity = 'Москве';
+        } elseif (SITE_ID == 's2') {
+            $arrStoresOnline = ['66','67']; // Склады для ИМ в С-Петербурге
+            $strCity = 'Санкт-Петербургу';
+        }
+
+        if (!empty($arrStoresOnline)) {
+            $avaiProductSalon = [];
+            $avaiProductStore = [];
+
+            foreach ($storeAmounts as $arrAmounts) {
+                if ($arrAmounts['PRODUCT_AMOUNT'] > 0) {
+                    if (in_array($arrAmounts['ID'], $arrStoresOnline)) {
+                        $avaiProductStore[] = $arrAmounts['ID'];
+                    } else {
+                        $avaiProductSalon[] = $arrAmounts['ID'];
+                    }
+                }
+            }
+
+            if (!empty($avaiProductSalon) && empty($avaiProductStore)) {
+                $deliveryMessage = '<p>доступен только для самовывоза</p>';
+            } else {
+                // Проверяем стоимость товара
+                if ($arResult["PRICE"]["DISCOUNT_PRICE"] < 1000) {
+                    $deliveryMessage = '<p>250 рублей доставка по ' . $strCity . ' и области - <span class="delivery_term">завтра</span></p>';
+                } else {
+                    $deliveryMessage = '<p>Бесплатная доставка по ' . $strCity . ' и области &ndash; <span class="delivery_term">завтра</span></p>';
+                }
+            }
+        }
+        $checkAvailable = true; // Так как данный файл подключается 2 раза на странице
+    }?>
+
     <? if (in_array(SITE_ID, ['s1', 's2', 's7'])) { ?>
         <div class="columnRowWrap delivery_methods ">
             <div class="row">
                 <div class="row delivery">
-                    <? if (SITE_ID == 's1'):
-                        ?>
-                        <? if ($arResult["PRICE"]["DISCOUNT_PRICE"] < 1000): ?>
-                        <p>250 рублей доставка по Москве и области &ndash; <span class="delivery_term">завтра</span></p>
-                    <? else: ?>
-                        <p>Бесплатная доставка по Москве и области &ndash; <span class="delivery_term">завтра</span></p>
-                    <? endif; ?>
-                    <? elseif (SITE_ID == 's2'): ?>
-                        
-                        
-                        <? if ($arResult["PRICE"]["DISCOUNT_PRICE"] < 1000): ?>
-                            <p>250 рублей доставка по Санкт-Петербургу и области &ndash; <span class="delivery_term">завтра</span>
-                            </p>
-                        <? else: ?>
-                            <p>Бесплатная доставка по Санкт-Петербургу и области &ndash; <span class="delivery_term">завтра</span>
-                            </p>
-                        <? endif; ?>
+                    <? if (SITE_ID == 's1' || SITE_ID == 's2'):?>
+                        <?=$deliveryMessage?>
                     <? elseif (SITE_ID == 's7'): ?>
-                        
-                        
                         <? if ($arResult["PRICE"]["DISCOUNT_PRICE"] < 1000): ?>
                             <p>250 рублей доставка по
                                 <nobr>Нижнему Новгороду</nobr>
@@ -201,13 +225,10 @@
                         <? endif; ?>
                     <? endif; ?>
                 </div>
-                <? /*<div class="row pickup">
-				<p class="in-salons"><a href="#stores" class="available_link link <?if ($arResult['SALON_COUNT'] == 0){?>hidden<?}?>"><span class="salons_avail_now">из <strong><?=$arResult['SALON_COUNT_STR'];?> medi сегодня</strong></span></a> <span class="salons_avail_later" <?if ($arResult['SALON_COUNT'] > 0){?>style="display: none;"<?}?>> из <?=$arResult['SALON_COUNT_PICKUP_STR'];?> - позже</span></p>
-			</div>*/ ?>
-
             </div>
         </div>
     <? } ?>
+
     <div class="columnRowWrap">
         <div class="row columnRow">
             <? if (!empty($arResult["PRICE"])): ?>
@@ -254,9 +275,7 @@
             <?
             endif; ?>
         </div>
-        
-        <? //NOTE купить в 1 клик
-        ?>
+        <? //NOTE купить в 1 клик?>
         <? if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON']): ?>
             <div class="row columnRow fastOrderWrap">
                 <a href="#"
@@ -300,14 +319,6 @@
     </div>
 </div>
 <div class="secondTool">
-    <? //NOTE: CART BUTOON
-    ?>
-    <? /*if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON'] ):?>
-	<div class="qtyBlock row" <?if($arResult["CATALOG_AVAILABLE"] != "Y" && $arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] !== true):?>style="display:none"<?endif;?>>
-		<img src="<?=SITE_TEMPLATE_PATH?>/images/qty.pn<?if($arResult["CATALOG_AVAILABLE"] != "Y" && $arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] !== true):?><?endif;?>g" alt="" class="icon">
-		<label class="label"><?=GetMessage("QUANTITY_LABEL")?> </label> <a href="#" class="minus"></a><input type="text" class="qty"<?if(!empty($arResult["PRICE"]["EXTENDED_PRICES"])):?> data-extended-price='<?=\Bitrix\Main\Web\Json::encode($arResult["PRICE"]["EXTENDED_PRICES"])?>'<?endif;?> value="<?=$arResult["EXTRA_SETTINGS"]["BASKET_STEP"]?>" data-step="<?=$arResult["EXTRA_SETTINGS"]["BASKET_STEP"]?>" data-max-quantity="<?=$arResult["CATALOG_QUANTITY"]?>" data-enable-trace="<?=(($arResult["CATALOG_QUANTITY_TRACE"] == "Y" && $arResult["CATALOG_CAN_BUY_ZERO"] == "N") ? "Y" : "N")?>"><a href="#" class="plus"></a>
-	</div>
-	<?endif;*/ ?>
     <? // Сканирование стоп, основная кнопка?>
     <? if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON']): ?>
         <div class="row columnRow">
@@ -315,33 +326,4 @@
                target="_blank">Запись на изготовление</a>
         </div>
     <? endif; ?>
-    <?
-    // Забронировать, основная кнопка?>
-    
-    
-    <? /*if(!empty($arParams["DISPLAY_CHEAPER"]) && $arParams["DISPLAY_CHEAPER"] == "Y" && !empty($arParams["CHEAPER_FORM_ID"])):?>
-		<div class="row">
-			<a href="#" class="cheaper label openWebFormModal<?if(empty($arResult["PRICE"]) || $arResult["CATALOG_AVAILABLE"] != "Y"):?> disabled<?endif;?>" data-id="<?=$arParams["CHEAPER_FORM_ID"]?>"><img src="<?=SITE_TEMPLATE_PATH?>/images/cheaper.png" alt="<?=GetMessage("CHEAPER_LABEL")?>" class="icon"><?=GetMessage("CHEAPER_LABEL")?></a>
-		</div>
-	<?endif;*/ ?>
-    <? /*if(empty($arParams["HIDE_DELIVERY_CALC"]) || !empty($arParams["HIDE_DELIVERY_CALC"]) && $arParams["HIDE_DELIVERY_CALC"] == "N"):?>
-		<div class="row">
-			<a href="#" class="deliveryBtn label changeID calcDeliveryButton" data-id="<?=$arResult["ID"]?>"><img src="<?=SITE_TEMPLATE_PATH?>/images/delivery.png" alt="<?=GetMessage("DELIVERY_LABEL")?>" class="icon"><?=GetMessage("DELIVERY_LABEL")?></a>
-		</div>
-	<?endif;*/ ?>
-    <div class="row">
-        <? /*if($arResult["CATALOG_QUANTITY"] > 0):?>
-			<?if(!empty($arResult["EXTRA_SETTINGS"]["STORES"]) && $arResult["EXTRA_SETTINGS"]["STORES_MAX_QUANTITY"] > 0):?>
-				<a href="#" data-id="<?=$arResult["ID"]?>" class="inStock label eChangeAvailable getStoresWindow"><img src="<?=SITE_TEMPLATE_PATH?>/images/inStock.png" alt="<?=GetMessage("AVAILABLE")?>" class="icon"><span><?=GetMessage("AVAILABLE")?></span></a>
-			<?else:?>
-				<span class="inStock label eChangeAvailable"><img src="<?=SITE_TEMPLATE_PATH?>/images/inStock.png" alt="<?=GetMessage("AVAILABLE")?>" class="icon"><span><?=GetMessage("AVAILABLE")?></span></span>
-			<?endif;?>
-		<?else:?>
-			<?if($arResult["CATALOG_AVAILABLE"] == "Y"):?>
-				<a class="onOrder label eChangeAvailable"><img src="<?=SITE_TEMPLATE_PATH?>/images/onOrder.png" alt="<?=GetMessage("ON_ORDER")?>" class="icon"><?=GetMessage("ON_ORDER")?></a>
-			<?else:?>
-				<a class="outOfStock label eChangeAvailable"><img src="<?=SITE_TEMPLATE_PATH?>/images/outOfStock.png" alt="<?=GetMessage("CATALOG_NO_AVAILABLE")?>" class="icon"><?=GetMessage("CATALOG_NO_AVAILABLE")?></a>
-			<?endif;?>
-		<?endif;*/ ?>
-    </div>
 </div>
