@@ -997,7 +997,9 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                         </div>
                                     <? endif; ?>
                                 <? else: ?>
-                                    <span class="h3"><a href="/lk/" class="ff-medium medi-color">Авторизуйтесь на сайте</a>, чтобы добавить свой отзыв.</span>
+                                    <span class="h3">
+                                        <a href="/lk/" class="ff-medium medi-color">Авторизуйтесь на сайте</a>, чтобы добавить отзыв.
+                                    </span><br />
                                 <? endif; ?>
                             </div>
                         </div>
