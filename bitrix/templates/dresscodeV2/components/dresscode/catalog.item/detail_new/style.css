@@ -3334,7 +3334,7 @@ h1.changeName {
 }
 
 @media (min-width: 481px) {
-    #tech .heading, #detailText .heading, #catalogReviews .heading, #files .heading, #video .heading, #elementProperties .heading, #stores .heading {
+    #tech .heading, #detailText .heading, #files .heading, #video .heading, #elementProperties .heading, #stores .heading {
         display: none !important;
     }
 
@@ -3362,7 +3362,7 @@ h1.changeName {
     color: #000 !important;
 }
 
-.acor-container input, #elementProperties .heading, #stores .heading {
+.acor-container input[type=checkbox], #elementProperties .heading, #stores .heading {
     display: none !important;
 }
 
