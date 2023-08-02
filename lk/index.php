@@ -98,6 +98,10 @@ if ($USER->IsAuthorized())
 			<?include("pages/history.inc.php");?>
 		</div>
 
+        <div id="favorite" class="tab-content <?if ($active_tab == 'favorite'){?>active<?}?>">
+            <?include("pages/favorite.inc.php");?>
+        </div>
+
 		<div id="letter" class="tab-content  <?if ($active_tab == 'letter'){?>active<?}?>">
 			<?// Письмо директору?>
 
