@@ -155,6 +155,11 @@ ob_end_clean();
                                 ); ?>
                             </div>
                         </div>
+                        <div class="b_head_favorites">
+                            <?
+                            $APPLICATION->IncludeComponent("medi:favorites.products", "", []);
+                            ?>
+                        </div>
                         <div class="b_head_cart cart">
                             <div id="flushTopCart">
                                 <? $APPLICATION->IncludeComponent(
