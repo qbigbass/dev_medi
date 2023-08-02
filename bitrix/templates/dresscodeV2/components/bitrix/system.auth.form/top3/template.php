@@ -53,6 +53,7 @@ else{
 		<li class="top-auth-personal"><a href="<?=SITE_DIR?>lk/"><?=GetMessage("PERSONAL")?></a></li>
 		<li class="top-auth-personal"><a href="<?=SITE_DIR?>lk/?orders">Статус заказа</a></li>
 		<li class="top-auth-personal"><a href="<?=SITE_DIR?>lk/?history">История покупок</a></li>
+        <li class="top-auth-personal"><a href="<?=SITE_DIR?>lk/?favorite">Избранные товары</a></li>
 		<li class="top-auth-exit"><a href="<?=SITE_DIR?>exit/"><?=GetMessage("EXIT")?></a></li>
 	</ul>
 </div>

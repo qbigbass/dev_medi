@@ -55,12 +55,4 @@ $(document).ready(function() {
             }
         });
     }
-
-    /* Заходим в "Избранные товары" в личном кабинете */
-    let params = (new URL(document.location)).searchParams;
-    if (params.get("go") && params.get("go") == 'favorite') {
-        if ($('._favorite').length) {
-            $('._favorite').click();
-        }
-    }
 });

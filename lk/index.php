@@ -76,6 +76,10 @@ if ($USER->IsAuthorized())
 	{
 		$active_tab = 'orders';
 	}
+    if (isset($_REQUEST['favorite']))
+    {
+        $active_tab = 'favorite';
+    }
 	?>
 
 <div class="row flex tabs-wrap">
