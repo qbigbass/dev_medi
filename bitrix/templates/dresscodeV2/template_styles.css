@@ -11558,3 +11558,49 @@ div.bx-debug-summary {
         margin: 0;
     }
 }
+/* Стиль иконки избранного в шапке сайта */
+.b_head_favorites {
+    display: flex;
+    align-items: center;
+    margin-top: -2px;
+}
+a.favorites_link {
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIco48.png) 50% 50% no-repeat transparent;
+    display: inline-block;
+    position: relative;
+    height: 50px;
+    width: 50px;
+}
+
+a.favorites_link.has_items .count {
+    color: #fff;
+    background-color: #e20074;
+    position: absolute;
+    text-align: center;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 20px;
+    height: 20px;
+    width: 20px;
+    right: -3px;
+    top: 4px;
+    border: 3px solid #e20074;
+    border-radius: 50%;
+}
+
+/* Стиль иконки избранного на странице детальной карточки товара у текущего товара */
+#elementContainer .mainContainer .favoriteContainer {
+    position: absolute;
+    z-index: 3;
+    right: 12px;
+    top: 12px;
+}
+#elementContainer .mainContainer .favoriteContainer .b-card-favorite {
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPink20.png) 50% 50% no-repeat transparent;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+#elementContainer .mainContainer .favoriteContainer .b-card-favorite.active {
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPinkActive20.png) 50% 50% no-repeat transparent;
+}

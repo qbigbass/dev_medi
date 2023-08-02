@@ -2,6 +2,24 @@
 $mytaget_feed_id = '102';
 
 global $nUserID;
+
+if ($USER->IsAuthorized()) {
+    $idUser = $USER->GetID();
+    $rsUser = CUser::GetByID($idUser);
+    $arUser = $rsUser->Fetch();
+    $arElements = $arUser['UF_FAVORITIES'];
+}
+
+if (!empty($arElements)) {
+    foreach ($arElements as $favoriteProductItem) {?>
+        <script>
+            if ($('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]')) {
+                $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').addClass('active');
+            }
+        </script>
+    <?}
+}
+
 ?>
 <script>
     $product_price = parseInt( $(".price .priceVal").attr("data-price"));
@@ -73,3 +91,5 @@ global $nUserID;
     _rutarget.push({'event': 'showOffer', 'sku': $product_id, 'price': $product_price});
 
 </script>
+
+
