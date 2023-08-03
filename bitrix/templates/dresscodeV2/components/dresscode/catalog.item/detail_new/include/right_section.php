@@ -161,9 +161,27 @@
                     }
                     ?>
                     <div class="tb row <?if($timerOn):?>action-wrapper<?endif;?>">
+                        <div class="tb">
+                            <div class="tc bindActionImage"><? if ($hide_link == 'N'){
+                                ?><a href="<?= $sact['DETAIL_PAGE_URL'] ?>" target="_blank"><?
+                                    } ?><span class="image"></span><? if ($hide_link == 'N'){
+                                    ?></a><?
+                            } ?></div>
+                            <div class="tc bindActionTitle"><? if ($hide_link == 'N'){
+                                ?><a href="<?= $sact['DETAIL_PAGE_URL'] ?>" target="_blank"><?
+                                    } ?><?= $sact['NAME'] ?><? if ($hide_link == 'N'){
+                                    ?></a><?
+                            } ?><?
+                                //                            if ($dayDiff > 0) {
+                                //                                echo $dayDiff_str;
+                                //                            }
+                                ?></div>
+                        </div>
+
                         <!-- Таймер окончания акции -->
                         <? if ($timerOn):?>
-                            <div class="timer">
+                            <div class="tb timer">
+                                <div class="timer__title">До конца акции осталось:</div>
                                 <div class="specialTime smallSpecialTime"
                                      id="timer_<?= $timerUniqId; ?>_<?= $uniqID ?>">
                                     <div class="specialTimeItem">
@@ -192,21 +210,6 @@
                                 });
                             </script>
                         <?endif;?>
-
-                        <div class="tc bindActionImage"><? if ($hide_link == 'N'){
-                            ?><a href="<?= $sact['DETAIL_PAGE_URL'] ?>" target="_blank"><?
-                                } ?><span class="image"></span><? if ($hide_link == 'N'){
-                                ?></a><?
-                        } ?></div>
-                        <div class="tc bindActionTitle"><? if ($hide_link == 'N'){
-                            ?><a href="<?= $sact['DETAIL_PAGE_URL'] ?>" target="_blank"><?
-                                } ?><?= $sact['NAME'] ?><? if ($hide_link == 'N'){
-                                ?></a><?
-                        } ?><?
-//                            if ($dayDiff > 0) {
-//                                echo $dayDiff_str;
-//                            }
-                            ?></div>
                     </div>
                     <?
                 } ?>
