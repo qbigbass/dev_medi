@@ -11622,3 +11622,37 @@ a.favorites_link.has_items .count {
 .favorite-empty p:first-child {
     font-weight: 600;
 }
+/* Стиль для иконки избранного в шапке сайта для адаптива */
+.footer_mob_links a.favorites_link {
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoGray25.png) 50% 50% no-repeat transparent;
+    display: inline-block;
+    position: relative;
+    width: 25px;
+    height: 25px;
+}
+.footer_mob_links a.favorites_link.active {
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPink25.png) 50% 50% no-repeat transparent;
+}
+.footer_mob_links a.favorites_link.has_items .count {
+    color: #fff;
+    background-color: #e20074;
+    position: absolute;
+    text-align: center;
+    overflow: hidden;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 20px;
+    height: 20px;
+    min-width: 18px;
+    right: -14px;
+    top: -6px;
+    padding: 0 2px;
+    border-radius: 50%;
+    border: 0;
+}
+.footer_mob_links span {
+    color: #868787;
+}
+.footer_mob_links span.active {
+    color: #e20074;
+}
