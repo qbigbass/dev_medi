@@ -127,7 +127,6 @@ if (!preg_match('/^(asc|desc|nulls)(,asc|,desc|,nulls){0,1}$/i', $arParams["ELEM
 
 $arParams["IBLOCK_TYPE"] = trim($arParams["IBLOCK_TYPE"]);
 $arParams["IBLOCK_ID"] = (int)$arParams["IBLOCK_ID"];
-$arParams["SECTION_ID"] = (int)$arParams["~SECTION_ID"];
 
 if (!isset($arParams["INCLUDE_SUBSECTIONS"]) || !in_array($arParams["INCLUDE_SUBSECTIONS"], array("Y", "A", "N"))) {
     $arParams["INCLUDE_SUBSECTIONS"] = "Y";
@@ -150,12 +149,12 @@ $cacheID = array(
     "NAVIGATION" => $arNavigation,
     "SMART_FILTER" => $arrFilter,
     "SITE_ID" => SITE_ID,
-    "VIEW" => $arParams["VIEW_MODE"]
+    "VIEW" => $arParams["VIEW_MODE"],
+    "USER_ID" => $arParams["USER_ID"]
 );
 
-
 if ($this->StartResultCache($arParams["CACHE_TIME"], serialize($cacheID))) {
-    
+
     //check include modules
     if (
         !CModule::IncludeModule("dw.deluxe")
@@ -209,72 +208,8 @@ if ($this->StartResultCache($arParams["CACHE_TIME"], serialize($cacheID))) {
         "GLOBAL_ACTIVE" => "Y",
         "ACTIVE" => "Y"
     );
-    
-    //if section id set
-    if (!empty($arParams["SECTION_ID"])) {
-        $arSectionFilter["ID"] = $arParams["SECTION_ID"];
-    } //if section code set
-    elseif (!empty($arParams["SECTION_CODE"])) {
-        $arSectionFilter["=CODE"] = $arParams["SECTION_CODE"];
-    } //root section
-    else {
-        $arSectionFilter["ID"] = 0;
-    }
-    
-    if (!empty($arParams["SECTION_ID"]) || !empty($arParams["SECTION_CODE"])) {
-        
-        //get section from db
-        $rsSection = CIBlockSection::GetList(array(), $arSectionFilter, false, $arSectionSelect);
-        
-        //get section data
-        if ($arResult = $rsSection->GetNext()) {
-            $sectionId = $arResult["ID"];
-        }
-        
-        if (!empty($sectionId)) {
-            
-            //seo values
-            $ipropValues = new Iblock\InheritedProperty\SectionValues($arResult["IBLOCK_ID"], $arResult["ID"]);
-            $arResult["IPROPERTY_VALUES"] = $ipropValues->getValues();
-            
-            //get section path
-            if ($arParams["ADD_SECTIONS_CHAIN"]) {
-                
-                $arResult["PATH"] = array();
-                $rsPath = CIBlockSection::GetNavChain(
-                    $arResult["IBLOCK_ID"],
-                    $arResult["ID"],
-                    array(
-                        "ID", "CODE", "XML_ID", "EXTERNAL_ID", "IBLOCK_ID",
-                        "IBLOCK_SECTION_ID", "SORT", "NAME", "ACTIVE",
-                        "DEPTH_LEVEL", "SECTION_PAGE_URL"
-                    )
-                );
-                
-                $rsPath->SetUrlTemplates("", $arParams["SECTION_URL"]);
-                while ($arPath = $rsPath->GetNext()) {
-                    
-                    //get seo values
-                    $ipropValues = new Iblock\InheritedProperty\SectionValues($arParams["IBLOCK_ID"], $arPath["ID"]);
-                    $arPath["IPROPERTY_VALUES"] = $ipropValues->getValues();
-                    
-                    //save path
-                    $arResult["PATH"][] = $arPath;
-                }
-                
-            }
-            
-        } else {
-            $arResult["IPROPERTY_VALUES"] = array();
-        }
-        
-    } else {
-        
-        if ($arParams["SHOW_ALL_WO_SECTION"] == "Y") {
-            $woSection = true;
-        }
-        
-    }
+
+    $arSectionFilter["ID"] = 0;
 
     //catalog items sort
     $arSort = array();
@@ -337,7 +272,6 @@ if ($this->StartResultCache($arParams["CACHE_TIME"], serialize($cacheID))) {
     
     //each filter vars
     foreach ($arrFilter as $inx => $nextValue) {
-        
         //check price on base filter
         if (preg_match('/^(>=|<=|><)CATALOG_PRICE_/', $inx)) {
             
@@ -353,9 +287,7 @@ if ($this->StartResultCache($arParams["CACHE_TIME"], serialize($cacheID))) {
             
             //clear base
             unset($arrFilter[$inx]);
-            
         }
-        
     }
     
     //hide not available
@@ -389,8 +321,7 @@ if ($this->StartResultCache($arParams["CACHE_TIME"], serialize($cacheID))) {
             )
         );
     }
-    
-    
+
     //catalog items fileds
     $arSelect = array(
         "ID",
@@ -429,7 +360,6 @@ if ($this->StartResultCache($arParams["CACHE_TIME"], serialize($cacheID))) {
         
         $navComponentParameters["BASE_LINK"] = CHTTP::urlAddParams($pagerBaseLink, $pagerParameters, array("encode" => true));
     } else {
-        
         $uri = new \Bitrix\Main\Web\Uri($this->request->getRequestUri());
         $uri->deleteParams(
             array_merge(
@@ -480,7 +410,6 @@ if ($this->StartResultCache($arParams["CACHE_TIME"], serialize($cacheID))) {
     ));
 
     $this->IncludeComponentTemplate();
-    
 }
 
 if ($_REQUEST['ajax'] == 'Y') {
