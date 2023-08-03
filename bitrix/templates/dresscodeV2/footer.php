@@ -182,6 +182,12 @@
                    id="catalogSlideButton"><br><span>Каталог</span></a>
             </div>
             <div>
+                <?
+                $APPLICATION->IncludeComponent("medi:favorites.products", "", []);
+                ?>
+                <br><span class="<?= (strpos($APPLICATION->GetCurDir(), 'lk/') ? 'active' : '') ?>">Избранное</span>
+            </div>
+            <div>
                 <div id="flushFooterCart">
                     <? $APPLICATION->IncludeComponent(
                         "bitrix:sale.basket.basket.line",
