@@ -338,8 +338,99 @@
 					<?endif;*/
                     ?>
                 </div>
+                <div class="favoriteContainer">
+                    <div class="b-card-favorite" data-product-id="<?= !empty($arResult["~ID"]) ? $arResult["~ID"] : $arResult["ID"] ?>"><span>В избранное</span>
+                    </div>
+                </div>
             </div>
 
         </div>
+        <script>
+            /* Вешаем обработчик для добавления товара в избранное (Товары из компонента dresscode:catalog.item) */
+            $('#<?= $this->GetEditAreaId($arResult["ID"]); ?>').on('click', '.b-card-favorite', function (){
+
+                let productId = $(this).attr('data-product-id');
+                let doAction = '';
+
+                if ($(this).hasClass('active')) {
+                    doAction = 'delete';
+                } else {
+                    doAction = 'add';
+                }
+
+                addFavorite(productId, doAction);
+            });
+
+            function addFavorite(productId, action) {
+
+                let param = 'id='+productId+"&action="+action;
+
+                $.ajax({
+                    url: '/ajax/favorite/',
+                    type: 'GET',
+                    dataType: 'html',
+                    data: param,
+                    success: function (response) {
+                        let result = $.parseJSON(response);
+                        let wishCount = 1;
+
+                        if (result == 1) {
+                            $('.b-card-favorite[data-product-id="'+productId+'"]').addClass('active');
+                            let currentCount = parseInt($('.favorites_link .count').html());
+
+                            if (currentCount >= 0) {
+                                wishCount = currentCount + 1;
+                            }
+
+                            $('.favorites_link .count').html(wishCount);
+                            if (!$('.favorites_link').hasClass('has_items')) {
+                                $('.favorites_link').addClass('has_items');
+                            }
+
+                            if ($('input[name=favorite_items]').length > 0) {
+                                let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
+
+                                if (inputFavoriteItemsValue != '') {
+                                    let favoriteItems = JSON.parse(inputFavoriteItemsValue);
+                                    favoriteItems.push(parseInt(productId));
+                                    let jsonFavoriteItems = JSON.stringify(favoriteItems);
+                                    $('input[name=favorite_items]').val(jsonFavoriteItems);
+                                }
+                            }
+                        }
+
+                        if (result == 2) {
+                            $('.b-card-favorite[data-product-id="'+productId+'"]').removeClass('active');
+                            wishCount = parseInt($('.favorites_link .count').html()) - 1;
+
+                            if (wishCount == 0) {
+                                $('.favorites_link .count').html('');
+                                $('.favorites_link').removeClass('has_items');
+                            } else {
+                                $('.favorites_link .count').html(wishCount);
+                            }
+
+                            if ($('input[name=favorite_items]').length > 0) {
+                                let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
+
+                                if (inputFavoriteItemsValue != '') {
+                                    let favoriteItems = JSON.parse(inputFavoriteItemsValue);
+                                    let indexElem = favoriteItems.indexOf(parseInt(productId));
+
+                                    if (indexElem >= 0) {
+                                        favoriteItems.splice(indexElem, 1);
+                                        let jsonFavoriteItems = JSON.stringify(favoriteItems);
+                                        $('input[name=favorite_items]').val(jsonFavoriteItems);
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('Error: '+ errorThrown);
+                    }
+                });
+            }
+        </script>
     </div>
 <? endif; ?>

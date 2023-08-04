@@ -397,5 +397,28 @@ if ($Mobile_Detect->isMobile()) {
     ),
     false
 ); ?><!--/noindex-->
+<?
+global $FAVORITE_ITEMS;
+?>
+<script>
+    $('.b-card-favorite').each(function (){
+        $(this).removeClass('active');
+    });
+</script>
+<?
+/* Отмечаем избранные товары во всех блоках на всех страницах */
+if (!empty($FAVORITE_ITEMS)) {
+    ?>
+    <input type="hidden" name="favorite_items" value="<?=json_encode($FAVORITE_ITEMS)?>">
+    <?php
+    foreach ($FAVORITE_ITEMS as $favoriteProductItem) {?>
+        <script>
+            if ($('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]')) {
+                $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').addClass('active');
+            }
+        </script>
+    <?}
+}
+?>
 </body>
 </html>

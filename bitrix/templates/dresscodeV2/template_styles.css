@@ -11622,7 +11622,7 @@ a.favorites_link.has_items .count {
 .favorite-empty p:first-child {
     font-weight: 600;
 }
-/* Стиль для иконки избранного в шапке сайта для адаптива */
+/* Стиль для иконки избранного в подвале сайта для адаптива */
 .footer_mob_links a.favorites_link {
     background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoGray25.png) 50% 50% no-repeat transparent;
     display: inline-block;
@@ -11655,4 +11655,60 @@ a.favorites_link.has_items .count {
 }
 .footer_mob_links span.active {
     color: #e20074;
+}
+/* Стиль иконки в карточке товара в компоненте dresscode:catalog.item */
+@media (max-width: 700px) {
+    .product {
+        height: 310px;
+    }
+}
+@media (min-width: 701px) and (max-width: 1024px) {
+    .product .tabloid {
+        height: 340px;
+    }
+}
+.productTable {
+    position: relative;
+}
+.productTable .favoriteContainer {
+    position: absolute;
+    z-index: 3;
+    right: 0;
+    cursor: pointer;
+}
+@media screen and (min-width: 1025px) {
+    .productTable .favoriteContainer {
+        top: -7px;
+    }
+}
+@media (min-width: 701px) and (max-width: 1024px) {
+    .productTable .favoriteContainer {
+        left: 0;
+        bottom: 225px;
+    }
+}
+@media (max-width: 700px) {
+    .productTable .favoriteContainer {
+        left: 0;
+    }
+}
+.productTable .favoriteContainer .b-card-favorite::before {
+    content: '';
+    display: inline-block;
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPink20.png) 50% 50% no-repeat transparent;
+    width: 20px;
+    height: 20px;
+}
+.productTable .favoriteContainer .b-card-favorite {
+    display: flex;
+    font-size: 12px;
+    gap: 5px;
+}
+.productTable .favoriteContainer .b-card-favorite.active::before {
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPinkActive20.png) 50% 50% no-repeat transparent;
+}
+@media screen and (min-width: 1025px) {
+    .productTable .favoriteContainer .b-card-favorite span {
+        display: none;
+    }
 }

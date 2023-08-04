@@ -138,7 +138,20 @@ global $nUserID; ?>
                 user_id: "<?=$nUserID?>" //идентификатор пользователя
             });
         </script>
-
+        <script>
+        /* Отметим избранные товары на странице (Загрузка списка товаров через AJAX пагинацию) */
+        if ($('input[name=favorite_items]').length > 0) {
+            let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
+            if (inputFavoriteItemsValue != '') {
+                let favoriteItems = JSON.parse(inputFavoriteItemsValue);
+                for (let key in favoriteItems) {
+                    if ($('.b-card-favorite[data-product-id="' + favoriteItems[key] + '"]')) {
+                        $('.b-card-favorite[data-product-id="' + favoriteItems[key] + '"]').addClass('active');
+                    }
+                }
+            }
+        }
+        </script>
     </div>
 <? elseif ($arParams['HIDE_EMPTY'] != 'Y'): ?>
     <div id="empty">

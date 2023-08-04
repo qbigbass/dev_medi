@@ -1,5 +1,7 @@
 $(document).ready(function() {
-    $('#catalogElement').on('click', '.b-card-favorite', function (){
+    /* Вешаем обработчик для добавления товара в избранное (Детальная карточка товара) */
+    $('#elementContainer .mainContainer').on('click', '.b-card-favorite', function () {
+
         let productId = $(this).attr('data-product-id');
         let doAction = '';
 
@@ -13,6 +15,7 @@ $(document).ready(function() {
     });
 
     function addFavorite(productId, action) {
+
         let param = 'id='+productId+"&action="+action;
 
         $.ajax({
