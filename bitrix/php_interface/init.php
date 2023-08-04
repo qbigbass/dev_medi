@@ -244,6 +244,17 @@ function MyOnBeforePrologHandler()
         if (!empty(array_diff($arGroups, $arGroupsBak))) {
             $USER->SetUserGroupArray($arGroups);
         }
+
+        if ($USER->IsAuthorized()) {
+            $idUser = $USER->GetID();
+            $rsUser = CUser::GetByID($idUser);
+            $arUser = $rsUser->Fetch();
+            $arElements = $arUser['UF_FAVORITIES'];
+
+            if (!empty($arElements)) {
+                $GLOBALS['FAVORITE_ITEMS'] = $arElements;
+            }
+        }
     }
 }
 
