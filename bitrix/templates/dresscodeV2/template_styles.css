@@ -7343,7 +7343,6 @@ body.panels_white .homeCatalog2 #captionCarousel:before {
 
     .product .price {
         max-width: 70%;
-
     }
 
     .product .price .discount {
@@ -7364,6 +7363,7 @@ body.panels_white .homeCatalog2 #captionCarousel:before {
     .product .price {
         margin-bottom: 6px;
         font-size: 15px;
+        height: 33px;
     }
 
     .product .price .measure {
@@ -11596,13 +11596,13 @@ a.favorites_link.has_items .count {
     top: 12px;
 }
 #elementContainer .mainContainer .favoriteContainer .b-card-favorite {
-    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPink20.png) 50% 50% no-repeat transparent;
-    width: 20px;
-    height: 20px;
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPink25.png) 50% 50% no-repeat transparent;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
 }
 #elementContainer .mainContainer .favoriteContainer .b-card-favorite.active {
-    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPinkActive20.png) 50% 50% no-repeat transparent;
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPinkActive25.png) 50% 50% no-repeat transparent;
 }
 /* Стиль инонки избранного в левом сайдбаре в ЛК */
 ._favorite .favorite_ico {
@@ -11659,7 +11659,7 @@ a.favorites_link.has_items .count {
 /* Стиль иконки в карточке товара в компоненте dresscode:catalog.item */
 @media (max-width: 700px) {
     .product {
-        height: 310px;
+        height: 330px;
     }
 }
 @media (min-width: 701px) and (max-width: 1024px) {
@@ -11684,7 +11684,10 @@ a.favorites_link.has_items .count {
 @media (min-width: 701px) and (max-width: 1024px) {
     .productTable .favoriteContainer {
         left: 0;
-        bottom: 225px;
+        top: 303px;
+    }
+    .product .skuProperty {
+        margin: 16px 0 12px 0;
     }
 }
 @media (max-width: 700px) {
@@ -11695,9 +11698,9 @@ a.favorites_link.has_items .count {
 .productTable .favoriteContainer .b-card-favorite::before {
     content: '';
     display: inline-block;
-    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPink20.png) 50% 50% no-repeat transparent;
-    width: 20px;
-    height: 20px;
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPink25.png) 50% 50% no-repeat transparent;
+    width: 25px;
+    height: 25px;
 }
 .productTable .favoriteContainer .b-card-favorite {
     display: flex;
@@ -11705,7 +11708,7 @@ a.favorites_link.has_items .count {
     gap: 5px;
 }
 .productTable .favoriteContainer .b-card-favorite.active::before {
-    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPinkActive20.png) 50% 50% no-repeat transparent;
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPinkActive25.png) 50% 50% no-repeat transparent;
 }
 @media screen and (min-width: 1025px) {
     .productTable .favoriteContainer .b-card-favorite span {
