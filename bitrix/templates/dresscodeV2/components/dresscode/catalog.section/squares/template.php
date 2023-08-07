@@ -141,12 +141,14 @@ global $nUserID; ?>
         <script>
         /* Отметим избранные товары на странице (Загрузка списка товаров через AJAX пагинацию) */
         if ($('input[name=favorite_items]').length > 0) {
+            console.log('squares template.php!');
             let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
             if (inputFavoriteItemsValue != '') {
                 let favoriteItems = JSON.parse(inputFavoriteItemsValue);
                 for (let key in favoriteItems) {
                     if ($('.b-card-favorite[data-product-id="' + favoriteItems[key] + '"]')) {
                         $('.b-card-favorite[data-product-id="' + favoriteItems[key] + '"]').addClass('active');
+                        $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').find('span').text('В избранном');
                     }
                 }
             }

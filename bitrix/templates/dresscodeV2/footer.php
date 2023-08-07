@@ -415,6 +415,7 @@ if (!empty($FAVORITE_ITEMS)) {
         <script>
             if ($('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]')) {
                 $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').addClass('active');
+                $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').find('span').text('В избранном');
             }
         </script>
     <?}
