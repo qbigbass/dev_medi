@@ -419,6 +419,10 @@ if (!empty($FAVORITE_ITEMS)) {
         </script>
     <?}
 }
+if ($USER->IsAuthorized()) {?>
+    <input type="hidden" name="user_auth" value="1">
+    <?
+}
 ?>
 </body>
 </html>

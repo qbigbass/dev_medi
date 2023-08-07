@@ -347,18 +347,21 @@
         </div>
         <script>
             /* Вешаем обработчик для добавления товара в избранное (Товары из компонента dresscode:catalog.item) */
-            $('#<?= $this->GetEditAreaId($arResult["ID"]); ?>').on('click', '.b-card-favorite', function (){
+            $('#<?= $this->GetEditAreaId($arResult["ID"]); ?>').on('click', '.b-card-favorite', function () {
+                if ($('input[name=user_auth]').length > 0) {
+                    let productId = $(this).attr('data-product-id');
+                    let doAction = '';
 
-                let productId = $(this).attr('data-product-id');
-                let doAction = '';
+                    if ($(this).hasClass('active')) {
+                        doAction = 'delete';
+                    } else {
+                        doAction = 'add';
+                    }
 
-                if ($(this).hasClass('active')) {
-                    doAction = 'delete';
+                    addFavorite(productId, doAction);
                 } else {
-                    doAction = 'add';
+                    window.location.href = "/lk/?favorite";
                 }
-
-                addFavorite(productId, doAction);
             });
 
             function addFavorite(productId, action) {
