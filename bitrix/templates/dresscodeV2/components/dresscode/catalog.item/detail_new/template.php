@@ -125,48 +125,46 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                         </div>
                         <div class="secondCol col<? if (empty($arResult["PREVIEW_TEXT"]) && empty($arResult["SKU_OFFERS"]) && empty($arResult["PROPERTIES"])): ?> hide<? endif; ?>">
                             <div class="reviewsBtnWrap">
-                                <? /*if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
-							<div class="row">
-								<a class="label" href="#catalogReviews">
-									<img src="<?=SITE_TEMPLATE_PATH?>/images/reviews.png" alt="" class="icon">
-									<span class="<?if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>countReviewsTools<?endif;?>"><?=GetMessage("REVIEWS_COUNT")?> <?=!empty($arResult["REVIEWS"]) ? count($arResult["REVIEWS"]) : 0?></span>
-									<?/*<div class="rating">
-									  <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
-									  <i class="h"></i>
-									</div>* /?>
-								</a>
-							</div>
-							<?/*if($arParams["SHOW_REVIEW_FORM"]):?>
-								<div class="row">
-									<a href="#" class="reviewAddButton label"><img src="<?=SITE_TEMPLATE_PATH?>/images/addReviewSmall.png" alt="<?=GetMessage("REVIEWS_ADD")?>" class="icon"><span class="labelDotted"><?=GetMessage("REVIEWS_ADD")?></span></a>
-								</div>
-							<?endif;* /?>
 
-							<?endif;*/ ?>
-                                <div class="brandImageWrap">
-                                    <? if (!empty($arResult["BRAND"]["PICTURE"])): ?>
-                                        <? if ($arResult['PARENT_PRODUCT']['BRAND_ACTIVE'] == 'Да') { ?>
-                                            <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
-                                                <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                     alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
-                                        <? } elseif ($arResult['BRAND_ACTIVE'] == 'Да') { ?>
-                                            <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
-                                                <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                     alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
-                                        <? } else { ?>
-                                            <span class="brandImage"><img
-                                                        src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                        alt="<?= $arResult["BRAND"]["NAME"] ?>"></span>
-                                        <? } ?>
+                                <? if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
+                                    <div class="rating-wrapper">
+                                        <div class="rating">
+                                            <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
+                                            <i class="h"></i>
+                                        </div>
+                                    </div>
+							    <?endif; ?>
+                                <div class="brand-article-wrapper">
+                                    <div class="brandImageWrap">
+                                        <? if (!empty($arResult["BRAND"]["PICTURE"])): ?>
+                                            <? if ($arResult['PARENT_PRODUCT']['BRAND_ACTIVE'] == 'Да') { ?>
+                                                <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
+                                                    <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
+                                            <? } elseif ($arResult['BRAND_ACTIVE'] == 'Да') { ?>
+                                                <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
+                                                    <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
+                                            <? } else { ?>
+                                                <span class="brandImage"><img
+                                                            src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                            alt="<?= $arResult["BRAND"]["NAME"] ?>"></span>
+                                            <? } ?>
+                                        <? endif; ?>
+                                    </div>
+
+                                    <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
+                                        <div class="row article">
+                                            <?= GetMessage("CATALOG_ART_LABEL") ?>
+                                            <span
+                                                class="changeArticle"
+                                                data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"
+                                            >
+                                            <?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>
+                                        </span>
+                                        </div>
                                     <? endif; ?>
                                 </div>
-                                
-                                <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
-                                    <div class="row article">
-                                        <?= GetMessage("CATALOG_ART_LABEL") ?><span class="changeArticle"
-                                                                                    data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"><?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?></span>
-                                    </div>
-                                <? endif; ?>
                             </div>
                             <? if (!empty($arResult["SKU_OFFERS"])): ?>
                                 <? if (!empty($arResult["SKU_PROPERTIES"]) && $level = 1): ?>
