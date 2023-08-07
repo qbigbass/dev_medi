@@ -343,7 +343,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <script>
             /* Вешаем обработчик для добавления товара в избранное (Товары из компонента dresscode:catalog.item) */
@@ -379,6 +378,7 @@
 
                         if (result == 1) {
                             $('.b-card-favorite[data-product-id="'+productId+'"]').addClass('active');
+                            $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранном');
                             let currentCount = parseInt($('.favorites_link .count').html());
 
                             if (currentCount >= 0) {
@@ -404,6 +404,7 @@
 
                         if (result == 2) {
                             $('.b-card-favorite[data-product-id="'+productId+'"]').removeClass('active');
+                            $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранное');
                             wishCount = parseInt($('.favorites_link .count').html()) - 1;
 
                             if (wishCount == 0) {
