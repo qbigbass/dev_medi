@@ -15,7 +15,7 @@ if (!empty(intval($_GET['PAGEN_1'])) && intval($_GET['PAGEN_1']) > 1){
 ?>
 <script>
     var _gcTracker=_gcTracker||[];
-    _gcTracker.push(['view_page', { name: '<?=$arResult['IPROPERTY_VALUES']['SECTION_PAGE_TITLE']?>'}]);
+    _gcTracker.push(['view_category', { name: '<?=$arResult['IPROPERTY_VALUES']['SECTION_PAGE_TITLE']?>'}]);
 </script>
 
 
