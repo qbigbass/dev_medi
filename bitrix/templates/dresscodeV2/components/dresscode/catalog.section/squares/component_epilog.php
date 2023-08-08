@@ -12,3 +12,10 @@ if (!empty(intval($_GET['PAGEN_1'])) && intval($_GET['PAGEN_1']) > 1){
 }
 
 //$APPLICATION->AddHeadString('<link href="https://www.medi-salon.ru'.$APPLICATION->GetCurDir().'" rel="canonical">');
+?>
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: '<?=$arResult['IPROPERTY_VALUES']['SECTION_PAGE_TITLE']?>'}]);
+</script>
+
+
