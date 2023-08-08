@@ -271,6 +271,10 @@ $(function () {
             dataType: 'json',
             success: function (data) {
                 if (data.status == 'confirmed' || data.status == 'ok') {
+                    let loymaxUserId = data.loymaxUserId;
+                    let _gcTracker=_gcTracker||[];
+                    // JS-трекер Loymax (Событие: авторизация и регистрация)
+                    _gcTracker.push(['user_login', { user_id: loymaxUserId }]);
                     // код отправлен
                     if ($backurl != '' && $backurl !== undefined) {
                         window.location = $backurl;
