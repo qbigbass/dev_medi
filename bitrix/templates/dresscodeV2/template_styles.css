@@ -11565,7 +11565,7 @@ div.bx-debug-summary {
     margin-top: -2px;
 }
 a.favorites_link {
-    background: url(/bitrix/templates/dresscodeV2/images/favoriteIco48.png) 50% 50% no-repeat transparent;
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIco48.svg) 50% 50% no-repeat transparent;
     display: inline-block;
     position: relative;
     height: 50px;
