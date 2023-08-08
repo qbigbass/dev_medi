@@ -497,6 +497,9 @@ $(function(){
 					application.commit.basket.refreshCart();
 				}
 
+				// JS-трекер Loymax (Событие: удаления товара из корзины)
+				var _gcTracker = window._gcTracker || [];
+				_gcTracker.push(['remove_from_card', { product_id: jsonData['product']['ID'] }]);
 			}
 
 			//check errors
