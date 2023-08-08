@@ -397,9 +397,11 @@ $(function(){
 
 		//proccesing data after request
 		function dataProcessing(jsonData){
-
 			//check state
 			if(jsonData["status"] === true){
+				// JS-трекер Loymax (Событие: очистка корзины)
+				var _gcTracker = window._gcTracker || [];
+				_gcTracker.push(['clear_card', {}]);
 				//page reload
 				application.showLoader();
 				self.location.reload();
