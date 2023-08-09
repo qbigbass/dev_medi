@@ -433,4 +433,8 @@ $APPLICATION->SetTitle("Способы и условия доставки");
 		</div>
 	</div>
 </div>
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: 'view_delivery'}]);
+</script>
 <br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

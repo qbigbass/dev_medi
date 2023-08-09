@@ -61,4 +61,9 @@ $APPLICATION->SetTitle("Обратная связь");
 		);?>
 	</div>
 	*/?>
-</div><br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+</div><br>
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: 'view_service'}]);
+</script>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

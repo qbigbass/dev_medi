@@ -11,3 +11,7 @@ if(!empty($arResult["PREVIEW_PICTURE"]["SRC"])){
 	$APPLICATION->AddHeadString('<meta property="og:image" content="'.(CMain::IsHTTPS() ? "https://" : "http://").SITE_SERVER_NAME.$arResult["PREVIEW_PICTURE"]["SRC"].'" />');
 }
 ?>
+<script>
+	var _gcTracker=_gcTracker||[];
+	_gcTracker.push(['view_page', { name: '<?=$arResult["NAME"]?>' }]);
+</script>
