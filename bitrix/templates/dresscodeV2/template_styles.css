@@ -11815,3 +11815,24 @@ a.favorites_link.has_items .count {
         font-size: 14px;
     }
 }
+/* Стиль для фиксированной шапки */
+@media screen and (min-width: 1024px) {
+    body {
+        padding-top: 201px;
+    }
+    header {
+        width: 100%;
+        z-index: 1000;
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
+    .fixed-header #elementTools.fixed .fixContainer {
+        margin-top: 150px;
+    }
+}
+@media screen and (max-width: 1024px) {
+    #elementContainer #pictureContainer .pictureSlider {
+        visibility: visible;
+    }
+}

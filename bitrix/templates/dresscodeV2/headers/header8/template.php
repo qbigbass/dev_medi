@@ -6,6 +6,7 @@ $APPLICATION->IncludeComponent("twofingers:location", "", array());
 $location_html = ob_get_contents();
 ob_end_clean();
 ?>
+
 <header>
     <div id="subHeader8">
         <div class="limiter">
