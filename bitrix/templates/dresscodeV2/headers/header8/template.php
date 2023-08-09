@@ -6,6 +6,7 @@ $APPLICATION->IncludeComponent("twofingers:location", "", array());
 $location_html = ob_get_contents();
 ob_end_clean();
 ?>
+<div class="header">
     <div id="subHeader8">
         <div class="limiter">
             <div class="header_mob">
@@ -195,7 +196,6 @@ ob_end_clean();
             </div>
         </div>
     </div>
-
     <div class="menuContainerColor">
         <? $APPLICATION->IncludeComponent(
             "bitrix:menu",
@@ -220,6 +220,7 @@ ob_end_clean();
             )
         ); ?>
     </div>
+</div>
 
 <? $APPLICATION->IncludeComponent(
     "medi:topalert",
