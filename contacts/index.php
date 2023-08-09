@@ -127,4 +127,8 @@ else {
   ]
 }
 </script>
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: 'view_contacts' }]);
+</script>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php")?>

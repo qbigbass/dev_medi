@@ -148,4 +148,9 @@ $APPLICATION->AddHeadString('<link rel="canonical" href="https://www.medi-salon.
  <a target="_blank" href="/about/loyalty/pl/" class="theme-link-dashed h3">Подробнее&nbsp;&gt;&gt;</a>
 	</div>
 </div>
-<br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php")?>
+<br>
+    <script>
+        var _gcTracker=_gcTracker||[];
+        _gcTracker.push(['view_page', { name: 'view_loyalty' }]);
+    </script>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php")?>
