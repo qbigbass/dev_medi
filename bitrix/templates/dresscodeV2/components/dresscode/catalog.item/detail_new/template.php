@@ -129,14 +129,6 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                         </div>
                         <div class="secondCol col<? if (empty($arResult["PREVIEW_TEXT"]) && empty($arResult["SKU_OFFERS"]) && empty($arResult["PROPERTIES"])): ?> hide<? endif; ?>">
                             <div class="reviewsBtnWrap">
-                                <? if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
-                                    <div class="rating-wrapper">
-                                        <div class="rating">
-                                            <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
-                                            <i class="h"></i>
-                                        </div>
-                                    </div>
-                                <?endif; ?>
                                 <div class="brand-article-wrapper">
                                     <div class="brandImageWrap">
                                         <? if (!empty($arResult["BRAND"]["PICTURE"])): ?>
@@ -155,16 +147,26 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                             <? } ?>
                                         <? endif; ?>
                                     </div>
-                                    <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
-                                        <div class="row article">
-                                            <?= GetMessage("CATALOG_ART_LABEL") ?>
-                                            <span
-                                                    class="changeArticle"
-                                                    data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"
-                                            ><?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>
+                                    <div class="article-rating-wrapper">
+                                        <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
+                                            <div class="row article">
+                                                <?= GetMessage("CATALOG_ART_LABEL") ?>
+                                                <span
+                                                        class="changeArticle"
+                                                        data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"
+                                                ><?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>
 			                                </span>
-                                        </div>
-                                    <? endif; ?>
+                                            </div>
+                                        <? endif; ?>
+                                        <? if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
+                                            <div class="rating-wrapper">
+                                                <div class="rating">
+                                                    <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
+                                                    <i class="h"></i>
+                                                </div>
+                                            </div>
+                                        <?endif; ?>
+                                    </div>
                                 </div>
                             </div>
                             <? if (!empty($arResult["SKU_OFFERS"])): ?>
