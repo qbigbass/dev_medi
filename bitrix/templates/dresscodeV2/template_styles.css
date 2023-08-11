@@ -11747,4 +11747,15 @@ a.favorites_link.has_items .count {
         left: 0;
         top: 0;
     }
+    .header_fixed #subHeader8 {
+        height: 90px;
+        border-bottom: none;
+        background: #fff;
+    }
+    .header_fixed .b_logo, .header_fixed .b_logo img {
+        height: 90px;
+    }
+    .header_fixed .b_head_top {
+        display: none;
+    }
 }
