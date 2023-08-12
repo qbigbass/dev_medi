@@ -11738,24 +11738,14 @@ a.favorites_link.has_items .count {
 
 /* Стиль для фиксированной шапки */
 @media screen and (min-width: 1024px) {
-    .header {
+    body {
+        padding-top: 201px;
+    }
+    header {
         width: 100%;
         z-index: 100;
-    }
-    .header_fixed {
         position: fixed;
         left: 0;
         top: 0;
-    }
-    .header_fixed #subHeader8 {
-        height: 90px;
-        border-bottom: none;
-        background: #fff;
-    }
-    .header_fixed .b_logo, .header_fixed .b_logo img {
-        height: 90px;
-    }
-    .header_fixed .b_head_top {
-        display: none;
     }
 }

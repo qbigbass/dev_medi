@@ -6,7 +6,7 @@ $APPLICATION->IncludeComponent("twofingers:location", "", array());
 $location_html = ob_get_contents();
 ob_end_clean();
 ?>
-<div class="header">
+<header>
     <div id="subHeader8">
         <div class="limiter">
             <div class="header_mob">
@@ -225,7 +225,7 @@ ob_end_clean();
             )
         ); ?>
     </div>
-</div>
+</header>
 
 <? $APPLICATION->IncludeComponent(
     "medi:topalert",
