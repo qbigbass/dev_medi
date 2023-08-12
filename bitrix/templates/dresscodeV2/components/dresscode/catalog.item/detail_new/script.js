@@ -133,19 +133,29 @@ var skuDropdownOpened = false;
 
 		var scrollControl = function(event){
 			var curScrollValueY = (event.currentTarget.scrollY) ? event.currentTarget.scrollY : $(window).scrollTop()
-			if(curScrollValueY <= maxScroll + $catalogElement.height()){
-				if(navOffset <= curScrollValueY){
-					$elementNavigation.addClass("fixed").find(".tabs").removeClass("maxScroll");
-					$elementTools.addClass("fixed").find(".fixContainer").removeClass("maxScroll");	;
-				}else{
-					$elementNavigation.removeClass("fixed").find(".tabs").removeClass("maxScroll");
-					$elementTools.removeClass("fixed").find(".fixContainer").removeClass("maxScroll");
+			let windowInnerWidth = window.innerWidth;
+			
+			if (windowInnerWidth >= 1024) {
+				// Правки для фиксированной шапки
+				if ($('body').hasClass('fixed-header')) {
+					$elementTools.addClass("fixed");
+				} else {
+					$elementTools.removeClass("fixed");
 				}
-			}else{
-				$elementNavigation.removeClass("fixed").find(".tabs").addClass("maxScroll");
-				$elementTools.removeClass("fixed").find(".fixContainer").addClass("maxScroll");
+			} else {
+				if(curScrollValueY <= maxScroll + $catalogElement.height()){
+					if(navOffset <= curScrollValueY){
+						$elementNavigation.addClass("fixed").find(".tabs").removeClass("maxScroll");
+						$elementTools.addClass("fixed").find(".fixContainer").removeClass("maxScroll");	;
+					}else{
+						$elementNavigation.removeClass("fixed").find(".tabs").removeClass("maxScroll");
+						$elementTools.removeClass("fixed").find(".fixContainer").removeClass("maxScroll");
+					}
+				}else{
+					$elementNavigation.removeClass("fixed").find(".tabs").addClass("maxScroll");
+					$elementTools.removeClass("fixed").find(".fixContainer").addClass("maxScroll");
+				}
 			}
-
 		};
 
 		var scrollToPropertyList = function(event){

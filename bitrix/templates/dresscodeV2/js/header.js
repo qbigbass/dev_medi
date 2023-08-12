@@ -1,7 +1,7 @@
 $(function() {
     let headerHeight = $('header').height();
     let windowInnerWidth = window.innerWidth;
-    
+
     if (windowInnerWidth >= 1024) {
         $(window).scroll(function() {
             if ($(this).scrollTop() > headerHeight) {
