@@ -11715,3 +11715,29 @@ a.favorites_link.has_items .count {
         display: none;
     }
 }
+
+/* Стиль для блоков (Рейтинг, Бренд, Артикул) на странице детальной КТ */
+.reviewsBtnWrap {
+    flex-direction: column;
+    align-items: flex-start;
+}
+.brand-article-wrapper {
+    display: flex;
+    align-items: center;
+}
+@media (max-width: 1000px) {
+    #elementContainer .brandImage {
+        margin-bottom: 0;
+    }
+}
+@media screen and (max-width: 790px) {
+    #elementContainer .brandImageWrap {
+        padding-top: 0;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    #elementContainer #pictureContainer .pictureSlider {
+        visibility: visible;
+    }
+}

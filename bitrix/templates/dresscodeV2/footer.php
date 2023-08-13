@@ -425,5 +425,6 @@ if ($USER->IsAuthorized()) {?>
     <?
 }
 ?>
+<? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/slick.min.js"); ?>
 </body>
 </html>

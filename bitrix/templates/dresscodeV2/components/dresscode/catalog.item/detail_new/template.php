@@ -85,16 +85,19 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
 						</div>*/ ?>
                             <? if (!empty($arResult["IMAGES"])): ?>
                                 <div id="pictureContainer">
-                                    <div class="pictureSlider">
+                                    <div class="pictureSlider slider single-item">
                                         <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
                                             <div class="item">
                                                 <a href="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"
-                                                   title="<?= GetMessage("CATALOG_ELEMENT_ZOOM") ?>" class="zoom"
+                                                   title="<?= GetMessage("CATALOG_ELEMENT_ZOOM") ?>"
+                                                   class="zoom"
                                                    data-small-picture="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
-                                                   data-large-picture="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"><img
-                                                            src="<?= $arNextPicture["MEDIUM_IMAGE"]["SRC"] ?>"
-                                                            alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>"
-                                                            title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>"></a>
+                                                   data-large-picture="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>">
+                                                    <img
+                                                        src="<?= $arNextPicture["MEDIUM_IMAGE"]["SRC"] ?>"
+                                                        alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>"
+                                                        title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>">
+                                                </a>
                                             </div>
                                         <? endforeach; ?>
                                     </div>
@@ -129,48 +132,45 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                         </div>
                         <div class="secondCol col<? if (empty($arResult["PREVIEW_TEXT"]) && empty($arResult["SKU_OFFERS"]) && empty($arResult["PROPERTIES"])): ?> hide<? endif; ?>">
                             <div class="reviewsBtnWrap">
-                                <? /*if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
-							<div class="row">
-								<a class="label" href="#catalogReviews">
-									<img src="<?=SITE_TEMPLATE_PATH?>/images/reviews.png" alt="" class="icon">
-									<span class="<?if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>countReviewsTools<?endif;?>"><?=GetMessage("REVIEWS_COUNT")?> <?=!empty($arResult["REVIEWS"]) ? count($arResult["REVIEWS"]) : 0?></span>
-									<?/*<div class="rating">
-									  <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
-									  <i class="h"></i>
-									</div>* /?>
-								</a>
-							</div>
-							<?/*if($arParams["SHOW_REVIEW_FORM"]):?>
-								<div class="row">
-									<a href="#" class="reviewAddButton label"><img src="<?=SITE_TEMPLATE_PATH?>/images/addReviewSmall.png" alt="<?=GetMessage("REVIEWS_ADD")?>" class="icon"><span class="labelDotted"><?=GetMessage("REVIEWS_ADD")?></span></a>
-								</div>
-							<?endif;* /?>
-
-							<?endif;*/ ?>
-                                <div class="brandImageWrap">
-                                    <? if (!empty($arResult["BRAND"]["PICTURE"])): ?>
-                                        <? if ($arResult['PARENT_PRODUCT']['BRAND_ACTIVE'] == 'Да') { ?>
-                                            <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
-                                                <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                     alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
-                                        <? } elseif ($arResult['BRAND_ACTIVE'] == 'Да') { ?>
-                                            <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
-                                                <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                     alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
-                                        <? } else { ?>
-                                            <span class="brandImage"><img
+                                <div class="brand-article-wrapper">
+                                    <div class="brandImageWrap">
+                                        <? if (!empty($arResult["BRAND"]["PICTURE"])): ?>
+                                            <? if ($arResult['PARENT_PRODUCT']['BRAND_ACTIVE'] == 'Да') { ?>
+                                                <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
+                                                    <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
+                                            <? } elseif ($arResult['BRAND_ACTIVE'] == 'Да') { ?>
+                                                <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
+                                                    <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
+                                            <? } else { ?>
+                                                <span class="brandImage"><img
                                                         src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></span>
-                                        <? } ?>
-                                    <? endif; ?>
-                                </div>
-                                
-                                <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
-                                    <div class="row article">
-                                        <?= GetMessage("CATALOG_ART_LABEL") ?><span class="changeArticle"
-                                                                                    data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"><?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?></span>
+                                            <? } ?>
+                                        <? endif; ?>
                                     </div>
-                                <? endif; ?>
+                                    <div class="article-rating-wrapper">
+                                        <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
+                                            <div class="row article">
+                                                <?= GetMessage("CATALOG_ART_LABEL") ?>
+                                                <span
+                                                    class="changeArticle"
+                                                    data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"
+                                                ><?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>
+			                                </span>
+                                            </div>
+                                        <? endif; ?>
+                                        <? if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
+                                            <div class="rating-wrapper">
+                                                <div class="rating">
+                                                    <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
+                                                    <i class="h"></i>
+                                                </div>
+                                            </div>
+                                        <?endif; ?>
+                                    </div>
+                                </div>
                             </div>
                             <? if (!empty($arResult["SKU_OFFERS"])): ?>
                                 <? if (!empty($arResult["SKU_PROPERTIES"]) && $level = 1): ?>
@@ -252,10 +252,10 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                         }
                                                         ?>
                                                         <?
-                                                        
+
                                                         if ($propName == 'COLOR')://  && array_intersect([75], $arResult['ALL_SECTIONS'])):
                                                             $color_file = str_replace(" ", "_", $arResult['PROPERTIES']['SERIES']['VALUE']);
-                                                            
+
                                                             if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/include/colors/' . $color_file . '.html')):
                                                                 $fvers = filemtime($_SERVER['DOCUMENT_ROOT'] . '/include/colors/' . $color_file . '.html');
                                                                 $this->addExternalCss($templateFolder . "/css/colors.css"); ?>
@@ -264,7 +264,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                                       class="palitra_link get_medi_popup_Window"
                                                                       data-title="Все доступные для заказа цвета изделия">палитра цветов medi</span>
                                                             <? endif; ?>
-                                                        
+
                                                         <?endif;
                                                         ?>
                                                     </div>
@@ -298,7 +298,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                                 </option>
                                                             <? endforeach; ?>
                                                         </select>
-                                                    
+
                                                     <? endif; ?>
                                                 </div>
                                             <? endif; ?>
@@ -314,8 +314,8 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             <? include($_SERVER["DOCUMENT_ROOT"] . "/" . $templateFolder . "/include/right_section.php"); ?>
                         </div>
                     </div>
-                    
-                    
+
+
                     <? // NOTE: SERVICES?>
                     <? if ($arParams["SHOW_SERVICES"] == "Y" && !empty($servicesFilter)): ?>
                         <? $APPLICATION->IncludeComponent(
@@ -401,7 +401,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             )
                         ); ?>
                     <? endif; ?>
-                    
+
                     <? // NOTE: OFFERS?>
                     <? if ($arParams["DISPLAY_OFFERS_TABLE"] == "Y" && !empty($arResult["SKU_OFFERS"])): ?>
                         <? if (
@@ -433,8 +433,8 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             ); ?>
                         <? endif; ?>
                     <? endif; ?>
-                    
-                    
+
+
                     <? // NOTE: COMPLECT?>
                     <? if (!empty($arResult["COMPLECT"]["ITEMS"])): ?>
                         <div id="complect">
@@ -486,7 +486,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             </div>
                         </div>
                     <? endif; ?>
-                    
+
                     <? // NOTE: GIFTS?>
                     <? /*CBitrixComponent::includeComponentClass("bitrix:sale.products.gift");
 				$APPLICATION->IncludeComponent(
@@ -602,7 +602,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                         <div class="tabs-links">
                             <div class="tab-link active desc">Описание</div>
                             <div class="tab-link">Характеристики</div>
-                            
+
                             <? if ($arParams["HIDE_AVAILABLE_TAB"] != "Y" && !$arResult['DONT_SHOW_REST']): ?>
                                 <div class="tab-link salon" <?= ($arResult['SALON_AVAILABLE'] == 0 ? 'style="display:none;"' : '') ?>>
                                     Наличие в салонах (<?= $arResult['SALON_COUNT'] ?>)
@@ -624,7 +624,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
 
                                 <label for="chacor4">Описание</label>
                                 <div class="acor-body active">
-                                    
+
                                     <? if (!empty($arResult["VIDEO"])): ?>
                                         <div id="video">
 
@@ -644,7 +644,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                             </div>
                                         </div>
                                     <? endif; ?>
-                                    
+
                                     <? // NOTE: TECHNOLOGIES?>
                                     <? if (!empty($arResult['PROPERTIES']['TECHNOLOGIES']['VALUES_LIST'])): ?>
                                         <div id="tech">
@@ -680,7 +680,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
 
                                         </div>
                                     <? endif; ?>
-                                    
+
                                     <? if (!empty($arResult["DETAIL_TEXT"])): ?>
                                         <div id="detailText">
 
@@ -725,7 +725,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                 </div>
 
                             </div>
-                            
+
                             <? // NOTE: STORES AMOUNT;?>
                             <? if ($arParams["HIDE_AVAILABLE_TAB"] != "Y" && !$arResult['DONT_SHOW_REST']): ?>
 
@@ -753,7 +753,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                     0 => "TITLE",
                                                     1 => "ADDRESS",
                                                     2 => "DESCRIPTION",
-                                                    
+
                                                     4 => "EMAIL",
                                                     5 => "IMAGE_ID",
                                                     6 => "COORDINATES",
@@ -793,9 +793,9 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                             )</label>
                                         <div class="wrap acor-body">
                                             <div class="items">
-                                                
+
                                                 <? foreach ($arResult['PROPERTIES']["DOCS"] as $ifl1 => $arDocs):
-                                                    
+
                                                     if ($ifl1 == 'MANUAL_1C' || $ifl1 == 'DECLARATION_1C' || $ifl1 == 'SERT_1C') {
                                                         ?>
                                                         <? foreach ($arDocs as $ifl => $arFile): ?>
@@ -1015,7 +1015,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             </div>
                         </div>
                     </div>
-                    
+
                     <? if (!empty($arResult["ELEMENT_TAGS"]) && !empty($arParams["CATALOG_SHOW_TAGS"]) && $arParams["CATALOG_SHOW_TAGS"] == "Y"): ?>
                         <? $index = 1; ?>
                         <div id="detailTags"<? if ($arParams["HIDE_TAGS_ON_MOBILE"] == "Y"): ?> class="mobileHidden"<? endif; ?>>
@@ -1038,9 +1038,9 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             </div>
                         </div>
                     <? endif; ?>
-                    
-                    
-                    
+
+
+
                     <? // NOTE: RELATED?>
                     <? if ($arResult["SHOW_RELATED"] == "Y"): ?>
                         <div id="related" class="productsListName"
@@ -1134,14 +1134,14 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             ); ?>
                         </div>
                     <? endif; ?>
-                    
-                    
+
+
                     <? // NOTE: SIMILAR ?>
                     <? if ($arResult["SHOW_SIMILAR"] == "Y"): ?>
                         <div id="similar" class="productsListName"
                              data-list-name="<?= GetMessage("CATALOG_ELEMENT_SIMILAR") ?>">
                             <h2 class="heading"><?= GetMessage("CATALOG_ELEMENT_SIMILAR") ?></h2>
-                            
+
                             <? $APPLICATION->IncludeComponent(
                                 "dresscode:catalog.section",
                                 "squares",
@@ -1470,6 +1470,13 @@ unset($secturl[1]);
         $("body").addClass("body_noscroll");
         document.body.style.top = `-${window.scrollY}px`;
     });
+</script>
+
+<script>
+    var windowInnerWidth = window.innerWidth;
+    if (windowInnerWidth < 1024) {
+        $('.single-item').slick();
+    }
 </script>
 
 <?php
