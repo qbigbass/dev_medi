@@ -85,16 +85,19 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
 						</div>*/ ?>
                             <? if (!empty($arResult["IMAGES"])): ?>
                                 <div id="pictureContainer">
-                                    <div class="pictureSlider">
+                                    <div class="pictureSlider slider single-item">
                                         <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
                                             <div class="item">
                                                 <a href="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"
-                                                   title="<?= GetMessage("CATALOG_ELEMENT_ZOOM") ?>" class="zoom"
+                                                   title="<?= GetMessage("CATALOG_ELEMENT_ZOOM") ?>"
+                                                   class="zoom"
                                                    data-small-picture="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
-                                                   data-large-picture="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"><img
+                                                   data-large-picture="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>">
+                                                    <img
                                                             src="<?= $arNextPicture["MEDIUM_IMAGE"]["SRC"] ?>"
                                                             alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>"
-                                                            title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>"></a>
+                                                            title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>">
+                                                </a>
                                             </div>
                                         <? endforeach; ?>
                                     </div>
@@ -122,51 +125,52 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                     </div>
                                 </div>
                             <? endif; ?>
+                            <div class="favoriteContainer">
+                                <div class="b-card-favorite" data-product-id="<?= !empty($arResult["~ID"]) ? $arResult["~ID"] : $arResult["ID"] ?>">
+                                </div>
+                            </div>
                         </div>
                         <div class="secondCol col<? if (empty($arResult["PREVIEW_TEXT"]) && empty($arResult["SKU_OFFERS"]) && empty($arResult["PROPERTIES"])): ?> hide<? endif; ?>">
                             <div class="reviewsBtnWrap">
-                                <? /*if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
-							<div class="row">
-								<a class="label" href="#catalogReviews">
-									<img src="<?=SITE_TEMPLATE_PATH?>/images/reviews.png" alt="" class="icon">
-									<span class="<?if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>countReviewsTools<?endif;?>"><?=GetMessage("REVIEWS_COUNT")?> <?=!empty($arResult["REVIEWS"]) ? count($arResult["REVIEWS"]) : 0?></span>
-									<?/*<div class="rating">
-									  <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
-									  <i class="h"></i>
-									</div>* /?>
-								</a>
-							</div>
-							<?/*if($arParams["SHOW_REVIEW_FORM"]):?>
-								<div class="row">
-									<a href="#" class="reviewAddButton label"><img src="<?=SITE_TEMPLATE_PATH?>/images/addReviewSmall.png" alt="<?=GetMessage("REVIEWS_ADD")?>" class="icon"><span class="labelDotted"><?=GetMessage("REVIEWS_ADD")?></span></a>
-								</div>
-							<?endif;* /?>
-
-							<?endif;*/ ?>
-                                <div class="brandImageWrap">
-                                    <? if (!empty($arResult["BRAND"]["PICTURE"])): ?>
-                                        <? if ($arResult['PARENT_PRODUCT']['BRAND_ACTIVE'] == 'Да') { ?>
-                                            <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
-                                                <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                     alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
-                                        <? } elseif ($arResult['BRAND_ACTIVE'] == 'Да') { ?>
-                                            <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
-                                                <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                     alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
-                                        <? } else { ?>
-                                            <span class="brandImage"><img
-                                                        src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                        alt="<?= $arResult["BRAND"]["NAME"] ?>"></span>
-                                        <? } ?>
-                                    <? endif; ?>
-                                </div>
-                                
-                                <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
-                                    <div class="row article">
-                                        <?= GetMessage("CATALOG_ART_LABEL") ?><span class="changeArticle"
-                                                                                    data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"><?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?></span>
+                                <div class="brand-article-wrapper">
+                                    <div class="brandImageWrap">
+                                        <? if (!empty($arResult["BRAND"]["PICTURE"])): ?>
+                                            <? if ($arResult['PARENT_PRODUCT']['BRAND_ACTIVE'] == 'Да') { ?>
+                                                <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
+                                                    <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
+                                            <? } elseif ($arResult['BRAND_ACTIVE'] == 'Да') { ?>
+                                                <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
+                                                    <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
+                                            <? } else { ?>
+                                                <span class="brandImage"><img
+                                                            src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                            alt="<?= $arResult["BRAND"]["NAME"] ?>"></span>
+                                            <? } ?>
+                                        <? endif; ?>
                                     </div>
-                                <? endif; ?>
+                                    <div class="article-rating-wrapper">
+                                        <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
+                                            <div class="row article">
+                                                <?= GetMessage("CATALOG_ART_LABEL") ?>
+                                                <span
+                                                        class="changeArticle"
+                                                        data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"
+                                                ><?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>
+			                                </span>
+                                            </div>
+                                        <? endif; ?>
+                                        <? if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
+                                            <div class="rating-wrapper">
+                                                <div class="rating">
+                                                    <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
+                                                    <i class="h"></i>
+                                                </div>
+                                            </div>
+                                        <?endif; ?>
+                                    </div>
+                                </div>
                             </div>
                             <? if (!empty($arResult["SKU_OFFERS"])): ?>
                                 <? if (!empty($arResult["SKU_PROPERTIES"]) && $level = 1): ?>
@@ -600,10 +604,12 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             <? if ($arResult['PROPERTIES']['DOCS_COUNT'] > 0) { ?>
                                 <div class="tab-link">Сертификаты (<?= $arResult['PROPERTIES']['DOCS_COUNT'] ?>)</div>
                             <? } ?>
-                            <? if (count($arResult["REVIEWS"]) > 0) { ?>
-                                <div class="tab-link"><?= GetMessage("REVIEW") ?> (<?= count($arResult["REVIEWS"]) ?>)
-                                </div>
-                            <? } ?>
+                            <div class="tab-link">
+                                <?= GetMessage("REVIEW") ?>
+                                <? if (count($arResult["REVIEWS"])>0) {
+                                    echo '( ' . count($arResult["REVIEWS"]) . ' )';
+                                }?>
+                            </div>
                         </div>
                         <div class="tabs-content">
                             <div class="tab-content active desc acor-container">
@@ -866,157 +872,140 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                     </div>
                                 </div>
                             <? endif; ?>
-                            <? if (count($arResult["REVIEWS"]) > 0) { ?>
-                                <div class="tab-content acor-container">
-                                    
-                                    <? // NOTE: REVIEWS?>
-                                    <? if (isset($arResult["REVIEWS"])): ?>
-                                        <div id="catalogReviews">
-                                            <input type="checkbox" name="chacor" id="chacor2"/>
-                                            <label for="chacor2">Отзывы</label>
-                                            <div class="acor-body">
-                                                <h2 class="heading"><? if ($arParams["SHOW_REVIEW_FORM"]): ?><a href="#"
-                                                                                                                class="reviewAddButton btn-simple btn-medium"><?= GetMessage("REVIEWS_ADD") ?></a><? endif; ?>
-                                                </h2>
-                                                <ul id="reviews">
-                                                    <? foreach ($arResult["REVIEWS"] as $i => $arReview):
-                                                        $date_publish = $arReview["DATE_CREATE"];
-                                                        if ($arReview["ACTIVE_FROM"] != '') {
-                                                            $date_publish = $arReview["ACTIVE_FROM"];
-                                                        } ?>
-                                                        <!--<li class="reviewItem<? if ($i > 0): ?> hide<? endif ?>">-->
-                                                        <li class="reviewItem">
-                                                            <div class="reviewTable">
-                                                                <div class="reviewColumn">
-                                                                    <div class="reviewUserIcon">
-                                                                        <img class="userIcon"
-                                                                             src="/bitrix/templates/dresscodeV2/images/default-avatar.png"
-                                                                             alt="">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="reviewColumn">
-                                                                    <div class="reviewHeader">
-                                                                        <div class="reviewName">
-                                                                            <div class="label ff-medium"><?= GetMessage("REVIEWS_AUTHOR") ?></div> <?= $arReview["PROPERTY_NAME_VALUE"] ?>
-                                                                        </div>
-                                                                        <div class="reviewDate">
-                                                                            <div class="label ff-medium"><? /*=GetMessage("REVIEWS_DATE")?></div> <?=FormatDate(array(
-																"tommorow" => "tommorow",
-																"today" => "today",
-																"yesterday" => "yesterday",
-																"d" => 'j F',
-																"" => 'j F Y',
-																), MakeTimeStamp($date_publish, "DD.MM.YYYY HH:MI:SS"));
-																*/
-                                                                                ?>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="reviewBody">
-                                                                            <? if (!empty($arReview["~PROPERTY_DIGNITY_VALUE"])): ?>
-                                                                                <div class="advantages">
-                                                                                    <span class="label ff-medium"><?= GetMessage("DIGNIFIED") ?> </span>
-                                                                                    <p><?= $arReview["~PROPERTY_DIGNITY_VALUE"] ?></p>
-                                                                                </div>
-                                                                            <? endif; ?>
-                                                                            <? if (!empty($arReview["~PROPERTY_SHORTCOMINGS_VALUE"])): ?>
-                                                                                <div class="limitations">
-                                                                                    <span class="label ff-medium"><?= GetMessage("FAULTY") ?> </span>
-                                                                                    <p><?= $arReview["~PROPERTY_SHORTCOMINGS_VALUE"] ?></p>
-                                                                                </div>
-                                                                            <? endif; ?>
-                                                                            <? if (!empty($arReview["~DETAIL_TEXT"])): ?>
-                                                                                <div class="impressions">
-                                                                                    <span class="label ff-medium"><?= GetMessage("IMPRESSION") ?></span>
-                                                                                    <p><?= $arReview["~DETAIL_TEXT"] ?></p>
-                                                                                </div>
-                                                                            <? endif; ?>
-                                                                        </div>
-                                                                        
-                                                                        <? if ($arReview['~PROPERTY_ANSWER_VALUE']['TEXT']) {
-                                                                            ?>
-                                                                            <div class="reviewAnswer">
-                                                                                <a class="reviewAnswerAuthor">
-                                                                                    Ответ специалиста:
-                                                                                </a>
 
-                                                                                <div class="reviewAnswerText">
-                                                                                    <?= $arReview['~PROPERTY_ANSWER_VALUE']['TEXT'] ?>
-                                                                                </div>
-                                                                            </div>
-                                                                        <? } ?>
-                                                                        <? /*
-														<div class="controls">
-															<span><?=GetMessage("REVIEWSUSEFUL")?></span>
-															<a href="#" class="good" data-id="<?=$arReview["ID"]?>"><?=GetMessage("YES")?> (<span><?=!empty($arReview["PROPERTY_GOOD_REVIEW_VALUE"]) ? $arReview["PROPERTY_GOOD_REVIEW_VALUE"] : 0 ?></span>)</a>
-															<a href="#" class="bad" data-id="<?=$arReview["ID"]?>"><?=GetMessage("NO")?> (<span><?=!empty($arReview["PROPERTY_BAD_REVIEW_VALUE"]) ? $arReview["PROPERTY_BAD_REVIEW_VALUE"] : 0 ?></span>)</a>
-														</div>*/
-                                                                        ?>
-
-                                                                    </div>
-                                                                </div>
-
-                                                        </li>
-                                                    <? endforeach; ?>
-                                                </ul>
-                                            </div>
-                                            <!--
-									<? if (count($arResult["REVIEWS"]) > 1): ?><a href="#" id="showallReviews" data-open="N"><?= GetMessage("SHOWALLREVIEWS") ?></a><? endif; ?> -->
-                                        </div>
-                                    
-                                    
-                                    <? endif; ?>
-                                    <? // NOTE: REVIEW_FORM?>
-                                    <? if ($USER->IsAuthorized()): ?>
-                                        <? if ($arParams["SHOW_REVIEW_FORM"]): ?>
-                                            <div id="newReview">
-                                                <h2 class="heading"><?= GetMessage("ADDAREVIEW") ?></h2>
-                                                <form action="" method="GET">
-                                                    <div class="newReviewTable">
-                                                        <div class="left">
-                                                            <label><?= GetMessage("EXPERIENCE") ?></label>
-                                                            <? if (!empty($arResult["NEW_REVIEW"]["EXPERIENCE"])): ?>
-                                                                <ul class="usedSelect">
-                                                                    <? foreach ($arResult["NEW_REVIEW"]["EXPERIENCE"] as $arExp): ?>
-                                                                        <li><a href="#"
-                                                                               data-id="<?= $arExp["ID"] ?>"><?= $arExp["VALUE"] ?></a>
-                                                                        </li>
-                                                                    <? endforeach; ?>
-                                                                </ul>
-                                                            <? endif; ?>
-                                                            <label><?= GetMessage("DIGNIFIED") ?></label>
-                                                            <textarea rows="10" cols="45" name="DIGNITY"
-                                                                      maxlength="2000"></textarea>
+                            <!-- Контент для вкладки "Отзывы" -->
+                            <div class="tab-content acor-container">
+                                <div id="catalogReviews">
+                                    <input type="checkbox" name="chacor" id="chacor2"/>
+                                    <label for="chacor2"><?= GetMessage("REVIEW") ?></label>
+                                    <div class="acor-body">
+                                        <h2 class="heading">
+                                            <? if ($arParams["SHOW_REVIEW_FORM"]): ?>
+                                                <a
+                                                    href="#"
+                                                    class="reviewAddButton btn-simple btn-medium"><?= GetMessage("REVIEWS_ADD") ?>
+                                                </a>
+                                            <? endif;?>
+                                        </h2>
+                                        <ul id="reviews">
+                                            <? foreach ($arResult["REVIEWS"] as $i => $arReview):
+                                                $date_publish = $arReview["DATE_CREATE"];
+                                                if ($arReview["ACTIVE_FROM"] != '') {
+                                                    $date_publish = $arReview["ACTIVE_FROM"];
+                                                } ?>
+                                                <li class="reviewItem">
+                                                    <div class="reviewTable">
+                                                        <div class="reviewColumn">
+                                                            <div class="reviewUserIcon">
+                                                                <img class="userIcon"
+                                                                     src="/bitrix/templates/dresscodeV2/images/default-avatar.png"
+                                                                     alt="">
+                                                            </div>
                                                         </div>
-                                                        <div class="right">
-                                                            <label><?= GetMessage("FAULTY") ?></label>
-                                                            <textarea rows="10" cols="45" name="SHORTCOMINGS"
-                                                                      maxlength="2000"></textarea>
-                                                            <label><?= GetMessage("IMPRESSION") ?><span
-                                                                        class="required">*</span></label>
-                                                            <textarea rows="10" cols="45" name="COMMENT" required
-                                                                      maxlength="2000"></textarea>
-                                                            <label><?= GetMessage("INTRODUCEYOURSELF") ?><span
-                                                                        class="required">*</span></label>
-                                                            <input type="text" name="NAME" maxlength="50" required><a
-                                                                    href="#" class="submit"
-                                                                    data-id="<?= $arParams["REVIEW_IBLOCK_ID"] ?>"><?= GetMessage("SENDFEEDBACK") ?></a>
+                                                        <div class="reviewColumn">
+                                                            <div class="reviewHeader">
+                                                                <div class="reviewName">
+                                                                    <div class="label ff-medium"><?= GetMessage("REVIEWS_AUTHOR") ?></div> <?= $arReview["PROPERTY_NAME_VALUE"] ?>
+                                                                </div>
+                                                                <div class="reviewDate">
+                                                                    <div class="label ff-medium">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="reviewBody">
+                                                                    <? if (!empty($arReview["~PROPERTY_DIGNITY_VALUE"])): ?>
+                                                                        <div class="advantages">
+                                                                            <span class="label ff-medium"><?= GetMessage("DIGNIFIED") ?> </span>
+                                                                            <p><?= $arReview["~PROPERTY_DIGNITY_VALUE"] ?></p>
+                                                                        </div>
+                                                                    <? endif; ?>
+                                                                    <? if (!empty($arReview["~PROPERTY_SHORTCOMINGS_VALUE"])): ?>
+                                                                        <div class="limitations">
+                                                                            <span class="label ff-medium"><?= GetMessage("FAULTY") ?> </span>
+                                                                            <p><?= $arReview["~PROPERTY_SHORTCOMINGS_VALUE"] ?></p>
+                                                                        </div>
+                                                                    <? endif; ?>
+                                                                    <? if (!empty($arReview["~DETAIL_TEXT"])): ?>
+                                                                        <div class="impressions">
+                                                                            <span class="label ff-medium"><?= GetMessage("IMPRESSION") ?></span>
+                                                                            <p><?= $arReview["~DETAIL_TEXT"] ?></p>
+                                                                        </div>
+                                                                    <? endif; ?>
+                                                                </div>
+                                                                <? if ($arReview['~PROPERTY_ANSWER_VALUE']['TEXT']) {?>
+                                                                    <div class="reviewAnswer">
+                                                                        <a class="reviewAnswerAuthor">
+                                                                            Ответ специалиста:
+                                                                        </a>
+                                                                        <div class="reviewAnswerText">
+                                                                            <?= $arReview['~PROPERTY_ANSWER_VALUE']['TEXT'] ?>
+                                                                        </div>
+                                                                    </div>
+                                                                <? } ?>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <input type="hidden" name="USED" id="usedInput" value=""/>
-                                                    <input type="hidden" name="RATING" id="ratingInput" value="0"/>
-                                                    <input type="hidden" name="PRODUCT_NAME"
-                                                           value="<?= $arResult["NAME"] ?>"/>
-                                                    <input type="hidden" name="PRODUCT_ID"
-                                                           value="<? if (!empty($arResult["PARENT_PRODUCT"])): ?><?= $arResult["PARENT_PRODUCT"]["ID"] ?><? else: ?><?= $arResult["ID"] ?><? endif; ?>"/>
-                                                </form>
-                                            </div>
-                                        <? else: ?>
-                                            <span class="h3"><a href="/lk/" class="ff-medium medi-color">Авторизуйтесь на сайте</a>, чтобы добавить свой отзыв.</span>
-                                        <? endif; ?>
-                                    <? endif; ?>
+                                                </li>
+                                            <? endforeach; ?>
+                                        </ul>
+                                    </div>
+                                    <!--
+                                    <? if (count($arResult["REVIEWS"]) > 1): ?>
+                                        <a href="#" id="showallReviews" data-open="N"><?= GetMessage("SHOWALLREVIEWS") ?></a>
+                                    <? endif; ?> -->
                                 </div>
-                            <? } // END REviews?>
 
+                                <!-- Форма для добавления отзыва -->
+                                <? if ($USER->IsAuthorized()): ?>
+                                    <? if ($arParams["SHOW_REVIEW_FORM"]): ?>
+                                        <div id="newReview">
+                                            <h2 class="heading"><?= GetMessage("ADDAREVIEW") ?></h2>
+                                            <form action="" method="GET">
+                                                <div class="newReviewTable">
+                                                    <div class="left">
+                                                        <label><?= GetMessage("EXPERIENCE") ?></label>
+                                                        <? if (!empty($arResult["NEW_REVIEW"]["EXPERIENCE"])): ?>
+                                                            <ul class="usedSelect">
+                                                                <? foreach ($arResult["NEW_REVIEW"]["EXPERIENCE"] as $arExp): ?>
+                                                                    <li><a href="#"
+                                                                           data-id="<?= $arExp["ID"] ?>"><?= $arExp["VALUE"] ?></a>
+                                                                    </li>
+                                                                <? endforeach; ?>
+                                                            </ul>
+                                                        <? endif; ?>
+                                                        <label><?= GetMessage("DIGNIFIED") ?></label>
+                                                        <textarea rows="10" cols="45" name="DIGNITY"
+                                                                  maxlength="2000"></textarea>
+                                                    </div>
+                                                    <div class="right">
+                                                        <label><?= GetMessage("FAULTY") ?></label>
+                                                        <textarea rows="10" cols="45" name="SHORTCOMINGS"
+                                                                  maxlength="2000"></textarea>
+                                                        <label><?= GetMessage("IMPRESSION") ?><span
+                                                                    class="required">*</span></label>
+                                                        <textarea rows="10" cols="45" name="COMMENT" required
+                                                                  maxlength="2000"></textarea>
+                                                        <label><?= GetMessage("INTRODUCEYOURSELF") ?><span
+                                                                    class="required">*</span></label>
+                                                        <input type="text" name="NAME" maxlength="50" required><a
+                                                                href="#" class="submit"
+                                                                data-id="<?= $arParams["REVIEW_IBLOCK_ID"] ?>"><?= GetMessage("SENDFEEDBACK") ?></a>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="USED" id="usedInput" value=""/>
+                                                <input type="hidden" name="RATING" id="ratingInput" value="0"/>
+                                                <input type="hidden" name="PRODUCT_NAME"
+                                                       value="<?= $arResult["NAME"] ?>"/>
+                                                <input type="hidden" name="PRODUCT_ID"
+                                                       value="<? if (!empty($arResult["PARENT_PRODUCT"])): ?><?= $arResult["PARENT_PRODUCT"]["ID"] ?><? else: ?><?= $arResult["ID"] ?><? endif; ?>"/>
+                                            </form>
+                                        </div>
+                                    <? endif; ?>
+                                <? else: ?>
+                                    <span class="h3">
+                                        <a href="/lk/" class="ff-medium medi-color">Авторизуйтесь на сайте</a>, чтобы добавить отзыв.
+                                    </span><br />
+                                <? endif; ?>
+                            </div>
                         </div>
                     </div>
                     
@@ -1453,4 +1442,10 @@ unset($secturl[1]);
     });
     $("#chacor4").click();
     $("#chacor4").attr("checked", "checked");
+</script>
+<script>
+    var windowInnerWidth = window.innerWidth;
+    if (windowInnerWidth < 1024) {
+        $('.single-item').slick();
+    }
 </script>

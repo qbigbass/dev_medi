@@ -150,6 +150,9 @@ IncludeTemplateLangFile(__FILE__);
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/jquery.mask.min.js"); ?>
     
     <? $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/style.min.css"); ?>
+    <? $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/css/slick.css"); ?>
+    <? $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/css/slick-theme.css"); ?>
+
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/main.min.js"); ?>
     
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/gdeslon.js"); ?>
@@ -164,6 +167,8 @@ IncludeTemplateLangFile(__FILE__);
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/dwTimer.js"); ?>
     <? //$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/dwZoomer.js");?>
     <? $APPLICATION->AddHeadScript("https://kit.fontawesome.com/4e1ccc2c65.js"); ?>
+    <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/favorite.js"); ?>
+    <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/header.js"); ?>
 
     <!-- calltouch -->
     <script>(function (w, d, n, c) {
@@ -350,7 +355,6 @@ src="https://www.facebook.com/tr?id=1387626394933707&ev=PageView&noscript=1"
     <row><span></span><span></span></row>
     <row><span></span><span></span></row>
 </div>
-
 
 <div id="foundation"<? if (!empty($TEMPLATE_SLIDER_HEIGHT) && $TEMPLATE_SLIDER_HEIGHT != "default"): ?> class="slider_<?= $TEMPLATE_SLIDER_HEIGHT ?>"<? endif; ?>>
     <div id="top_alert">
