@@ -16,7 +16,8 @@ $(function() {
                     });
 
                     $('header .b_logo img').animate({
-                        height: "90px"
+                        height: "66px",
+                        marginTop: "10px"
                     }, 500);
 
                     $('header .b_head_main').animate({
@@ -30,7 +31,8 @@ $(function() {
                     }, 500);
 
                     $('header .b_logo img').animate({
-                        height: "130px"
+                        height: "130px",
+                        marginTop: "0"
                     }, 500);
 
                     $('header #subHeader8').animate({
