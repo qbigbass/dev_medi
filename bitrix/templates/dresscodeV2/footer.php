@@ -425,6 +425,19 @@ if ($USER->IsAuthorized()) {?>
     <?
 }
 ?>
+<script>
+    var windowInnerWidth = window.innerWidth;
+    if (windowInnerWidth <= 1024) {
+        $('.single-item').each(function() {
+            if ($(this).hasClass('more-images')) {
+                $(this).slick({
+                    dots: true,
+                    arrows:false
+                });
+            }
+        });
+    }
+</script>
 <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/slick.min.js"); ?>
 </body>
 </html>
