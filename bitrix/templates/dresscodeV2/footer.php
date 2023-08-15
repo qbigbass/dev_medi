@@ -432,7 +432,9 @@ if ($USER->IsAuthorized()) {?>
             if ($(this).hasClass('more-images')) {
                 $(this).slick({
                     dots: true,
-                    arrows:false
+                    arrows:false,
+                    slidesToShow: 1,
+                    adaptiveHeight: true
                 });
             }
         });
