@@ -429,7 +429,7 @@ if ($USER->IsAuthorized()) {?>
     var windowInnerWidth = window.innerWidth;
     if (windowInnerWidth <= 1024) {
         $('.single-item').each(function() {
-            if ($(this).hasClass('more-images')) {
+            if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
                 $(this).slick({
                     dots: true,
                     arrows:false,

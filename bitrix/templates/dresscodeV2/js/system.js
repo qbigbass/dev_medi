@@ -42,8 +42,23 @@ var checkLazyItems = function () {
                 $item.attr("src", lazyPath);
             });
         }
-
     });
+}
+
+var slickItems = function() {
+    var items = $('.single-item');
+    setTimeout(function () {
+        $.each(items, function () {
+            if ($(this).hasClass('more-images')) {
+                $(this).slick({
+                    dots: true,
+                    arrows:false,
+                    slidesToShow: 1,
+                    adaptiveHeight: true
+                });
+            }
+        })
+    }, 500);
 }
 
 var changeAddCartButton = function (jsonData) {
