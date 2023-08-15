@@ -747,13 +747,16 @@
 		if (!empty($extraContent)) {
 			$arResult = $extraContent;
 		}
-	}
+	} else {
+        $extraContent = DwItemInfo::get_extra_content_small($arParams["CACHE_TIME"], $arParams["CACHE_TYPE"], $cacheID, $cacheDir, $extraParams, $arParams, $arResult, $opCurrency);
+
+        if (!empty($extraContent)) {
+            $arResult = $extraContent;
+        }
+    }
 
 	//no cache
 	if(!empty($arResult)){
-
-
-
 		//element seo values
 		$elementTitle = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] : $arResult["NAME"]));
 		$elementBrowserTitle = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"] : $arResult["NAME"]));

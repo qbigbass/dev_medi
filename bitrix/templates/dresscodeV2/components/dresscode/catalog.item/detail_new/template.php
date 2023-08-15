@@ -85,7 +85,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
 						</div>*/ ?>
                             <? if (!empty($arResult["IMAGES"])): ?>
                                 <div id="pictureContainer">
-                                    <div class="pictureSlider slider single-item">
+                                    <div class="pictureSlider <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
                                         <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
                                             <div class="item">
                                                 <a href="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"
@@ -1442,10 +1442,4 @@ unset($secturl[1]);
     });
     $("#chacor4").click();
     $("#chacor4").attr("checked", "checked");
-</script>
-<script>
-    var windowInnerWidth = window.innerWidth;
-    if (windowInnerWidth < 1024) {
-        $('.single-item').slick();
-    }
 </script>

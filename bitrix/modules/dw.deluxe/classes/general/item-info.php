@@ -514,6 +514,96 @@ class DwItemInfo{
 
     }
 
+    public static function get_extra_content_small($cacheTime = 21285912, $cacheType = "Y", $cacheID = array(), $cacheDir = "/", $arParams = array(), $arGlobalParams = array(), $arElement = array(), $opCurrency = null) {
+
+        //global vars
+        global $USER;
+
+        //set cache name
+        $cacheID["NAME"] = "DOUBLE_CATALOG_ITEM_CACHE";
+
+        //set extra params
+        $cacheID["EXTRA_PARAMS"] = serialize($arParams);
+
+        //extra settings from cache
+        $oExtraCache = new CPHPCache();
+
+        //init cache cache
+        if($cacheType != "N" && $oExtraCache->InitCache($cacheTime, serialize($cacheID), $cacheDir)){
+            //get info by cache
+            $arElement = $oExtraCache->GetVars();
+        }
+
+        elseif($oExtraCache->StartDataCache()){
+
+            //check include modules
+            if(
+                !\Bitrix\Main\Loader::includeModule("iblock")
+                || !\Bitrix\Main\Loader::includeModule('highloadblock')
+                || !\Bitrix\Main\Loader::includeModule("catalog")
+                || !\Bitrix\Main\Loader::includeModule("sale")
+            ){
+
+                $obExtraCache->AbortDataCache();
+                ShowError("modules not installed!");
+                return 0;
+
+            }
+
+            // get pictures for slider
+            // resize pictures params for get_more_pictures function
+            $arResizeParams = array(
+                "SMALL_PICTURE" => array(
+                    "HEIGHT" => 180,
+                    "WIDTH" => $arGlobalParams["PICTURE_HEIGHT"]
+                ),
+            );
+
+            // push more pictures from detail page
+            // get_more_pictures you find in class.php (component)
+            if(!empty($arElement["DETAIL_PICTURE"]) && is_numeric($arElement["DETAIL_PICTURE"])){
+                // push detail picture in images array
+                $arElement["IMAGES"][] = DwItemInfo::get_more_pictures($arElement["DETAIL_PICTURE"], $arResizeParams);
+            }else{
+                // get picture from parent product
+                if (!empty($arElement["PARENT_PRODUCT"]["DETAIL_PICTURE"])){
+                    // get more images
+                    $arElement["IMAGES"][] = DwItemInfo::get_more_pictures($arElement["PARENT_PRODUCT"]["DETAIL_PICTURE"], $arResizeParams);
+                } else {
+                    // if detail picture is empty
+                    $arElement["IMAGES"][] = array(
+                        "SMALL_IMAGE" => array("SRC" => SITE_TEMPLATE_PATH."/images/empty.png"),
+                        "MEDIUM_IMAGE" => array("SRC" => SITE_TEMPLATE_PATH."/images/empty.png"),
+                        "LARGE_IMAGE" => array("SRC" => SITE_TEMPLATE_PATH."/images/empty.png")
+                    );
+                }
+            }
+
+            // push more pictures from more_photo property
+            if(!empty($arElement["PROPERTIES"]["MORE_PHOTO"]["VALUE"])){
+                foreach ($arElement["PROPERTIES"]["MORE_PHOTO"]["VALUE"] as $nextPictureID){
+                    $arElement["IMAGES"][] = DwItemInfo::get_more_pictures($nextPictureID, $arResizeParams);
+                }
+            }
+
+            //target cache
+            global $CACHE_MANAGER;
+            $CACHE_MANAGER->StartTagCache($cacheDir);
+            $CACHE_MANAGER->RegisterTag("iblock_id_".$arElement["IBLOCK_ID"]);
+            $CACHE_MANAGER->EndTagCache();
+
+            //save cache
+            $oExtraCache->EndDataCache($arElement);
+
+            //drop
+            unset($oExtraCache);
+
+        }
+
+        //return result
+        return $arElement;
+    }
+
 	//resize pictures
     public static function get_more_pictures($pictureID, $arResizeParams, $arPushImage = array()){
 
