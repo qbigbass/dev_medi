@@ -125,16 +125,18 @@
                         <? if ($arParams["LAZY_LOAD_PICTURES"] == "Y"): ?>
                             <? if (!empty($arResult["IMAGES"])): ?>
                                 <div id="pictureContainer">
-                                    <div class="pictureSlider <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
+                                    <div class="pictureSlider catalog-list <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
                                         <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
-                                            <div class="item">
-                                                <img
-                                                    src="<?= SITE_TEMPLATE_PATH ?>/images/mloader.gif" class="lazy"
-                                                    data-lazy="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
-                                                    alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
-                                                    title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
-                                                >
-                                            </div>
+                                            <?if($ipr < 3):?>
+                                                <div class="item">
+                                                    <img
+                                                        src="<?= SITE_TEMPLATE_PATH ?>/images/mloader.gif" class="lazy"
+                                                        data-lazy="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
+                                                        alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
+                                                        title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
+                                                    >
+                                                </div>
+                                            <? endif; ?>
                                         <? endforeach; ?>
                                     </div>
                                 </div>
