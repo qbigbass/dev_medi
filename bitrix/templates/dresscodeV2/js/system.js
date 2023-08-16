@@ -47,18 +47,21 @@ var checkLazyItems = function () {
 
 var slickItems = function() {
     var items = $('.single-item');
-    setTimeout(function () {
-        $.each(items, function () {
-            if ($(this).hasClass('more-images')) {
-                $(this).slick({
-                    dots: true,
-                    arrows:false,
-                    slidesToShow: 1,
-                    adaptiveHeight: true
-                });
-            }
-        })
-    }, 500);
+    var windowInnerWidth = window.innerWidth;
+    if (windowInnerWidth <= 1024) {
+        setTimeout(function () {
+            $.each(items, function () {
+                if ($(this).hasClass('more-images')) {
+                    $(this).slick({
+                        dots: true,
+                        arrows:false,
+                        slidesToShow: 1,
+                        adaptiveHeight: true
+                    });
+                }
+            })
+        }, 500);
+    }
 }
 
 var changeAddCartButton = function (jsonData) {
