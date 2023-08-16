@@ -11666,6 +11666,9 @@ a.favorites_link.has_items .count {
     .product .tabloid {
         height: 320px;
     }
+    #similar  .product .tabloid {
+        height: 340px;
+    }
 }
 .productTable {
     position: relative;
@@ -11684,7 +11687,7 @@ a.favorites_link.has_items .count {
 @media (min-width: 701px) and (max-width: 1024px) {
     .productTable .favoriteContainer {
         left: 0;
-        top: 285px;
+        top: 280px;
     }
     .product .skuProperty {
         margin: 16px 0 12px 0;
