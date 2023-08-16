@@ -11727,6 +11727,7 @@ a.favorites_link.has_items .count {
 .brand-article-wrapper {
     display: flex;
     align-items: center;
+    padding-top: 24px;
 }
 @media (max-width: 1000px) {
     #elementContainer .brandImage {
@@ -11763,6 +11764,9 @@ a.favorites_link.has_items .count {
     visibility: visible;
 }
 @media screen and (max-width: 1024px) {
+    #elementContainer #pictureContainer .pictureSlider.detail_product {
+        height: 550px;
+    }
     .pictureSlider.one-image .item {
         width: 100%;
     }
@@ -11778,6 +11782,9 @@ a.favorites_link.has_items .count {
     #catalogSection .slick-dots {
         height: 5px;
         top: 80px;
+    }
+    .pictureSlider.detail_product .slick-dots {
+        bottom: 0px;
     }
     .slick-dots li button:before {
         font-size: 24px;
