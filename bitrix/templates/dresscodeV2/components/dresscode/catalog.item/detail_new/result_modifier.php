@@ -256,10 +256,10 @@ if (!empty($arResult)) {
         $vote_count = 0;
         $vote_sum = 0;
         while ($arReviews = $rsReviews->GetNext()) {
-            
             $arResult["REVIEWS"][] = $arReviews;
-            
-            $vote_count++;
+            if ($arReviews['PROPERTY_RATING_VALUE'] > 0) {
+                $vote_count++;
+            }
             $vote_sum += $arReviews['PROPERTY_RATING_VALUE'];
         }
         if (count($arResult['REVIEWS']) > 0) {
