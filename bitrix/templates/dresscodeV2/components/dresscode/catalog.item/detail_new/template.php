@@ -107,7 +107,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                         <div class="slideBox">
                                             <? if (empty($arResult["IMAGES"]) || count($arResult["IMAGES"]) > 1): ?>
                                                 <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
-                                                    <div class="item">
+                                                    <div class="item" data-pic-index="<?=$ipr?>">
                                                         <a href="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"
                                                            data-large-picture="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"
                                                            data-small-picture="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>">
@@ -1442,4 +1442,14 @@ unset($secturl[1]);
     });
     $("#chacor4").click();
     $("#chacor4").attr("checked", "checked");
+</script>
+<script>
+    var $pictureSlider = $("#pictureContainer .pictureSlider.detail_product");
+    $pictureSlider.on('afterChange', function(event, slick, currentSlide, nextSlide){
+        let currentIndexBigImg = currentSlide;
+        $('#moreImagesCarousel .slideBox .item').each(function(){
+            $(this).removeClass('selected');
+        });
+        $('#moreImagesCarousel .slideBox .item[data-pic-index='+currentIndexBigImg+']').addClass('selected');
+    });
 </script>

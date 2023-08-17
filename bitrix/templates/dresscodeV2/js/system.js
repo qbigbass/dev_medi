@@ -51,7 +51,7 @@ var slickItems = function() {
     if (windowInnerWidth <= 1024) {
         setTimeout(function () {
             $.each(items, function () {
-                if ($(this).hasClass('more-images')) {
+                if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
                     $(this).slick({
                         dots: true,
                         arrows:false,
