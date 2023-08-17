@@ -161,47 +161,29 @@
                     </span>
 
                     <? if (!empty($arResult["SKU_PROPERTIES"]['COLOR'])): ?>
-                    <ul class="item_colors">
-
-                        <? foreach ($arResult["SKU_PROPERTIES"]['COLOR']["VALUES"] as $xml_id => $arNextPropValue): ?>
-                            <li class="item_color <? if ($arNextPropValue["DISABLED"] == "Y"): ?> disabled<? elseif ($arNextPropValue["SELECTED"] == "Y"): ?> selected<? endif; ?>"
-                                data-name="<?= $propName ?>" data-value="<?= $arNextPropValue["VALUE"] ?>">
-                                <? if (!empty($arNextPropValue["IMAGE"])): ?>
-                                    <img src="<?= $arNextPropValue["IMAGE"]["src"] ?>"
-                                         alt="<?= $arNextPropValue["DISPLAY_VALUE"] ?>"
-                                         title="<?= $arNextPropValue["DISPLAY_VALUE"] ?>">
-                                <? else: ?>
-                                    <?= $arNextPropValue["DISPLAY_VALUE"] ?>
-                                <? endif; ?>
-
-                            </li>
-                        <? endforeach; ?>
-
-                        <? endif; ?>
-                    </ul>
+                        <ul class="item_colors">
+                            <? foreach ($arResult["SKU_PROPERTIES"]['COLOR']["VALUES"] as $xml_id => $arNextPropValue): ?>
+                                <li class="item_color <? if ($arNextPropValue["DISABLED"] == "Y"): ?> disabled<? elseif ($arNextPropValue["SELECTED"] == "Y"): ?> selected<? endif; ?>"
+                                    data-name="<?= $propName ?>" data-value="<?= $arNextPropValue["VALUE"] ?>">
+                                    <? if (!empty($arNextPropValue["IMAGE"])): ?>
+                                        <img src="<?= $arNextPropValue["IMAGE"]["src"] ?>"
+                                             alt="<?= $arNextPropValue["DISPLAY_VALUE"] ?>"
+                                             title="<?= $arNextPropValue["DISPLAY_VALUE"] ?>">
+                                    <? else: ?>
+                                        <?= $arNextPropValue["DISPLAY_VALUE"] ?>
+                                    <? endif; ?>
+                                </li>
+                            <? endforeach; ?>
+                        </ul>
+                    <? endif; ?>
                 </div>
                 <div class="productColText">
-
                     <span class="item_brand <? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] == 'medi') { ?>flag-medi<? } ?>"><? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] != 'medi') { ?><?= $arResult['PROPERTIES']['BRAND_1C']['VALUE'] ?><? } ?></span>
 
                     <a href="<?= $arResult["DETAIL_PAGE_URL"] ?>" class="name"><span
                                 class="middle"><?= $arResult["NAME"] ?></span></a>
 
                     <? if (!empty($arResult["EXTRA_SETTINGS"])): ?>
-                        <? //price container?>
-                        <? /*if($arResult["EXTRA_SETTINGS"]["COUNT_PRICES"] > 1):?>
-							<a class="price getPricesWindow" data-id="<?=$arResult["ID"]?>">
-								<span class="priceIcon"></span><?=CCurrencyLang::CurrencyFormat($arResult["PRICE"]["DISCOUNT_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true)?>
-								<?if($arParams["HIDE_MEASURES"] != "Y" && !empty($arResult["EXTRA_SETTINGS"]["MEASURES"][$arResult["CATALOG_MEASURE"]]["SYMBOL_RUS"])):?>
-									<span class="measure"> / <?=$arResult["EXTRA_SETTINGS"]["MEASURES"][$arResult["CATALOG_MEASURE"]]["SYMBOL_RUS"]?></span>
-								<?endif;?>
-								<s class="discount">
-									<?if(!empty($arResult["PRICE"]["DISCOUNT"])):?>
-										<?=CCurrencyLang::CurrencyFormat($arResult["PRICE"]["RESULT_PRICE"]["BASE_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true)?>
-									<?endif;?>
-								</s>
-							</a>
-						<?else:*/ ?>
                         <a class="price"><?= CCurrencyLang::CurrencyFormat($arResult["PRICE"]["DISCOUNT_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true) ?>
                             <script>vViewedProdsPrice += parseInt(<?=$arResult["PRICE"]["DISCOUNT_PRICE"]?>);  </script>
                             <? /*if($arParams["HIDE_MEASURES"] != "Y" && !empty($arResult["EXTRA_SETTINGS"]["MEASURES"][$arResult["CATALOG_MEASURE"]]["SYMBOL_RUS"])):?>
@@ -214,10 +196,12 @@
                                     <?= CCurrencyLang::CurrencyFormat($arResult["PRICE"]["RESULT_PRICE"]["BASE_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true) ?>
                                 <? endif; ?></s>
                         </a>
-                        <? if ($arResult['PROPERTIES']['COUNTRY_BRAND']['VALUE'] == 'Германия') { ?><span
-                                class="flag-ge"></span><? } ?>
-                        <? //endif;
-                        ?>
+                        <? if ($arResult['PROPERTIES']['COUNTRY_BRAND']['VALUE'] == 'Германия') { ?>
+                            <span class="flag-ge"></span><?
+                        }?>
+                        <div class="favoriteContainer _adaptive">
+                            <div class="b-card-favorite" data-product-id="<?= !empty($arResult["~ID"]) ? $arResult["~ID"] : $arResult["ID"] ?>"></div>
+                        </div>
                         <? if (!empty($arResult["SKU_OFFERS"])): ?>
                             <? if (!empty($arResult["SKU_PROPERTIES"]) && $level = 1): ?>
                                 <? foreach ($arResult["SKU_PROPERTIES"] as $propName => $arNextProp): ?>
@@ -351,15 +335,10 @@
                            <? if ($arResult['SALON_AVAILABLE'] == "0" || $arResult['SALON_COUNT'] == "0" || $arResult['mainStoreAmount'] > '0' || ($arResult["CATALOG_AVAILABLE"] != "N" && $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] == true)){
                            ?>style="display:none;"<? } ?> data-action="reserve">Забронировать</a>
                     <? endif; ?>
-                    <? /*<a href="<?=$arResult["DETAIL_PAGE_URL"]?>" class="btn-simple add-cart"><?=GetMessage("SEE_ON_PAGE")?></a> */ ?>
-                    <? /*if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON'] && $arResult["CATALOG_AVAILABLE"] == "Y"):?>
-					<a href="#" class="btn-simple fast-order"  data-id="<?=$arResult["ID"]?>"><?=GetMessage("FAST_ORDER_PRODUCT_LABEL")?></a>
-
-					<?endif;*/
-                    ?>
                 </div>
-                <div class="favoriteContainer">
-                    <div class="b-card-favorite" data-product-id="<?= !empty($arResult["~ID"]) ? $arResult["~ID"] : $arResult["ID"] ?>"><span>В избранное</span>
+                <div class="favoriteContainer _desktop">
+                    <div class="b-card-favorite" data-product-id="<?= !empty($arResult["~ID"]) ? $arResult["~ID"] : $arResult["ID"] ?>">
+                        <span>В избранное</span>
                     </div>
                 </div>
             </div>
