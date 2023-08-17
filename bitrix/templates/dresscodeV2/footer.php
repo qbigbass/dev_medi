@@ -431,7 +431,7 @@ if ($USER->IsAuthorized()) {?>
                     adaptiveHeight: true
                 }
                 if ($(this).hasClass('detail_product')) {
-                    defaultOptions.dots = false,
+                    defaultOptions.dots = false;
                     defaultOptions.autoplay = true;
                     defaultOptions.autoplaySpeed = 5000;
                 }

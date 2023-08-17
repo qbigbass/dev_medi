@@ -279,7 +279,7 @@ $(function () {
 
                     if ($pictureSlider.hasClass('detail_product')) {
                         var defaultOptions = {
-                            dots: true,
+                            dots: false,
                             arrows:false,
                             slidesToShow:1,
                             adaptiveHeight:true,
