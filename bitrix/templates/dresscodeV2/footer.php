@@ -424,12 +424,17 @@ if ($USER->IsAuthorized()) {?>
     if (windowInnerWidth <= 1024) {
         $('.single-item').each(function() {
             if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
-                $(this).slick({
+                var defaultOptions = {
                     dots: true,
                     arrows:false,
                     slidesToShow: 1,
                     adaptiveHeight: true
-                });
+                }
+                if ($(this).hasClass('detail_product')) {
+                    defaultOptions.autoplay = true;
+                    defaultOptions.autoplaySpeed = 5000;
+                }
+                $(this).slick(defaultOptions);
             }
         });
     }
