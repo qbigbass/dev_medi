@@ -205,6 +205,7 @@
                             </div>
                             <div class="cartButtons _adaptive">
                                 <? if ($arResult["CATALOG_AVAILABLE"] != "Y"): ?>
+                                    <!-- Недоступные товары -> Кнопки для отображения: "Под заказ", "Заказ",  -->
                                     <? if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON']): ?>
                                         <a href="<?if(!empty($arResult["SKU_OFFERS"])):?><?=$arResult["DETAIL_PAGE_URL"]?><?else:?>#<?endif;?>" class="<?if(empty($arResult["SKU_OFFERS"])):?>fastBack<?endif;?> fast-back fastBut label changeID " data-id="<?= $arResult["ID"] ?>"
                                            <? if ($arResult['SALON_AVAILABLE'] != "0" || $arResult['SALON_COUNT'] != "0" || $arResult["CATALOG_AVAILABLE"] == "Y"){ ?>style="display:none;"
@@ -228,7 +229,7 @@
                                         <? endif; ?>
                                     <? endif; ?>
                                 <? else: ?>
-                                    <? // показ кнопки В корзину?>
+                                    <!-- Доступные товары -> Отображение кнопки "В корзину" -->
                                     <? if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON']):?>
                                         <a href="<?if(!empty($arResult["SKU_OFFERS"])):?><?=$arResult["DETAIL_PAGE_URL"]?><?else:?>#<?endif;?>" class="<?if(empty($arResult["SKU_OFFERS"])):?>addCart<?endif;?> add-to-cart" data-id="<?= $arResult["ID"] ?>"
                                            id="GTM_add_cart_catalog_<?= ($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'] . '_' : '') ?><?= $arParams['POS_COUNT'] ?>_<?= $arResult["ID"] ?>">

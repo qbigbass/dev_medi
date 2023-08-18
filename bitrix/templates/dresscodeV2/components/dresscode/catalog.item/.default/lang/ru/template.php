@@ -14,7 +14,6 @@
 	$MESS['FAST_ORDER_PRODUCT_LABEL'] = 'Заказать в 1 клик';
 	$MESS["ORDER_NOTAVAIL_LABEL"] = "Под заказ";
 	$MESS["SMP_LABEL_ALT"] = "Заказ";
-
 	$MESS["WISHLIST_LABEL"] = "В избранное";
 	$MESS["COMPARE_LABEL"] = "К сравнению";
 	$MESS["FAST_VIEW_PRODUCT_LABEL"] = "Быстрый просмотр";
