@@ -3900,7 +3900,7 @@ strong {
 @media screen and (max-width: 1024px) {
     .item_colors {
         display: flex;
-        width: 25px;
+        width: 20px;
         position: absolute;
         top: -5px;
         right: 0;
@@ -3914,7 +3914,7 @@ strong {
         list-style-type: none;
         width: 20px;
         height: 20px;
-        margin: 2px;
+        margin-bottom: 2px;
         overflow: hidden;
         opacity: 0.8;
     }
@@ -3969,7 +3969,7 @@ strong {
     border: 1px solid transparent;
     position: relative;
     overflow: hidden;
-    padding: 12px;
+    padding: 13px;
     height: 387px;
     z-index: 1;
 }
@@ -3977,7 +3977,7 @@ strong {
 .product .markerContainer {
     pointer-events: none;
     position: absolute;
-    z-index: 88;
+    z-index: 1000;
     left: 8px;
     top: 8px;
 }
@@ -6571,13 +6571,6 @@ body.panels_white .homeCatalog2 #captionCarousel:before {
         display: none !important;
     }
 
-    /*#slider .sliderBtnRight,
-	#slider .sliderBtnLeft{
-		display: none;
-	}
-	#slider ol{
-		display: none;
-	}*/
     #slider .slideVideo {
         display: none;
     }
@@ -6732,7 +6725,7 @@ body.panels_white .homeCatalog2 #captionCarousel:before {
 
     .product {
         width: 25%;
-        height: 341px
+        height: 343px
     }
 
     .product.last {
@@ -6790,9 +6783,6 @@ body.panels_white .homeCatalog2 #captionCarousel:before {
         height: 330px;
     }
 
-    /*#homeCatalog .product:nth-child(n+4) {
-		display: none;
-	}*/
     .tabloid .fastBut {
         display: none
     }
@@ -7320,11 +7310,6 @@ body.panels_white .homeCatalog2 #captionCarousel:before {
         height: 100%;
     }
 
-    .product .picture {
-        height: 160px;
-        line-height: 160px;
-    }
-
     .product .optional {
         display: none;
     }
@@ -7342,7 +7327,7 @@ body.panels_white .homeCatalog2 #captionCarousel:before {
     }
 
     .product .price {
-        max-width: 70%;
+        max-width: 100%;
     }
 
     .product .price .discount {
@@ -7351,21 +7336,10 @@ body.panels_white .homeCatalog2 #captionCarousel:before {
         font-size: 12px;
     }
 
-    .product .name {
-        height: 54px;
-        line-height: 54px;
-    }
-
     .product .middle {
         line-height: 18px;
     }
-
-    .product .price {
-        margin-bottom: 6px;
-        font-size: 15px;
-        height: 33px;
-    }
-
+    
     .product .price .measure {
         font-size: 15px;
     }
@@ -11656,36 +11630,32 @@ a.favorites_link.has_items .count {
 .footer_mob_links span.active {
     color: #e20074;
 }
-/* Стиль иконки в карточке товара в компоненте dresscode:catalog.item */
-@media (max-width: 700px) {
-    .product {
-        height: 330px;
-    }
-}
-@media (min-width: 701px) and (max-width: 1024px) {
-    .product .tabloid {
-        height: 340px;
-    }
-}
+/* Стиль иконки "Избранное" в карточке товара в компоненте dresscode:catalog.item */
 .productTable {
     position: relative;
 }
-.productTable .favoriteContainer {
+.productTable .favoriteContainer._desktop,
+.productTable .favoriteContainer._adaptive {
+    cursor: pointer;
+}
+.productTable .favoriteContainer._desktop {
     position: absolute;
     z-index: 3;
     right: 0;
-    cursor: pointer;
+    top: -7px;
 }
-@media screen and (min-width: 1025px) {
-    .productTable .favoriteContainer {
-        top: -7px;
+.productTable .favoriteContainer._adaptive {
+    display: none;
+}
+@media (max-width: 1024px) {
+    .productTable .favoriteContainer._desktop {
+        display: none;
+    }
+    .productTable .favoriteContainer._adaptive {
+        display: block;
     }
 }
 @media (min-width: 701px) and (max-width: 1024px) {
-    .productTable .favoriteContainer {
-        left: 0;
-        top: 303px;
-    }
     .product .skuProperty {
         margin: 16px 0 12px 0;
     }
@@ -11698,7 +11668,7 @@ a.favorites_link.has_items .count {
 .productTable .favoriteContainer .b-card-favorite::before {
     content: '';
     display: inline-block;
-    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPink25.png) 50% 50% no-repeat transparent;
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoGray25.png) 50% 50% no-repeat transparent;
     width: 25px;
     height: 25px;
 }
@@ -11708,10 +11678,183 @@ a.favorites_link.has_items .count {
     gap: 5px;
 }
 .productTable .favoriteContainer .b-card-favorite.active::before {
-    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPinkActive25.png) 50% 50% no-repeat transparent;
+    background: url(/bitrix/templates/dresscodeV2/images/favoriteIcoPink25.png) 50% 50% no-repeat transparent;
 }
 @media screen and (min-width: 1025px) {
     .productTable .favoriteContainer .b-card-favorite span {
         display: none;
+    }
+}
+
+/* Стиль для блоков (Рейтинг, Бренд, Артикул) на странице детальной КТ */
+.reviewsBtnWrap {
+    flex-direction: column;
+    align-items: flex-start;
+}
+.brand-article-wrapper {
+    display: flex;
+    align-items: center;
+    padding-top: 24px;
+}
+@media (max-width: 1000px) {
+    #elementContainer .brandImage {
+        margin-bottom: 0;
+    }
+}
+@media screen and (max-width: 790px) {
+    #elementContainer .brandImageWrap {
+        padding-top: 0;
+    }
+}
+
+/* Стиль для фиксированной шапки */
+@media screen and (min-width: 1024px) {
+    body {
+        padding-top: 201px;
+    }
+    header {
+        width: 100%;
+        z-index: 1000;
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
+    .fixed-header #elementTools.fixed .fixContainer {
+        margin-top: 150px;
+    }
+}
+/* Стиль для slick-слайдера в КТ */
+.pictureSlider,
+#elementContainer #pictureContainer .pictureSlider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: visible;
+}
+@media screen and (min-width: 1025px) {
+    .pictureSlider.catalog-list .item {
+        display: none;
+    }
+    .pictureSlider.catalog-list .item:first-child {
+        display: block;
+    }
+}
+@media screen and (max-width: 1024px) {
+    #elementContainer #related .marker,
+    #elementContainer #similar .marker {
+        margin-right: 0;
+        margin-bottom: 2px;
+        border: none!important;
+        font-weight: normal!important;
+        font-size: 13px !important;
+    }
+    .productColImage .item_colors {
+        padding: 0;
+    }
+    #related .product .tabloid,
+    #similar .product .tabloid {
+        height: 342px;
+    }
+    .pictureSlider,
+    #elementContainer #pictureContainer .pictureSlider {
+        display: block;
+        height: 220px;
+        visibility: visible;
+    }
+    #elementContainer #pictureContainer .pictureSlider.detail_product {
+        height: 450px;
+    }
+    .pictureSlider.catalog-list .item {
+        text-align: center;
+    }
+    .pictureSlider.one-image .item {
+        width: 100%;
+    }
+    .productColImage .item_brand {
+        position: absolute;
+        width: 10%;
+        left: 0;
+        top: 165px;
+        z-index: 1000;
+    }
+    .catalog-list .slick-list {
+        height: 180px!important;
+        z-index: 100;
+    }
+    .slick-dots {
+        display: flex;
+        position: unset;
+        justify-content: center;
+    }
+    #catalogSection .slick-dots {
+        height: 5px;
+        width: 30%;
+        margin: auto;
+        overflow: hidden;
+    }
+    .catalog-list .slick-dots li,
+    .catalog-list .slick-dots li button,
+    .catalog-list .slick-dots li button:before {
+        width: 5px;
+        height: 5px;
+    }
+    .catalog-list .slick-dots li button {
+        padding: 0;
+    }
+    .catalog-list .slick-dots li button:before {
+        line-height: 5px;
+    }
+    .pictureSlider.detail_product .slick-dots {
+        bottom: 0px;
+    }
+    .slick-dots li button:before {
+        font-size: 24px;
+    }
+    .catalog-list .slick-dots li button:before {
+        font-size: 20px;
+    }
+    .productColText span.middle {
+        width: 89%;
+    }
+    .productColText .skuProperty,
+    .productColText .addCart,
+    .productColText .reserve {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    #related .productColImage,
+    #similar .productColImage {
+        margin-top: -24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .product {
+        height: 350px;
+    }
+    .product .tabloid {
+        height: 345px;
+    }
+}
+
+@media (max-width: 492px) {
+    .product .price {
+        max-width: 70%;
+        margin-bottom: 0;
+    }
+}
+@media (max-width: 412px) {
+    .product {
+        height: 370px;
+    }
+    .product .tabloid,
+    #related .product .tabloid,
+    #similar .product .tabloid {
+        height: 365px;
+    }
+    .productTable .favoriteContainer {
+        top: 315px
     }
 }
