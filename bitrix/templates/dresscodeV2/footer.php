@@ -415,7 +415,6 @@ if (!empty($FAVORITE_ITEMS)) {
         <script>
             if ($('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]')) {
                 $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').addClass('active');
-                $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').find('span').text('В избранном');
             }
         </script>
     <?}
@@ -425,5 +424,27 @@ if ($USER->IsAuthorized()) {?>
     <?
 }
 ?>
+<script>
+    var windowInnerWidth = window.innerWidth;
+    if (windowInnerWidth <= 1024) {
+        $('.single-item').each(function() {
+            if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
+                var defaultOptions = {
+                    dots: true,
+                    arrows:false,
+                    slidesToShow: 1,
+                    adaptiveHeight: true
+                }
+                if ($(this).hasClass('detail_product')) {
+                    defaultOptions.dots = false;
+                    defaultOptions.autoplay = true;
+                    defaultOptions.autoplaySpeed = 5000;
+                }
+                $(this).slick(defaultOptions);
+            }
+        });
+    }
+</script>
+<? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/slick.min.js"); ?>
 </body>
 </html>
