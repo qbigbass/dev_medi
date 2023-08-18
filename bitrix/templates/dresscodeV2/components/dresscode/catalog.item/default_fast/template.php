@@ -180,7 +180,7 @@
 							<?if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON']):/*?>
 								<span class="fastOrder fastBut changeID"  data-id="<?=$arResult["ID"]?>" id="GTM_fastorder_catalog_get"><?=GetMessage("FAST_ORDER_PRODUCT_LABEL")?></span>
 							<?*/?>
-							<a href="#" class="addCart" data-id="<?=$arResult["ID"]?>"  id="GTM_add_cart_catalog_<?=($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'].'_' : '' )?><?=$arParams['POS_COUNT']?>_<?=$arResult["ID"]?>"><img src="<?=SITE_TEMPLATE_PATH?>/images/incart.png" alt="<?=GetMessage("ADDCART_LABEL")?>" class="icon" ><?=GetMessage("ADDCART_LABEL")?></a>
+							<a href="#" class="addCart _desktop" data-id="<?=$arResult["ID"]?>"  id="GTM_add_cart_catalog_<?=($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'].'_' : '' )?><?=$arParams['POS_COUNT']?>_<?=$arResult["ID"]?>"><img src="<?=SITE_TEMPLATE_PATH?>/images/incart.png" alt="<?=GetMessage("ADDCART_LABEL")?>" class="icon" ><?=GetMessage("ADDCART_LABEL")?></a>
 
 							<?else:?>
 								<?// Сканирование стоп, основная кнопка?>
@@ -197,7 +197,7 @@
 					<?*/endif;?>
 
 					<?if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] == false):?>
-					<a href="#" class="greyBigButton reserve changeID get_medi_popup_Window" data-src="/ajax/catalog/?action=reserve" data-title="Забронировать в салоне" data-id="<?=$arResult["ID"]?>"  <?if($arResult['SALON_AVAILABLE'] == "0" ||  $arResult['SALON_COUNT'] == "0" || ($arResult["CATALOG_AVAILABLE"] != "N" && $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] == true)){?>style="display:none;"<?}?> data-action="reserve">Забронировать</a>
+					<a href="#" class="greyBigButton reserve _desktop changeID get_medi_popup_Window" data-src="/ajax/catalog/?action=reserve" data-title="Забронировать в салоне" data-id="<?=$arResult["ID"]?>"  <?if($arResult['SALON_AVAILABLE'] == "0" ||  $arResult['SALON_COUNT'] == "0" || ($arResult["CATALOG_AVAILABLE"] != "N" && $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] == true)){?>style="display:none;"<?}?> data-action="reserve">Забронировать</a>
 					<?endif;?>
 					<?/*<a href="<?=$arResult["DETAIL_PAGE_URL"]?>" class="btn-simple add-cart"><?=GetMessage("SEE_ON_PAGE")?></a> */ ?>
 					<?/*if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON'] && $arResult["CATALOG_AVAILABLE"] == "Y"):?>
