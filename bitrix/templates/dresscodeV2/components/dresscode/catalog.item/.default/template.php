@@ -204,63 +204,61 @@
                                 <div class="b-card-favorite" data-product-id="<?= !empty($arResult["~ID"]) ? $arResult["~ID"] : $arResult["ID"] ?>"></div>
                             </div>
                             <div class="cartButtons _adaptive">
-                                <? if ($arResult["CATALOG_AVAILABLE"] != "Y"): ?>
-                                    <!-- Недоступные товары -> Кнопки для отображения: "Под заказ", "Заказ",  -->
-                                    <? if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON']): ?>
-                                        <a href="<?if(!empty($arResult["SKU_OFFERS"])):?><?=$arResult["DETAIL_PAGE_URL"]?><?else:?>#<?endif;?>" class="<?if(empty($arResult["SKU_OFFERS"])):?>fastBack<?endif;?> fast-back fastBut label changeID " data-id="<?= $arResult["ID"] ?>"
-                                           <? if ($arResult['SALON_AVAILABLE'] != "0" || $arResult['SALON_COUNT'] != "0" || $arResult["CATALOG_AVAILABLE"] == "Y"){ ?>style="display:none;"
-                                           <? } ?>style="display:none;">
-                                            <img src="<?= SITE_TEMPLATE_PATH ?>/images/incart.png"
-                                                 alt="<?= GetMessage("ORDER_NOTAVAIL_LABEL_ALT") ?>"
-                                                 class="icon"><?= GetMessage("ORDER_NOTAVAIL_LABEL") ?>
+                                <?if(!empty($arResult["SKU_OFFERS"])):?>
+                                    <!-- У товара есть размерные характеристики -->
+                                    <? if (
+                                        ($arResult["CATALOG_AVAILABLE"] == "Y" && $arResult['DISPLAY_BUTTONS']['CART_BUTTON']) ||
+                                        (
+                                            ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] == false && !$arResult['DISPLAY_BUTTONS']['SMP_BUTTON']) &&
+                                            (
+                                                $arResult['SALON_AVAILABLE'] != "0" ||
+                                                $arResult['SALON_COUNT'] != "0"
+                                            )
+                                        )
+                                    ):?>
+                                    <!-- Товар можно положить в корзину (товар доступен) или забронировать в салоне -->
+                                        <a href="<?=$arResult["DETAIL_PAGE_URL"]?>" class="greyBigButton changeID add-to-reserve"
+                                           data-title="Выбрать размер"
+                                           data-id="<?= $arResult["ID"] ?>"
+                                           data-action="reserve">Выбрать размер
                                         </a>
-                                    <? elseif ($arResult['DISPLAY_BUTTONS']['SMP_BUTTON']): ?>
-                                        <a href="#" class="smpOrder label changeID " data-id="<?= $arResult["ID"] ?>"
-                                           <? if ($arResult["CATALOG_AVAILABLE"] == "N"){ ?>style="display:none;"<? } ?>>
-                                            <img
-                                                src="<?= SITE_TEMPLATE_PATH ?>/images/incart.png"
-                                                alt="<?= GetMessage("SMP_LABEL_ALT") ?>"
-                                                class="icon"><?= GetMessage("SMP_LABEL_ALT") ?></a>
-                                    <? else: ?>
-                                        <? // Сканирование стоп, основная кнопка?>
-                                        <? if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON']): ?>
-                                            <a href="/services/izgotovlenie-ortopedicheskikh-stelek/#order"
-                                               class="magentaBigButton scan">Запись на изготовление</a>
-                                        <? endif; ?>
-                                    <? endif; ?>
-                                <? else: ?>
-                                    <!-- Доступные товары -> Отображение кнопки "В корзину" -->
-                                    <? if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON']):?>
-                                        <a href="<?if(!empty($arResult["SKU_OFFERS"])):?><?=$arResult["DETAIL_PAGE_URL"]?><?else:?>#<?endif;?>" class="<?if(empty($arResult["SKU_OFFERS"])):?>addCart<?endif;?> add-to-cart" data-id="<?= $arResult["ID"] ?>"
-                                           id="GTM_add_cart_catalog_<?= ($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'] . '_' : '') ?><?= $arParams['POS_COUNT'] ?>_<?= $arResult["ID"] ?>">
+                                    <?endif;?>
+                                <?else:?>
+                                    <!-- У товара нет размерных характеристик -->
+                                    <? if ($arResult["CATALOG_AVAILABLE"] == "Y" && $arResult['DISPLAY_BUTTONS']['CART_BUTTON']):?>
+                                        <!-- Товар можно положить в корзину (товар доступен) -->
+                                        <a
+                                            href="#"
+                                            class="addCart add-to-cart"
+                                            data-id="<?= $arResult["ID"] ?>"
+                                            id="GTM_add_cart_catalog_<?= ($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'] . '_' : '') ?><?= $arParams['POS_COUNT'] ?>_<?= $arResult["ID"] ?>"
+                                        >
                                             <img
                                                 src="<?= SITE_TEMPLATE_PATH ?>/images/basketPink.svg"
                                                 alt="<?= GetMessage("ADDCART_LABEL") ?>"
-                                                class="icon"><?= GetMessage("ADDCART_LABEL") ?></a>
-                                    <? elseif ($arResult['DISPLAY_BUTTONS']['SMP_BUTTON']): ?>
-                                        <a href="<?if(!empty($arResult["SKU_OFFERS"])):?><?=$arResult["DETAIL_PAGE_URL"]?><?else:?>#<?endif;?>" class="smpOrder <?if(empty($arResult["SKU_OFFERS"])):?>getSmpFastOrder<?endif;?> get-smp-fast-order changeID " data-id="<?= $arResult["ID"] ?>"
-                                           <? if ($arResult["CATALOG_AVAILABLE"] == "N"){ ?>style="display:none;"<? } ?>>
-                                            <img
-                                                src="<?= SITE_TEMPLATE_PATH ?>/images/incart.png"
-                                                alt="<?= GetMessage("SMP_LABEL_ALT") ?>"
-                                                class="icon"><?= GetMessage("SMP_LABEL_ALT") ?>
+                                                class="icon"><?= GetMessage("ADDCART_LABEL") ?>
                                         </a>
-                                    <? else: ?>
-                                        <? // Сканирование стоп, основная кнопка?>
-                                        <? if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON']): ?>
-                                            <a href="/services/izgotovlenie-ortopedicheskikh-stelek/#order"
-                                               class="magentaBigButton scan ">Запись на изготовление</a>
-                                        <? endif; ?>
-                                    <? endif; ?>
-                                <? endif; ?>
-                                <? if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] == false && !$arResult['DISPLAY_BUTTONS']['SMP_BUTTON']):?>
-                                    <a href="<?if(!empty($arResult["SKU_OFFERS"])):?><?=$arResult["DETAIL_PAGE_URL"]?><?else:?>#<?endif;?>" class="greyBigButton <?if(empty($arResult["SKU_OFFERS"])):?>reserve<?endif;?> add-to-reserve changeID <?if(empty($arResult["SKU_OFFERS"])):?>get_medi_popup_Window<?endif;?>"
-                                       data-src="/ajax/catalog/?action=reserve" data-title="Забронировать в салоне"
-                                       data-id="<?= $arResult["ID"] ?>"
-                                       <? if ($arResult['SALON_AVAILABLE'] == "0" || $arResult['SALON_COUNT'] == "0" || $arResult['mainStoreAmount'] > '0' || ($arResult["CATALOG_AVAILABLE"] != "N" && $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] == true)){
-                                       ?>style="display:none;"<? } ?> data-action="reserve">Забронировать
-                                    </a>
-                                <? endif; ?>
+                                    <?elseif(
+                                        ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] == false && !$arResult['DISPLAY_BUTTONS']['SMP_BUTTON']) &&
+                                        (
+                                            $arResult['SALON_AVAILABLE'] != "0" ||
+                                            $arResult['SALON_COUNT'] != "0"
+                                        )
+                                    ):?>
+                                        <!-- Товар можно забронировать в салоне -->
+                                        <a
+                                           href="#"
+                                           class="greyBigButton reserve add-to-reserve changeID get_medi_popup_Window"
+                                           data-src="/ajax/catalog/?action=reserve" data-title="Забронировать в салоне"
+                                           data-id="<?= $arResult["ID"] ?>"
+                                           data-action="reserve"
+                                           data-salon-available=<?= $arResult['SALON_AVAILABLE'] ?>
+                                           data-salon-count=<?= $arResult['SALON_COUNT'] ?>
+                                           data-main-store-amount=<?= $arResult['mainStoreAmount'] ?>
+                                        >Забронировать
+                                        </a>
+                                    <?endif;?>
+                                <?endif;?>
                             </div>
                         </div>
                         <? if (!empty($arResult["SKU_OFFERS"])): ?>
