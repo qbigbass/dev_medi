@@ -58,8 +58,16 @@ var slickItems = function() {
                         slidesToShow: 1,
                         adaptiveHeight: true
                     });
+
+                    $(this).on("touchstart", function(){
+                        $(this).parents('.productTable').find('.item_colors').hide();
+                    });
+                    $(this).on("touchend", function(){
+                        $(this).parents('.productTable').find('.item_colors').show();
+                    });
                 }
-            })
+            });
+
         }, 500);
     }
 }

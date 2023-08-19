@@ -182,6 +182,12 @@
                    id="catalogSlideButton"><br><span>Каталог</span></a>
             </div>
             <div>
+                <?
+                $APPLICATION->IncludeComponent("medi:favorites.products", "", []);
+                ?>
+                <br><span class="<?= (strpos($APPLICATION->GetCurDir(), 'lk/') ? 'active' : '') ?>">Избранное</span>
+            </div>
+            <div>
                 <div id="flushFooterCart">
                     <? $APPLICATION->IncludeComponent(
                         "bitrix:sale.basket.basket.line",
@@ -409,7 +415,6 @@ if (!empty($FAVORITE_ITEMS)) {
         <script>
             if ($('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]')) {
                 $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').addClass('active');
-                $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').find('span').text('В избранном');
             }
         </script>
     <?}
@@ -435,7 +440,15 @@ if ($USER->IsAuthorized()) {?>
                     defaultOptions.autoplay = true;
                     defaultOptions.autoplaySpeed = 5000;
                 }
+
                 $(this).slick(defaultOptions);
+
+                $(this).on("touchstart", function(){
+                    $(this).parents('.productTable').find('.item_colors').hide();
+                });
+                $(this).on("touchend", function(){
+                    $(this).parents('.productTable').find('.item_colors').show();
+                });
             }
         });
     }
