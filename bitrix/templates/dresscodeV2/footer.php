@@ -440,7 +440,15 @@ if ($USER->IsAuthorized()) {?>
                     defaultOptions.autoplay = true;
                     defaultOptions.autoplaySpeed = 5000;
                 }
+
                 $(this).slick(defaultOptions);
+
+                $(this).on("touchstart", function(){
+                    $(this).parents('.productTable').find('.item_colors').hide();
+                });
+                $(this).on("touchend", function(){
+                    $(this).parents('.productTable').find('.item_colors').show();
+                });
             }
         });
     }
