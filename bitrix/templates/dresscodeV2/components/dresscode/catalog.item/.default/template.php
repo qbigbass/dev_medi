@@ -216,11 +216,11 @@
                                             )
                                         )
                                     ):?>
-                                    <!-- Товар можно положить в корзину (товар доступен) или забронировать в салоне -->
+                                    <!-- Товар можно положить в корзину (товар доступен) или забронировать в салоне (переход в карточку товара) -->
                                         <a href="<?=$arResult["DETAIL_PAGE_URL"]?>" class="greyBigButton changeID add-to-reserve"
-                                           data-title="Выбрать размер"
+                                           data-title="<?= GetMessage("TO_BUY") ?>"
                                            data-id="<?= $arResult["ID"] ?>"
-                                           data-action="reserve">Выбрать размер
+                                           data-action="reserve"><?= GetMessage("TO_BUY") ?>
                                         </a>
                                     <?elseif ($arResult['IBLOCK_SECTION_ID'] == 85):?>
                                         <!-- Только для товаров из раздела "Индивидуальные стельки -->
@@ -232,17 +232,17 @@
                                 <?else:?>
                                     <!-- У товара нет размерных характеристик -->
                                     <? if ($arResult["CATALOG_AVAILABLE"] == "Y" && $arResult['DISPLAY_BUTTONS']['CART_BUTTON']):?>
-                                        <!-- Товар можно положить в корзину (товар доступен) -->
+                                        <!-- Товар можно положить в корзину (товар доступен) (переход в карточку товара) -->
                                         <a
-                                            href="#"
-                                            class="addCart add-to-cart"
+                                            href="<?=$arResult["DETAIL_PAGE_URL"]?>"
+                                            class="add-to-cart"
                                             data-id="<?= $arResult["ID"] ?>"
                                             id="GTM_add_cart_catalog_<?= ($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'] . '_' : '') ?><?= $arParams['POS_COUNT'] ?>_<?= $arResult["ID"] ?>"
                                         >
                                             <img
                                                 src="<?= SITE_TEMPLATE_PATH ?>/images/basketPink.svg"
-                                                alt="<?= GetMessage("ADDCART_LABEL") ?>"
-                                                class="icon"><?= GetMessage("ADDCART_LABEL") ?>
+                                                alt="<?= GetMessage("TO_BUY") ?>"
+                                                class="icon"><?= GetMessage("TO_BUY") ?>
                                         </a>
                                     <?elseif(
                                         ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] == false && !$arResult['DISPLAY_BUTTONS']['SMP_BUTTON']) &&
