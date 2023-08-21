@@ -222,6 +222,12 @@
                                            data-id="<?= $arResult["ID"] ?>"
                                            data-action="reserve">Выбрать размер
                                         </a>
+                                    <?elseif ($arResult['IBLOCK_SECTION_ID'] == 85):?>
+                                        <!-- Только для товаров из раздела "Индивидуальные стельки -->
+                                        <? if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON']): ?>
+                                            <a href="/services/izgotovlenie-ortopedicheskikh-stelek/#order"
+                                               class="magentaBigButton scan">Запись на изготовление</a>
+                                        <? endif; ?>
                                     <?endif;?>
                                 <?else:?>
                                     <!-- У товара нет размерных характеристик -->
@@ -363,7 +369,7 @@
                                 <? // Сканирование стоп, основная кнопка?>
                                 <? if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON']): ?>
                                     <a href="/services/izgotovlenie-ortopedicheskikh-stelek/#order"
-                                       class="magentaBigButton scan ">Запись на изготовление</a>
+                                       class="magentaBigButton scan _desktop">Запись на изготовление</a>
                                 <? endif; ?>
                             <? endif; ?>
                         <? endif; ?>
