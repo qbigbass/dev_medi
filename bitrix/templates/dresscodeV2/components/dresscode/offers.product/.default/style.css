@@ -1,0 +1,126 @@
+.product .marker {
+	margin-right: 5px;
+	font-weight: bold !important;
+	font-size: 14px !important;
+	border: 0 !important;
+}
+.product .markerContainer {
+
+}
+.product .marker.m-hit {
+	text-align: center;
+	border: 1px solid #ed8b00 !important;
+}
+.product.last .showMoreLink {
+	-webkit-transition: 0.2s all ease-in-out;
+	-o-transition: 0.2s all ease-in-out;
+	transition: 0.2s all ease-in-out;
+	vertical-align: middle;
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+	color: #000;
+}
+
+#homeCatalog{
+	background-color: #e4e7ed;
+	/*background-image: url(images/medi-waves.png);*/
+	padding-bottom: 20px;
+	margin-top: 0px;
+}
+
+#homeCatalog .captionList{
+	position: relative;
+	z-index: 1;
+	height: 60px;
+	line-height: 60px;
+	background-color: #2b2b2b;
+	margin-bottom: 20px;
+}
+
+#homeCatalog .captionList .slideBox{
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	left: 0px;
+	justify-content: center;
+    display: flex
+}
+
+#homeCatalog .captionList .cItem{
+	list-style: none;
+
+}
+
+#homeCatalog .caption{
+	-webkit-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+	border-left: 1px solid #222222;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	white-space: nowrap;
+	overflow: hidden;
+	padding: 0;
+}
+
+#homeCatalog .caption:hover{
+	background-color: #202020;
+}
+
+#homeCatalog .caption.loading{
+	opacity: 0.6;
+}
+
+#homeCatalog .caption a{
+	display: block;
+	text-align: center;
+	font-size: 16px;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+#homeCatalog .cItem{
+	max-width: 250px;
+	min-width: 100px;
+	padding: 0;
+	width: 25%;
+}
+
+#homeCatalog .captionBtnRight,
+#homeCatalog .captionBtnLeft{
+	background: url(images/offerArrowSmall.png) 0 0 no-repeat transparent;
+	position: absolute;
+	height: 60px;
+	width: 60px;
+	top: 0;
+}
+
+#homeCatalog .captionBtnLeft{
+	left: 0px;
+}
+
+#homeCatalog .captionBtnRight{
+	right: 0px;
+}
+
+#homeCatalog .captionBtnLeft:hover{
+	background-position: -0px -60px;
+}
+
+#homeCatalog .captionBtnLeft:active{
+	background-position: -0px -120px;
+}
+
+#homeCatalog .captionBtnRight{
+	background-position: -60px 0px;
+}
+
+#homeCatalog .captionBtnRight:hover{
+	background-position: -60px -60px;
+}
+
+#homeCatalog .captionBtnRight:active{
+	background-position: -60px -120px;
+}

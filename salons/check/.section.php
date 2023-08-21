@@ -1,0 +1,3 @@
+<?
+$sSectionName = "Предчек";
+$arDirProperties = array();

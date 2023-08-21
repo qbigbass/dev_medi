@@ -1,0 +1,166 @@
+#stores .tabs-wrap {
+    margin: 0;
+}
+
+
+#storesList{
+   margin-top: 0 ;
+}
+ .storeListHead {
+    background-color: #e9edf0;
+    text-align: center;
+    color:  #000;
+}
+
+#storesList .salons-name{
+margin: 20px .5%; width: 33%;
+}
+#storesList .salons-metro{
+margin: 20px .5%; width: 25%;
+text-align: center;
+}
+#storesList .salons-shedule{
+ margin: 20px .5%; width: 19%;
+}
+.map-balloon .theme-link-dashed {display: inline;font-size: 12px;}
+.shedule-block .theme-link-dashed {display: inline;}
+#storesList .salons-phone{
+ margin: 20px .5%; width: 18%;
+ text-align: center;
+}
+
+ #storesList .salons-name a {display: inline;}
+
+.shedule-str {
+    display: inline;
+}
+.working {
+    display: inline;
+    color:#00cc00;
+}
+.not-working {
+    display: inline;
+    color:#952525;
+}
+ #storesList .salons-phone a {
+    color:#222;
+    text-decoration: none;
+ }
+
+ #storesList .salons-phone a:hover {
+    color:#c90067;
+    text-decoration: none;
+ }
+
+.salons-metro img {
+    width: 20px;
+    height:20px;
+    vertical-align: top;
+    margin-right: 5px;
+}
+.salons-metro svg {
+    width: 20px;
+    height:20px;
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+
+
+
+#storesList .storesListItemPhoneLabel{
+   display: none;
+}
+
+@media all and (max-width: 1280px) {
+
+    .salons_city_popup {
+        width: 35rem;
+    }
+
+   #storesList .storesListItemLeft{
+       width: 70%;
+   }
+
+   #storesList .storesListItemRight{
+       background-color: #fbfbfb;
+       text-align: center;
+       width: 30%;
+   }
+
+   #storesList .storeItemDescription{
+       max-height: 42px;
+   }
+
+   #storesList .storesListItemPhone,
+   #storesList .storesListItemEmail,
+   #storesList .storesListItemSchedule{
+       padding: 0px;
+       width: 100%;
+       float: none;
+   }
+
+   #storesList .storesListItemSchedule{
+       display: none;
+   }
+
+   #storesList .storeListIcon{
+       display: none;
+   }
+
+   #storesList .storesListItemPhone{
+       font-family: "robotoMedium";
+       margin-bottom: 12px;
+       font-size: 16px;
+   }
+
+   #storesList .storesListItemScheduleSmall{
+       display: block;
+       margin-top: 6px;
+   }
+
+   #storesList .storesListItemPhoneLabel{
+       font-family: "roboto_ltregular";
+       margin-bottom: 12px;
+       font-size: 14px;
+       display: block;
+   }
+
+}
+@media (max-width: 1023px) {
+
+        .storeListHead {
+            display: none!important;
+        }
+    #storesList .salons-name p {
+        margin: 0 0;
+    }
+    #storesList .salons-phone {
+        text-align: left;
+    }
+    #storesList .salons-metro {
+        text-align: left;
+        margin: 0;
+    }
+	.flex-salons {
+		flex-direction: column!important;
+	}
+	.flex-salons .flex-salons-item {
+		width: 100%!important;
+        margin: 10px;
+	}
+
+    #storesList .greyButton {
+        float:none;
+
+    }
+    #storesList .salons-shedule {
+        margin: 0;
+    }
+}
+.flex-salons {
+    display: flex; flex-direction: row; justify-content: space-between;
+    border-bottom:1px solid #e9edf0;
+    align-items: center;
+    padding: 0 10px;
+}

@@ -1,0 +1,73 @@
+.top_alert {
+    overflow: hidden;
+    height: auto;
+}
+
+.top_alert_content p {
+    margin: 0.5em 0;
+
+}
+
+.top_alert_content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.top_alert_content a {
+    display: block;
+    height: inherit;
+    color: inherit;
+    text-decoration: none;
+}
+
+.top_alert .close {
+    cursor: pointer;
+    background: url(/bitrix/templates/dresscodeV2/themes/custom/images/exit.png) 0 0 no-repeat transparent;
+    position: absolute;
+    display: block;
+    height: 21px;
+    width: 21px;
+    right: 20px;
+    margin-top: 20px;
+}
+
+.ta_picture {
+    display: inline-block;
+    width: 50%;
+
+    height: 100%;
+    vertical-align: middle;
+}
+
+.ta_text {
+    vertical-align: middle;
+    display: inline-block;
+    width: 50%;
+}
+
+.top_alert .left {
+    float: left;
+}
+
+.top_alert .right {
+    float: right;
+}
+
+.top_alert.desktop {
+    display: block;
+}
+
+.top_alert.mobile {
+    display: none;
+}
+
+@media all and (max-width: 1024px) {
+    .top_alert.mobile {
+        display: block;
+    }
+
+    .top_alert.desktop {
+        display: none;
+    }
+}

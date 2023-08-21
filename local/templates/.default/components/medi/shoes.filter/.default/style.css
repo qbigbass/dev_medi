@@ -1,0 +1,317 @@
+.get_medi_popup_Window {
+    cursor: pointer;
+}
+#sresult .product {
+    height: 355px;
+}
+#sresult .product .tabloid {
+    height: 354px;
+}
+#sresult .product:hover,
+#sresult .product:hover .tabloid {
+    height: auto;
+}
+
+#results_count {
+    color: #767676; margin-bottom: 14px;
+}
+
+.starrequired {
+    color:#e20074;
+}
+ 
+#show_but.disabled {
+    cursor:auto!important;
+    background: #f898c9;
+    border-color: #f898c9;
+}
+.shoesWrap .question-shoes {
+    background: url(/bitrix/templates/dresscodeV2/images/questions.png) 0 0 transparent;
+    -webkit-transition: all 0s ease-in-out;
+    -o-transition: all 0s ease-in-out;
+    transition: all 0s ease-in-out;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 6px;
+    height: 19px;
+    width: 19px;
+    cursor: pointer;
+}
+.arrow_icon {
+    background: #858a90;
+    border-radius: 10px;
+    padding: 0;
+    position: relative;
+    color: #fff;
+   }
+.arrow_icon::after {
+    content: '';
+    position: absolute;
+    right: 2px; bottom: -28px;
+    border: 10px solid transparent;
+    border-top: 12px solid #858a90;
+}
+.questions-answers-list .question.h3{
+    font-size: 20px;
+}
+.question-answer-wrap.active  .arrow_icon::after {
+border: 10px solid transparent;
+border-bottom: 12px solid #858a90;
+bottom:-20px;
+
+}
+
+
+.help_icon {
+    line-height: 20px;
+    height: 20px;
+    display: inline-block;
+    width: 20px;
+    border-radius: 11px;
+    font-size: 16px;
+    padding-left: 1px;
+    color: #fff;
+    text-align: center;
+    background-color: #222;
+}
+.help_icon.magenta {
+background-color: #e20075;
+}
+.help_icon.grey {
+background-color: #858a90;
+}
+.shoesWrap {
+    margin-bottom: 34px;
+    margin-top: 34px;
+}
+.shoesWrap>.flex {
+    align-items: flex-end;
+}
+.shoesWrap .filterCheckboxField {
+    margin: 3px 12px;
+    display: inline-flex;
+    max-width: 150px;
+}
+.shoesWrap .webFormItemField input[type="checkbox"] + label:before {
+    background: url(/bitrix/templates/dresscodeV2/images/checkBox2.png) 0 0 no-repeat transparent;
+    transform: translateX(-20px);
+}
+.shoesWrap .webFormItemField label {
+    margin-top: 3px;
+}
+.shoesWrap .webFormItemField input[type="checkbox"] {
+    transform: translate(-22px, 4px);
+}
+.webFormItemField input[type="checkbox"]:not(checked) + label {
+    padding: 0;
+}
+.shoesWrap .offerType .filterCheckboxField, .shoesWrap .brandOf .filterCheckboxField{
+    margin: 3px 10px 3px 20px;
+    max-width: 140px;
+    width: 50%;
+    word-spacing: nowrap;
+}
+.shoesWrap .medical .filterCheckboxField {
+    margin: 3px 14px 3px 20px;
+    max-width: 43%;
+    width: 43%;
+}
+.shoesWrap .offerType {
+    width: calc(30% - 40px);
+}
+.shoesWrap .brandOf {
+    width: calc(20% - 40px);
+}
+.shoesWrap .medical {
+    width: calc(50% - 40px);
+}
+.shoesWrap> .light-gray-bg {
+    padding: 25px;
+    max-width: 1430px;
+    margin: auto;
+    background: #f7f7f7;
+
+}
+.shoesWrap .section label{
+    position: relative;
+    padding-left: 15px!important;
+    display:block;
+
+}
+.shoesWrap .seasons .btn-simple {
+    border-color: #767676;
+    color: #767676;
+}
+.shoesWrap .seasons .btn-simple:hover {
+    border-color: #666666;
+    color: #666666;
+}
+
+.shoesWrap .person>.checked {
+    background-color: #e20074;
+    color: #ffffff;
+    border: 2px solid #c90067;
+}
+.shoesWrap .seasons>.checked {
+    background-color: #767676;
+    color: #ffffff;
+    border: 2px solid #666666;
+}
+.shoesWrap .btn-wrap>.checked:hover {
+    color: #ffffff;
+}
+.shoesWrap .btn-wrap {
+    display: flex;
+    margin: 0 0 13px;
+}
+.shoesWrap .btn-wrap .btn-simple {
+    min-width: auto;
+    margin: 0 1px 1px 0;
+    flex-grow: 3;
+    height: 60px;
+    border-width: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px!important;
+    font-size: 16px;
+}
+.shoesWrap .btn-wrap> .btn-simple:active{
+    top: 0;
+}
+.shoesWrap .title {
+    display: inline-block!important;
+    margin-bottom: 14px;
+    margin-left: 40px;
+    font-size: 20px;
+}
+.shoesWrap .flex .flex-item {
+    border: none;
+    padding: 0;
+}
+.shoesWrap .flex-item:first-child{
+    width: 40%;
+    padding-right: 26px;
+}
+.shoesWrap .flex-item:last-child{
+    width: 60%;
+}
+
+.shoesWrap .sizeTitle {
+    box-sizing: border-box;
+    vertical-align: middle;
+    display: inline-block;
+
+}
+.shoesWrap .sizeTitle.help .title {
+    color:#e20074;
+}
+.shoesWrap .sizeHeader {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.shoesWrap input.error {
+    border: 1px solid #e20074;
+}
+.shoesWrap .length, .shoesWrap .sizeCircle {
+    width: 86%;
+    background-color: #f7f7f7;
+    border: none;
+    font-size: 16px;
+    height: 60px;
+    margin-bottom: 14px;
+    padding: 0 40px;
+}
+.shoesWrap input-placeholder {
+    color:#a2a2a2;
+}
+.shoesWrap .flex>.section {
+    flex-grow: 3;
+    background-color: #ffffff;
+    margin: 1em;
+    height: max-content;
+}
+.shoesWrap .question-answer-wrap {
+    border: none;
+}
+.shoesWrap .light-gray-bg .flex {
+    align-items: flex-start;
+}
+
+
+@media all and (max-width: 767px) {
+    .shoesWrap .person>.btn-simple {
+        width: calc(50% - 2px);
+    }
+}
+@media all and (max-width: 959px) {
+
+
+    .shoesWrap .flex-item {
+        width: 100%!important;
+        padding-right: 0;
+    }
+    .shoesWrap .btn-wrap {
+        flex-wrap: wrap;
+    }
+    .shoesWrap .btn-wrap .btn-simple {
+        font-size: 12px;
+        height: 40px;
+    }
+    .shoesWrap> .light-gray-bg {
+        padding: 0 0 14px 0;
+    }
+    .shoesWrap .seasons>.btn-simple {
+        min-width: 100px;
+        line-height: 14px;
+    }
+    .shoesWrap .person>.btn-simple {
+        min-width: 140px;
+        line-height: 13px;
+    }
+    .shoesWrap .sizeHeader {
+        flex-direction: column-reverse;
+    }
+
+    .shoesWrap .length, .shoesWrap .sizeCircle {
+        width: 100%;
+        padding: 0 0 0 24px;
+    }
+    .shoesWrap .title {
+        margin-left: 24px;
+    }
+}
+@media all and (max-width: 350px) {
+    .shoesWrap .seasons>.btn-simple {
+        min-width: 90px;
+    }
+
+}
+@media all and (max-width: 700px) {
+    .shoesWrap .offerType {
+        width: 100%!important;
+        order: 1;
+    }
+    .shoesWrap .brandOf {
+        width: 100%!important;
+        order: 4;
+    }
+    .shoesWrap.person>.btn-simple {
+        width: 50%;
+    }
+    .shoesWrap .medical .filterCheckboxField {
+        max-width: 100%;
+        display: block;
+    }
+
+}
+@media all and (max-width: 1240px){
+    .shoesWrap .offerType, .brandOf  {
+        width: calc(50% - 40px);
+    }
+    .shoesWrap .medical {
+        width: 100%;
+        order: 3;
+    }
+}

@@ -1,0 +1,468 @@
+.storeHeadInfo.flex .flex-item {
+    border:0;
+    padding: 0;
+    line-height: 2;
+}
+
+#holiday_shedule {
+    color:#e20074;
+    cursor: pointer;
+    border-bottom: 1px dotted;
+
+}
+#holiday_shedule_text { 
+}
+#holiday_shedule_text td, #holiday_shedule_text tr {
+    border:0;
+    margin: 0;
+
+}
+#holiday_shedule_text td {
+    border:0;
+    padding: 2px 4px;
+}
+#holiday_shedule_text tr:nth-child(2n+1){
+    background: #f1f1f1;
+
+}
+#holiday_shedule_text tr:hover{
+    background: #f6f6f6;
+
+}
+#holiday_shedule_text table {
+    border:0;
+    margin-top: 5px;
+    border-collapse: collapse;
+}
+
+.storeFootInfo .storeToolsItemLabel {
+    margin-bottom:10px;
+    display: block !important;
+}
+.storeIfno .storeToolsItem a {text-decoration: none; color:#222;}
+.storeDetailContainer.flex  .flex-item {
+    border: 0;
+}
+.salon-metro {
+    display: inline-block;
+    width: 45%;
+    padding: 10px;
+    background: #e9edf0;
+    font-family: "robotoMedium";
+    /*font-weight: bold;*/
+}
+.salon-metro img {
+    vertical-align: middle;
+}
+.salon-print {
+    display: inline-block;
+    width: 45%;
+}
+.storeDetailMap  {
+  margin-top: 14px;
+    float: left;
+    width: 100%;
+}
+#map_salon {
+  height:300px;
+  width:100%;
+}
+.storeAssortment  {
+    display: inline-block;
+}
+.storeAssortment span {
+    display: inline-block;
+    margin-right: 10px;
+}
+#hint a {
+    color: #222;
+
+}
+
+#hint  a:hover {
+    color: #e20074;
+
+}
+.storeServices  {
+    display: inline-block;
+}
+.storeServices span {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 8px;
+}
+#storeDetail .storeDetailContainer{
+	overflow: hidden;
+    margin-bottom: 15px;
+}
+
+#storeDetail .storePictureContainer{
+	margin-right: 24px;
+	max-width: 730px;
+	float: left;
+}
+
+#storeDetail .storePictureContainer img{
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	vertical-align: middle;
+	max-height: 500px;
+	max-width: 100%;
+	cursor: zoom-in;
+}
+
+#storeDetail .storePictureContainer:hover img{
+	opacity: 0.8;
+}
+
+#storeDetail .storePictureContainer:active img{
+	position: relative;
+	top: 1px;
+}
+
+#storeDetail .storeInformationName{
+	font-family: "robotoMedium";
+	font-size: 18px;
+}
+
+#storeDetail .storeInformationDescription{
+	margin-top: 12px;
+	color: #555555;
+}
+
+#storeDetail .showByMap{
+	margin-top: 12px;
+	color: #000000;
+}
+
+#storeDetail .showByMapLink{
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+}
+
+#storeDetail .storeTools{
+	margin-bottom: 24px;
+	overflow: hidden;
+}
+
+#storeDetail .storeToolsContainer{
+	max-width: 1000px;
+}
+.storeDetailContainer.flex .flex-item:first-child{
+  padding: 0!important;
+}
+#storeDetail .storeToolsItem{
+  width: 100%;
+	margin-top: 14px;
+	float: left;
+}
+
+
+#storeDetail .storeToolsItemTable{
+	table-layout: fixed;
+	display: table;
+                                     width:49%;
+}
+
+#storeDetail .storeToolsItemColumn{
+	vertical-align: middle;
+	display: table-cell;
+	text-align: left;
+}
+
+#storeDetail .storeToolsItemColumn:first-child{
+	padding-right: 12px;
+	width: 36px;
+}
+
+#storeDetail .storeToolsItemColumn img{
+	vertical-align: middle;
+}
+
+#storeDetail .storeToolsItemLabel{
+	font-family: "robotoMedium";
+	display: inline-block;
+  margin-right: 5px;
+}
+
+.storeServices a {
+  color:#555;
+}
+.storeAssortment a {
+  color:#555;
+}
+
+@media all and (max-width: 1600px) {
+	#storeDetail .storePictureContainer{
+		max-width: 730px;
+	}
+}
+
+@media all and (max-width: 1440px) {
+	#storeDetail .storePictureContainer{
+		max-width: 730px;
+	}
+}
+
+@media all and (max-width: 1280px) {
+	#storeDetail .storePictureContainer{
+		max-width: 730px;
+	}
+}
+
+@media all and (max-width: 900px) {
+	#storeDetail .storePictureContainer{
+		margin-bottom: 24px;
+		width: auto;
+		float: none;
+        margin-right: 0;
+	}
+}
+
+@media all and (max-width: 700px) {
+	#storeDetail .storeToolsItem{
+		width: 100%;
+		float: none;
+	}
+    .salon-print {
+        display: none;
+    }
+}
+
+
+#storeDetail #pictureContainer .pictureSlider{
+    table-layout: fixed;
+}
+
+#storeDetail #pictureContainer .pictureSlider .item:first-child{
+    display: block;
+}
+
+#storeDetail #pictureContainer .pictureSlider .item{
+    padding: 0 24px;
+    display: none;
+}
+
+#storeDetail #pictureContainer .item a{
+    text-align: center;
+    display: block;
+}
+
+#storeDetail #pictureContainer .item a img{
+    vertical-align: middle;
+    max-height: 100%;
+    max-width: 90%;
+}
+
+#storeDetail #moreImagesCarousel{
+    transition: all 0.3s ease-in-out;
+    visibility: hidden;
+    position: relative;
+    padding-top: 24px;
+    margin-top: 24px;
+    overflow: hidden;
+    opacity: 0;
+}
+
+#storeDetail #moreImagesCarousel.show{
+    visibility: visible;
+    opacity: 1;
+}
+
+#storeDetail #moreImagesCarousel.hide{
+    display: none;
+}
+
+#storeDetail #moreImagesCarousel #moreImagesLeftButton,
+#storeDetail #moreImagesCarousel #moreImagesRightButton{
+    background: url(/bitrix/templates/dresscodeV2/components/dresscode/catalog.store.detail/.default/images/carouselArrowSmall.png) 0 0 no-repeat transparent;
+    position: absolute;
+    margin-top: 3px;
+    height: 16px;
+    opacity: 0.5;
+    z-index: 2;
+    width: 14px;
+    top: 50%;
+}
+
+#storeDetail #moreImagesCarousel #moreImagesLeftButton:hover,
+#storeDetail #moreImagesCarousel #moreImagesRightButton:hover{
+    opacity: 0.8;
+}
+
+#storeDetail #moreImagesCarousel #moreImagesLeftButton:active,
+#storeDetail #moreImagesCarousel #moreImagesRightButton:active{
+    opacity: 1;
+}
+
+#storeDetail #moreImagesCarousel #moreImagesLeftButton{
+    left: 32px;
+}
+
+#storeDetail #moreImagesCarousel #moreImagesRightButton{
+    background-position: -14px 0;
+    right: 32px;
+}
+
+#storeDetail #moreImagesCarousel .carouselWrapper{
+    overflow: hidden;
+    margin: auto;
+    width: 80%;
+}
+
+#storeDetail #moreImagesCarousel .slideBox{
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    height: 62px;
+    padding: 0;
+    margin: 0;
+}
+
+#storeDetail #moreImagesCarousel .slideBox .item{
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    position: relative;
+    text-align: center;
+    line-height: 60px;
+    opacity: 0.5;
+    height: 60px;
+    float: left;
+}
+
+#storeDetail #moreImagesCarousel .slideBox .item.selected{
+    opacity: 1;
+}
+
+#storeDetail #moreImagesCarousel .slideBox .item.selected:after{
+    transform: translateX(-50%);
+    border-bottom: 2px solid #000000;
+    position: absolute;
+    display: block;
+    content: "";
+    width: 30%;
+    left: 50%;
+    bottom: -12px;
+}
+
+#storeDetail #moreImagesCarousel .slideBox .item a{
+    display: block;
+    line-height: 60px;
+    height: 60px;
+    padding: 0 3px;
+}
+
+
+#storeDetail #moreImagesCarousel .slideBox .item img{
+    vertical-align: middle;
+    /*margin-top: -4px;*/
+    max-height: 100%;
+    max-width: 100%;
+}
+
+
+#zoomer{
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.7);
+}
+
+#zoomer.opened{
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+#zoomer #zoomerExitLink{
+    background: url(images/exitBig.png) 0 0  no-repeat transparent;
+    height: 50px;
+    opacity: 0.5;
+    width: 50px;
+}
+
+#zoomer #zoomerExitLink:hover{
+    opacity: 0.8;
+}
+
+#zoomer #zoomerExitLink:active{
+    height: 48px;
+    opacity: 1;
+    top: 25px;
+}
+
+#zoomerMoreImagesContainerWrapper .item{
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+#zoomerMoreImagesContainerWrapper .item:hover{
+    opacity: 0.9 !important;
+}
+
+#zoomerMoreImagesContainerWrapper .selected{
+    opacity: 1 !important;
+}
+
+#zoomerBigPrevMore,
+#zoomerBigNextMore{
+    background: url(images/carouselArrowsBig.png) 0 0 no-repeat transparent;
+    opacity: 0.5;
+}
+
+#zoomerBigNextMore{
+    background-position: -57px 0;
+}
+
+#zoomerNextMore,
+#zoomerPrevMore{
+    background: url(images/carouselArrows.png) 0 0 no-repeat transparent;
+    opacity: 0.5;
+}
+
+
+#zoomerNextMore{
+    background-position: -80px 0;
+}
+
+#zoomerPrevMore:hover,
+#zoomerNextMore:hover,
+#zoomerBigPrevMore:hover,
+#zoomerBigNextMore:hover{
+    opacity: 0.8;
+}
+
+#zoomerPrevMore:active,
+#zoomerNextMore:active,
+#zoomerBigPrevMore:active,
+#zoomerBigNextMore:active{
+    opacity: 1;
+}
+
+#zoomerNextMore:active{
+    right: -1px !important;
+}
+
+#zoomerPrevMore:active{
+    left: -1px !important;
+}
+
+#zoomerBigPrevMore:active{
+    left: 23px !important;
+}
+
+#zoomerBigNextMore:active{
+    right: 23px !important;
+}
+
+#zoomerMoreImagesContainerWrapper .link:active{
+    position: relative;
+    top: 1px;
+}

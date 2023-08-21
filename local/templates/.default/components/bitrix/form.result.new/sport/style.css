@@ -1,0 +1,193 @@
+#select_salon_metro   {
+    display:inline-block;
+    width:24px;
+    height:24px;
+    position: absolute;
+    background: url(/upload/iblock/bf1/bf16bb4696de9d89f512f1e09cff8f3a.png) no-repeat;
+    margin-top: 47px;
+    margin-left: -55px;
+    z-index: 10;
+}
+/*display:inline-block;
+width:22px;
+height:22px;
+position: relative;
+content: " ";*/
+.form_block {
+    min-height: 600px;
+    display:flex;
+    width:100%;
+    flex-wrap: wrap;
+    max-width: 900px;
+    text-align: left;
+}
+.form_column {
+    width:50%;
+    margin-top:10px;
+}
+.form_row {
+
+}
+.form_row.twocols {
+    display: flex;
+}
+.form_row.twocols .form_cell {
+    width:50%;
+}
+.form_cell {
+    padding-right: 20px;
+}
+.form_cell .form_file_block {
+    margin: 10px 0;
+}
+.form_cell .webFormItemCaption {
+
+    padding: 4px 5px 4px 12px;
+}
+.form_cell .webFormItemField input[type="text"],
+.form_cell .webFormItemField input[type="tel"],
+.form_cell .webFormItemField input[type="num"],
+.form_cell .webFormItemField select   {
+    background: #f7f7f7;
+    padding: 4px 5px 4px 12px;
+    margin: 5px 0;
+    width:100%;
+    font-size: 16px;
+    letter-spacing: 1px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: "roboto_ltregular";
+    border: 1px solid #e7e7e7;
+    line-height: 55px;
+    color: #555555;
+    outline: none;
+    height: 55px;
+}
+.webFormItemRequired {
+    color:#e20074;
+    font-weight: bold;
+}
+label.gray, #form_file_60 {
+    color:#bfbfbe;
+}
+.form_cell #salon_reserve_desc {
+    vertical-align: middle;
+    font-size: 12px;
+    margin: 2px 0 3px;
+    padding: 0.5em;
+    height: 100px;
+}
+.file-upload input[type="file"]{
+    color: #333;
+    width: 250px;
+    border: 0;
+    line-height: 37px;
+    background: none;
+    font-family: "roboto_ltregular";
+}
+
+/* задаем стили кнопки выбора файла*/
+
+.file-upload {
+    position: relative;
+        /* overflow: hidden; */
+        width: 127px;
+        height: 35px;
+        background: #f7f7f7;
+        border: 1px solid #e20074;
+        color: #fff;
+        text-align: center;
+        margin-top: 10px;
+}
+
+.file-upload:hover {
+background: #1E90FF;
+}
+
+.file-upload label.filebut {
+    font-size: 14px;
+    color: #e20074;
+    background: #fff;
+    display: block;
+    position: absolute;
+    /* top: 0; */
+    font-weight: bold;
+    left: 0;
+    line-height: 35px;
+    z-index: 10;
+    width: 127px;
+    height: 100%;
+    cursor: pointer;
+}
+.file-upload span {
+line-height: 40px;
+font-weight:bold;
+}
+.form_footer {
+    width: 100%;
+    max-width: 900px;
+    text-align: right;
+
+}
+.form_footer input[type="reset"],
+.form_footer input[type="submit"] {
+
+        font-family: "roboto_ltregular";
+}
+.form_footer input[type="reset"] {
+    margin-right: 30px;
+}
+#salon_reserve_desc #salon-adres {
+    font-size: 15px;
+    line-height: 25px;
+    display: inline-flex;
+}
+#salon_reserve_desc #salon-shedule {
+    font-size: 15px;
+    line-height: 25px;
+    display: inline-flex;
+}
+.salon-shedule, .salon-contacts  {
+    margin: 12px 0;
+    }
+#salon_reserve_desc #salon-shedule::before{
+    content: " ";
+    display: inline-block;
+    width:20px;
+    height:20px;
+    margin-right: 8px;
+    vertical-align: middle;
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzOSAzOSI+PGRlZnM+PHN0eWxlPi5he2ZpbGw6bm9uZTtzdHJva2U6IzllOWU5ZDtzdHJva2UtbWl0ZXJsaW1pdDoxMDtzdHJva2Utd2lkdGg6MnB4O30uYntmaWxsOiM5ZTllOWQ7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT7RgNC10LbQuNC8INGA0LDQsdC+0YLRizwvdGl0bGU+PGNpcmNsZSBjbGFzcz0iYSIgY3g9IjE5LjUiIGN5PSIxOS41IiByPSIxOC41Ij48L2NpcmNsZT48cmVjdCBjbGFzcz0iYiIgeD0iMTcuNSIgeT0iNy42NyIgd2lkdGg9IjQiIGhlaWdodD0iMTIiPjwvcmVjdD48cmVjdCBjbGFzcz0iYiIgeD0iNjU3LjQyIiB5PSI0MTIuMzMiIHdpZHRoPSI0IiBoZWlnaHQ9IjEzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NDIuODMgLTYzOS45Mikgcm90YXRlKDkwKSI+PC9yZWN0Pjwvc3ZnPg==") center  center no-repeat;
+    }
+#salon_reserve_desc #salon-adres::before{
+    content: " ";
+    display: inline-block;
+    width:25px;
+    height:25px;
+    margin-right: 8px;
+    vertical-align: middle;
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MjkuMzMgNzI5LjMzIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDpub25lO3N0cm9rZTojOWU5ZTlkO3N0cm9rZS1taXRlcmxpbWl0OjEwO3N0cm9rZS13aWR0aDoyNXB4O30uYntmaWxsOiM5ZTllOWQ7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT7QsNC00YDQtdGBINC80LXRgdGC0L48L3RpdGxlPjxjaXJjbGUgY2xhc3M9ImEiIGN4PSIzNjQuNjYiIGN5PSIzNjQuNjYiIHI9IjM1Mi4xNiI+PC9jaXJjbGU+PHBhdGggY2xhc3M9ImIiIGQ9Ik03NDAuMTksMjI3LjczbC0uMzgtLjFjLTEwMC43OCwwLTE4Mi40OSw4MS43LTE4Mi40OSwxODIuNDhhMTgyLjEsMTgyLjEsMCwwLDAsNTMuMzksMTI5TDczOS44OSw2NjguMjdsLjIyLjFMODY5LjI5LDUzOS4yYTE4Mi4xNCwxODIuMTQsMCwwLDAsNTMuMzktMTI5QzkyMi42OCwzMDkuNDQsODQxLDIyNy43Myw3NDAuMTksMjI3LjczWm0tMi44MiwyODguODNhMTA1LDEwNSwwLDEsMSwxMDUtMTA1QTEwNSwxMDUsMCwwLDEsNzM3LjM3LDUxNi41NloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zNzUuMzQgLTgzLjM0KSI+PC9wYXRoPjwvc3ZnPg==") center  center no-repeat;
+    }
+.success.alert {
+    padding: 1em;
+    border:1px solid green;
+
+}
+@media (max-width: 700px) {
+    .form_column  {
+        width:100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .form_row.twocols {
+        flex-wrap: wrap;
+    }
+    .form_row.twocols .form_cell {
+        width: 100%;
+    }
+}
