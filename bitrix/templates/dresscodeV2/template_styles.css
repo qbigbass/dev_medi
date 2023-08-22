@@ -11815,7 +11815,6 @@ a.favorites_link.has_items .count {
     }
     .productColImage .item_brand {
         position: absolute;
-        width: 10%;
         left: 0;
         top: 180px;
         z-index: 1000;

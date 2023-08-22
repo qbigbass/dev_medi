@@ -146,11 +146,13 @@
                                 <div id="pictureContainer">
                                     <div class="pictureSlider catalog-list <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
                                         <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
-                                            <div class="item">
-                                                <img
-                                                    src="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
-                                                >
-                                            </div>
+                                            <?if($ipr < 3):?>
+                                                <div class="item">
+                                                    <img
+                                                        src="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
+                                                    >
+                                                </div>
+                                            <? endif; ?>
                                         <? endforeach; ?>
                                     </div>
                                 </div>
