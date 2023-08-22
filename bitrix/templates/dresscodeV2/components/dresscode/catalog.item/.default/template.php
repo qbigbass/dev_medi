@@ -144,7 +144,7 @@
                         <? else: ?>
                             <? if (!empty($arResult["IMAGES"])): ?>
                                 <div id="pictureContainer">
-                                    <div class="pictureSlider <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
+                                    <div class="pictureSlider catalog-list <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
                                         <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
                                             <div class="item">
                                                 <img
@@ -217,7 +217,7 @@
                                         )
                                     ):?>
                                     <!-- Товар можно положить в корзину (товар доступен) или забронировать в салоне (переход в карточку товара) -->
-                                        <a href="<?=$arResult["DETAIL_PAGE_URL"]?>" class="greyBigButton changeID add-to-reserve"
+                                        <a href="<?=$arResult["DETAIL_PAGE_URL"]?>" class="changeID add-to-reserve"
                                            data-title="<?= GetMessage("TO_BUY") ?>"
                                            data-id="<?= $arResult["ID"] ?>"
                                            data-action="reserve"><?= GetMessage("TO_BUY") ?>
@@ -255,13 +255,13 @@
                                         <a
                                            href="#"
                                            class="greyBigButton reserve add-to-reserve changeID get_medi_popup_Window"
-                                           data-src="/ajax/catalog/?action=reserve" data-title="Забронировать в салоне"
+                                           data-src="/ajax/catalog/?action=reserve" data-title="<?= GetMessage("BOOK_IN_SALON") ?>"
                                            data-id="<?= $arResult["ID"] ?>"
                                            data-action="reserve"
                                            data-salon-available=<?= $arResult['SALON_AVAILABLE'] ?>
                                            data-salon-count=<?= $arResult['SALON_COUNT'] ?>
                                            data-main-store-amount=<?= $arResult['mainStoreAmount'] ?>
-                                        >Забронировать
+                                        ><?= GetMessage("BOOK_IN_SALON") ?>
                                         </a>
                                     <?endif;?>
                                 <?endif;?>

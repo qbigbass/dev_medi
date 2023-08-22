@@ -3906,6 +3906,7 @@ strong {
         height: 100%;
         max-height: 200px;
         flex-direction: column;
+        /*z-index: 101;*/
     }
 
     .item_colors .item_color {
@@ -4114,7 +4115,7 @@ strong {
     transform: translate3d(0, 0, 0);
     vertical-align: middle;
     max-height: 90%;
-    max-width: 90%;
+    max-width: 80%;
 }
 
 .product .picture:hover img {
@@ -11669,6 +11670,7 @@ a.favorites_link.has_items .count {
     }
     .cartButtons {
         width: 75%;
+        position: relative;
     }
     .product .cartButtons a {
         line-height: 28px;
@@ -11680,6 +11682,14 @@ a.favorites_link.has_items .count {
         color: #e20074!important;
         margin-top: 0;
         margin-bottom: 0;
+    }
+    .product .cartButtons .reserve-to-salon {
+        position: absolute;
+        right: 0;
+        top: -20px;
+        color: red;
+        font-size: 10px;
+        font-weight: bold;
     }
     .product .cartButtons .add-to-cart .icon {
         padding-right: 10px;
@@ -11807,8 +11817,11 @@ a.favorites_link.has_items .count {
         position: absolute;
         width: 10%;
         left: 0;
-        top: 165px;
+        top: 180px;
         z-index: 1000;
+    }
+    .productColImage .item_brand.flag-medi {
+        top: 175px;
     }
     .catalog-list .slick-list {
         height: 180px!important;
@@ -11874,7 +11887,13 @@ a.favorites_link.has_items .count {
         height: 345px;
     }
 }
-
+@media (max-width: 530px) {
+    .product .cartButtons a.scan,
+    .product .cartButtons a.greyBigButton  {
+        font-size: 10px;
+        min-width: unset;
+    }
+}
 @media (max-width: 492px) {
     .product .price {
         max-width: 70%;
@@ -11887,11 +11906,6 @@ a.favorites_link.has_items .count {
     #related .product .tabloid,
     #similar .product .tabloid {
         height: 358px;
-    }
-}
-@media (max-width: 468px) {
-    .product .cartButtons a.scan {
-        font-size: 10px;
     }
 }
 @media (max-width: 412px) {
@@ -11907,8 +11921,9 @@ a.favorites_link.has_items .count {
         top: 315px
     }
 }
-@media (max-width: 399px) {
-    /*.product .cartButtons a.scan {*/
-    /*    line-height: 14px;*/
-    /*}*/
+@media (max-width: 404px) {
+    .product .cartButtons a.greyBigButton ,
+    .product .cartButtons a.scan {
+        line-height: 14px;
+    }
 }

@@ -29,4 +29,5 @@ $MESS["REQUEST_PRICE_LABEL"] = "Цена по запросу";
 $MESS["REQUEST_PRICE_BUTTON_LABEL"] = "Запросить цену";
 $MESS["SUBSCRIBE_LABEL"] = "Подписаться";
 $MESS["TO_BUY"] = "Купить";
+$MESS["BOOK_IN_SALON"] = "Забронировать в салоне";
 ?>
