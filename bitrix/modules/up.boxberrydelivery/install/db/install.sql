@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS b_boxberry_order (
+    ID int not null auto_increment,
+    ORDER_ID int not null,
+    DATE_CHANGE datetime not null,
+    LID char(2) not null,
+    TRACKING_CODE varchar(255) null,
+    PVZ_CODE varchar(255) null,
+    STATUS int null,
+    STATUS_TEXT text null,     
+    STATUS_DATE datetime not null,          
+    SEND_REQUEST char(1) not null default 'N',
+    SEND_REQUEST_DATE datetime not null,    
+    SEND_PDF_LINK text null,      
+    CHECK_REQUEST char(1) not null default 'N',
+    CHECK_REQUEST_DATE datetime not null,    
+    CHECK_PDF_LINK text null,   
+    ERRORS text null,
+    STATUS_HISTORY text null,  
+    primary key (ID)
+);

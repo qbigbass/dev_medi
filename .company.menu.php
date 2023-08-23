@@ -1,0 +1,88 @@
+<?
+$aMenuLinks = Array(
+	Array(
+		"Адреса салонов",
+		"/salons/",
+		Array(),
+		Array("CITY_FOLDER"=>"Y"),
+		""
+	),
+	Array(
+		"Услуги",
+		"/services/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Акции",
+		"/stock/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Бренды",
+		"/brands/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Новости",
+		"/news/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Контакты",
+		"/contacts/",
+		Array(),
+		Array("CITY_FOLDER"=>"Y"),
+		""
+	),
+	Array(
+		"Оптовый отдел",
+		"/service/opt/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Статьи",
+		"/encyclopedia/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"О medi",
+		"/about/",
+		Array(),
+		Array("CITY_FOLDER"=>"Y"),
+		""
+	),
+	Array(
+		"Клуб лояльности medi",
+		"/about/loyalty/",
+		Array(),
+		Array("REGION_SITES"=>'s0,s1,s2,s6'),
+		""
+	),
+	Array(
+		"Правила Клуба лояльности medi",
+		"/about/loyalty/pl/",
+		Array(),
+		Array("REGION_SITES"=>'s0,s1,s2,s6'),
+		""
+	),
+	Array(
+		"Карьера",
+		"/career/",
+		Array(),
+		Array(),
+		""
+	)
+);
+?>

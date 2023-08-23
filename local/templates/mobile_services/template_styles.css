@@ -1,0 +1,128 @@
+/* common */
+.inline-block {display: inline-block !important;}
+.holder {position: relative;}
+.cursor__pointer {cursor: pointer;}
+.no-wrap {white-space: nowrap;}
+.separator {height: 0; width: 100%; border-bottom: 1px solid #cccccc;}
+.separator--dashed {height: 0; width: 100%; border-bottom: 1px dashed #cccccc;}
+
+.bx-authform {
+    margin: 2em auto !important;
+}
+.bx-authform .bx-title, .bx-authform .bx-authform-social, .bx-authform .bxe-light{
+    display: none !important;
+}
+
+/* messages */
+.message message--note {}
+.message message--alert {}
+
+
+/* header */
+.header {}
+.header__logo {width: 6rem; margin: 0 3rem 3rem 0;}
+.header__title {line-height: 6rem; vertical-align: middle; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;}
+.header__menu {position: absolute; top: 2em; right: 1em; width:24px; height: 24px; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAwCAYAAAALiLqjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RTc2OTVCMUU0Q0M1MTFFNkIyQkVGMjA0REVDMjM0QkMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RTc2OTVCMUY0Q0M1MTFFNkIyQkVGMjA0REVDMjM0QkMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpFNzY5NUIxQzRDQzUxMUU2QjJCRUYyMDRERUMyMzRCQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpFNzY5NUIxRDRDQzUxMUU2QjJCRUYyMDRERUMyMzRCQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PtWL/M8AAAC0SURBVHja7JbhCYQwDIXb0jnudIHO1HMvpeJGHeDgFjEmkjscIAFz5EGs+iNP4pc2EQCCplJQln2DTJfee8SlYjyF8n4wWikFMr+g5IvwxxM9LV0epLX/SoRa2WQUSv7G2Ogmmu+DL0WJf/RDk6LZNEWNTQanyClyitzADW67F0WUxlwE1GTcaC/uZMmolNv+XBQ096JriXQpYlzFT7Sz7FyiyTxFaieaU+QU+Vz0DwaHAAMAvHKwk70Z8JIAAAAASUVORK5CYII=') 0 0 no-repeat;}
+.header__menu:hover {width:24px; height: 24px; background-position: 0 -24px;}
+@media (min-width: 550px) {
+    .header__logo {width: 8rem; margin: 0 4rem 4rem 0;}
+    .header__title {line-height: 8rem;}
+}
+
+/* Order form */
+.order-form {}
+.order-form__main-info {padding-bottom: 1rem;}
+.order-form__product {padding: 2rem 0;}
+.order-form__label {}
+.order-form__label--truncate {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+.order-form__label--with-margin {margin-bottom: 1.5rem;}
+
+.order-form textarea {
+    min-height: 38px !important;
+}
+
+.order-form__client {background-color: #e8e9ed; padding: 2rem 0 1rem 0;}
+.order-form__input {}
+
+.order-form__author {background-color: #e8e9ed; padding: 2rem 0 1rem 0;margin-bottom: 2rem;}
+
+.order-form__mic-holder {position: relative;}
+.order-form__mic-holder > .icon {position: absolute;}
+
+/* icons */
+.icon {display: inline-block; background-repeat: no-repeat; background-position: left top;}
+.icon--25 {width: 25px; height: 25px;}
+.icon__mic--25 {background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAASdJREFUSInd1b8uBFEUx/HPosQSOtFJNN6Ayt8ahc4mEhFeQacXDyCIKEQ8xJZUPIKgEArZxGpYu4q5CbG7szMyk4hfcnLv5J453zPnnnuHnNWdwncCq5hEFY9ZJrKNOhrB6tjJKvjUt8A/ba7Ty10JAEsxa8tZAPpj1opZAOJUyBvQUf8XsIZ9CWocYhyilAZcFvX5UAC1OwenGA7zcjt6K72GsYinmEQeMBjmL2kA12GcwQneWvjUcIzZ8HwVk0iTxvGBG9FXLOLZV2kqWMEA7gJsLA0A9kKwC4ygF/NYQB9GcRl8dtMGhx6chwBVHGATWzgS7VMDZ8H3VypgA/eaO+gW65K1ckd1ia7m92DTcjqklWCJlftVkXZzaqL65wYoif7Hf0efvy9I0ix7IXAAAAAASUVORK5CYII=')}
+
+/* Order list */
+.order-list__filter {background-color: #e8e9ed; padding: 2rem 0 1rem 0; margin-bottom: 1rem;}
+.order-list__filter-form {margin: 0;}
+
+#filter_delivery_date {display:none;}
+#filter_visit_date {display:none;}
+
+/* Pagenavigation */
+.pager {}
+.pager--default {}
+.pager--default font.text {display: block; clear: both; margin-bottom: 1rem;}
+.pager--default font.text > a, .pager--default font.text > b {padding: 0.25rem;}
+
+.cta {text-decoration: none;}
+.cta__icon {position:relative; bottom: -10px;width: 25px; height: 25px; display: inline-block;}
+.cta__text {display: inline-block; border-bottom: 1px dashed #e20074;}
+.cta__text:hover {border-color: #af005a;}
+.cta--print .cta__icon {background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NkFFRUUyMzk1RUYzMTFFNkIwRjVFMUUxRUM5QjFFQ0QiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NkFFRUUyM0E1RUYzMTFFNkIwRjVFMUUxRUM5QjFFQ0QiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2QUVFRTIzNzVFRjMxMUU2QjBGNUUxRTFFQzlCMUVDRCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2QUVFRTIzODVFRjMxMUU2QjBGNUUxRTFFQzlCMUVDRCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pi7rvWMAAAGnSURBVHja1JVNK0RRGMfvzL0p4yWRmlITNcVqUhKKrGRK2SgsbUm+AlMWsrGgyZpY+AKWNqLsZspGkUYpFmwwIy/X79S5OqY77jkz08hTv57bfXn+z8s554Zc17X8LJvNduOSELL07SyRSJwU3wz5iSAgAl9DzDKzD+hDKKPedEq8bEuBZ1jTFBiHYegHLRHPnshqVUeB6huliPVru2SbJmAMliAPO5qVDEAvHMEe7JNg/ocIArZ8OGNVxy5Esgjl1HbNS4EcpECU/wp3mkHroAeuYAGGYBdG1UpOcYMwgvpxJSUQKyIr6YCusPKsXfrzSvtEki/KCouGfd5xqzST7zhhqwZWExEnYICbuFnN80scQ5PM41ZbBIEm3KJBwm1CBLZNKrGlvyS7eEDFK7jlUvH+bCYxMmvBN5cRr5VvO+V1xE/EW9eZog/rNYJ7CyMlUe1TFdmAOaWFtjxV3w023g3cq+MSSTvKUZDGpZVhipY9wptBu9aJs2W0T6Q1IJgMeCde7mYsyCqicKhZyYORCGUXqGCayynNHS+O9oPA3++/PiC/BBgAYcN78nxOfKAAAAAASUVORK5CYII=');}
+
+/* Additional form for printing */
+.additional-form {}
+.additional-form__table {margin-top: 6rem;}
+.additional-form__table th, .additional-form__table td {text-align: left; border: 1px solid #999999; width: 12.5%;}
+.additional-form__table td {padding: 2px 15px;}
+.additional-form__table th {padding: 2px 15px;}
+.additional-form__table th:first-child, .additional-form__table td:first-child {padding-left: 15px;}
+.additional-form__table th:last-child, .additional-form__table td:last-child {padding-right: 15px;}
+
+.additional-form__table.net {margin-top: 2rem!important; margin-bottom: 2rem;}
+
+.additiona-form__sign {vertical-align: middle; line-height: 2em; margin-bottom: 4rem;}
+.additiona-form__sign-placeholder {display: inline-block; border-bottom: 1px solid #999999; width: 200px; position: relative; bottom: -4px;}
+.additional-form__sign-text {font-weight: 500;}
+
+/* Larger than mobile */
+@media (min-width: 400px) {}
+
+/* Larger than phablet (also point when grid becomes active) */
+@media (min-width: 550px) {}
+
+/* Larger than tablet */
+@media (min-width: 750px) {}
+
+/* Larger than desktop */
+@media (min-width: 1000px) {}
+
+/* Larger than Desktop HD */
+@media (min-width: 1200px) {}
+
+@media print {
+    html {
+        font-size: 8px;
+    }
+    .print-hidden {display: none;}
+    .header__logo {width: 6rem; margin: 0 3rem 3rem 0;}
+    .header__title {line-height: 6rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;}
+
+    .order-form__client {padding: 0;}
+    .order-form__product {padding: 0;}
+
+    .order-form textarea
+    {
+        padding:3px;
+        max-height: 68px;
+    }
+    input, textarea, select, fieldset {
+        margin-bottom: 1rem;
+    }
+}
+@media not print {
+    .print-only {display: none;}
+}

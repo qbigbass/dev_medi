@@ -1,0 +1,61 @@
+<?
+$specMenu = [
+    [
+    'link' => '/services/izgotovlenie-ortopedicheskikh-stelek/',
+    'title' => 'Индивидуальные стельки igli',
+    'img' => '/upload/menu/insoles/1.png',
+    ],
+    [
+    'link' => '/catalog/ortopedicheskie-stelki/seriynye-stelki/',
+    'title' => 'Серийные стельки',
+    'img' => '/upload/menu/insoles/2.png',
+    ],
+    [
+    'link' => '/catalog/ortopedicheskie-stelki/korrektory-stopy/',
+    'title' => 'Вкладыши и корректоры стопы',
+    'img' => '/upload/menu/insoles/3.png',
+    ]
+];
+?>
+
+
+
+
+<div class="desktop_menu">
+    <div class="limiter">
+        <div class="new_menu">
+            <div class="new_menu_col col-12">
+                <?foreach($specMenu as $s=>$smenu ){?>
+                <div class="new_menu_item">
+                    <a href="<?=$smenu['link']?>" class="image"><img class="lazy" data-lazy="<?=$smenu['img']?>"/></a>
+                    <a href="<?=$smenu['link']?>" class="title"><?=$smenu['title']?></a>
+                </div>
+                <?}?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile_menu">
+    <div class="limiter">
+    <?foreach($specMenu as $next2Column):?>
+        <?if(!empty($next2Column)):?>
+            <ul class="nextColumn <?if($nextElement['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+                    <li>
+                        <a href="<?=$next2Column["link"]?>" class="menu2Link">
+                            <?=$next2Column["title"]?>
+                        </a>
+                    </li>
+            </ul>
+
+        <?endif;?>
+    <?endforeach;?>
+
+    <?if ($nextElement['ADDLINK'] && $nextElement['ADDPHOTO'] && !in_array(SITE_ID, ['s5','s8'])) {?>
+    <ul class="nextColumn <?if($nextElement['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+    <li>
+        <a href="<?=$nextElement['ADDLINK']?>" class="speclink menu2Link"><?=$nextElement['ADDNAME']?></a>
+    </li>
+    </ul>
+    <?}?>
+</div>
+</div>

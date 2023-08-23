@@ -1,0 +1,80 @@
+<?
+$specMenu = [
+    [
+    'link' => '/catalog/ortopedicheskie-stelki/filter/for_who-is-4f58682c-9343-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Женские',
+    'img' => '/upload/menu/insoles/female.png',
+    ],
+    [
+    'link' => '/catalog/ortopedicheskie-stelki/filter/for_who-is-4f58682d-9343-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Мужские',
+    'img' => '/upload/menu/insoles/male.png',
+    ],
+    [
+    'link' => '/catalog/ortopedicheskie-stelki/seriynye-stelki/',
+    'title' => 'Серийные',
+    'img' => '/upload/menu/insoles/serial.png',
+    ],
+    [
+    'link' => '/catalog/ortopedicheskie-stelki/filter/for_who-is-5eca3389-9343-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Для девочек',
+    'img' => '/upload/menu/insoles/girl.png',
+    ],
+    [
+    'link' => '/catalog/ortopedicheskie-stelki/filter/for_who-is-65d7783c-9343-11e9-8110-e03f49499b1d/apply/',
+    'title' => 'Для мальчиков',
+    'img' => '/upload/menu/insoles/boy.png',
+    ],
+    [
+    'link' => '/catalog/ortopedicheskie-stelki/korrektory-stopy/',
+    'title' => 'Вкладыши и корректоры стопы',
+    'img' => '/upload/menu/insoles/corrector.png',
+    ],
+];
+?>
+<div class="desktop_menu">
+    <div class="limiter">
+        <div class="new_menu">
+            <div class="new_menu_col">
+                <?foreach($specMenu as $s=>$smenu ){?>
+                <div class="new_menu_item">
+                    <a href="<?=$smenu['link']?>" class="image"><img src="<?=$smenu['img']?>"/></a>
+                    <a href="<?=$smenu['link']?>" class="title"><?=$smenu['title']?></a>
+                </div>
+                <?}?>
+            </div>
+            <div class="new_menu_col">
+                <?if ($nextElement['ADDLINK'] && $nextElement['ADDPHOTO'] && !in_array(SITE_ID, ['s5','s8'])) {?>
+                <div class="new_menu_item">
+                    <a href="<?=$nextElement['ADDLINK']?>" class="image spec"><img src="<?=$nextElement['ADDPHOTO']['SRC']?>"/></a>
+                    <a href="<?=$nextElement['ADDLINK']?>" class="title"><?=$nextElement['ADDNAME']?></a>
+                </div>
+                <?}?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile_menu">
+    <div class="limiter">
+    <?foreach($specMenu as $next2Column):?>
+        <?if(!empty($next2Column)):?>
+            <ul class="nextColumn <?if($nextElement['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+                    <li>
+                        <a href="<?=$next2Column["link"]?>" class="menu2Link">
+                            <?=$next2Column["title"]?>
+                        </a>
+                    </li>
+            </ul>
+
+        <?endif;?>
+    <?endforeach;?>
+
+    <?if ($nextElement['ADDLINK'] && $nextElement['ADDPHOTO'] && !in_array(SITE_ID, ['s5','s8'])) {?>
+    <ul class="nextColumn <?if($nextElement['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+    <li>
+        <a href="<?=$nextElement['ADDLINK']?>" class="speclink menu2Link"><?=$nextElement['ADDNAME']?></a>
+    </li>
+    </ul>
+    <?}?>
+</div>
+</div>

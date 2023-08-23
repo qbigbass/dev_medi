@@ -1,0 +1,82 @@
+<?
+$specMenu = [
+    [
+    'link' => '/catalog/kompressionnyy-trikotazh/flebologicheskiy/',
+    'title' => 'Флебологический',
+    'img' => '/upload/menu/mkt/phlebological.jpg',
+    ],
+    [
+    'link' => '/catalog/kompressionnyy-trikotazh/filter/use_for-is-18c1d67c-da27-11e9-8114-e03f49499b1d/apply/',
+    'title' => 'Для беременных',
+    'img' => '/upload/menu/mkt/pregnant.jpg',
+    ],
+    [
+    'link' => '/catalog/odezhda-dlya-sporta/filter/kk-is-6e5c0336-7cb0-11e9-810f-e03f49499b1d/apply/',
+    'title' => 'Для спорта',
+    'img' => '/upload/menu/mkt/sport.jpg',
+    ],
+    [
+    'link' => '/catalog/kompressionnyy-trikotazh/tag/pri-limfaticheskikh-otyekakh/',
+    'title' => 'При лимфатических отеках',
+    'img' => '/upload/menu/mkt/lymphatic.jpg',
+    ],
+    [
+    'link' => '/catalog/kompressionnyy-trikotazh/gospitalnyy/',
+    'title' => 'Госпитальный трикотаж',
+    'img' => '/upload/menu/mkt/gosp.jpg',
+    ],
+    [
+    'link' => '/catalog/kompressionnyy-trikotazh/filter/series-is-6b9257d5-b91f-11e9-8113-e03f49499b1d/apply/',
+    'title' => 'Модная профилактика mJ-1',
+    'img' => '/upload/menu/mkt/fashion.jpg',
+    'additional' => '0'
+    ],
+];
+?>
+
+<div class="desktop_menu">
+    <div class="limiter">
+        <div class="new_menu">
+            <div class="new_menu_col">
+                <?foreach($specMenu as $s=>$smenu ){?>
+                <div class="new_menu_item">
+                    <a href="<?=$smenu['link']?>" class="image"><img src="<?=$smenu['img']?>"/></a>
+                    <a href="<?=$smenu['link']?>" class="title"><?=$smenu['title']?></a>
+                </div>
+                <?}?>
+            </div>
+            <div class="new_menu_col">
+                <?if ($arResult['ITEMS'][$ik]['ADDLINK'] && $arResult['ITEMS'][$ik]['ADDPHOTO']) {?>
+                <div class="new_menu_item">
+                    <a href="<?=$arResult['ITEMS'][$ik]['ADDLINK']?>" class="image spec"><img src="<?=$arResult['ITEMS'][$ik]['ADDPHOTO']['SRC']?>"/></a>
+                    <a href="<?=$arResult['ITEMS'][$ik]['ADDLINK']?>" class="title"><?=$arResult['ITEMS'][$ik]['ADDNAME']?></a>
+                </div>
+                <?}?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile_menu">
+    <div class="limiter">
+    <?foreach($specMenu as $next2Column):?>
+        <?if(!empty($next2Column)):?>
+            <ul class="nextColumn <?if($nextElement['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+                <li>
+                    <a href="<?=$next2Column["link"]?>" class="menu2Link <?=($next2Column["additional"] == '1' ? 'additional' : '' );?>">
+                        <?=$next2Column["title"]?>
+                    </a>
+                </li>
+            </ul>
+
+        <?endif;?>
+    <?endforeach;?>
+
+    <?if ($arResult['ITEMS'][$ik]['ADDLINK'] && $arResult['ITEMS'][$ik]['ADDPHOTO'] && in_array(SITE_ID, ['s1','s2','s6'])) {?>
+    <ul class="nextColumn <?if($arResult['ITEMS'][$ik]['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+    <li>
+        <a href="<?=$arResult['ITEMS'][$ik]['ADDLINK']?>" class="speclink menu2Link"><?=$arResult['ITEMS'][$ik]['ADDNAME']?></a>
+    </li>
+    </ul>
+    <?}?>
+</div>
+</div>

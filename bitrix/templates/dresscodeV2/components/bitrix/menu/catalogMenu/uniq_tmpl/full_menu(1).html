@@ -1,0 +1,56 @@
+<div id="menuCatalogSection">
+    <div class="menuSection">
+        <a href="<?=SITE_DIR?>catalog/" class="catalogButton"><span class="catalogButtonImage"></span></a>
+        <div class="drop">
+            <div class="limiter">
+                <ul class="menuSectionList">
+                    <?foreach($arResult["DROP_MENU"] as $nextElement):// __($nextElement);?>
+                        <li class="sectionColumn">
+                            <?
+                            $link = '';
+                            if (!empty($nextElement["UF_LINK"])){
+                                $link = $nextElement["UF_LINK"];
+                            }
+                            else{
+                                $link = $nextElement["CATLINK"]['SECTION_PAGE_URL'];
+
+                            }?>
+							<?if(!empty($nextElement["ICON"])):?>
+								<a href="<?=$link?>" class="picture">
+									<img src="<?=$nextElement["ICON"]["SRC"]?>" alt="<?=$nextElement["NAME"]?>">
+								</a>
+							<?endif;?>
+                            <div class="container">
+                                <a href="<?=$link?>" class="menuLink<?if ($nextElement["SELECTED"]):?> selected<?endif?>">
+                                    <?=$nextElement["NAME"]?>
+                                </a>
+                                <?
+                                // второй уровень
+                                if (!empty($nextElement['ELEMENTS']))
+                                {
+
+                                    foreach($nextElement['ELEMENTS'] as $k=> $sub){
+                                         
+
+                                            $sublink = '';
+                                            if (!empty($sub["UF_LINK"])){
+                                                $sublink = $sub["UF_LINK"];
+                                            }
+                                            else{
+                                                $sublink = $sub["CATLINK"]['SECTION_PAGE_URL'];
+
+                                            }?>
+                                            <a href="<?=$sublink?>" class="submenuLink <?if ($sub["SELECTED"]):?> selected<?endif?> <?if ($sub["UF_ADDITIONAL"]):?> magenta<?endif?>">
+                                                <?=$sub["NAME"]?>
+                                            </a>
+                                        <?
+                                    }
+                                }?>
+                            </div>
+                        </li>
+                    <?endforeach;?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

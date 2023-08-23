@@ -1,0 +1,177 @@
+ .btnLeft,  .btnRight {
+    background: url(/bitrix/templates/dresscodeV2/images/slideArrowMicro.png) 0 0 no-repeat transparent;
+    transform: translateY(-50%);
+    position: absolute;
+    height: 48px;
+    width: 24px;
+    z-index: 22;
+    top: 50%;
+}
+ .btnRight {
+    background-position: 0 -48px;
+	right: 0px;
+}
+
+/****************
+
+
+.catalogTagItems::-webkit-scrollbar {
+	height: 12px;
+	width: 12px;
+}
+
+.catalogTagItems::-webkit-scrollbar-thumb {
+	background-color: #e20074;
+	border-radius: 20px;
+	border: 3px solid transparent;
+	background-clip: content-box;
+}
+.catalogTagItems::-webkit-scrollbar-button {
+	width: 12px;
+}
+.catalogTagItems::-webkit-scrollbar-button:decrement {
+	background: url('/bitrix/templates/dresscodeV2/components/medi/catalog.tags/.default/ls.png');	
+	background-position: center center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+.catalogTagItems::-webkit-scrollbar-button:increment {
+	background: url('/bitrix/templates/dresscodeV2/components/medi/catalog.tags/.default/rs.png');	
+	background-position: center center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+/* .catalogTagItems::after {
+	background: -moz-linear-gradient(left, rgba(255,255, 255, 0.5), #ffffff 100%);
+	background: -webkit-linear-gradient(left, rgba(255,255, 255, 0.5), #ffffff 100%);
+	background: -o-linear-gradient(left, rgba(255,255, 255, 0.5), #ffffff 100%);
+	background: -ms-linear-gradient(left, rgba(255,255, 255, 0.5), #ffffff 100%);
+	background: linear-gradient(to right, rgba(255,255, 255, 0.5), #ffffff 100%);
+	pointer-events: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: calc(100% - 16px);
+	content: '';
+	width: 35px;
+} */
+.catalogTagItemsWrap {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	position: relative;
+}
+/*.catalogTagItemsWrap .tagsSlidLeft {
+    display: inline-block;
+    height: 36px;
+    width: 36px;
+    background: url(/bitrix/components/dresscode/catalog.tags/images/btn-left.svg) no-repeat;
+	background-size: cover;
+	margin-right: 5px;
+	vertical-align: top;
+}
+.catalogTagItemsWrap .tagsSlidRight {
+    display: inline-block;
+    height: 36px;
+    width: 36px;
+    background: url(/bitrix/components/dresscode/catalog.tags/images/btn-right.svg) no-repeat;
+	background-size: cover;
+	margin-left: 5px;
+	vertical-align: top;
+}
+*/
+.catalogTagItems{
+	margin-bottom: 12px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	padding-left: 0;
+	width: 100%;
+	margin: 0;
+    display: inline-block;
+}
+
+.catalogTagItems .catalogTagItem{
+	vertical-align: middle;
+	display: inline-block;
+	margin-bottom: 12px;
+	margin-right: 12px;
+	font-size: 14px;
+}
+
+.catalogTagItems .catalogTagItem:last-child{
+	margin-right: 0px;
+}
+
+.catalogTagItems .catalogTagLink{
+	transition: all 0.2s ease-in-out;
+	display: block;
+	background-color: #ffffff;
+	text-decoration: none;
+	padding: 6px 12px;
+	border-radius: 5px;
+	border: 1px solid #9B9B9B;
+	color: #9B9B9B;
+}
+
+.catalogTagItems .catalogTagLink.selected{
+	font-family: 'robotomedium';
+	background-color: #e20074;
+	border-color: #e20074;
+	color: #ffffff;
+}
+.catalogTagItems .catalogTagLink.selected:hover {
+	color: #ffffff;
+	filter: grayscale(10%);
+}
+
+.catalogTagItems .catalogTagLink.selected .reset{
+	display: inline-block;
+	margin-left: 6px;
+	font-size: 13px;
+	color: #ffffff;
+}
+
+.catalogTagItems .catalogTagLink:hover{
+	border-color: #e20074;
+	color: #e20074;
+}
+
+.catalogTagItems .catalogTagLink:active{
+	position: relative;
+	top: 1px;
+}
+
+.catalogTagItems .moreButton .catalogTagLink{
+	background-color: #ffffff;
+	border: 1px solid #e7e8ea;
+}
+
+.catalogTagItems .moreButton .catalogTagLink:hover{
+	background-color: #fbfbfb;
+}
+
+.catalogTagItems .catalogTagItem.showAll{
+	display: inline-block !important;
+}
+.catalogTagItems .desktopHidden{
+	display: none;
+}
+
+@media screen and (max-width: 767px){
+	.catalogTagItems .desktopHidden{
+		display: inline-block;
+	}
+	.catalogTagItem.moreButton {
+		display: none;
+	}
+	.catalogTagItems {
+		white-space: nowrap;
+	}
+}
+
+@media screen and (max-width: 600px){
+	.catalogTagItems .mobileHidden,
+	.catalogTagItems.mobileHidden{
+		display: none;
+	}
+}
