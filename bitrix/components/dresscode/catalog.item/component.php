@@ -42,15 +42,15 @@ $arParams["DISPLAY_BRAND"] = !empty($arParams["DISPLAY_BRAND"]) ? $arParams["DIS
 
 //clear undefined values after ajax
 foreach ($arParams as $inx => $paramValue) {
-    
+
     if (is_array($paramValue)) {
         $paramValue = $paramValue[0];
     }
-    
+
     if ($paramValue == "undefined") {
         unset($arParams[$inx]);
     }
-    
+
 }
 
 //clear not used params
@@ -114,7 +114,7 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
     //set from cache flag
     $arResult["FROM_CACHE"] = "Y";
 } elseif ($obExtraCache->StartDataCache()) {
-    
+
     //check include modules
     if (
         !\Bitrix\Main\Loader::includeModule("dw.deluxe")
@@ -124,43 +124,43 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
         || !\Bitrix\Main\Loader::includeModule("sale")
         || !\Bitrix\Main\Loader::includeModule("currency")
     ) {
-        
+
         $obExtraCache->AbortDataCache();
         ShowError("modules not installed!");
         return 0;
-        
+
     }
-    
+
     //currency params
     $opCurrency = ($arParams["CONVERT_CURRENCY"] == "Y" && !empty($arParams["CURRENCY_ID"])) ? $arParams["CURRENCY_ID"] : NULL;
-    
+
     // main array for product info
     $arElement = array();
     $arResult = array();
-    
+
     //set from cache flag
     $arElement["FROM_CACHE"] = "N";
-    
+
     //get parent product for current offer (if product id == offer id)
     $skuParentProduct = CCatalogSku::GetProductInfo($arParams["PRODUCT_ID"]);
-    
+
     //check exist offers for product
     $arContainOffers = CCatalogSKU::getExistOffers($arParams["PRODUCT_ID"], $arParams["IBLOCK_ID"]);
-    
-    
+
+
     $productContainOffers = !empty($arContainOffers) ? !empty($arContainOffers[$arParams["PRODUCT_ID"]]) : false;
-    
+
     //get parent product id
     if (!empty($skuParentProduct)) {
         $arElement["PARENT_PRODUCT_ID"] = $skuParentProduct["ID"];
         $arElement["PARENT_PRODUCT_IBLOCK_ID"] = $skuParentProduct["IBLOCK_ID"];
     }
-    
+
     // op = operation id
     //set id, iblock for calc sku
     $opIblockId = empty($skuParentProduct) ? $arParams["IBLOCK_ID"] : $arElement["PARENT_PRODUCT_IBLOCK_ID"];
     $opProductId = empty($skuParentProduct) ? $arParams["PRODUCT_ID"] : $arElement["PARENT_PRODUCT_ID"];
-    
+
     //main select fields
     $arSelect = array(
         "ID",
@@ -196,10 +196,10 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
         unset($arSelect['TIMESTAMP_X']);
         unset($arSelect['TAGS']);
     }
-    
+
     //prepare to select parent product from sku
     if (!empty($skuParentProduct) || !empty($productContainOffers)) {
-        
+
         //parent element filter
         $arFilter = array(
             "IBLOCK_ID" => $opIblockId,
@@ -208,22 +208,22 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             "ACTIVE" => "Y",
             "PROPERTY_REGION_VALUE" => $GLOBALS['medi']['region_cities'][SITE_ID]
         );
-        
+
         //show deactivated products
         if (!empty($arParams["SHOW_DEACTIVATED"]) && $arParams["SHOW_DEACTIVATED"] == "Y") {
             $arFilter["ACTIVE_DATE"] = "";
             $arFilter["ACTIVE"] = "";
         }
-        
+
         //select from base
         $rsBaseProduct = CIBlockElement::GetList(array(), $arFilter, false, false, $arSelect);
         if ($oBaseProduct = $rsBaseProduct->GetNextElement()) {
-            
+
             //write
             $arElement["PARENT_PRODUCT"] = $oBaseProduct->GetFields();
             $arElement["PARENT_PRODUCT"]["PROPERTIES"] = $oBaseProduct->GetProperties(array("sort" => "asc", "name" => "asc"), array("EMPTY" => "N"));
-            
-            
+
+
             if ($card != 'small') {
                 //set seo params from parent product
                 $seoValues = new \Bitrix\Iblock\InheritedProperty\ElementValues($arElement["PARENT_PRODUCT"]["IBLOCK_ID"], $arElement["PARENT_PRODUCT"]["ID"]);
@@ -231,38 +231,38 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             }
             //set iblock_id from parent product
             $arElement["IBLOCK_ID"] = $arElement["PARENT_PRODUCT"]["IBLOCK_ID"];
-            
+
             //set section id from parent product
             $arElement["IBLOCK_SECTION_ID"] = $arElement["PARENT_PRODUCT"]["IBLOCK_SECTION_ID"];
-            
+
             //set name from parent product
             $arElement["NAME"] = $arElement["PARENT_PRODUCT"]["NAME"];
-            
+
             //set name from parent product
             $arElement["DETAIL_PAGE_URL"] = $arElement["PARENT_PRODUCT"]["DETAIL_PAGE_URL"];
-            
-            
+
+
             if ($card != 'small') {
                 //set preview text from parent product
                 $arElement["PREVIEW_TEXT"] = $arElement["PARENT_PRODUCT"]["PREVIEW_TEXT"];
-                
+
                 //set detail text from parent product
                 $arElement["DETAIL_TEXT"] = $arElement["PARENT_PRODUCT"]["DETAIL_TEXT"];
                 $arElement["~DETAIL_TEXT"] = $arElement["PARENT_PRODUCT"]["~DETAIL_TEXT"];
             }
-            
+
             //set picture from parent product
             if (!empty($arElement["PARENT_PRODUCT"]["DETAIL_PICTURE"])) {
                 $arElement["PICTURE"] = CFile::ResizeImageGet($arElement["PARENT_PRODUCT"]["DETAIL_PICTURE"], array("width" => $arParams["PICTURE_WIDTH"], "height" => $arParams["PICTURE_HEIGHT"]), BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, $arParams["IMAGE_QUALITY"]);
             }
-            
-            
+
+
             if ($card != 'small') {
                 if (!empty($arElement["PARENT_PRODUCT"]["CANONICAL_PAGE_URL"])) {
                     $arElement["CANONICAL_PAGE_URL"] = $arElement["PARENT_PRODUCT"]["CANONICAL_PAGE_URL"];
                 }
             }
-            
+
             //edit buttons
             /*$arButtons = CIBlock::GetPanelButtons(
                 $arElement["PARENT_PRODUCT"]["IBLOCK_ID"],
@@ -277,23 +277,23 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             $arElement["PARENT_PRODUCT"]["EDIT_LINK"] = $arButtons["edit"]["edit_element"]["ACTION_URL"];
             $arElement["PARENT_PRODUCT"]["DELETE_LINK"] = $arButtons["edit"]["delete_element"]["ACTION_URL"];
             */
-            
-            
+
+
         }
-        
+
     }
-    
+
     if (!empty($arElement['PARENT_PRODUCT']['PROPERTIES']['ATT_BRAND']['VALUE'])) {
         $obElmBrand = CIBlockElement::GetList([], ["IBLOCK_ID" => $arElement['PARENT_PRODUCT']['IBLOCK_ID'], "ID" => $arElement['PARENT_PRODUCT']['ID']], false, false, ["PROPERTY_ATT_BRAND.NAME", "PROPERTY_ATT_BRAND.PROPERTY_SHOW_VALUE"]);
-        
+
         if ($arElmBrand = $obElmBrand->GetNext()) {
             //__($arElmBrand);
             $arElement['PARENT_PRODUCT']['BRAND'] = $arElmBrand['PROPERTY_ATT_BRAND_NAME'];
             $arElement['PARENT_PRODUCT']['BRAND_ACTIVE'] = $arElmBrand['PROPERTY_ATT_BRAND_PROPERTY_SHOW_VALUE_VALUE'];
         }
     }
-    
-    
+
+
     /*if (!empty($arElement['PARENT_PRODUCT']['PROPERTIES']['ATT_BRAND']['VALUE']))
     {
         $obElmBrand = CIBlockElement::GetList([], ["IBLOCK_ID"=>  $arElement['PARENT_PRODUCT']['IBLOCK_ID'], "ID" => $arElement['PARENT_PRODUCT']['ID']], false, false, ["PROPERTY_ATT_BRAND.NAME"] );
@@ -302,21 +302,21 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             $arElement['PARENT_PRODUCT']['BRAND'] = $arElmBrand['PROPERTY_ATT_BRAND_NAME'];
         }
     }*/
-    
+
     //prepare to select product from arParams
-    
+
     //if product has sku exist
     if (!empty($skuParentProduct) || !empty($productContainOffers)) {
-        
+
         //get sku iblock info
         $arOffersSkuInfo = CCatalogSKU::GetInfoByProductIBlock($opIblockId);
-        
+
         //set first sku offers
         $opFirstOfferId = !empty($skuParentProduct) ? $arParams["PRODUCT_ID"] : false;
-        
+
         //offers id filter
         $opOffersFilterId = !empty($arParams["AVAILABLE_OFFERS"]) ? $arParams["AVAILABLE_OFFERS"] : false;
-        
+
         //set sku params
         $arSkuParams = array(
             "PRODUCT_PRICE_CODE" => $arParams["PRODUCT_PRICE_CODE"],
@@ -326,36 +326,36 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             "PICTURE_WIDTH" => $arParams["PICTURE_WIDTH"],
             "IMAGE_QUALITY" => $arParams["IMAGE_QUALITY"]
         );
-        
+
         //combined mode
         if ($arElement["PARENT_PRODUCT"]["ACTIVE"] == "Y") {
             $arParams["SHOW_DEACTIVATED"] = "N";
             $arSkuParams["SHOW_DEACTIVATED"] = "N";
         }
-        
+
         //set filter for sku offers
         if (!empty($arParams["PRODUCT_SKU_FILTER"])) {
-            
+
             //clear section id for sku
             if (isset($arParams["PRODUCT_SKU_FILTER"]["SECTION_ID"])) {
                 unset($arParams["PRODUCT_SKU_FILTER"]["SECTION_ID"]);
             }
-            
+
             //clear tags
             if (isset($arParams["PRODUCT_SKU_FILTER"]["?TAGS"])) {
                 unset($arParams["PRODUCT_SKU_FILTER"]["?TAGS"]);
             }
-            
+
             //clear product's iblock id
             if (isset($arParams["PRODUCT_SKU_FILTER"]["IBLOCK_ID"])) {
                 unset($arParams["PRODUCT_SKU_FILTER"]["IBLOCK_ID"]);
             }
-            
+
             //save filter
             $arSkuParams["FILTER"] = $arParams["PRODUCT_SKU_FILTER"];
-            
+
         }
-        
+
         $arSkuOffersFromProduct = DwSkuOffers::getSkuFromProduct(
             $opProductId, // set main (parent) product id
             $opIblockId, // set main (parent) iblock id
@@ -367,70 +367,70 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
         );
         //set result from sku offers
         if (!empty($arSkuOffersFromProduct)) {
-            
+
             if (!empty($arElement)) {
-                
+
                 //merge properties (parent product & main product)
                 $arSkuOffersFromProduct["PROPERTIES"] = array_merge($arElement["PARENT_PRODUCT"]["PROPERTIES"], $arSkuOffersFromProduct["PROPERTIES"]);
-                
+
                 //merge parent product & sku offer
                 $arElement = array_merge($arElement, $arSkuOffersFromProduct);
-                
+
                 //create display properties
                 // foreach ($arElement["PROPERTIES"] as $arNextProperty){
                 // 	// $arElement["DISPLAY_PROPERTIES"][$arNextProperty["CODE"]] = CIBlockFormatProperties::GetDisplayValue($arElement, $arNextProperty, "catalog_out");
                 // }
-                
+
             }
-            
+
             //info from sku iblock
             $arElement["SKU_INFO"] = $arOffersSkuInfo;
-            
+
             // if parent and base product image not found
             if (empty($arElement["PICTURE"])) {
                 $arElement["PICTURE"]["src"] = SITE_TEMPLATE_PATH . "/images/empty.png";
             }
-            
+
             //target cache
             global $CACHE_MANAGER;
-            
+
             //start
             $CACHE_MANAGER->StartTagCache($cacheDir);
             $CACHE_MANAGER->RegisterTag("iblock_id_" . $arElement["IBLOCK_ID"]);
-            
+
             //target cache for parent iblock
             if (!empty($arElement["PARENT_PRODUCT_IBLOCK_ID"])) {
                 $CACHE_MANAGER->RegisterTag("iblock_id_" . $arElement["PARENT_PRODUCT_IBLOCK_ID"]);
             }
-            
+
             //end
             $CACHE_MANAGER->EndTagCache();
-            
+
         } // else element not found
         else {
-            
+
             //abort cache
             $obExtraCache->AbortDataCache();
-            
+
             //clear
             $arElement = array();
-            
+
             //404 message
             if ($arParams["DETAIL_ELEMENT"] == "Y") {
                 Iblock\Component\Tools::process404(
-                    trim($arParams["MESSAGE_404"]) ?: GetMessage("CATALOG_ITEM_NOT_FOUND")
+                      trim($arParams["MESSAGE_404"]) ?: GetMessage("CATALOG_ITEM_NOT_FOUND")
                     , true
                     , $arParams["SET_STATUS_404"] === "Y"
                     , $arParams["SHOW_404"] === "Y"
                     , $arParams["FILE_404"]
                 );
             }
-            
+
         }
-        
+
     } //product not have sku
     else {
-        
+
         //element filter
         $arFilter = array(
             "IBLOCK_ID" => $opIblockId,
@@ -439,45 +439,45 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             "ACTIVE" => "Y",
             "PROPERTY_REGION_VALUE" => $GLOBALS['medi']['region_cities'][SITE_ID]
         );
-        
+
         //show deactivated products
         if (!empty($arParams["SHOW_DEACTIVATED"]) && $arParams["SHOW_DEACTIVATED"] == "Y") {
             $arFilter["ACTIVE_DATE"] = "";
             $arFilter["ACTIVE"] = "";
         }
-        
+
         //select from base
         $res = CIBlockElement::GetList(array(), $arFilter, false, false, $arSelect);
         if ($ob = $res->GetNextElement()) {
-            
+
             //write
             $arElement = array_merge($arElement, $ob->GetFields());
             $arElement["PROPERTIES"] = $ob->GetProperties(array("sort" => "asc", "name" => "asc"), array("EMPTY" => "N"));
             $arElement["DISPLAY_PROPERTIES"] = array();
-            
+
             //merge properties (parent product & main product)
             if (!empty($skuParentProduct)) {
                 $arElement["PROPERTIES"] = array_merge($arElement["PARENT_PRODUCT"]["PROPERTIES"], $arElement["PROPERTIES"]);
             }
-            
+
             // //create display properties
             // foreach ($arElement["PROPERTIES"] as $arNextProperty){
             // 	$arElement["DISPLAY_PROPERTIES"][$arNextProperty["CODE"]] = CIBlockFormatProperties::GetDisplayValue($arElement, $arNextProperty, "catalog_out");
             // }
-            
+
             if (!empty($arElement['PROPERTIES']['ATT_BRAND']['VALUE'])) {
                 $obElmBrand = CIBlockElement::GetList([], ["IBLOCK_ID" => $arElement['IBLOCK_ID'], "ID" => $arElement['ID']], false, false, ["PROPERTY_ATT_BRAND.NAME", "PROPERTY_ATT_BRAND.PROPERTY_SHOW_VALUE"]);
-                
+
                 if ($arElmBrand = $obElmBrand->GetNext()) {
                     $arElement['BRAND'] = $arElmBrand['PROPERTY_ATT_BRAND_NAME'];
                     $arElement['BRAND_ACTIVE'] = $arElmBrand['PROPERTY_ATT_BRAND_PROPERTY_SHOW_VALUE_VALUE'];
                 }
             }
-            
+
             //get sku info from current iblock
             $mainIblockId = !empty($arElement["PARENT_PRODUCT_IBLOCK_ID"]) ? $arElement["PARENT_PRODUCT_IBLOCK_ID"] : $arElement["IBLOCK_ID"];
             $arElement["SKU_INFO"] = CCatalogSKU::GetInfoByProductIBlock($mainIblockId);
-            
+
             //picture
             if (!empty($arElement["DETAIL_PICTURE"])) {
                 $arElement["PICTURE"] = CFile::ResizeImageGet($arElement["DETAIL_PICTURE"], array("width" => $arParams["PICTURE_WIDTH"], "height" => $arParams["PICTURE_HEIGHT"]), BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, $arParams["IMAGE_QUALITY"]);
@@ -487,32 +487,32 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
                     $arElement["PICTURE"]["src"] = SITE_TEMPLATE_PATH . "/images/empty.png";
                 }
             }
-            
+
             //get price info
             $arElement["EXTRA_SETTINGS"]["PRODUCT_PRICE_ALLOW"] = array();
             $arElement["EXTRA_SETTINGS"]["PRODUCT_PRICE_ALLOW_FILTER"] = array();
-            
+
             if (!empty($arParams["PRODUCT_PRICE_CODE"])) {
-                
+
                 //get available prices code & id
                 $arPricesInfo = DwPrices::getPriceInfo($arParams["PRODUCT_PRICE_CODE"], $arElement["IBLOCK_ID"]);
                 if (!empty($arPricesInfo)) {
                     $arElement["EXTRA_SETTINGS"]["PRODUCT_PRICE_ALLOW"] = $arPricesInfo["ALLOW"];
                     $arElement["EXTRA_SETTINGS"]["PRODUCT_PRICE_ALLOW_FILTER"] = $arPricesInfo["ALLOW_FILTER"];
                 }
-                
+
             }
-            
+
             //get prices
             $arElement["PRICE"] = DwPrices::getPricesByProductId($arElement["ID"], $arElement["EXTRA_SETTINGS"]["PRODUCT_PRICE_ALLOW"], $arElement["EXTRA_SETTINGS"]["PRODUCT_PRICE_ALLOW_FILTER"], $arParams["PRODUCT_PRICE_CODE"], $arElement["IBLOCK_ID"], $opCurrency);
-            
+
             //if > 0 display [?] for more price table
             $arElement["EXTRA_SETTINGS"]["COUNT_PRICES"] = $arElement["PRICE"]["COUNT_PRICES"];
-            
+
             //set base currency
             $arElement["EXTRA_SETTINGS"]["CURRENCY"] = empty($opCurrency) ? $arElement["PRICE"]["RESULT_PRICE"]["CURRENCY"] : $opCurrency;
-            
-            
+
+
             //check for complect
             /*$rsComplect = CCatalogProductSet::getList(
                 array("SORT" => "ASC"),
@@ -537,7 +537,7 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
                     }
                 }
             }*/
-            
+
             //get measures for product
             /*$rsMeasure = CCatalogMeasure::getList(
                 array(),
@@ -572,11 +572,11 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
                 }
             }*/
             $arElement["EXTRA_SETTINGS"]["BASKET_STEP"] = 1;
-            
+
             //set seo params
             $seoValues = new \Bitrix\Iblock\InheritedProperty\ElementValues($arElement["IBLOCK_ID"], $arElement["ID"]);
             $arElement["IPROPERTY_VALUES"] = $seoValues->getValues();
-            
+
             //edit buttons
             /*$arButtons = CIBlock::GetPanelButtons(
                 $arElement["IBLOCK_ID"],
@@ -590,50 +590,50 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
 
             $arElement["EDIT_LINK"] = $arButtons["edit"]["edit_element"]["ACTION_URL"];
             $arElement["DELETE_LINK"] = $arButtons["edit"]["delete_element"]["ACTION_URL"];*/
-            
+
             //target cache
             global $CACHE_MANAGER;
             $CACHE_MANAGER->StartTagCache($cacheDir);
             $CACHE_MANAGER->RegisterTag("iblock_id_" . $arElement["IBLOCK_ID"]);
             $CACHE_MANAGER->EndTagCache();
-            
+
         } // else element not found
         else {
-            
+
             //404 message
             if ($arParams["DETAIL_ELEMENT"] == "Y") {
                 Iblock\Component\Tools::process404(
-                    trim($arParams["MESSAGE_404"]) ?: GetMessage("CATALOG_ITEM_NOT_FOUND")
+                      trim($arParams["MESSAGE_404"]) ?: GetMessage("CATALOG_ITEM_NOT_FOUND")
                     , true
                     , $arParams["SET_STATUS_404"] === "Y"
                     , $arParams["SHOW_404"] === "Y"
                     , $arParams["FILE_404"]
                 );
             }
-            
+
             $obExtraCache->AbortDataCache();
-            
+
         }
-        
+
     }//
-    
+
     if (!empty($arElement)) {
-        
+
         // определяем корневую категорию
         $arSects = [];
         $nav = CIBlockSection::GetNavChain(false, $arElement['PARENT_PRODUCT']['IBLOCK_SECTION_ID']);
         while ($arSectionPath = $nav->GetNext()) {
             $arSects[] = $arSectionPath;
-            
+
         }
-        
+
         // проверка доступности товара на основных складах
         //if (!defined("SITE_ID")) define("SITE_ID", "s1");
-        
+
         if ($arElement['CATALOG_QUANTITY'] > 0) {
             $sumAmount = 0; // общее количество товара в салонах
             $mainStoreAmount = 0; // количество на складах
-            
+
             // Для обуви  подключаем доп.склады с флагом UF_SHOES_STORE
             if ($arSects[0]['ID'] == 88) {
                 $filter = array(
@@ -654,7 +654,7 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
                 );
             }
             if (SITE_ID == 's2') $filter['SITE_ID'] = SITE_ID;
-            
+
             $rsProps = CCatalogStore::GetList(
                 array('TITLE' => 'ASC', 'ID' => 'ASC'),
                 $filter,
@@ -665,23 +665,23 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             while ($mStore = $rsProps->GetNext()) {
                 $mainStoreAmount += $mStore['PRODUCT_AMOUNT'];
             }
-            
+
             // исключить онлайн продажу, только бронь в салоне
             $excl_ids = ["41078", "41079", "41080", "41081", "41082", "41083", "41084", "41085", "41086"];
-            
+
             if (in_array($arElement["ID"], $excl_ids)) {
                 $mainStoreAmount = 0;
             }
-            
+
             if ($mainStoreAmount <= 0) {
                 $arElement['CATALOG_AVAILABLE'] = "N";
                 $arElement['CAN_BUY'] = "N";
                 $arElement["CATALOG_QUANTITY"] = "0";
             }
         }
-        
+
         //extra
-        
+
         //timer
         /*$arElement["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"] = $this->randString();
         if(!empty($arElement["PROPERTIES"]["TIMER_DATE"]["VALUE"])){
@@ -695,16 +695,16 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
 */
         //save cache
         $obExtraCache->EndDataCache($arElement);
-        
+
         //drop
         unset($obExtraCache);
-        
+
         //write end array
         $arResult = $arElement;
         unset($arElement);
-        
+
     }
-    
+
 }
 
 //check include modules
@@ -726,7 +726,7 @@ $extraParams = array(
 //get extra content (section info, more pictures, brand info, etc//)
 if ($card != 'small') {
     $extraContent = DwItemInfo::get_extra_content($arParams["CACHE_TIME"], $arParams["CACHE_TYPE"], $cacheID, $cacheDir, $extraParams, $arParams, $arResult, $opCurrency);
-    
+
     if (!empty($extraContent)) {
         $arResult = $extraContent;
     }
@@ -740,14 +740,14 @@ if ($card != 'small') {
 
 //no cache
 if (!empty($arResult)) {
-    
-    
+
+
     //element seo values
     $elementTitle = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] : $arResult["NAME"]));
     $elementBrowserTitle = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"] : $arResult["NAME"]));
     $elementMetaKeywords = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_META_KEYWORDS"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_META_KEYWORDS"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_KEYWORDS"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_KEYWORDS"] : ""));
     $elementMetaDescription = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"] : "")) . ' 📞 Звоните +7 495 225-06-00.';
-    
+
     //title params
     if (!empty($arParams["SET_TITLE"]) && $arParams["SET_TITLE"] == "Y") {
         $arTitleOptions = array(
@@ -756,32 +756,32 @@ if (!empty($arResult)) {
             "COMPONENT_NAME" => $this->getName(),
         );
     }
-    
+
     //page title
     if (!empty($arParams["SET_TITLE"]) && $arParams["SET_TITLE"] == "Y" && !empty($elementTitle)) {
         $APPLICATION->SetTitle($elementTitle, $arTitleOptions);
     }
-    
+
     //browser title
     if ($arParams["SET_BROWSER_TITLE"] == "Y") {
         if (!empty($elementBrowserTitle)) {
             $APPLICATION->SetPageProperty("title", $elementBrowserTitle, $arTitleOptions);
         }
     }
-    
+
     //meta keywords
     if ($arParams["SET_META_KEYWORDS"] == "Y") {
         $APPLICATION->SetPageProperty("keywords", $elementMetaKeywords, $arTitleOptions);
     }
-    
+
     //meta description
     if ($arParams["SET_META_DESCRIPTION"] == "Y") {
         $APPLICATION->SetPageProperty("description", $elementMetaDescription, $arTitleOptions);
     }
-    
+
     //nav chain section
     if ($arParams["ADD_SECTIONS_CHAIN"] == "Y") {
-        
+
         //get section from db
         if (empty($arParams["SECTION_ID"]) && !empty($arParams["SECTION_CODE"])) {
             $dbSection = CIBlockSection::GetList(array(), array("CODE" => $arParams["SECTION_CODE"]), false);
@@ -790,43 +790,43 @@ if (!empty($arResult)) {
                 $arParams["SECTION_ID"] = $arResult["SECTION"]["ID"];
             }
         }
-        
+
         if (!empty($arResult["SECTION_PATH_LIST"])) {
             foreach ($arResult["SECTION_PATH_LIST"] as $arPath) {
-                
+
                 if (!empty($arPath["UF_SHOW_SKU_TABLE"])) {
                     $arResult["SHOW_SKU_TABLE"] = $arPath["UF_SHOW_SKU_TABLE"];
                 }
-                
+
                 $ipropValues = new \Bitrix\Iblock\InheritedProperty\SectionValues($arParams["IBLOCK_ID"], $arPath["ID"]);
                 $arPath["IPROPERTY_VALUES"] = $ipropValues->getValues();
-                
+
                 if (!empty($arPath["IPROPERTY_VALUES"]["SECTION_PAGE_TITLE"])) {
                     $APPLICATION->AddChainItem($arPath["IPROPERTY_VALUES"]["SECTION_PAGE_TITLE"], $arPath["~SECTION_PAGE_URL"]);
                 } else {
                     $APPLICATION->AddChainItem($arPath["NAME"], $arPath["~SECTION_PAGE_URL"]);
                 }
-                
+
             }
         }
-        
+
     }
-    
+
     //canonical
     if ($arParams["SET_CANONICAL_URL"] == "Y") {
-        
+
         //set canonical var from sku parent product
         if (!empty($arResult["PARENT_PRODUCT"]["CANONICAL_PAGE_URL"])) {
             $arResult["CANONICAL_PAGE_URL"] = $arResult["PARENT_PRODUCT"]["CANONICAL_PAGE_URL"];
         }
-        
+
         //add head
         if (!empty($arResult["CANONICAL_PAGE_URL"])) {
             $APPLICATION->AddHeadString('<link href="' . $arResult["CANONICAL_PAGE_URL"] . '" rel="canonical" />', true);
         }
-        
+
     }
-    
+
     //Open Graph
     if ($arParams["ADD_OPEN_GRAPH"] == "Y") {
         $APPLICATION->AddHeadString('<meta property="og:title" content="' . $arResult["NAME"] . '" />');
@@ -837,17 +837,17 @@ if (!empty($arResult)) {
             $APPLICATION->AddHeadString('<meta property="og:image" content="' . (CMain::IsHTTPS() ? "https://" : "http://") . SITE_SERVER_NAME . $arResult["IMAGES"][0]["LARGE_IMAGE"]["SRC"] . '" />');
         }
     }
-    
+
     //nav chain element
     if ($arParams["ADD_ELEMENT_CHAIN"]) {
         $APPLICATION->AddChainItem($elementTitle);
     }
-    
+
     //last modified
     if ($arParams["SET_LAST_MODIFIED"] && $arResult["TIMESTAMP_X"]) {
         Context::getCurrent()->getResponse()->setLastModified(DateTime::createFromUserTime($arResult["TIMESTAMP_X"]));
     }
-    
+
     //viewed product
     /*if($arParams["SET_VIEWED_IN_COMPONENT"] == "Y"){
 
@@ -877,13 +877,12 @@ if (!empty($arResult)) {
         );
 
     }*/
-    
+
     //clear resultCacheKeys
     $this->setResultCacheKeys(array("CANONICAL_PAGE_URL"));
-    
+
     //include component template
     $this->IncludeComponentTemplate();
-    
-}
 
+}
 
