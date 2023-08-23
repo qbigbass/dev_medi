@@ -7344,7 +7344,7 @@ body.panels_white .homeCatalog2 #captionCarousel:before {
     .product .middle {
         line-height: 18px;
     }
-    
+
     .product .price .measure {
         font-size: 15px;
     }
@@ -11749,22 +11749,6 @@ a.favorites_link.has_items .count {
     }
 }
 
-/* Стиль для фиксированной шапки */
-@media screen and (min-width: 1024px) {
-    body {
-        padding-top: 201px;
-    }
-    header {
-        width: 100%;
-        z-index: 1000;
-        position: fixed;
-        left: 0;
-        top: 0;
-    }
-    .fixed-header #elementTools.fixed .fixContainer {
-        margin-top: 150px;
-    }
-}
 /* Стиль для slick-слайдера в КТ */
 .pictureSlider,
 #elementContainer #pictureContainer .pictureSlider {
@@ -11890,7 +11874,7 @@ a.favorites_link.has_items .count {
     .product .cartButtons a.scan,
     .product .cartButtons a.greyBigButton  {
         font-size: 10px;
-        min-width: unset;
+        /* min-width: unset; */
     }
 }
 @media (max-width: 492px) {
@@ -11923,6 +11907,6 @@ a.favorites_link.has_items .count {
 @media (max-width: 404px) {
     .product .cartButtons a.greyBigButton ,
     .product .cartButtons a.scan {
-        line-height: 14px;
+        /*  line-height: 14px; */
     }
 }

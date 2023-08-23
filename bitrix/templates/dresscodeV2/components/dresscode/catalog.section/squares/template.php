@@ -54,6 +54,9 @@ global $nUserID; ?>
             //lazy load
             checkLazyItems();
         </script>
+        <script>
+            slickItems();
+        </script>
         <? if (!empty($arResult['ITEMS'])) {
             
             $cItems = [];

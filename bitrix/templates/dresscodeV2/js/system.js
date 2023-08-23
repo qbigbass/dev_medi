@@ -42,8 +42,34 @@ var checkLazyItems = function () {
                 $item.attr("src", lazyPath);
             });
         }
-
     });
+}
+
+var slickItems = function() {
+    var items = $('.single-item');
+    var windowInnerWidth = window.innerWidth;
+    if (windowInnerWidth <= 1024) {
+        setTimeout(function () {
+            $.each(items, function () {
+                if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
+                    $(this).slick({
+                        dots: true,
+                        arrows:false,
+                        slidesToShow: 1,
+                        adaptiveHeight: true
+                    });
+
+                    $(this).on("touchstart", function(){
+                        $(this).parents('.productTable').find('.item_colors').hide();
+                    });
+                    $(this).on("touchend", function(){
+                        $(this).parents('.productTable').find('.item_colors').show();
+                    });
+                }
+            });
+
+        }, 500);
+    }
 }
 
 var changeAddCartButton = function (jsonData) {

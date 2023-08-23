@@ -85,16 +85,19 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
 						</div>*/ ?>
                             <? if (!empty($arResult["IMAGES"])): ?>
                                 <div id="pictureContainer">
-                                    <div class="pictureSlider">
+                                    <div class="pictureSlider detail_product <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
                                         <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
                                             <div class="item">
                                                 <a href="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"
-                                                   title="<?= GetMessage("CATALOG_ELEMENT_ZOOM") ?>" class="zoom"
+                                                   title="<?= GetMessage("CATALOG_ELEMENT_ZOOM") ?>"
+                                                   class="zoom"
                                                    data-small-picture="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
-                                                   data-large-picture="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"><img
-                                                            src="<?= $arNextPicture["MEDIUM_IMAGE"]["SRC"] ?>"
-                                                            alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>"
-                                                            title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>"></a>
+                                                   data-large-picture="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>">
+                                                    <img
+                                                        src="<?= $arNextPicture["MEDIUM_IMAGE"]["SRC"] ?>"
+                                                        alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>"
+                                                        title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_DETAIL_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?><? if (intval($ipr) > 0): ?> <?= GetMessage("CATALOG_ELEMENT_DETAIL_PICTURE_LABEL") ?> <?= $ipr + 1 ?><? endif; ?>">
+                                                </a>
                                             </div>
                                         <? endforeach; ?>
                                     </div>
@@ -104,7 +107,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                         <div class="slideBox">
                                             <? if (empty($arResult["IMAGES"]) || count($arResult["IMAGES"]) > 1): ?>
                                                 <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
-                                                    <div class="item">
+                                                    <div class="item" data-pic-index="<?=$ipr?>">
                                                         <a href="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"
                                                            data-large-picture="<?= $arNextPicture["LARGE_IMAGE"]["SRC"] ?>"
                                                            data-small-picture="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>">
@@ -129,48 +132,45 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                         </div>
                         <div class="secondCol col<? if (empty($arResult["PREVIEW_TEXT"]) && empty($arResult["SKU_OFFERS"]) && empty($arResult["PROPERTIES"])): ?> hide<? endif; ?>">
                             <div class="reviewsBtnWrap">
-                                <? /*if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
-							<div class="row">
-								<a class="label" href="#catalogReviews">
-									<img src="<?=SITE_TEMPLATE_PATH?>/images/reviews.png" alt="" class="icon">
-									<span class="<?if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>countReviewsTools<?endif;?>"><?=GetMessage("REVIEWS_COUNT")?> <?=!empty($arResult["REVIEWS"]) ? count($arResult["REVIEWS"]) : 0?></span>
-									<?/*<div class="rating">
-									  <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
-									  <i class="h"></i>
-									</div>* /?>
-								</a>
-							</div>
-							<?/*if($arParams["SHOW_REVIEW_FORM"]):?>
-								<div class="row">
-									<a href="#" class="reviewAddButton label"><img src="<?=SITE_TEMPLATE_PATH?>/images/addReviewSmall.png" alt="<?=GetMessage("REVIEWS_ADD")?>" class="icon"><span class="labelDotted"><?=GetMessage("REVIEWS_ADD")?></span></a>
-								</div>
-							<?endif;* /?>
-
-							<?endif;*/ ?>
-                                <div class="brandImageWrap">
-                                    <? if (!empty($arResult["BRAND"]["PICTURE"])): ?>
-                                        <? if ($arResult['PARENT_PRODUCT']['BRAND_ACTIVE'] == 'Да') { ?>
-                                            <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
-                                                <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                     alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
-                                        <? } elseif ($arResult['BRAND_ACTIVE'] == 'Да') { ?>
-                                            <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
-                                                <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
-                                                     alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
-                                        <? } else { ?>
-                                            <span class="brandImage"><img
+                                <div class="brand-article-wrapper">
+                                    <div class="brandImageWrap">
+                                        <? if (!empty($arResult["BRAND"]["PICTURE"])): ?>
+                                            <? if ($arResult['PARENT_PRODUCT']['BRAND_ACTIVE'] == 'Да') { ?>
+                                                <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
+                                                    <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
+                                            <? } elseif ($arResult['BRAND_ACTIVE'] == 'Да') { ?>
+                                                <a href="<?= $arResult["BRAND"]["DETAIL_PAGE_URL"] ?>" class="brandImage">
+                                                    <img src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
+                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></a>
+                                            <? } else { ?>
+                                                <span class="brandImage"><img
                                                         src="<?= $arResult["BRAND"]["PICTURE"]["src"] ?>"
                                                         alt="<?= $arResult["BRAND"]["NAME"] ?>"></span>
-                                        <? } ?>
-                                    <? endif; ?>
-                                </div>
-                                
-                                <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
-                                    <div class="row article">
-                                        <?= GetMessage("CATALOG_ART_LABEL") ?><span class="changeArticle"
-                                                                                    data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"><?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?></span>
+                                            <? } ?>
+                                        <? endif; ?>
                                     </div>
-                                <? endif; ?>
+                                    <div class="article-rating-wrapper">
+                                        <? if (!empty($arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])): ?>
+                                            <div class="row article">
+                                                <?= GetMessage("CATALOG_ART_LABEL") ?>
+                                                <span
+                                                    class="changeArticle"
+                                                    data-first-value="<?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>"
+                                                ><?= $arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?>
+			                                </span>
+                                            </div>
+                                        <? endif; ?>
+                                        <? if(!empty($arResult["REVIEWS"]) && count($arResult["REVIEWS"]) > 0):?>
+                                            <div class="rating-wrapper">
+                                                <div class="rating">
+                                                    <i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
+                                                    <i class="h"></i>
+                                                </div>
+                                            </div>
+                                        <?endif; ?>
+                                    </div>
+                                </div>
                             </div>
                             <? if (!empty($arResult["SKU_OFFERS"])): ?>
                                 <? if (!empty($arResult["SKU_PROPERTIES"]) && $level = 1): ?>
@@ -227,28 +227,28 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                                 $sizevideo = 1;
                                                                 ?>
                                                                 <nobr class="video_size_select"><span
-                                                                            class=" get_medi_popup_Window"
-                                                                            data-id="<?= $arResult['SIZE_VIDEO']['VALUE'] ?>"
-                                                                            data-title="Как снять мерки"
-                                                                            data-video="<?= $arResult['PROPERTIES']['SIZE_VIDEO'] ?>"><img
-                                                                                style="transform: translateY(6px); margin-right: 3px;"
-                                                                                width="20px"
-                                                                                src="/bitrix/templates/dresscodeV2/components/dresscode/catalog.item/detail/images/youtube.svg"></span><span
-                                                                            class="size_select get_medi_popup_Window"
-                                                                            data-id="<?= $arResult['SIZE_VIDEO']['VALUE'] ?>"
-                                                                            data-title="Как снять мерки"
-                                                                            data-video="<?= $arResult['PROPERTIES']['SIZE_VIDEO'] ?>"
-                                                                            id="GTM_size_videomap">как снять мерки</span>
+                                                                        class=" get_medi_popup_Window"
+                                                                        data-id="<?= $arResult['SIZE_VIDEO']['VALUE'] ?>"
+                                                                        data-title="Как снять мерки"
+                                                                        data-video="<?= $arResult['PROPERTIES']['SIZE_VIDEO'] ?>"><img
+                                                                            style="transform: translateY(6px); margin-right: 3px;"
+                                                                            width="20px"
+                                                                            src="/bitrix/templates/dresscodeV2/components/dresscode/catalog.item/detail/images/youtube.svg"></span><span
+                                                                        class="size_select get_medi_popup_Window"
+                                                                        data-id="<?= $arResult['SIZE_VIDEO']['VALUE'] ?>"
+                                                                        data-title="Как снять мерки"
+                                                                        data-video="<?= $arResult['PROPERTIES']['SIZE_VIDEO'] ?>"
+                                                                        id="GTM_size_videomap">как снять мерки</span>
                                                                 </nobr>
                                                                 <?
                                                             }
                                                         }
                                                         ?>
                                                         <?
-                                                        
+
                                                         if ($propName == 'COLOR')://  && array_intersect([75], $arResult['ALL_SECTIONS'])):
                                                             $color_file = str_replace(" ", "_", $arResult['PROPERTIES']['SERIES']['VALUE']);
-                                                            
+
                                                             if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/include/colors/' . $color_file . '.html')):
                                                                 $fvers = filemtime($_SERVER['DOCUMENT_ROOT'] . '/include/colors/' . $color_file . '.html');
                                                                 $this->addExternalCss($templateFolder . "/css/colors.css"); ?>
@@ -257,7 +257,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                                       class="palitra_link get_medi_popup_Window"
                                                                       data-title="Все доступные для заказа цвета изделия">палитра цветов medi</span>
                                                             <? endif; ?>
-                                                        
+
                                                         <?endif;
                                                         ?>
                                                     </div>
@@ -291,7 +291,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                                 </option>
                                                             <? endforeach; ?>
                                                         </select>
-                                                    
+
                                                     <? endif; ?>
                                                 </div>
                                             <? endif; ?>
@@ -307,8 +307,8 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             <? include($_SERVER["DOCUMENT_ROOT"] . "/" . $templateFolder . "/include/right_section.php"); ?>
                         </div>
                     </div>
-                    
-                    
+
+
                     <? // NOTE: SERVICES?>
                     <? if ($arParams["SHOW_SERVICES"] == "Y" && !empty($servicesFilter)): ?>
                         <? $APPLICATION->IncludeComponent(
@@ -394,7 +394,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             )
                         ); ?>
                     <? endif; ?>
-                    
+
                     <? // NOTE: OFFERS?>
                     <? if ($arParams["DISPLAY_OFFERS_TABLE"] == "Y" && !empty($arResult["SKU_OFFERS"])): ?>
                         <? if (
@@ -426,8 +426,8 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             ); ?>
                         <? endif; ?>
                     <? endif; ?>
-                    
-                    
+
+
                     <? // NOTE: COMPLECT?>
                     <? if (!empty($arResult["COMPLECT"]["ITEMS"])): ?>
                         <div id="complect">
@@ -441,15 +441,15 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                     <div class="complectListItemPicture">
                                                         <a href="<?= $arNextComplect["DETAIL_PAGE_URL"] ?>"
                                                            class="complectListItemPicLink"><img
-                                                                    src="<?= $arNextComplect["PICTURE"]["src"] ?>"
-                                                                    alt="<?= $arNextComplect["NAME"] ?>"></a>
+                                                                src="<?= $arNextComplect["PICTURE"]["src"] ?>"
+                                                                alt="<?= $arNextComplect["NAME"] ?>"></a>
                                                     </div>
                                                 </div>
                                                 <div class="complectListItemCelText">
                                                     <div class="complectListItemName">
                                                         <a href="<?= $arNextComplect["DETAIL_PAGE_URL"] ?>"
                                                            class="complectListItemLink"><span
-                                                                    class="middle"><?= $arNextComplect["NAME"] ?></span></a>
+                                                                class="middle"><?= $arNextComplect["NAME"] ?></span></a>
                                                     </div>
                                                     <a class="complectListItemPrice">
                                                         <?= $arNextComplect["PRICE"]["PRICE_FORMATED"] ?>
@@ -473,13 +473,13 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                     <s class="discount"><?= CCurrencyLang::CurrencyFormat($arResult["PRICE"]["RESULT_PRICE"]["BASE_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true) ?></s>
                                     <div class="complectResultEconomy">
                                         <?= GetMessage("CATALOG_ELEMENT_COMPLECT_ECONOMY") ?> <span
-                                                class="complectResultEconomyValue"><?= CCurrencyLang::CurrencyFormat($arResult["PRICE"]["RESULT_PRICE"]["DISCOUNT"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true) ?></span>
+                                            class="complectResultEconomyValue"><?= CCurrencyLang::CurrencyFormat($arResult["PRICE"]["RESULT_PRICE"]["DISCOUNT"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true) ?></span>
                                     </div>
                                 <? endif; ?>
                             </div>
                         </div>
                     <? endif; ?>
-                    
+
                     <? // NOTE: GIFTS?>
                     <? /*CBitrixComponent::includeComponentClass("bitrix:sale.products.gift");
 				$APPLICATION->IncludeComponent(
@@ -595,7 +595,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                         <div class="tabs-links">
                             <div class="tab-link active desc">Описание</div>
                             <div class="tab-link">Характеристики</div>
-                            
+
                             <? if ($arParams["HIDE_AVAILABLE_TAB"] != "Y" && !$arResult['DONT_SHOW_REST']): ?>
                                 <div class="tab-link salon" <?= ($arResult['SALON_AVAILABLE'] == 0 ? 'style="display:none;"' : '') ?>>
                                     Наличие в салонах (<?= $arResult['SALON_COUNT'] ?>)
@@ -617,7 +617,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
 
                                 <label for="chacor4">Описание</label>
                                 <div class="acor-body active">
-                                    
+
                                     <? if (!empty($arResult["VIDEO"])): ?>
                                         <div id="video">
 
@@ -637,7 +637,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                             </div>
                                         </div>
                                     <? endif; ?>
-                                    
+
                                     <? // NOTE: TECHNOLOGIES?>
                                     <? if (!empty($arResult['PROPERTIES']['TECHNOLOGIES']['VALUES_LIST'])): ?>
                                         <div id="tech">
@@ -673,7 +673,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
 
                                         </div>
                                     <? endif; ?>
-                                    
+
                                     <? if (!empty($arResult["DETAIL_TEXT"])): ?>
                                         <div id="detailText">
 
@@ -718,7 +718,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                 </div>
 
                             </div>
-                            
+
                             <? // NOTE: STORES AMOUNT;?>
                             <? if ($arParams["HIDE_AVAILABLE_TAB"] != "Y" && !$arResult['DONT_SHOW_REST']): ?>
 
@@ -746,7 +746,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                     0 => "TITLE",
                                                     1 => "ADDRESS",
                                                     2 => "DESCRIPTION",
-                                                    
+
                                                     4 => "EMAIL",
                                                     5 => "IMAGE_ID",
                                                     6 => "COORDINATES",
@@ -771,7 +771,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                         </div>
                                     </div>
                                     <script type="text/javascript">
-                                        var elementStoresComponentParams = <?=\Bitrix\Main\Web\Json::encode($arStoresParams)?>;
+                                      var elementStoresComponentParams = <?=\Bitrix\Main\Web\Json::encode($arStoresParams)?>;
                                     </script>
                                 </div>
                             <? endif; ?>
@@ -786,9 +786,9 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                             )</label>
                                         <div class="wrap acor-body">
                                             <div class="items">
-                                                
+
                                                 <? foreach ($arResult['PROPERTIES']["DOCS"] as $ifl1 => $arDocs):
-                                                    
+
                                                     if ($ifl1 == 'MANUAL_1C' || $ifl1 == 'DECLARATION_1C' || $ifl1 == 'SERT_1C') {
                                                         ?>
                                                         <? foreach ($arDocs as $ifl => $arFile): ?>
@@ -981,14 +981,14 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                         <textarea rows="10" cols="45" name="SHORTCOMINGS"
                                                                   maxlength="2000"></textarea>
                                                         <label><?= GetMessage("IMPRESSION") ?><span
-                                                                    class="required">*</span></label>
+                                                                class="required">*</span></label>
                                                         <textarea rows="10" cols="45" name="COMMENT" required
                                                                   maxlength="2000"></textarea>
                                                         <label><?= GetMessage("INTRODUCEYOURSELF") ?><span
-                                                                    class="required">*</span></label>
+                                                                class="required">*</span></label>
                                                         <input type="text" name="NAME" maxlength="50" required><a
-                                                                href="#" class="submit"
-                                                                data-id="<?= $arParams["REVIEW_IBLOCK_ID"] ?>"><?= GetMessage("SENDFEEDBACK") ?></a>
+                                                            href="#" class="submit"
+                                                            data-id="<?= $arParams["REVIEW_IBLOCK_ID"] ?>"><?= GetMessage("SENDFEEDBACK") ?></a>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="USED" id="usedInput" value=""/>
@@ -1008,7 +1008,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             </div>
                         </div>
                     </div>
-                    
+
                     <? if (!empty($arResult["ELEMENT_TAGS"]) && !empty($arParams["CATALOG_SHOW_TAGS"]) && $arParams["CATALOG_SHOW_TAGS"] == "Y"): ?>
                         <? $index = 1; ?>
                         <div id="detailTags"<? if ($arParams["HIDE_TAGS_ON_MOBILE"] == "Y"): ?> class="mobileHidden"<? endif; ?>>
@@ -1031,9 +1031,9 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             </div>
                         </div>
                     <? endif; ?>
-                    
-                    
-                    
+
+
+
                     <? // NOTE: RELATED?>
                     <? if ($arResult["SHOW_RELATED"] == "Y"): ?>
                         <div id="related" class="productsListName"
@@ -1127,14 +1127,14 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                             ); ?>
                         </div>
                     <? endif; ?>
-                    
-                    
+
+
                     <? // NOTE: SIMILAR ?>
                     <? if ($arResult["SHOW_SIMILAR"] == "Y"): ?>
                         <div id="similar" class="productsListName"
                              data-list-name="<?= GetMessage("CATALOG_ELEMENT_SIMILAR") ?>">
                             <h2 class="heading"><?= GetMessage("CATALOG_ELEMENT_SIMILAR") ?></h2>
-                            
+
                             <? $APPLICATION->IncludeComponent(
                                 "dresscode:catalog.section",
                                 "squares",
@@ -1249,24 +1249,24 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                         <? endif; ?>
                         <? if (!empty($arResult["PROPERTIES"]["TIMER_LOOP"]["VALUE"])): ?>
                             <script type="text/javascript">
-                                $(document).ready(function () {
-                                    $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
-                                        timerLoop: "<?=$arResult["PROPERTIES"]["TIMER_LOOP"]["VALUE"]?>",
-                                        <?if(empty($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"])):?>
-                                        startDate: "<?=MakeTimeStamp($arResult["DATE_CREATE"], "DD.MM.YYYY HH:MI:SS")?>"
-                                        <?else:?>
-                                        startDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
-                                        <?endif;?>
-                                    });
+                              $(document).ready(function () {
+                                $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
+                                  timerLoop: "<?=$arResult["PROPERTIES"]["TIMER_LOOP"]["VALUE"]?>",
+                                    <?if(empty($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"])):?>
+                                  startDate: "<?=MakeTimeStamp($arResult["DATE_CREATE"], "DD.MM.YYYY HH:MI:SS")?>"
+                                    <?else:?>
+                                  startDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
+                                    <?endif;?>
                                 });
+                              });
                             </script>
                         <? elseif (!empty($arResult["EXTRA_SETTINGS"]["SHOW_TIMER"]) && !empty($arResult["PROPERTIES"]["TIMER_DATE"]["VALUE"])): ?>
                             <script type="text/javascript">
-                                $(document).ready(function () {
-                                    $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
-                                        endDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
-                                    });
+                              $(document).ready(function () {
+                                $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
+                                  endDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
                                 });
+                              });
                             </script>
                         <? endif; ?>
                         <? require($_SERVER["DOCUMENT_ROOT"] . "/" . $templateFolder . "/include/right_section.php"); ?>
@@ -1349,14 +1349,14 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
 <script src="//yastatic.net/share2/share.js" charset="utf-8"></script>
 <script type="text/javascript">
 
-    var CATALOG_LANG = {
-        REVIEWS_HIDE: "<?=GetMessage("REVIEWS_HIDE")?>",
-        REVIEWS_SHOW: "<?=GetMessage("REVIEWS_SHOW")?>",
-        OLD_PRICE_LABEL: "<?=GetMessage("OLD_PRICE_LABEL")?>",
-    };
+  var CATALOG_LANG = {
+    REVIEWS_HIDE: "<?=GetMessage("REVIEWS_HIDE")?>",
+    REVIEWS_SHOW: "<?=GetMessage("REVIEWS_SHOW")?>",
+    OLD_PRICE_LABEL: "<?=GetMessage("OLD_PRICE_LABEL")?>",
+  };
 
-    var elementAjaxPath = "<?=$templateFolder . "/ajax.php"?>";
-    var _topMenuNoFixed = true;
+  var elementAjaxPath = "<?=$templateFolder . "/ajax.php"?>";
+  var _topMenuNoFixed = true;
 
 </script>
 
@@ -1370,76 +1370,86 @@ unset($secturl[1]);
 //__($_SERVER);
 ?>
 <script>
+  $(function () {
+    site_id = '<?=SITE_ID?>';
+    hh = 0;
     $(function () {
-        site_id = '<?=SITE_ID?>';
-        hh = 0;
-        $(function () {
-            $.ajax({
-                url: "/ajax/catalog/?action=time",
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    $time = parseInt(data) * 1000;
-                    var d = new Date($time);
-                    hh = d.getHours();
-                    if (hh >= 14) {
-                        $(".delivery_term").html("послезавтра");
-                    }
-                }
-            });
-        });
-    });
-</script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    dataLayer.push({
-        'ecommerce': {
-            'currencyCode': 'RUB',
-            'detail': {
-                'products': [{
-                    'name': '<?=!empty($arResult["PARENT_PRODUCT"]["NAME"]) ? $arResult["PARENT_PRODUCT"]["NAME"] : $arResult["NAME"]?>',
-                    'id': '<?=(!empty($arResult["PARENT_PRODUCT"]["ID"]) ? $arResult["PARENT_PRODUCT"]["ID"] : $arResult["ID"])?>',
-                    'price': '<?=$arResult["PRICE"]["RESULT_PRICE"]["BASE_PRICE"]?>',
-                    'brand': '<?=$arResult["BRAND"]["NAME"]?>',
-                    'category': '<?=implode("/", $secturl);?>',
-                    'variant': '<?=$arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]?>',
-                }]
-            },
-        },
-        'event': 'gtm-ee-event',
-        'gtm-ee-event-category': 'Enhanced Ecommerce',
-        'gtm-ee-event-action': 'Product Details',
-        'gtm-ee-event-non-interaction': 'True',
-    });
-    dataLayer.push({
-        'event': 'crto_productpage',
-        crto: {
-            'email': '<?=$nUserEmail?>',
-            'products': ['<?=(!empty($arResult["PARENT_PRODUCT"]["ID"]) ? $arResult["PARENT_PRODUCT"]["ID"] : $arResult["ID"])?>']
+      $.ajax({
+        url: "/ajax/catalog/?action=time",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+          $time = parseInt(data) * 1000;
+          var d = new Date($time);
+          hh = d.getHours();
+          if (hh >= 14) {
+            $(".delivery_term").html("послезавтра");
+          }
         }
+      });
     });
+  });
 </script>
 <script>
-    $(".tabs-content .m-question").click(function () {
-        var par = $(this).parents(".tab-content");
-        par.find(".answer").slideToggle();
-        par.find(".open-answer-btn").toggleClass('active');
-    });
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({
+    'ecommerce': {
+      'currencyCode': 'RUB',
+      'detail': {
+        'products': [{
+          'name': '<?=!empty($arResult["PARENT_PRODUCT"]["NAME"]) ? $arResult["PARENT_PRODUCT"]["NAME"] : $arResult["NAME"]?>',
+          'id': '<?=(!empty($arResult["PARENT_PRODUCT"]["ID"]) ? $arResult["PARENT_PRODUCT"]["ID"] : $arResult["ID"])?>',
+          'price': '<?=$arResult["PRICE"]["RESULT_PRICE"]["BASE_PRICE"]?>',
+          'brand': '<?=$arResult["BRAND"]["NAME"]?>',
+          'category': '<?=implode("/", $secturl);?>',
+          'variant': '<?=$arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]?>',
+        }]
+      },
+    },
+    'event': 'gtm-ee-event',
+    'gtm-ee-event-category': 'Enhanced Ecommerce',
+    'gtm-ee-event-action': 'Product Details',
+    'gtm-ee-event-non-interaction': 'True',
+  });
+  dataLayer.push({
+    'event': 'crto_productpage',
+    crto: {
+      'email': '<?=$nUserEmail?>',
+      'products': ['<?=(!empty($arResult["PARENT_PRODUCT"]["ID"]) ? $arResult["PARENT_PRODUCT"]["ID"] : $arResult["ID"])?>']
+    }
+  });
 </script>
 <script>
-    $(".available_link").click(function () {
-        $(".salon").addClass("active");
-        $(".stores ").addClass("active").show();
-        $("body").scrollTo(".stores", 500);
+  $(".tabs-content .m-question").click(function () {
+    var par = $(this).parents(".tab-content");
+    par.find(".answer").slideToggle();
+    par.find(".open-answer-btn").toggleClass('active');
+  });
+</script>
+<script>
+  $(".available_link").click(function () {
+    $(".salon").addClass("active");
+    $(".stores ").addClass("active").show();
+    $("body").scrollTo(".stores", 500);
 
-        return false;
-    });
+    return false;
+  });
 </script>
 
 <script>
-    $("#label5").on("click", function () {
-        $("#acor").attr('style', '');
+  $("#label5").on("click", function () {
+    $("#acor").attr('style', '');
+  });
+  $("#chacor4").click();
+  $("#chacor4").attr("checked", "checked");
+</script>
+<script>
+  var $pictureSlider = $("#pictureContainer .pictureSlider.detail_product");
+  $pictureSlider.on('afterChange', function(event, slick, currentSlide, nextSlide){
+    let currentIndexBigImg = currentSlide;
+    $('#moreImagesCarousel .slideBox .item').each(function(){
+      $(this).removeClass('selected');
     });
-    $("#chacor4").click();
-    $("#chacor4").attr("checked", "checked");
+    $('#moreImagesCarousel .slideBox .item[data-pic-index='+currentIndexBigImg+']').addClass('selected');
+  });
 </script>

@@ -10,29 +10,29 @@ use \Bitrix\Main\Loader;
 use \Bitrix\Highloadblock as HL;
 
 if (!empty($arResult)) {
-    
+
     if ($arParams['CACHE_TYPE'] === 'A') {
         $taggedCache = \Bitrix\Main\Application::getInstance()->getTaggedCache();
         $taggedCache->abortTagCache(); // сбрасываем стандартные теги
-        
+
         $tag = 'iblock_id_' . $arParams['IBLOCK_ID'] . '_chunk_' . intval($arResult['ID'] / IBLOCK_CHUNK_SIZE);
-        
+
         $taggedCache->startTagCache($this->__component->getCachePath());
         $taggedCache->registerTag($tag); // Ставим свой тег
     }
-    
+
     //include modules
     CModule::IncludeModule("catalog");
     CModule::IncludeModule("iblock");
     CModule::IncludeModule("sale");
-    
+
     //global vars
     global $USER;
-    
+
     // set vars
     $parentElementId = !empty($arResult["PARENT_PRODUCT"]) ? $arResult["PARENT_PRODUCT"]["ID"] : $arResult["ID"];
     $userId = $USER->GetID();
-    
+
     if (SITE_ID == 's2')
         $maxprice_id = 5;
     else
@@ -52,10 +52,10 @@ if (!empty($arResult)) {
         }
     }
     //__($arResult['IMAGES']);
-    
-    
+
+
     // наличие sku в салонах, для показа кнопки забронировать
-    
+
     $filter = array(
         "ACTIVE" => "Y",
         "PRODUCT_ID" => $arResult["ID"],
@@ -73,14 +73,14 @@ if (!empty($arResult)) {
     $arResult['SALON_COUNT'] = 0;
     while ($sStore = $rsProps->GetNext()) {
         $arResult['SALON_AVAILABLE'] += $sStore['PRODUCT_AMOUNT'];
-        
+
         if ($sStore['PRODUCT_AMOUNT'] > 0) {
             $arResult['SALON_COUNT']++;
         }
     }
     $sDeclension = new Declension('салона', 'салонов', 'салонов');
     $arResult['SALON_COUNT_STR'] = $arResult['SALON_COUNT'] . '&nbsp;' . $sDeclension->get($arResult["SALON_COUNT"]);
-    
+
     $arResult['SALON_COUNT_PICKUP'] = 0;
     $filter_pickup = array(
         "ACTIVE" => "Y",
@@ -99,14 +99,14 @@ if (!empty($arResult)) {
     }
     $sDeclension = new Declension('салона', 'салонов', 'салонов');
     $arResult['SALON_COUNT_PICKUP_STR'] = $arResult['SALON_COUNT_PICKUP'] . '&nbsp;' . $sDeclension->get($arResult["SALON_COUNT_PICKUP"]);
-    
+
     // blocks
-    
+
     //get complect for product
     /*
         $arComplectID = array();
         $arResult["COMPLECT"] = array();
-    
+
         $rsComplect = CCatalogProductSet::getList(
             array("SORT" => "ASC"),
             array(
@@ -118,23 +118,23 @@ if (!empty($arResult)) {
             false,
             array("*")
         );
-    
+
         while ($arComplectItem = $rsComplect->Fetch()) {
             $arResult["COMPLECT"]["ITEMS"][$arComplectItem["ITEM_ID"]] = $arComplectItem;
             $arComplectID[$arComplectItem["ITEM_ID"]] = $arComplectItem["ITEM_ID"];
         }
-    
+
         if(!empty($arComplectID)){
-    
+
             $arResult["COMPLECT"]["RESULT_PRICE"] = 0;
             $arResult["COMPLECT"]["RESULT_BASE_DIFF"] = 0;
             $arResult["COMPLECT"]["RESULT_BASE_PRICE"] = 0;
-    
+
             $arSelect = Array("ID", "IBLOCK_ID", "NAME", "DETAIL_PICTURE", "DETAIL_PAGE_URL", "CATALOG_MEASURE");
             $arFilter = Array("ID" => $arComplectID, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
             $rsComplectProducts = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
             while($obComplectProducts = $rsComplectProducts->GetNextElement()){
-    
+
                 $complectProductFields = $obComplectProducts->GetFields();
                 if(!empty($arResult["PRODUCT_PRICE_ALLOW"])){
                     $arPriceCodes = array();
@@ -156,10 +156,10 @@ if (!empty($arResult)) {
                         }
                     }
                 }
-    
+
                 if(!empty($arResult["PRODUCT_PRICE_ALLOW"]) && !empty($arPriceCodes) || empty($arParams["PRICE_CODE"]))
                     $complectProductFields["PRICE"] = CCatalogProduct::GetOptimalPrice($complectProductFields["ID"], 1, $USER->GetUserGroupArray(), "N", $arPriceCodes);
-    
+
                 $complectProductFields["PRICE"]["DISCOUNT_PRICE"] = $complectProductFields["PRICE"]["DISCOUNT_PRICE"] * $arResult["COMPLECT"]["ITEMS"][$complectProductFields["ID"]]["QUANTITY"];
                 $complectProductFields["PRICE"]["DISCOUNT_PRICE"] -= $complectProductFields["PRICE"]["DISCOUNT_PRICE"] * $arResult["COMPLECT"]["ITEMS"][$complectProductFields["ID"]]["DISCOUNT_PERCENT"] / 100;
                 $complectProductFields["PRICE"]["RESULT_PRICE"]["BASE_PRICE"] = $complectProductFields["PRICE"]["RESULT_PRICE"]["BASE_PRICE"] * $arResult["COMPLECT"]["ITEMS"][$complectProductFields["ID"]]["QUANTITY"];
@@ -171,12 +171,12 @@ if (!empty($arResult)) {
                 $arResult["COMPLECT"]["RESULT_PRICE"] += $complectProductFields["PRICE"]["DISCOUNT_PRICE"];
                 $arResult["COMPLECT"]["RESULT_BASE_PRICE"] += $complectProductFields["PRICE"]["RESULT_PRICE"]["BASE_PRICE"];
                 $arResult["COMPLECT"]["RESULT_BASE_DIFF"] += $complectProductFields["PRICE"]["PRICE_DIFF"];
-    
+
                 $complectProductFields = array_merge(
                     $arResult["COMPLECT"]["ITEMS"][$complectProductFields["ID"]],
                     $complectProductFields
                 );
-    
+
                 //get picture by parent sku product
                 if(empty($complectProductFields["PICTURE"]["src"])){
                     $skuProductInfo = CCatalogSKU::getProductList($complectProductFields["ID"]);
@@ -194,81 +194,81 @@ if (!empty($arResult)) {
                         }
                     }
                 }
-    
+
                 // set empty picture
                 if(empty($complectProductFields["PICTURE"]["src"])){
                     $complectProductFields["PICTURE"]["src"] = SITE_TEMPLATE_PATH."/images/empty.png";
                 }
-    
+
                 $arResult["COMPLECT"]["ITEMS"][$complectProductFields["ID"]] = $complectProductFields;
-    
+
             }
-    
+
             $arResult["COMPLECT"]["RESULT_PRICE_FORMATED"] = CurrencyFormat($arResult["COMPLECT"]["RESULT_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"]);
             $arResult["COMPLECT"]["RESULT_BASE_DIFF_FORMATED"] = CurrencyFormat($arResult["COMPLECT"]["RESULT_BASE_DIFF"], $arResult["EXTRA_SETTINGS"]["CURRENCY"]);
             $arResult["COMPLECT"]["RESULT_BASE_PRICE_FORMATED"] = CurrencyFormat($arResult["COMPLECT"]["RESULT_BASE_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"]);
-    
+
         }*/
-    
+
     //NOTE: services
     if (!empty($arResult["PROPERTIES"]["SERVICES"]["VALUE"])) {
-        
+
         //globals
         global $servicesFilter;
-        
+
         //set filter
         $servicesFilter = array("ID" => $arResult["PROPERTIES"]["SERVICES"]["VALUE"], "ACTIVE" => "Y");
-        
+
     }
-    
+
     //NOTE: related products
     if (intval($arResult["RELATED_COUNT"]) > 0) {
-        
+
         //filter var for catalog.section
         global $relatedFilter;
-        
+
         //set filter
         $relatedFilter = array("ID" => $arResult["PROPERTIES"]["RELATED_PRODUCT"]["VALUE"], "ACTIVE" => "Y", "IBLOCK_ID" => $arParams['IBLOCK_ID']);
-        
+
         $relatedFilter[] = ["PROPERTY_REGION_VALUE" => $GLOBALS['medi']['region_cities'][SITE_ID]];
-        
+
         $relatedOb = CIBlockElement::GetList([], $relatedFilter, [], false);
-        
+
         //show tab flag
         $arResult["SHOW_RELATED"] = $relatedOb > 0 ? "Y" : "N";
-        
+
     }
-    
+
     //NOTE reviews
-    
+
     //show form for new review
     $arParams["SHOW_REVIEW_FORM"] = $arParams["USE_REVIEW"] == "Y";
     $reviewProductId = array($arResult["ID"]);
     if (!empty($arResult["PARENT_PRODUCT"])) {
         $reviewProductId = $arResult["PARENT_PRODUCT"]["ID"];
     }
-    
+
     if (!empty($arParams["REVIEW_IBLOCK_ID"])) {
-        
+
         $arSelect = array("ID", "DATE_CREATE", "ACTIVE_FROM", "DETAIL_TEXT", "PROPERTY_DIGNITY", "PROPERTY_SHORTCOMINGS", "PROPERTY_EXPERIENCE", "PROPERTY_GOOD_REVIEW", "PROPERTY_BAD_REVIEW", "PROPERTY_NAME", "PROPERTY_RATING", "PROPERTY_ANSWER");
         $arFilter = array("IBLOCK_ID" => $arParams["REVIEW_IBLOCK_ID"], "ACTIVE_DATE" => "Y", "ACTIVE" => "Y", "CODE" => $reviewProductId);
         $rsReviews = CIBlockElement::GetList(array("ACTIVE_FROM" => "DESC", "CREATED_DATE" => "DESC"), $arFilter, false, false, $arSelect);
         $vote_count = 0;
         $vote_sum = 0;
         while ($arReviews = $rsReviews->GetNext()) {
-            
             $arResult["REVIEWS"][] = $arReviews;
-            
-            $vote_count++;
+            if ($arReviews['PROPERTY_RATING_VALUE'] > 0) {
+                $vote_count++;
+            }
             $vote_sum += $arReviews['PROPERTY_RATING_VALUE'];
         }
         if (count($arResult['REVIEWS']) > 0) {
             $arResult['PROPERTIES']['RATING']['VALUE'] = $vote_sum / $vote_count;
             $PROPERTY_VALUES = ['RATING' => $arResult['PROPERTIES']['RATING']['VALUE'], 'VOTE_SUM' => $vote_sum, 'VOTE_COUNT' => $vote_count];
             $res = CIBlockElement::SetPropertyValuesEx($reviewProductId, false, $PROPERTY_VALUES);
-            
+
         }
-        
+
         $expEnums = CIBlockPropertyEnum::GetList(array("DEF" => "DESC", "SORT" => "ASC"), array("IBLOCK_ID" => $arParams["REVIEW_IBLOCK_ID"], "CODE" => "EXPERIENCE"));
         while ($enumValues = $expEnums->GetNext()) {
             $arResult["NEW_REVIEW"]["EXPERIENCE"][] = array(
@@ -276,30 +276,30 @@ if (!empty($arResult)) {
                 "VALUE" => $enumValues["VALUE"]
             );
         }
-        
+
         if ($userId == $arResult["PROPERTIES"]["USER_ID"]["VALUE"] || $userId == false) {
             $arParams["SHOW_REVIEW_FORM"] = false;
         }
-        
+
     }
-    
+
     //NOTE similar products
     if (intval($arResult["SIMILAR_COUNT"]) > 0) {
-        
+
         //filter var for catalog.section
         global $similarFilter;
-        
-        
+
+
         $arResult["SIMILAR_FILTER"][] = ["PROPERTY_REGION_VALUE" => $GLOBALS['medi']['region_cities'][SITE_ID]];
         //set filter
         $similarFilter = $arResult["SIMILAR_FILTER"];
-        
+
         $similarOb = CIBlockElement::GetList([], $similarFilter, [], false);
-        
+
         //show tab flag
         $arResult["SHOW_SIMILAR"] = $similarOb > 0 ? "Y" : "N";
     }
-    
+
     /*if($arResult["CATALOG_QUANTITY"] > 0){
         if(!empty($arResult["EXTRA_SETTINGS"]["STORES"])){
 
@@ -325,10 +325,10 @@ if (!empty($arResult)) {
         //__($mStore);
         $storeAmount += $mStore['PRODUCT_AMOUNT'];
     }
-    
+
     //NOTE tabs
-    
-    
+
+
     $arResult["TABS"]["CATALOG_ELEMENT_BACK"] = array("PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco1.png", "NAME" => GetMessage("CATALOG_ELEMENT_BACK"), "LINK" => $arResult["LAST_SECTION"]["SECTION_PAGE_URL"]);
     $arResult["TABS"]["CATALOG_ELEMENT_OVERVIEW"] = array(
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco2.png",
@@ -336,23 +336,23 @@ if (!empty($arResult)) {
         "ACTIVE" => "Y",
         "ID" => "browse"
     );
-    
-    
+
+
     //NOTE Получаем  размерную сетку товара
     if (!empty($arResult['PROPERTIES']['SIZE_CHART'])):
-        
+
         $hlbl = 5; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
-        
+
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
         $entity_data_class = $entity->getDataClass();
-        
+
         $rsData = $entity_data_class::getList(array(
-            "select" => array("*"),
-            "order" => array("ID" => "ASC"),
-            "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['SIZE_CHART']['VALUE'])  // Задаем параметры фильтра выборки
-        ));
-        
+                                                  "select" => array("*"),
+                                                  "order" => array("ID" => "ASC"),
+                                                  "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['SIZE_CHART']['VALUE'])  // Задаем параметры фильтра выборки
+                                              ));
+
         $arSizeChart = [];
         if ($arData = $rsData->Fetch()) {
             if ($arData['UF_FILE'] > 0) {
@@ -361,7 +361,7 @@ if (!empty($arResult)) {
             if ($arData['UF_SVG'] > 0) {
                 $arData["SVG"] = CFile::GetFileArray($arData['UF_SVG']);
             }
-            
+
             if ($arData['UF_VIDEO'] != '') {
                 $arResult['PROPERTIES']["SIZE_VIDEO"] = $arData['UF_VIDEO'];
             }
@@ -371,31 +371,31 @@ if (!empty($arResult)) {
             $arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST'] = $arSizeChart;
         }
     endif;
-    
+
     $arResult['PROPERTIES']['DOCS_COUNT'] = 0;
     //NOTE Получаем  документы
     if (!empty($arResult['PROPERTIES']['MANUAL_1C'])):
         $hlbl = 20; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
-        
+
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
         $entity_data_class = $entity->getDataClass();
-        
+
         $rsData = $entity_data_class::getList(array(
-            "select" => array("*"),
-            "order" => array("ID" => "ASC"),
-            "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['MANUAL_1C']['VALUE'])  // Задаем параметры фильтра выборки
-        ));
-        
+                                                  "select" => array("*"),
+                                                  "order" => array("ID" => "ASC"),
+                                                  "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['MANUAL_1C']['VALUE'])  // Задаем параметры фильтра выборки
+                                              ));
+
         while ($arData = $rsData->Fetch()) {
-            
+
             if ($arData['UF_FILE'] > 0) {
                 $arData["FILE"] = CFile::GetFileArray($arData['UF_FILE']);
             }
             $arDoc[] = $arData;
         }
         if (!empty($arDoc)) {
-            
+
             foreach ($arDoc as $k => $doc) {
                 if ($doc['UF_FILE'] > 0) {
                     $doc['NAME'] = trim(str_replace("[Документы]", "", $arResult['PROPERTIES']['MANUAL_1C']['NAME']));
@@ -406,29 +406,29 @@ if (!empty($arResult)) {
         }
     endif;
     if (!empty($arResult['PROPERTIES']['SERT_1C'])):
-        
+
         $hlbl = 23; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
-        
+
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
         $entity_data_class = $entity->getDataClass();
-        
+
         $rsData = $entity_data_class::getList(array(
-            "select" => array("*"),
-            "order" => array("ID" => "ASC"),
-            "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['SERT_1C']['VALUE'])  // Задаем параметры фильтра выборки
-        ));
-        
+                                                  "select" => array("*"),
+                                                  "order" => array("ID" => "ASC"),
+                                                  "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['SERT_1C']['VALUE'])  // Задаем параметры фильтра выборки
+                                              ));
+
         $arDoc = [];
         while ($arData = $rsData->Fetch()) {
-            
+
             if ($arData['UF_FILE'] > 0) {
                 $arData["FILE"] = CFile::GetFileArray($arData['UF_FILE']);
             }
             $arDoc[] = $arData;
         }
         if (!empty($arDoc)) {
-            
+
             foreach ($arDoc as $k => $doc) {
                 if ($doc['UF_FILE'] > 0) {
                     $doc['NAME'] = trim(str_replace("[Документы]", "", $arResult['PROPERTIES']['SERT_1C']['NAME']));
@@ -437,25 +437,25 @@ if (!empty($arResult)) {
                 }
             }
         }
-    
+
     endif;
     if (!empty($arResult['PROPERTIES']['RU_1C'])):
-        
+
         $hlbl = 21; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
-        
+
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
         $entity_data_class = $entity->getDataClass();
-        
+
         $rsData = $entity_data_class::getList(array(
-            "select" => array("*"),
-            "order" => array("ID" => "ASC"),
-            "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['RU_1C']['VALUE'])  // Задаем параметры фильтра выборки
-        ));
-        
+                                                  "select" => array("*"),
+                                                  "order" => array("ID" => "ASC"),
+                                                  "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['RU_1C']['VALUE'])  // Задаем параметры фильтра выборки
+                                              ));
+
         $arDoc = [];
         if ($arData = $rsData->Fetch()) {
-            
+
             if ($arData['UF_FILE'] > 0) {
                 $arData["FILE"] = CFile::GetFileArray($arData['UF_FILE']);
             }
@@ -468,29 +468,29 @@ if (!empty($arResult)) {
         }
     endif;
     if (!empty($arResult['PROPERTIES']['DECLARATION_1C'])):
-        
+
         $hlbl = 22; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
-        
+
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
         $entity_data_class = $entity->getDataClass();
-        
+
         $rsData = $entity_data_class::getList(array(
-            "select" => array("*"),
-            "order" => array("ID" => "ASC"),
-            "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['DECLARATION_1C']['VALUE'])  // Задаем параметры фильтра выборки
-        ));
-        
+                                                  "select" => array("*"),
+                                                  "order" => array("ID" => "ASC"),
+                                                  "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['DECLARATION_1C']['VALUE'])  // Задаем параметры фильтра выборки
+                                              ));
+
         $arDoc = [];
         while ($arData = $rsData->Fetch()) {
-            
+
             if ($arData['UF_FILE'] > 0) {
                 $arData["FILE"] = CFile::GetFileArray($arData['UF_FILE']);
             }
             $arDoc[] = $arData;
         }
         if (!empty($arDoc)) {
-            
+
             foreach ($arDoc as $k => $doc) {
                 if ($doc['UF_FILE'] > 0) {
                     $doc['NAME'] = trim(str_replace("[Документы]", "", $arResult['PROPERTIES']['DECLARATION_1C']['NAME']));
@@ -499,32 +499,32 @@ if (!empty($arResult)) {
                 }
             }
         }
-    
+
     endif;
-    
+
     $arResult["TABS"]["CATALOG_ELEMENT_SET"] = array(
         "DISABLED" => CCatalogProductSet::isProductHaveSet($parentElementId, CCatalogProductSet::TYPE_GROUP) ? "N" : "Y",
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco3.png",
         "NAME" => GetMessage("CATALOG_ELEMENT_SET"),
         "ID" => "set"
     );
-    
+
     $arResult["TABS"]["CATALOG_ELEMENT_COMPLECT"] = array(
         "DISABLED" => !empty($arResult["COMPLECT"]) ? "N" : "Y",
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco3.png",
         "NAME" => GetMessage("CATALOG_ELEMENT_COMPLECT"),
         "ID" => "complect"
     );
-    
-    
+
+
     $arResult["TABS"]["CATALOG_ELEMENT_VIDEO"] = array(
         "DISABLED" => !empty($arResult["VIDEO"]) ? "N" : "Y",
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco10.png",
         "NAME" => GetMessage("CATALOG_ELEMENT_VIDEO"),
         "ID" => "video"
     );
-    
-    
+
+
     if (!empty($arResult['PROPERTIES']['TECHNOLOGIES'])):
         $arResult["TABS"]["TECHNOLOGIES"] = array(
             "DISABLED" => "N",
@@ -532,21 +532,21 @@ if (!empty($arResult)) {
             "NAME" => GetMessage("CATALOG_TECHNOLOGIES"),
             "ID" => "tech"
         );
-        
-        
+
+
         // Получаем  список технологий товара
         $hlbl = 19; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
         $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
-        
+
         $entity = HL\HighloadBlockTable::compileEntity($hlblock);
         $entity_data_class = $entity->getDataClass();
-        
+
         $rsData = $entity_data_class::getList(array(
-            "select" => array("*"),
-            "order" => array("ID" => "ASC"),
-            "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['TECHNOLOGIES']['VALUE'])
-        ));
-        
+                                                  "select" => array("*"),
+                                                  "order" => array("ID" => "ASC"),
+                                                  "filter" => array("UF_XML_ID" => $arResult['PROPERTIES']['TECHNOLOGIES']['VALUE'])
+                                              ));
+
         $arTech = [];
         while ($arData = $rsData->Fetch()) {
             if ($arData['UF_FILE'] > 0) {
@@ -558,37 +558,37 @@ if (!empty($arResult)) {
             $arResult['PROPERTIES']['TECHNOLOGIES']['VALUES_LIST'] = $arTech;
         }
     endif;
-    
+
     $arResult["TABS"]["CATALOG_ELEMENT_DESCRIPTION"] = array(
         "DISABLED" => !empty($arResult["DETAIL_TEXT"]) ? "N" : "Y",
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco8.png",
         "NAME" => GetMessage("CATALOG_ELEMENT_DESCRIPTION"),
         "ID" => "detailText"
     );
-    
-    
+
+
     $arResult["TABS"]["CATALOG_ELEMENT_CHARACTERISTICS"] = array(
         "DISABLED" => !empty($arResult["PROPERTIES"]) ? "N" : "Y",
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco9.png",
         "NAME" => GetMessage("CATALOG_ELEMENT_CHARACTERISTICS"),
         "ID" => "elementProperties"
     );
-    
-    
+
+
     $arResult["TABS"]["CATALOG_ELEMENT_ACCEESSORIES"] = array(
         "DISABLED" => $arResult["SHOW_RELATED"] == "Y" ? "N" : "Y",
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco5.png",
         "NAME" => GetMessage("CATALOG_ELEMENT_ACCEESSORIES"),
         "ID" => "related"
     );
-    
+
     $arResult["TABS"]["CATALOG_ELEMENT_SIMILAR"] = array(
         "DISABLED" => $arResult["SHOW_SIMILAR"] == "Y" ? "N" : "Y",
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco6.png",
         "NAME" => GetMessage("CATALOG_ELEMENT_SIMILAR"),
         "ID" => "similar"
     );
-    
+
     $arResult['DONT_SHOW_REST'] = false;
     if (isset($arResult['PROPERTIES']['DONT_SHOW_REST']['VALUE'])
         && $arResult['PROPERTIES']['DONT_SHOW_REST']['VALUE'] == 'Да'
@@ -607,22 +607,22 @@ if (!empty($arResult)) {
             "ID" => "stores"
         );
     }
-    
+
     $arResult["TABS"]["CATALOG_ELEMENT_FILES"] = array(
         "DISABLED" => !empty($arResult["PROPERTIES"]['DOCS']) ? "N" : "Y",
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco11.png",
         "NAME" => GetMessage("CATALOG_ELEMENT_FILES"),
         "ID" => "files"
     );
-    
-    
+
+
     $arResult["TABS"]["CATALOG_ELEMENT_REVIEW"] = array(
         "DISABLED" => !empty($arResult["REVIEWS"]) ? "N" : "Y",
         "PICTURE" => SITE_TEMPLATE_PATH . "/images/elementNavIco4.png",
         "NAME" => GetMessage("CATALOG_ELEMENT_REVIEW"),
         "ID" => "catalogReviews"
     );
-    
+
     $checkID = $arResult['PARENT_PRODUCT']['ID'] ? $arResult['PARENT_PRODUCT']['ID'] : $arResult['ID'];
     $mainElem = CIBlockElement::GetList([], ['ID' => $checkID, false, false, ['IBLOCK_SECTION_ID']]);
     if ($arMainElem = $mainElem->GetNext()) {
@@ -634,8 +634,8 @@ if (!empty($arResult)) {
         }
     }
     //NOTE Управление показом кнопок
-    
-    
+
+
     // "Возможно изготовление на заказ"
     $arResult['DISPLAY_BUTTONS']['MTM_BUTTON'] = false;
     if (isset($arResult['PROPERTIES']['MTM']['VALUE'])
@@ -643,7 +643,7 @@ if (!empty($arResult)) {
     ) {
         $arResult['DISPLAY_BUTTONS']['MTM_BUTTON'] = true;
     }
-    
+
     // "Только под заказ"
     $arResult['DISPLAY_BUTTONS']['ONLY_ORDER_BUTTON'] = false;
     if (isset($arResult['PROPERTIES']['ORDER_ONLY']['VALUE'])
@@ -651,7 +651,7 @@ if (!empty($arResult)) {
     ) {
         $arResult['DISPLAY_BUTTONS']['ONLY_ORDER_BUTTON'] = true;
     }
-    
+
     // Показывать или скрывать кнопку "В корзину"
     $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] = true;
     if (isset($arResult['PROPERTIES']['NO_CART_BUTTON']['VALUE'])
@@ -665,7 +665,7 @@ if (!empty($arResult)) {
             $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] = false;
         }
     }
-    
+
     // Показывать или скрывать кнопку "Забронировать в салоне"
     $arResult['DISPLAY_BUTTONS']['RESERV_BUTTON'] = true;
     if (isset($arResult['PROPERTIES']['NO_RESERV_BUTTON']['VALUE'])
@@ -680,16 +680,16 @@ if (!empty($arResult)) {
     ) {
         $arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] = true;
     }
-    
+
     if ($USER->IsAuthorized() && !empty(array_intersect([29], $USER->GetUserGroupArray()))) {
         $arResult['DISPLAY_BUTTONS']['SMP_BUTTON'] = true;
-        
+
         $arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] = false;
         $arResult['DISPLAY_BUTTONS']['RESERV_BUTTON'] = false;
         $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] = false;
         $arResult['DISPLAY_BUTTONS']['ONLY_ORDER_BUTTON'] = false;
     }
-    
+
     // акции
     //__($arResult["PROPERTIES"]['ACTION_SIGN']['VALUE']);
     $action_prop_val = '';
@@ -705,7 +705,7 @@ if (!empty($arResult)) {
             if ($item1 != '')
                 $item1 = $item1 . $delim;
         }
-        
+
         array_walk($action_tags, 'addspecdel', ';');
         //__($action_tags);
         $findActionTag = 0;
@@ -722,17 +722,17 @@ if (!empty($arResult)) {
             false,
             ['ID', 'IBLOCK_ID', 'NAME', 'DETAIL_PAGE_URL', 'PREVIEW_TEXT', 'PROPERTY_ACTION_TAG', 'PROPERTY_HIDE']
         );
-        
+
         while ($arAction = $obActions->GetNext()) {
             $inActions = explode(";", $arAction['PROPERTY_ACTION_TAG_VALUE']);
             if (!empty($inActions[0])) {
                 $findActionTag = '1';
                 $showAction[$arAction['ID']] = $arAction;
-                
+
             }
         }
     }
-    
+
     if (!$findActionTag) {
         ob_start(); ?>
         <? $APPLICATION->IncludeComponent(

@@ -99,24 +99,24 @@
             <? endif; ?>
             <? if (!empty($arResult["PROPERTIES"]["TIMER_LOOP"]["VALUE"])): ?>
                 <script type="text/javascript">
-                    $(document).ready(function () {
-                        $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
-                            timerLoop: "<?=$arResult["PROPERTIES"]["TIMER_LOOP"]["VALUE"]?>",
-                            <?if(empty($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"])):?>
-                            startDate: "<?=MakeTimeStamp($arResult["DATE_CREATE"], "DD.MM.YYYY HH:MI:SS")?>"
-                            <?else:?>
-                            startDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
-                            <?endif;?>
-                        });
+                  $(document).ready(function () {
+                    $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
+                      timerLoop: "<?=$arResult["PROPERTIES"]["TIMER_LOOP"]["VALUE"]?>",
+                        <?if(empty($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"])):?>
+                      startDate: "<?=MakeTimeStamp($arResult["DATE_CREATE"], "DD.MM.YYYY HH:MI:SS")?>"
+                        <?else:?>
+                      startDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_START_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
+                        <?endif;?>
                     });
+                  });
                 </script>
             <? elseif (!empty($arResult["EXTRA_SETTINGS"]["SHOW_TIMER"]) && !empty($arResult["PROPERTIES"]["TIMER_DATE"]["VALUE"])): ?>
                 <script type="text/javascript">
-                    $(document).ready(function () {
-                        $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
-                            endDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
-                        });
+                  $(document).ready(function () {
+                    $("#timer_<?=$arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"];?>_<?=$uniqID?>").dwTimer({
+                      endDate: "<?=MakeTimeStamp($arResult["PROPERTIES"]["TIMER_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS")?>"
                     });
+                  });
                 </script>
             <? endif; ?>
             <div class="productTable">
@@ -183,7 +183,7 @@
                     <span class="item_brand <? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] == 'medi') { ?>flag-medi<? } ?>"><? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] != 'medi') { ?><?= $arResult['PROPERTIES']['BRAND_1C']['VALUE'] ?><? } ?></span>
 
                     <a href="<?= $arResult["DETAIL_PAGE_URL"] ?>" class="name"><span
-                                class="middle"><?= $arResult["NAME"] ?></span></a>
+                            class="middle"><?= $arResult["NAME"] ?></span></a>
 
                     <? if (!empty($arResult["EXTRA_SETTINGS"])): ?>
                         <a class="price"><?= CCurrencyLang::CurrencyFormat($arResult["PRICE"]["DISCOUNT_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true) ?>
@@ -218,7 +218,7 @@
                                             )
                                         )
                                     ):?>
-                                    <!-- Товар можно положить в корзину (товар доступен) или забронировать в салоне (переход в карточку товара) -->
+                                        <!-- Товар можно положить в корзину (товар доступен) или забронировать в салоне (переход в карточку товара) -->
                                         <a href="<?=$arResult["DETAIL_PAGE_URL"]?>" class="changeID add-to-reserve"
                                            data-title="<?= GetMessage("TO_BUY") ?>"
                                            data-id="<?= $arResult["ID"] ?>"
@@ -255,14 +255,14 @@
                                     ):?>
                                         <!-- Товар можно забронировать в салоне -->
                                         <a
-                                           href="#"
-                                           class="greyBigButton reserve add-to-reserve changeID get_medi_popup_Window"
-                                           data-src="/ajax/catalog/?action=reserve" data-title="<?= GetMessage("BOOK_IN_SALON") ?>"
-                                           data-id="<?= $arResult["ID"] ?>"
-                                           data-action="reserve"
-                                           data-salon-available=<?= $arResult['SALON_AVAILABLE'] ?>
-                                           data-salon-count=<?= $arResult['SALON_COUNT'] ?>
-                                           data-main-store-amount=<?= $arResult['mainStoreAmount'] ?>
+                                            href="#"
+                                            class="greyBigButton reserve add-to-reserve changeID get_medi_popup_Window"
+                                            data-src="/ajax/catalog/?action=reserve" data-title="<?= GetMessage("BOOK_IN_SALON") ?>"
+                                            data-id="<?= $arResult["ID"] ?>"
+                                            data-action="reserve"
+                                            data-salon-available=<?= $arResult['SALON_AVAILABLE'] ?>
+                                            data-salon-count=<?= $arResult['SALON_COUNT'] ?>
+                                            data-main-store-amount=<?= $arResult['mainStoreAmount'] ?>
                                         ><?= GetMessage("BOOK_IN_SALON") ?>
                                         </a>
                                     <?endif;?>
@@ -335,15 +335,15 @@
                                    <? if ($arResult['SALON_AVAILABLE'] != "0" || $arResult['SALON_COUNT'] != "0" || $arResult["CATALOG_AVAILABLE"] == "Y"){ ?>style="display:none;"
                                    <? } ?>style="display:none;">
                                     <img src="<?= SITE_TEMPLATE_PATH ?>/images/incart.png"
-                                        alt="<?= GetMessage("ORDER_NOTAVAIL_LABEL_ALT") ?>"
-                                        class="icon"><?= GetMessage("ORDER_NOTAVAIL_LABEL") ?>
+                                         alt="<?= GetMessage("ORDER_NOTAVAIL_LABEL_ALT") ?>"
+                                         class="icon"><?= GetMessage("ORDER_NOTAVAIL_LABEL") ?>
                                 </a>
                             <? elseif ($arResult['DISPLAY_BUTTONS']['SMP_BUTTON']): ?>
                                 <a href="#" class="smpOrder _desktop label changeID " data-id="<?= $arResult["ID"] ?>"
                                    <? if ($arResult["CATALOG_AVAILABLE"] == "N"){ ?>style="display:none;"<? } ?>><img
-                                            src="<?= SITE_TEMPLATE_PATH ?>/images/incart.png"
-                                            alt="<?= GetMessage("SMP_LABEL_ALT") ?>"
-                                            class="icon"><?= GetMessage("SMP_LABEL_ALT") ?></a>
+                                        src="<?= SITE_TEMPLATE_PATH ?>/images/incart.png"
+                                        alt="<?= GetMessage("SMP_LABEL_ALT") ?>"
+                                        class="icon"><?= GetMessage("SMP_LABEL_ALT") ?></a>
                             <? else: ?>
                                 <? // Сканирование стоп, основная кнопка?>
                                 <? if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON']): ?>
@@ -356,9 +356,9 @@
                             <? if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON']):?>
                                 <a href="#" class="addCart _desktop" data-id="<?= $arResult["ID"] ?>"
                                    id="GTM_add_cart_catalog_<?= ($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'] . '_' : '') ?><?= $arParams['POS_COUNT'] ?>_<?= $arResult["ID"] ?>"><img
-                                            src="<?= SITE_TEMPLATE_PATH ?>/images/incart.png"
-                                            alt="<?= GetMessage("ADDCART_LABEL") ?>"
-                                            class="icon"><?= GetMessage("ADDCART_LABEL") ?></a>
+                                        src="<?= SITE_TEMPLATE_PATH ?>/images/incart.png"
+                                        alt="<?= GetMessage("ADDCART_LABEL") ?>"
+                                        class="icon"><?= GetMessage("ADDCART_LABEL") ?></a>
                             <? elseif ($arResult['DISPLAY_BUTTONS']['SMP_BUTTON']): ?>
                                 <a href="#" class="smpOrder getSmpFastOrder changeID " data-id="<?= $arResult["ID"] ?>"
                                    <? if ($arResult["CATALOG_AVAILABLE"] == "N"){ ?>style="display:none;"<? } ?>>
@@ -375,7 +375,7 @@
                                 <? endif; ?>
                             <? endif; ?>
                         <? endif; ?>
-					<?endif; ?>
+                    <?endif; ?>
                     <? if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] == false && !$arResult['DISPLAY_BUTTONS']['SMP_BUTTON']):?>
                         <a href="#" class="greyBigButton reserve _desktop changeID get_medi_popup_Window"
                            data-src="/ajax/catalog/?action=reserve" data-title="Забронировать в салоне"
@@ -393,96 +393,96 @@
             </div>
         </div>
         <script>
-            /* Вешаем обработчик для добавления товара в избранное (Товары из компонента dresscode:catalog.item) */
-            $('#<?= $this->GetEditAreaId($arResult["ID"]); ?>').on('click', '.b-card-favorite', function () {
-                if ($('input[name=user_auth]').length > 0) {
-                    let productId = $(this).attr('data-product-id');
-                    let doAction = '';
+          /* Вешаем обработчик для добавления товара в избранное (Товары из компонента dresscode:catalog.item) */
+          $('#<?= $this->GetEditAreaId($arResult["ID"]); ?>').on('click', '.b-card-favorite', function () {
+            if ($('input[name=user_auth]').length > 0) {
+              let productId = $(this).attr('data-product-id');
+              let doAction = '';
 
-                    if ($(this).hasClass('active')) {
-                        doAction = 'delete';
-                    } else {
-                        doAction = 'add';
-                    }
+              if ($(this).hasClass('active')) {
+                doAction = 'delete';
+              } else {
+                doAction = 'add';
+              }
 
-                    addFavorite(productId, doAction);
-                } else {
-                    window.location.href = "/lk/?favorite";
-                }
-            });
-
-            function addFavorite(productId, action) {
-
-                let param = 'id='+productId+"&action="+action;
-
-                $.ajax({
-                    url: '/ajax/favorite/',
-                    type: 'GET',
-                    dataType: 'html',
-                    data: param,
-                    success: function (response) {
-                        let result = $.parseJSON(response);
-                        let wishCount = 1;
-
-                        if (result == 1) {
-                            $('.b-card-favorite[data-product-id="'+productId+'"]').addClass('active');
-                            $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранном');
-                            let currentCount = parseInt($('.favorites_link .count').html());
-
-                            if (currentCount >= 0) {
-                                wishCount = currentCount + 1;
-                            }
-
-                            $('.favorites_link .count').html(wishCount);
-                            if (!$('.favorites_link').hasClass('has_items')) {
-                                $('.favorites_link').addClass('has_items');
-                            }
-
-                            if ($('input[name=favorite_items]').length > 0) {
-                                let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
-
-                                if (inputFavoriteItemsValue != '') {
-                                    let favoriteItems = JSON.parse(inputFavoriteItemsValue);
-                                    favoriteItems.push(parseInt(productId));
-                                    let jsonFavoriteItems = JSON.stringify(favoriteItems);
-                                    $('input[name=favorite_items]').val(jsonFavoriteItems);
-                                }
-                            }
-                        }
-
-                        if (result == 2) {
-                            $('.b-card-favorite[data-product-id="'+productId+'"]').removeClass('active');
-                            $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранное');
-                            wishCount = parseInt($('.favorites_link .count').html()) - 1;
-
-                            if (wishCount == 0) {
-                                $('.favorites_link .count').html('');
-                                $('.favorites_link').removeClass('has_items');
-                            } else {
-                                $('.favorites_link .count').html(wishCount);
-                            }
-
-                            if ($('input[name=favorite_items]').length > 0) {
-                                let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
-
-                                if (inputFavoriteItemsValue != '') {
-                                    let favoriteItems = JSON.parse(inputFavoriteItemsValue);
-                                    let indexElem = favoriteItems.indexOf(parseInt(productId));
-
-                                    if (indexElem >= 0) {
-                                        favoriteItems.splice(indexElem, 1);
-                                        let jsonFavoriteItems = JSON.stringify(favoriteItems);
-                                        $('input[name=favorite_items]').val(jsonFavoriteItems);
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log('Error: '+ errorThrown);
-                    }
-                });
+              addFavorite(productId, doAction);
+            } else {
+              window.location.href = "/lk/?favorite";
             }
+          });
+
+          function addFavorite(productId, action) {
+
+            let param = 'id='+productId+"&action="+action;
+
+            $.ajax({
+              url: '/ajax/favorite/',
+              type: 'GET',
+              dataType: 'html',
+              data: param,
+              success: function (response) {
+                let result = $.parseJSON(response);
+                let wishCount = 1;
+
+                if (result == 1) {
+                  $('.b-card-favorite[data-product-id="'+productId+'"]').addClass('active');
+                  $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранном');
+                  let currentCount = parseInt($('.favorites_link .count').html());
+
+                  if (currentCount >= 0) {
+                    wishCount = currentCount + 1;
+                  }
+
+                  $('.favorites_link .count').html(wishCount);
+                  if (!$('.favorites_link').hasClass('has_items')) {
+                    $('.favorites_link').addClass('has_items');
+                  }
+
+                  if ($('input[name=favorite_items]').length > 0) {
+                    let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
+
+                    if (inputFavoriteItemsValue != '') {
+                      let favoriteItems = JSON.parse(inputFavoriteItemsValue);
+                      favoriteItems.push(parseInt(productId));
+                      let jsonFavoriteItems = JSON.stringify(favoriteItems);
+                      $('input[name=favorite_items]').val(jsonFavoriteItems);
+                    }
+                  }
+                }
+
+                if (result == 2) {
+                  $('.b-card-favorite[data-product-id="'+productId+'"]').removeClass('active');
+                  $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранное');
+                  wishCount = parseInt($('.favorites_link .count').html()) - 1;
+
+                  if (wishCount == 0) {
+                    $('.favorites_link .count').html('');
+                    $('.favorites_link').removeClass('has_items');
+                  } else {
+                    $('.favorites_link .count').html(wishCount);
+                  }
+
+                  if ($('input[name=favorite_items]').length > 0) {
+                    let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
+
+                    if (inputFavoriteItemsValue != '') {
+                      let favoriteItems = JSON.parse(inputFavoriteItemsValue);
+                      let indexElem = favoriteItems.indexOf(parseInt(productId));
+
+                      if (indexElem >= 0) {
+                        favoriteItems.splice(indexElem, 1);
+                        let jsonFavoriteItems = JSON.stringify(favoriteItems);
+                        $('input[name=favorite_items]').val(jsonFavoriteItems);
+                      }
+                    }
+                  }
+                }
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                console.log('Error: '+ errorThrown);
+              }
+            });
+          }
         </script>
     </div>
 <? endif; ?>

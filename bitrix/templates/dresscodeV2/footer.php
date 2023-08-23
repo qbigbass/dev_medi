@@ -248,7 +248,7 @@
 
 <? if ($USER->IsAuthorized() && !empty(array_intersect([29], $USER->GetUserGroupArray()))) {
     $APPLICATION->IncludeComponent(
-        
+
         "bitrix:main.include",
         ".default",
         array(
@@ -289,32 +289,32 @@
 </div>
 
 <script type="text/javascript">
-    var ajaxPath = "<?=SITE_DIR?>ajax.php";
-    var SITE_DIR = "<?=SITE_DIR?>";
-    var SITE_ID = "<?=SITE_ID?>";
-    var TEMPLATE_PATH = "<?=SITE_TEMPLATE_PATH?>";
+  var ajaxPath = "<?=SITE_DIR?>ajax.php";
+  var SITE_DIR = "<?=SITE_DIR?>";
+  var SITE_ID = "<?=SITE_ID?>";
+  var TEMPLATE_PATH = "<?=SITE_TEMPLATE_PATH?>";
 </script>
 
 <script type="text/javascript">
-    var LANG = {
-        BASKET_ADDED: "<?=GetMessage("BASKET_ADDED")?>",
-        WISHLIST_ADDED: "<?=GetMessage("WISHLIST_ADDED")?>",
-        ADD_COMPARE_ADDED: "<?=GetMessage("ADD_COMPARE_ADDED")?>",
-        ADD_CART_LOADING: "<?=GetMessage("ADD_CART_LOADING")?>",
-        ADD_BASKET_DEFAULT_LABEL: "<?=GetMessage("ADD_BASKET_DEFAULT_LABEL")?>",
-        ADDED_CART_SMALL: "<?=GetMessage("ADDED_CART_SMALL")?>",
-        CATALOG_AVAILABLE: "<?=GetMessage("CATALOG_AVAILABLE")?>",
-        GIFT_PRICE_LABEL: "<?=GetMessage("GIFT_PRICE_LABEL")?>",
-        CATALOG_ON_ORDER: "<?=GetMessage("CATALOG_ON_ORDER")?>",
-        CATALOG_NO_AVAILABLE: "<?=GetMessage("CATALOG_NO_AVAILABLE")?>",
-        FAST_VIEW_PRODUCT_LABEL: "<?=GetMessage("FAST_VIEW_PRODUCT_LABEL")?>",
-        CATALOG_ECONOMY: "<?=GetMessage("CATALOG_ECONOMY")?>",
-        WISHLIST_SENDED: "<?=GetMessage("WISHLIST_SENDED")?>",
-        REQUEST_PRICE_LABEL: "<?=GetMessage("REQUEST_PRICE_LABEL")?>",
-        REQUEST_PRICE_BUTTON_LABEL: "<?=GetMessage("REQUEST_PRICE_BUTTON_LABEL")?>",
-        ADD_SUBSCRIBE_LABEL: "<?=GetMessage("ADD_SUBSCRIBE_LABEL")?>",
-        REMOVE_SUBSCRIBE_LABEL: "<?=GetMessage("REMOVE_SUBSCRIBE_LABEL")?>"
-    };
+  var LANG = {
+    BASKET_ADDED: "<?=GetMessage("BASKET_ADDED")?>",
+    WISHLIST_ADDED: "<?=GetMessage("WISHLIST_ADDED")?>",
+    ADD_COMPARE_ADDED: "<?=GetMessage("ADD_COMPARE_ADDED")?>",
+    ADD_CART_LOADING: "<?=GetMessage("ADD_CART_LOADING")?>",
+    ADD_BASKET_DEFAULT_LABEL: "<?=GetMessage("ADD_BASKET_DEFAULT_LABEL")?>",
+    ADDED_CART_SMALL: "<?=GetMessage("ADDED_CART_SMALL")?>",
+    CATALOG_AVAILABLE: "<?=GetMessage("CATALOG_AVAILABLE")?>",
+    GIFT_PRICE_LABEL: "<?=GetMessage("GIFT_PRICE_LABEL")?>",
+    CATALOG_ON_ORDER: "<?=GetMessage("CATALOG_ON_ORDER")?>",
+    CATALOG_NO_AVAILABLE: "<?=GetMessage("CATALOG_NO_AVAILABLE")?>",
+    FAST_VIEW_PRODUCT_LABEL: "<?=GetMessage("FAST_VIEW_PRODUCT_LABEL")?>",
+    CATALOG_ECONOMY: "<?=GetMessage("CATALOG_ECONOMY")?>",
+    WISHLIST_SENDED: "<?=GetMessage("WISHLIST_SENDED")?>",
+    REQUEST_PRICE_LABEL: "<?=GetMessage("REQUEST_PRICE_LABEL")?>",
+    REQUEST_PRICE_BUTTON_LABEL: "<?=GetMessage("REQUEST_PRICE_BUTTON_LABEL")?>",
+    ADD_SUBSCRIBE_LABEL: "<?=GetMessage("ADD_SUBSCRIBE_LABEL")?>",
+    REMOVE_SUBSCRIBE_LABEL: "<?=GetMessage("REMOVE_SUBSCRIBE_LABEL")?>"
+  };
 </script>
 
 <script type="text/javascript">
@@ -322,7 +322,7 @@
     var globalSettings = {
         <?foreach($arTemplateSettings as $settingsIndex => $nextSettingValue):?>
         <?if(!DwSettings::checkSecretSettingsByIndex($settingsIndex)):?>
-        "<?=$settingsIndex?>": '<?=$nextSettingValue?>',
+      "<?=$settingsIndex?>": '<?=$nextSettingValue?>',
         <?endif;?>
         <?endforeach;?>
     }
@@ -341,33 +341,33 @@
     )
 ); ?>
 <script>
-    waitForVk(function () {
-        if (vViewedProdsPrice > 0) {
-            const eventParams = {
-                "products": vViewedProds,
+  waitForVk(function () {
+    if (vViewedProdsPrice > 0) {
+      const eventParams = {
+        "products": vViewedProds,
 
-                //"business_value" : 88,
-                "total_price": vViewedProdsPrice
-            };
-            <?if (!strpos($APPLICATION->GetCurDir(), 'catalog/') && !strpos($APPLICATION->GetCurDir(), 'personal/')) {?>
-            <?if ($APPLICATION->GetCurDir() == '/') {
-            $view_event = 'view_home';
-        } else {
-            $view_event = 'view_other';
-        }?>
-            VK.Retargeting.ProductEvent(PRICE_LIST_ID, '<?=$view_event;?>', eventParams);
-            <?}?>
-        }
-    });
+        //"business_value" : 88,
+        "total_price": vViewedProdsPrice
+      };
+        <?if (!strpos($APPLICATION->GetCurDir(), 'catalog/') && !strpos($APPLICATION->GetCurDir(), 'personal/')) {?>
+        <?if ($APPLICATION->GetCurDir() == '/') {
+        $view_event = 'view_home';
+    } else {
+        $view_event = 'view_other';
+    }?>
+      VK.Retargeting.ProductEvent(PRICE_LIST_ID, '<?=$view_event;?>', eventParams);
+        <?}?>
+    }
+  });
 </script>
 <? if ($nUserID > 0):
     ?>
     <script>
-        waitForYm(function () {
-            ym(30121774, 'userParams', {
-                UserID: <?=$nUserID?>
-            });
-        });</script><?
+      waitForYm(function () {
+        ym(30121774, 'userParams', {
+          UserID: <?=$nUserID?>
+        });
+      });</script><?
 endif; ?>
 
 <? $Mobile_Detect = new Mobile_Detect;
@@ -375,7 +375,7 @@ if ($Mobile_Detect->isMobile()) {
     $phone = $GLOBALS['medi']['phones'][SITE_ID];
     $sphone = str_replace([' ', '-'], '', $phone);
     ?>
-    
+
     <? php/*
 <a href="tel:<?=$sphone?>" class="phButton  link callBack" id="phoneMobButton" onclick="ym(30121774, 'reachGoal', 'CLICK_PHONE');return true;"></a>
 */
@@ -401,9 +401,9 @@ if ($Mobile_Detect->isMobile()) {
 global $FAVORITE_ITEMS;
 ?>
 <script>
-    $('.b-card-favorite').each(function (){
-        $(this).removeClass('active');
-    });
+  $('.b-card-favorite').each(function (){
+    $(this).removeClass('active');
+  });
 </script>
 <?
 /* Отмечаем избранные товары во всех блоках на всех страницах */
@@ -413,9 +413,9 @@ if (!empty($FAVORITE_ITEMS)) {
     <?php
     foreach ($FAVORITE_ITEMS as $favoriteProductItem) {?>
         <script>
-            if ($('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]')) {
-                $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').addClass('active');
-            }
+          if ($('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]')) {
+            $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').addClass('active');
+          }
         </script>
     <?}
 }
@@ -425,25 +425,33 @@ if ($USER->IsAuthorized()) {?>
 }
 ?>
 <script>
-    var windowInnerWidth = window.innerWidth;
-    if (windowInnerWidth <= 1024) {
-        $('.single-item').each(function() {
-            if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
-                var defaultOptions = {
-                    dots: true,
-                    arrows:false,
-                    slidesToShow: 1,
-                    adaptiveHeight: true
-                }
-                if ($(this).hasClass('detail_product')) {
-                    defaultOptions.dots = false;
-                    defaultOptions.autoplay = true;
-                    defaultOptions.autoplaySpeed = 5000;
-                }
-                $(this).slick(defaultOptions);
-            }
+  var windowInnerWidth = window.innerWidth;
+  if (windowInnerWidth <= 1024) {
+    $('.single-item').each(function() {
+      if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
+        var defaultOptions = {
+          dots: true,
+          arrows:false,
+          slidesToShow: 1,
+          adaptiveHeight: true
+        }
+        if ($(this).hasClass('detail_product')) {
+          defaultOptions.dots = false;
+          defaultOptions.autoplay = true;
+          defaultOptions.autoplaySpeed = 5000;
+        }
+
+        $(this).slick(defaultOptions);
+
+        $(this).on("touchstart", function(){
+          $(this).parents('.productTable').find('.item_colors').hide();
         });
-    }
+        $(this).on("touchend", function(){
+          $(this).parents('.productTable').find('.item_colors').show();
+        });
+      }
+    });
+  }
 </script>
 <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/slick.min.js"); ?>
 </body>

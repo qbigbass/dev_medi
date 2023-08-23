@@ -229,7 +229,15 @@ $(function () {
                     }
 
                     // big slider vars
-                    var $pictureSlider = $("#pictureContainer .pictureSlider").empty();
+                    var $pictureSlider = $("#pictureContainer .pictureSlider.detail_product").empty();
+                    $pictureSlider.removeClass();
+                    $pictureSlider.addClass('pictureSlider');
+                    $pictureSlider.addClass('detail_product');
+                    if (countImages > 0) {
+                        $pictureSlider.addClass('more-images');
+                    } else {
+                        $pictureSlider.addClass('one-image');
+                    }
 
                     // small pictures slider
                     var $moreImagesCarousel = $("#moreImagesCarousel").removeClass("hide");
@@ -255,7 +263,7 @@ $(function () {
                         if (countImages > 0) {
                             //small slider
                             $moreImagesCarouselSlideBox.append(
-                                $("<div />", {class: "item"}).append(
+                                $("<div />", {class: "item", "data-pic-index": i}).append(
                                     $("<a/>", {
                                         class: "zoom",
                                         href: nextElement["LARGE_IMAGE"]["SRC"]
@@ -269,13 +277,35 @@ $(function () {
                         }
                     });
 
+                    if ($pictureSlider.hasClass('detail_product')) {
+                        var defaultOptions = {
+                            dots: false,
+                            arrows:false,
+                            slidesToShow:1,
+                            adaptiveHeight:true,
+                            autoplay:true,
+                            autoplaySpeed:5000
+                        }
+                        $pictureSlider.slick(
+                            defaultOptions
+                        );
+                    }
+                    $pictureSlider.on('afterChange', function(event, slick, currentSlide, nextSlide){
+                        let currentIndexBigImg = currentSlide;
+                        $('#moreImagesCarousel .slideBox .item').each(function(){
+                            $(this).removeClass('selected');
+                        });
+                        $('#moreImagesCarousel .slideBox .item[data-pic-index='+currentIndexBigImg+']').addClass('selected');
+                    });
+
+
                     //addCart button reload
                     changeAddCartButton(basketProductsNow);
                     //subscribe button reload
                     //subscribeOnline();
 
                     //apps
-                    startPictureElementSlider();
+                    //startPictureElementSlider();
                     startMorePicturesElementCarousel();
                     createZoomer();
 
