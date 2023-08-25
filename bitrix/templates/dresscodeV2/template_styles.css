@@ -11858,7 +11858,7 @@ a.favorites_link.has_items .count {
         line-height: 5px;
     }
     .pictureSlider.detail_product .slick-dots {
-        bottom: 0px;
+        bottom: 0;
     }
     .slick-dots li button:before {
         font-size: 24px;

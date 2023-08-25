@@ -442,6 +442,9 @@ if ($USER->IsAuthorized()) {?>
           defaultOptions.autoplaySpeed = 5000;
           defaultOptions.variableWidth = false;
         }
+        if (windowInnerWidth > 820) {
+          defaultOptions.variableWidth = false;
+        }
 
                 $(this).slick(defaultOptions);
 
