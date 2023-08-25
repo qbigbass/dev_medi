@@ -4114,12 +4114,11 @@ strong {
     transition: all 0.5s ease-in-out;
     transform: translate3d(0, 0, 0);
     vertical-align: middle;
-    max-height: 90%;
-    max-width: 90%;
 }
 @media screen and (max-width: 1024px) {
     .product .picture img {
         max-width: 80%;
+        max-height: 90%;
     }
 }
 

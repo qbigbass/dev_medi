@@ -743,16 +743,12 @@ $extraParams = array(
 //get extra content (section info, more pictures, brand info, etc//)
 if ($card != 'small') {
     $extraContent = DwItemInfo::get_extra_content($arParams["CACHE_TIME"], $arParams["CACHE_TYPE"], $cacheID, $cacheDir, $extraParams, $arParams, $arResult, $opCurrency);
-
-    if (!empty($extraContent)) {
-        $arResult = $extraContent;
-    }
 } else {
     $extraContent = DwItemInfo::get_extra_content_small($arParams["CACHE_TIME"], $arParams["CACHE_TYPE"], $cacheID, $cacheDir, $extraParams, $arParams, $arResult, $opCurrency);
+}
 
-    if (!empty($extraContent)) {
-        $arResult = $extraContent;
-    }
+if (!empty($extraContent)) {
+    $arResult = $extraContent;
 }
 
 //no cache
