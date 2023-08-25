@@ -938,7 +938,7 @@ h1.changeName {
     visibility: hidden;
 }
 
-#elementContainer #pictureContainer .pictureSlider .item {
+#elementContainer #pictureContainer .detail_product.pictureSlider .item {
     height: 450px;
 }
 
