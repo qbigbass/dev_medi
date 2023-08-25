@@ -554,8 +554,8 @@ class DwItemInfo{
             // resize pictures params for get_more_pictures function
             $arResizeParams = array(
                 "SMALL_PICTURE" => array(
-                    "HEIGHT" => 180,
-                    "WIDTH" => $arGlobalParams["PICTURE_HEIGHT"]
+                    "HEIGHT" => 200,
+                    "WIDTH" => $arGlobalParams["PICTURE_WIDTH"]
                 ),
             );
 
