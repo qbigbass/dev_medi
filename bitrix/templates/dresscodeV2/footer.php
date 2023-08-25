@@ -425,21 +425,23 @@ if ($USER->IsAuthorized()) {?>
 }
 ?>
 <script>
-    var windowInnerWidth = window.innerWidth;
-    if (windowInnerWidth <= 1024) {
-        $('.single-item').each(function() {
-            if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
-                var defaultOptions = {
-                    dots: true,
-                    arrows:false,
-                    slidesToShow: 1,
-                    adaptiveHeight: true
-                }
-                if ($(this).hasClass('detail_product')) {
-                    defaultOptions.dots = false;
-                    defaultOptions.autoplay = true;
-                    defaultOptions.autoplaySpeed = 5000;
-                }
+  var windowInnerWidth = window.innerWidth;
+  if (windowInnerWidth <= 1024) {
+    $('.single-item').each(function() {
+      if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
+        var defaultOptions = {
+          dots: true,
+          arrows:false,
+          slidesToShow: 1,
+          variableWidth: true,
+          adaptiveHeight: true
+        }
+        if ($(this).hasClass('detail_product')) {
+          defaultOptions.dots = false;
+          defaultOptions.autoplay = true;
+          defaultOptions.autoplaySpeed = 5000;
+          defaultOptions.variableWidth = false;
+        }
 
                 $(this).slick(defaultOptions);
 

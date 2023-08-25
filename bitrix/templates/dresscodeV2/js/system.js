@@ -56,6 +56,7 @@ var slickItems = function() {
                         dots: true,
                         arrows:false,
                         slidesToShow: 1,
+                        variableWidth: true,
                         adaptiveHeight: true
                     });
 

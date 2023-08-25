@@ -4117,7 +4117,7 @@ strong {
 }
 @media screen and (max-width: 1024px) {
     .product .picture img {
-        max-width: 80%;
+        max-width: 90%;
         max-height: 90%;
     }
 }
@@ -11800,9 +11800,14 @@ a.favorites_link.has_items .count {
     #elementContainer #pictureContainer .pictureSlider.detail_product {
         height: 450px;
     }
-    .pictureSlider.catalog-list .item {
-        text-align: center;
-        margin-left: 1px;
+    .pictureSlider.catalog-list .item.slick-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 195px;
+        line-height: 195px;
+        width: 200px;
+        margin-left: 10px;
     }
     .pictureSlider.one-image .item {
         width: 100%;
@@ -11879,8 +11884,16 @@ a.favorites_link.has_items .count {
     #similar .productColImage {
         margin-top: -24px;
     }
+    .pictureSlider.catalog-list .item.slick-slide {
+        width: 280px;
+    }
 }
-
+@media (max-width: 820px) {
+    .pictureSlider.catalog-list .item.slick-slide {
+        margin-left: 0;
+        width: 260px;
+    }
+}
 @media (max-width: 768px) {
     .product {
         height: 350px;
@@ -11888,12 +11901,15 @@ a.favorites_link.has_items .count {
     .product .tabloid {
         height: 345px;
     }
+    .pictureSlider.catalog-list .item.slick-slide {
+        margin-left: 20px;
+        width: 320px;
+    }
 }
 @media (max-width: 530px) {
     .product .cartButtons a.scan,
     .product .cartButtons a.greyBigButton  {
         font-size: 10px;
-        min-width: unset;
     }
 }
 @media (max-width: 492px) {
@@ -11908,6 +11924,16 @@ a.favorites_link.has_items .count {
     #related .product .tabloid,
     #similar .product .tabloid {
         height: 358px;
+    }
+    .pictureSlider.catalog-list .item.slick-slide {
+        margin-left: 0;
+        width: 230px;
+    }
+}
+@media (max-width: 414px) {
+    .pictureSlider.catalog-list .item.slick-slide {
+        margin-left: 5px;
+        width: 180px;
     }
 }
 @media (max-width: 412px) {
@@ -11925,9 +11951,15 @@ a.favorites_link.has_items .count {
         top: 315px
     }
 }
-@media (max-width: 404px) {
-    .product .cartButtons a.greyBigButton ,
-    .product .cartButtons a.scan {
-        line-height: 14px;
+@media (max-width: 390px) {
+    .pictureSlider.catalog-list .item.slick-slide {
+        margin-left: 5px;
+        width: 160px;
+    }
+}
+@media (max-width: 375px) {
+    .pictureSlider.catalog-list .item.slick-slide {
+        margin-left: 0;
+        width: 150px;
     }
 }
