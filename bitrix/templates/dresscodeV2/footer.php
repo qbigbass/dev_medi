@@ -433,12 +433,14 @@ if ($USER->IsAuthorized()) {?>
           dots: true,
           arrows:false,
           slidesToShow: 1,
+          variableWidth: true,
           adaptiveHeight: true
         }
         if ($(this).hasClass('detail_product')) {
           defaultOptions.dots = false;
           defaultOptions.autoplay = true;
           defaultOptions.autoplaySpeed = 5000;
+          defaultOptions.variableWidth = false;
         }
 
         $(this).slick(defaultOptions);
