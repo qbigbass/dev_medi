@@ -1,3 +1,128 @@
+#GTM_size_map {
+display:none;
+}
+.mob {
+display:none;
+}
+.desc {
+display:block;
+}
+#salonServicesSlider{
+	position: relative;
+	display: none;
+}
+
+#salonServicesSlider .wrap,
+#salonServicesSlider .limiter{
+	position: relative;
+	overflow: hidden;
+}
+
+#salonServicesSlider ul{
+	position:relative;
+}
+
+#salonServicesSlider ul li{
+	display: block;
+	float:left;
+}
+
+#salonServicesSlider ul li img{
+	vertical-align: middle;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+#salonServicesSlider ol{
+	margin: 20px;
+	padding: 0px;
+	list-style: none;
+	position: inherit;
+	left: 50%;
+	bottom:0;
+}
+
+#salonServicesSlider ol li{
+	background: url(images/slideButton.png) 0 0 no-repeat transparent;
+	margin-right: 4px;
+	width: 18px;
+	height: 18px;
+	float:left;
+	cursor: pointer;
+}
+
+#salonServicesSlider ol li:hover{
+	background: url(images/slideButton.png) -18px 0  no-repeat transparent;
+}
+
+#salonServicesSlider ol li:active{
+	background: url(images/slideButton.png) -36px 0  no-repeat transparent;
+}
+
+#salonServicesSlider ol li.selected{
+	background: url(images/slideButton.png) -54px 0  no-repeat transparent;
+}
+
+#salonServicesSlider ol li.selected:hover{
+	background: url(images/slideButton.png) -72px 0  no-repeat transparent;
+}
+
+#salonServicesSlider ol li.selected:active{
+	background: url(images/slideButton.png) -90px 0  no-repeat transparent;
+}
+
+#salonServicesSlider .salonServicesSliderBtnLeft,
+#salonServicesSlider .salonServicesSliderBtnRight{
+display: block;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 50%;
+    margin-top: -25px;
+    z-index: 90;
+    background: url(images/slideArrows.png) no-repeat transparent;
+
+}
+
+#salonServicesSlider .salonServicesSliderBtnLeft{
+	background-position: 0 0;
+	left: 0px;
+}
+
+#salonServicesSlider .salonServicesSliderBtnLeft:hover{
+	background-position: -50px 0;
+}
+
+#salonServicesSlider .salonServicesSliderBtnLeft:active{
+	background-position: -100px 0;
+}
+
+#salonServicesSlider .salonServicesSliderBtnRight{
+	background-position: 0 -50px;
+	right: 0px;
+}
+
+#salonServicesSlider .salonServicesSliderBtnRight:hover{
+	background-position: -50px -50px;
+}
+
+#salonServicesSlider .salonServicesSliderBtnRight:active{
+	background-position: -100px -50px;
+}
+
+.youtube{
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 0px;
+    height: 0;
+}
+.youtube iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
 h1.changeName {
     font-family: "robotomedium";
 }
@@ -1295,6 +1420,13 @@ h1.changeName {
     color: #e20074;
 }
 
+
+@media (max-width: 1300px) {
+	#elementContainer #pictureContainer .pictureSlider, #elementContainer #pictureContainer .pictureSlider {
+		height: 450px;
+	}
+
+}
 .newReviewTable {
     font-size: 0;
 }
@@ -3377,6 +3509,20 @@ h1.changeName {
 }
 
 @media (max-width: 700px) {
+#GTM_size_map {
+display:inline-block;
+}
+.mob {
+display:block;
+}
+.desc {
+display:none;
+}
+.body_noscroll {
+position: fixed;
+width:100%;
+overflow:hidden;
+}
     .acor-container {
         margin: 20px 0;
     }

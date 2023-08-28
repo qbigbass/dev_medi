@@ -619,7 +619,7 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                 <div class="acor-body active">
                                     
                                     <? if (!empty($arResult["VIDEO"])): ?>
-                                        <div id="video">
+								<div id="video" class="desc">
 
                                             <h2 class="heading"><?= GetMessage("VIDEO_HEADING") ?></h2>
                                             <div class="wrap">
@@ -638,6 +638,32 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                         </div>
                                     <? endif; ?>
                                     
+
+<?// Тест видео слайдер с dots?>
+<div class="mob">
+	<div id="salonServicesSlider">
+
+			<ul class="slideBox">
+<?foreach ($arResult["VIDEO"] as $ivp => $videoValue):
+                                                $videoValue = str_replace("/watch?v=","/embed/", $videoValue);
+                                                $videoValue = str_replace("youtu.be/","www.youtube.com/embed/", $videoValue);
+                                                ?>
+          <li class="item">
+
+			  <iframe src="<?=$videoValue?>" allowfullscreen class="videoFrame" width="100%" height="300"></iframe>
+			
+          </li>
+<?endforeach;?>
+        </ul>
+
+      <a href="#" class="salonServicesSliderBtnLeft"></a>
+      <a href="#" class="salonServicesSliderBtnRight"></a>
+    </div>
+							</div>
+
+
+
+
                                     <? // NOTE: TECHNOLOGIES?>
                                     <? if (!empty($arResult['PROPERTIES']['TECHNOLOGIES']['VALUES_LIST'])): ?>
                                         <div id="tech">
@@ -1451,5 +1477,26 @@ unset($secturl[1]);
             $(this).removeClass('selected');
         });
         $('#moreImagesCarousel .slideBox .item[data-pic-index='+currentIndexBigImg+']').addClass('selected');
+    });
+</script>
+<script>
+    $(function() {
+
+        $("#salonServicesSlider").dwSlider({
+            delay: 8000,
+            speed: 800,
+            rightButton: ".salonServicesSliderBtnRight",
+            leftButton: ".salonServicesSliderBtnLeft",
+            autoMove: false,
+            touch: true,
+        });
+
+    });
+</script>
+
+<script>
+    $("#GTM_size_map").click(function () {
+        $("body").addClass("body_noscroll");
+        document.body.style.top = `-${window.scrollY}px`;
     });
 </script>
