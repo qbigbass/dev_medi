@@ -1,6 +1,10 @@
 // global function var
 var windowInnerWidth = window.innerWidth;
-if (windowInnerWidth > 1024) {
+var detect = new MobileDetect(window.navigator.userAgent);
+var isAdaptive = detect.mobile();
+var userAgent = detect.userAgent();
+
+if (windowInnerWidth > 1024 && !isAdaptive) {
 	var startPictureElementSlider;
 	
 	$(function () {

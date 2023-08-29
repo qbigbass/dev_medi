@@ -49,10 +49,10 @@ var slickItems = function() {
     var items = $('.single-item');
     var windowInnerWidth = window.innerWidth;
     var detect = new MobileDetect(window.navigator.userAgent);
-    var isAdaprive = detect.mobile();
+    var isAdaptive = detect.mobile();
     var userAgent = detect.userAgent();
 
-    if (isAdaprive) {
+    if (isAdaptive || windowInnerWidth <= 1024) {
         setTimeout(function () {
             $.each(items, function () {
                 if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
