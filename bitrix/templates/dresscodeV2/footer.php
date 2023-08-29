@@ -426,7 +426,13 @@ if ($USER->IsAuthorized()) {?>
 ?>
 <script>
   var windowInnerWidth = window.innerWidth;
-  if (windowInnerWidth <= 1024) {
+  var detect = new MobileDetect(window.navigator.userAgent);
+  var isAdaprive = detect.mobile();
+  var userAgent = detect.userAgent();
+  
+  if (isAdaprive) {
+    $('body').addClass('_adaptive');
+    $('body').addClass(userAgent);
     $('.single-item').each(function() {
       if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
         var defaultOptions = {
@@ -446,17 +452,19 @@ if ($USER->IsAuthorized()) {?>
           defaultOptions.variableWidth = false;
         }
 
-                $(this).slick(defaultOptions);
+        $(this).slick(defaultOptions);
 
-                $(this).on("touchstart", function(){
-                    $(this).parents('.productTable').find('.item_colors').hide();
-                });
-                $(this).on("touchend", function(){
-                    $(this).parents('.productTable').find('.item_colors').show();
-                });
-            }
-        });
-    }
+        if (windowInnerWidth <= 1024) { // На разрешении выше блок с цветами не отображается сбоку КТ
+            $(this).on("touchstart", function(){
+              $(this).parents('.productTable').find('.item_colors').hide();
+            });
+            $(this).on("touchend", function(){
+              $(this).parents('.productTable').find('.item_colors').show();
+            });
+        }
+      }
+    });
+  }
 </script>
 <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/slick.min.js"); ?>
 </body>
