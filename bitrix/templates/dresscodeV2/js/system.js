@@ -48,7 +48,11 @@ var checkLazyItems = function () {
 var slickItems = function() {
     var items = $('.single-item');
     var windowInnerWidth = window.innerWidth;
-    if (windowInnerWidth <= 1024) {
+    var detect = new MobileDetect(window.navigator.userAgent);
+    var isAdaprive = detect.mobile();
+    var userAgent = detect.userAgent();
+
+    if (isAdaprive) {
         setTimeout(function () {
             $.each(items, function () {
                 if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
@@ -60,12 +64,14 @@ var slickItems = function() {
                         adaptiveHeight: true
                     });
 
-                    $(this).on("touchstart", function(){
-                        $(this).parents('.productTable').find('.item_colors').hide();
-                    });
-                    $(this).on("touchend", function(){
-                        $(this).parents('.productTable').find('.item_colors').show();
-                    });
+                    if (windowInnerWidth <= 1024) { // На разрешении выше блок с цветами не отображается сбоку КТ
+                        $(this).on("touchstart", function(){
+                            $(this).parents('.productTable').find('.item_colors').hide();
+                        });
+                        $(this).on("touchend", function(){
+                            $(this).parents('.productTable').find('.item_colors').show();
+                        });
+                    }
                 }
             });
 

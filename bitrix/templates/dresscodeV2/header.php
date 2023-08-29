@@ -168,6 +168,7 @@ IncludeTemplateLangFile(__FILE__);
     <? //$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/dwZoomer.js");?>
     <? $APPLICATION->AddHeadScript("https://kit.fontawesome.com/4e1ccc2c65.js"); ?>
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/favorite.js"); ?>
+    <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/mobile-detect.min.js"); ?>
 
     <!-- calltouch -->
     <script>(function (w, d, n, c) {
