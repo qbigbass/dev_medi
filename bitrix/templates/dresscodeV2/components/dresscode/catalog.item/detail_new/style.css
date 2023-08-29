@@ -1422,14 +1422,6 @@ h1.changeName {
     color: #e20074;
 }
 
-
-@media (max-width: 1300px) {
-    #elementContainer #pictureContainer .pictureSlider, #elementContainer #pictureContainer .pictureSlider {
-        height: 450px;
-    }
-
-}
-
 .newReviewTable {
     font-size: 0;
 }

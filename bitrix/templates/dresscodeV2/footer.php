@@ -427,10 +427,10 @@ if ($USER->IsAuthorized()) {?>
 <script>
   var windowInnerWidth = window.innerWidth;
   var detect = new MobileDetect(window.navigator.userAgent);
-  var isAdaprive = detect.mobile();
+  var isAdaptive = detect.mobile();
   var userAgent = detect.userAgent();
   
-  if (isAdaprive) {
+  if (isAdaptive || windowInnerWidth <= 1024) {
     $('body').addClass('_adaptive');
     $('body').addClass(userAgent);
     $('.single-item').each(function() {
