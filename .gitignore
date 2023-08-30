@@ -13,7 +13,16 @@ node_modules
 !/bitrix/components/
 /bitrix/components/bitrix/
 !/bitrix/templates/
-/bitrix/templates/landing24/
+!/bitrix/modules/arturgolubev.smartsearch/
+!/bitrix/modules/courierist/
+!/bitrix/modules/dw.deluxe/
+!/bitrix/modules/ipol.sdek/
+!/bitrix/modules/measoft.courier/
+!/bitrix/modules/ps.sms/
+!/bitrix/modules/twofingers.location/
+!/bitrix/modules/up.boxberrydelivery/
+!/bitrix/modules/vampirus.yandexkassa/
+/bitrix/templates/landing/
 !/bitrix/php_interface/
 /bitrix/php_interface/dbconn.php
 /bitrix/php_interface/after_connect*
@@ -24,6 +33,7 @@ node_modules
 /upload/
 
 # Files
+*.min.min.*
 *.log
 *.html
 *.csv
