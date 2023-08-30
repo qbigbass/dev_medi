@@ -122,46 +122,58 @@
             <div class="productTable">
                 <div class="productColImage">
                     <a href="<?= $arResult["DETAIL_PAGE_URL"] ?>" class="picture">
-                        <? if ($arParams["LAZY_LOAD_PICTURES"] == "Y"): ?>
-                            <? if (!empty($arResult["IMAGES"])): ?>
-                                <div id="pictureContainer">
-                                    <div class="pictureSlider catalog-list <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
-                                        <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
-                                            <?if($ipr < 3):?>
-                                                <div class="item">
-                                                    <img
-                                                        src="<?= SITE_TEMPLATE_PATH ?>/images/mloader.gif" class="lazy"
-                                                        data-lazy="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
-                                                        alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
-                                                        title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
-                                                    >
-                                                </div>
-                                            <? endif; ?>
-                                        <? endforeach; ?>
+                        <? if ($arParams["SLIDER_ON"] !== "N"): ?>
+                            <? if ($arParams["LAZY_LOAD_PICTURES"] == "Y"): ?>
+                                <? if (!empty($arResult["IMAGES"])):?>
+                                    <div id="pictureContainer">
+                                        <div class="pictureSlider catalog-list <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
+                                            <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
+                                                <?if($ipr < 3):?>
+                                                    <div class="item">
+                                                        <img
+                                                            src="<?= SITE_TEMPLATE_PATH ?>/images/mloader.gif" class="lazy"
+                                                            data-lazy="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
+                                                            alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
+                                                            title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
+                                                        >
+                                                    </div>
+                                                <? endif; ?>
+                                            <? endforeach; ?>
+                                        </div>
                                     </div>
-                                </div>
+                                <? endif; ?>
+                            <? else: ?>
+                                <? if (!empty($arResult["IMAGES"])): ?>
+                                    <div id="pictureContainer">
+                                        <div class="pictureSlider catalog-list <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
+                                            <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
+                                                <?if($ipr < 3):?>
+                                                    <div class="item">
+                                                        <img
+                                                            src="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
+                                                        >
+                                                    </div>
+                                                <? endif; ?>
+                                            <? endforeach; ?>
+                                        </div>
+                                    </div>
+                                <? endif; ?>
                             <? endif; ?>
                         <? else: ?>
-                            <? if (!empty($arResult["IMAGES"])): ?>
-                                <div id="pictureContainer">
-                                    <div class="pictureSlider catalog-list <?if(count($arResult["IMAGES"]) > 1):?>more-images<?else:?>one-image<?endif;?> slider single-item">
-                                        <? foreach ($arResult["IMAGES"] as $ipr => $arNextPicture): ?>
-                                            <?if($ipr < 3):?>
-                                                <div class="item">
-                                                    <img
-                                                        src="<?= $arNextPicture["SMALL_IMAGE"]["SRC"] ?>"
-                                                    >
-                                                </div>
-                                            <? endif; ?>
-                                        <? endforeach; ?>
-                                    </div>
-                                </div>
+                            <? if ($arParams["LAZY_LOAD_PICTURES"] == "Y"): ?>
+                                <img src="<?= SITE_TEMPLATE_PATH ?>/images/mloader.gif" class="lazy"
+                                     data-lazy="<?= $arResult["PICTURE"]["src"] ?>"
+                                     alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
+                                     title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>">
+                            <? else: ?>
+                                <img src="<?= $arResult["PICTURE"]["src"] ?>"
+                                     alt="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_ALT"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>"
+                                     title="<? if (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"])): ?><?= $arResult["IPROPERTY_VALUES"]["ELEMENT_PREVIEW_PICTURE_FILE_TITLE"] ?><? else: ?><?= $arResult["NAME"] ?><? endif; ?>">
                             <? endif; ?>
                         <? endif; ?>
                     </a>
                     <span class="item_brand <? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] == 'medi') { ?>flag-medi<? } ?> "><? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] != 'medi') { ?><?= $arResult['PROPERTIES']['BRAND_1C']['VALUE'] ?><? } ?>
                     </span>
-
                     <? if (!empty($arResult["SKU_PROPERTIES"]['COLOR'])): ?>
                         <ul class="item_colors">
                             <? foreach ($arResult["SKU_PROPERTIES"]['COLOR']["VALUES"] as $xml_id => $arNextPropValue): ?>
