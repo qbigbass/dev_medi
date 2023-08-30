@@ -1,0 +1,21 @@
+<?
+$MESS['VAMPIRUS.YANDEXKASSA_FAIL']                       = 'Operation error: #ERROR#';
+$MESS['VAMPIRUS.YANDEXKASSA_ORDER_NUMBER']               = 'Order number';
+$MESS['VAMPIRUS.YANDEXKASSA_INVOICE_ID']                 = 'Transaction number';
+$MESS['VAMPIRUS.YANDEXKASSA_ORDER_SUM']                  = 'Order sum';
+$MESS['VAMPIRUS.YANDEXKASSA_DATE']                       = 'Transaction date';
+$MESS['VAMPIRUS.YANDEXKASSA_STATUS']                     = 'Status';
+$MESS['VAMPIRUS.YANDEXKASSA_ACTION']                     = 'Action';
+$MESS['VAMPIRUS.YANDEXKASSA_ACTION_RETURN']              = 'Return';
+$MESS['VAMPIRUS.YANDEXKASSA_ACTION_CANCEL']              = 'Cancel';
+$MESS['VAMPIRUS.YANDEXKASSA_ACTION_CONFIRM']             = 'Confirm';
+$MESS['VAMPIRUS.YANDEXKASSA_TRANSACTION_TITLE']          = 'Payment transactions';
+$MESS['VAMPIRUS.YANDEXKASSA_STATUS']                     = 'Status';
+$MESS['VAMPIRUS.YANDEXKASSA_RETURN_CAUSE']               = 'Return cause';
+$MESS['VAMPIRUS.YANDEXKASSA_ACTION_SUM']                 = 'Sum';
+$MESS['VAMPIRUS.YANDEXKASSA_STATUS_WAITING_FOR_CAPTURE'] = 'Wait for capture';
+$MESS['VAMPIRUS.YANDEXKASSA_STATUS_PENDING']             = 'Pending';
+$MESS['VAMPIRUS.YANDEXKASSA_STATUS_SUCCEEDED']           = 'Payed';
+$MESS['VAMPIRUS.YANDEXKASSA_STATUS_CANCELED']            = 'Canceled';
+$MESS['VAMPIRUS.YANDEXKASSA_STATUS_REFUNDED']            = 'Refunded';
+$MESS['VAMPIRUS.YANDEXKASSA_FILTER_ANY_STATUS']          = 'ANY';

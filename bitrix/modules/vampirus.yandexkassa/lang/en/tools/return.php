@@ -1,0 +1,9 @@
+<?
+$MESS['VAMPIRUS.YANDEXKASSA_PAYMENT_RESULT_TITLE'] = "Payment result";
+
+$MESS['VAMPIRUS.YANDEXKASSA_SUCCESS_RESULT'] = "Payment success";
+$MESS['VAMPIRUS.YANDEXKASSA_PENDING_PAYMENT'] = "Pending payment";
+$MESS['VAMPIRUS.YANDEXKASSA_FAIL_RESULT'] = "Payment error";
+$MESS['VAMPIRUS.YANDEXKASSA_EMPTY_RESULT'] = "Empty transacion info";
+$MESS['VAMPIRUS.YANDEXKASSA_SUCCESS_NOTFOUND'] = "Order not found";
+$MESS['VAMPIRUS.YANDEXKASSA_SUCCESS_LINK'] = "You can check payment status on <a href=\"#LINK#\">order page</a>";
