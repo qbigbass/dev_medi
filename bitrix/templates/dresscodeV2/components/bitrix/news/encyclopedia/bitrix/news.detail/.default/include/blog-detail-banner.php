@@ -27,6 +27,7 @@
 	</div>
 </div>
 <?$this->EndViewTarget();?>
+
 <div class="global-block-container">
 	<div class="global-content-block">
 		<div class="detail-text-wrap">
