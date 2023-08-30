@@ -30,7 +30,8 @@ global $nUserID; ?>
                         "CONVERT_CURRENCY" => $arParams["CONVERT_CURRENCY"],
                         "LAZY_LOAD_PICTURES" => $arParams["LAZY_LOAD_PICTURES"],
                         "CURRENCY_ID" => $arParams["CURRENCY_ID"],
-                        "POS_COUNT" => $pos_counter
+                        "POS_COUNT" => $pos_counter,
+                        "SLIDER_ON" => $arParams["SLIDER_ON"]
                     ),
                     false,
                     array("HIDE_ICONS" => "Y")
@@ -54,9 +55,11 @@ global $nUserID; ?>
             //lazy load
             checkLazyItems();
         </script>
-        <script>
-            slickItems();
-        </script>
+        <?if ($arParams["SLIDER_ON"] !== "N"):?>
+            <script>
+                slickItems();
+            </script>
+        <? endif; ?>
         <? if (!empty($arResult['ITEMS'])) {
             
             $cItems = [];
