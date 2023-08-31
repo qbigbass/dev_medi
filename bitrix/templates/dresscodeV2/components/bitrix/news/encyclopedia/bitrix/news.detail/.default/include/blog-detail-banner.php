@@ -28,6 +28,7 @@
 </div>
 <?$this->EndViewTarget();?>
 
+<? include_once("seo_info_header.php"); ?>
 <div class="global-block-container">
 	<div class="global-content-block">
 		<div class="detail-text-wrap">
@@ -45,5 +46,6 @@
 		$component
 	);?>
 </div>
+<? include_once("seo_info_footer.php"); ?>
 <script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js" charset="utf-8"></script>
 <script src="//yastatic.net/share2/share.js" charset="utf-8"></script>

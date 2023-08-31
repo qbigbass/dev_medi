@@ -1,4 +1,5 @@
-<div class="h1" style="color:#000;">05.07.2023</div>
+<? include_once("seo_info_header.php"); ?>
+
 <div class="global-block-container">
 	<div class="global-content-block">
 		<div class="blog-banner banner-wrap banner-no-bg">
@@ -41,5 +42,7 @@
 		$component
 	);?>
 </div>
+
+<? include_once("seo_info_footer.php"); ?>
 <script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js" charset="utf-8"></script>
 <script src="//yastatic.net/share2/share.js" charset="utf-8"></script>
