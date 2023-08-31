@@ -482,3 +482,100 @@
 	overflow: hidden;
 	color: #888888;
 }
+/* Стили для блока с EEAT информацией */
+.marg {
+	margin-bottom: 15px;
+}
+.flex-info {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: -32px;
+	color: #a6a6a6;
+	justify-content: right;
+	align-items: center;
+	font-size: 12px;
+}
+.flex-info .inf:not(:last-child) {
+	margin-right: 20px;
+}
+.flex-info .inf {
+	display: flex;
+	align-items: center;
+}
+.flex-info img {
+	margin-right: 5px;
+	height: 18px;
+}
+.share,
+.like {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.share a:hover {
+	opacity: 0.8;
+}
+.share a {
+	margin-right: 8px;
+}
+.text-url {
+	display: flex;
+	align-items: center;
+}
+.text-url img {
+	margin-right:5px;
+}
+.copy-url {
+	color: #5f5f5f;
+	text-decoration: none;
+}
+.like {
+	color: #888888;
+	align-items: center;
+}
+
+.like img {
+	filter: invert(12%) sepia(98%) saturate(5991%) hue-rotate(322deg)
+	brightness(88%) contrast(101%);
+	margin-right: 5px;
+}
+.author-brick {
+	display: flex;
+	align-items: start;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.author-brick img {
+	margin: 0 15px;
+}
+@media (max-width: 1100px) {
+	.flex-info {
+		margin-top: auto;
+		justify-content: left;
+	}
+	.marg {
+		width: 100%;
+		text-align: center;
+	}
+	.author-brick img {
+		margin: 15px;
+	}
+	.share-brick,
+	.like-brick,
+	.author-brick {
+		margin-bottom: 30px;
+		text-align: center;
+		width: 100%;
+	}
+	.like img {
+		width: 40px;
+	}
+	.text-url {
+		margin-top: 10px;
+		width: 100%;
+		justify-content: center;
+	}
+	.copy-url {
+		width: 100%;
+	}
+}
