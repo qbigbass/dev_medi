@@ -512,6 +512,9 @@
 	flex-wrap: wrap;
 	justify-content: center;
 }
+.like:hover {
+	cursor: pointer;
+}
 .share a:hover {
 	opacity: 0.8;
 }
