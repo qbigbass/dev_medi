@@ -14,8 +14,8 @@
 
         <div class="like-brick">
             <div class="ff-medium h3 marg">Понравилась статья?</div>
-            <div class="like">
-                <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/like.svg">Мне нравится 152
+            <div class="like" data-post-id="<?=$arResult["ID"]?>">
+                <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/like.svg">Мне нравится <span class="like-count"><?=$arResult["PROPERTIES"]["LIKES_CNT"]["VALUE"]?></span>
             </div>
         </div>
 
