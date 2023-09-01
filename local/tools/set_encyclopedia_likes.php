@@ -20,22 +20,8 @@ while ($elem = $objElem->Fetch()) {
 }
 
 if (!empty($arrIds)) {
-
-    $objProp = CIBlockProperty::GetList(array(), ['iBLOCK_ID' => 3, 'CODE' => 'LIKES_CNT']);
-    $arrDataProp = $objProp->Fetch();
-
-    if (!empty($arrDataProp)) {
-
-        $el = new CIBlockElement;
-        $PROP = array();
-
-        foreach ($arrIds as $id) {
-            $cntLikes = random_int(50, 150);
-            $PROP[$arrDataProp['ID']] = $cntLikes;
-            $arProps = Array(
-                "PROPERTY_VALUES"=> $PROP,
-            );
-            $el->Update($id, $arProps);
-        }
+    foreach ($arrIds as $id) {
+        $cntLikes = random_int(50, 150);
+        CIBlockElement::SetPropertyValuesEx($id, "3", array("LIKES_CNT" => $cntLikes));
     }
 }
