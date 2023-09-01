@@ -15,7 +15,11 @@
         <div class="like-brick">
             <div class="ff-medium h3 marg">Понравилась статья?</div>
             <div class="like" data-post-id="<?=$arResult["ID"]?>">
-                <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/like.svg">Мне нравится <span class="like-count"><?=$arResult["PROPERTIES"]["LIKES_CNT"]["VALUE"]?></span>
+                <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/like.svg">Мне нравится<span class="like-count"><?=$arResult["PROPERTIES"]["LIKES_CNT"]["VALUE"]?></span>
+            </div>
+            <div class="bubble bubbleBottom" data-id="<?=$arResult["ID"]?>" title="Закрыть окно">
+                <span class="tfl-popup__close" title="Закрыть окно"></span>
+                <span>Вы уже голосовали за эту статью</span>
             </div>
         </div>
 

@@ -506,6 +506,11 @@
 	margin-right: 5px;
 	height: 18px;
 }
+
+.like-brick {
+	position: relative;
+}
+
 .share,
 .like {
 	display: flex;
@@ -515,6 +520,66 @@
 .like:hover {
 	cursor: pointer;
 }
+
+.bubble, .bubble::before {
+	position: absolute;
+	background: #505050;
+	display: none;
+	top: 100%;
+	left: 0;
+}
+.bubble.active {
+	display: block;
+}
+
+.bubble {
+	width: 292px;
+	padding: 16px 20px;
+	z-index: 3000;
+	top: 50px;
+	left: 0;
+	margin-left: 15px;
+	color: #fff;
+	display: none;
+	white-space: normal;
+	border-radius: 3px;
+	box-sizing: border-box;
+}
+
+.bubble.bubbleBottom {
+	margin-left: 0;
+	margin-top: 6px;
+}
+
+.bubble::before {
+	content: " ";
+	top: -7px;
+	left: 15px;
+	height: 14px;
+	width: 14px;
+	margin-top: -7px;
+	transform: rotate(45deg);
+}
+
+.bubble.bubbleBottom::before {
+	left: 25px;
+	top: 0;
+	margin-left: -7px;
+}
+.like-count {
+	margin-left: 5px;
+}
+.like-brick .tfl-popup__close {
+	position: absolute;
+	top: 18px;
+	right: 15px;
+	opacity: 0.5;
+}
+.like-brick .tfl-popup__close:before,
+.like-brick .tfl-popup__close:after {
+	background-color: #fff;
+}
+
 .share a:hover {
 	opacity: 0.8;
 }
