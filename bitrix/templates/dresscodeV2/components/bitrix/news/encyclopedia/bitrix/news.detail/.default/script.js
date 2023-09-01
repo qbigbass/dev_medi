@@ -59,7 +59,21 @@ $(document).ready(function() {
 		});
 	}
 
-	$('.bubble').on('click', '.tfl-popup__close', function (){
+	$('.bubble').on('click', '.tfl-popup__close', function () {
 		$(this).parent().removeClass('active');
+	});
+
+	$('.share-brick').on('click', '.copy-url', function (e) {
+		e.preventDefault();
+		var url = window.location.href;
+		var copyTextarea = document.createElement("textarea");
+		copyTextarea.style.position = "fixed";
+		copyTextarea.style.opacity = "0";
+		copyTextarea.textContent = url;
+
+		document.body.appendChild(copyTextarea);
+		copyTextarea.select();
+		document.execCommand("copy");
+		document.body.removeChild(copyTextarea);
 	});
 });
