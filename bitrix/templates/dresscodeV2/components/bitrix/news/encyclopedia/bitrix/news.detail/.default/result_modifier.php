@@ -83,11 +83,13 @@ if ($arResult["PROPERTIES"]["AUTHOR_POST"]["VALUE"] !== "") {
     
     </script>
 <?
+$this->__component->arResult['LIKES_CNT'] = $arResult["PROPERTIES"]["LIKES_CNT"]["VALUE"];
 $this->__component->SetResultCacheKeys(array(
     "NAME",
     "PREVIEW_TEXT",
     "PREVIEW_PICTURE",
     "DETAIL_PICTURE",
     "DETAIL_PAGE_URL",
-    "RELATED"
+    "RELATED",
+    "LIKES_CNT"
 )); ?>
