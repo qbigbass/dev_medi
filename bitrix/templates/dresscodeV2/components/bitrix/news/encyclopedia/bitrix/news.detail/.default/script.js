@@ -24,7 +24,7 @@ $(document).ready(function() {
 
 	function addLike(postId, action) {
 		let param = 'postId='+postId+"&action="+action;
-		
+
 		$.ajax({
 			url: '/ajax/likes/',
 			type: 'GET',

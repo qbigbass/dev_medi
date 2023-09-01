@@ -30,3 +30,27 @@ dataLayer.push({
 });
 
 </script>
+<?php
+// Получим итого кол-во лайков у статьи
+$curCntLikesCached = $arResult["LIKES_CNT"];
+$objElem = CIBlockElement::GetList(
+    ["ID" => "ASC"],
+    [
+        "IBLOCK_ID" => "3",
+        "ID" => $arResult['ID']
+    ],
+    false,
+    false,
+    ["ID", "IBLOCK_ID", "PROPERTY_LIKES_CNT"]
+);
+
+while ($elem = $objElem->Fetch()) {
+    $curCntLikes = $elem["PROPERTY_LIKES_CNT_VALUE"];
+}
+
+if ($curCntLikesCached !== $curCntLikes) {?>
+    <script>
+        $('.head_like_cnt').html('<?=$curCntLikes?>'); // Лайк в шапке статьи
+        $('.like .like-count').html('<?=$curCntLikes?>'); // Лайк в футере статьи
+    </script><?php
+}
