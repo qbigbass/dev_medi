@@ -1,4 +1,7 @@
 <!-- Авторский блок Начало -->
+<?php
+$url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+?>
 <div class="light-bg">
     <div class="flex">
         <div class="author-brick">
@@ -26,19 +29,19 @@
         <div class="share-brick">
             <div class="ff-medium h3 marg">Поделиться статьей:</div>
             <div class="share">
-                <a href="/">
+                <a href="whatsapp://send" data-href="<?=$url?>" class="wa_btn wa_btn_m">
                     <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/wa.svg">
                 </a>
-                <a href="/">
+                <a href="https://connect.ok.ru/offer?url=<?=$url?>">
                     <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/ok.svg">
                 </a>
-                <a href="/">
+                <a href="https://vk.com/share.php?url=<?=$url?>">
                     <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/vk.svg">
                 </a>
-                <a href="/">
+                <a href="https://telegram.me/share/url?url=<?=$url?>">
                     <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/tg.svg">
                 </a>
-                <a href="/" class="copy-url">
+                <a href="" class="copy-url">
                     <div class="text-url">
                         <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/url.svg">
                         <div class="ff-medium">Скопировать ссылку</div>
