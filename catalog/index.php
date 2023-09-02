@@ -104,7 +104,7 @@ $APPLICATION->SetTitle("Каталог ортопедических издели
         "PAGE_ELEMENT_COUNT" => "24",
         "LINE_ELEMENT_COUNT" => "3",
         "ELEMENT_SORT_FIELD" => "SORT",
-        "ELEMENT_SORT_ORDER" => "asc",
+        "ELEMENT_SORT_ORDER" => "desc",
         "ELEMENT_SORT_FIELD2" => "shows",
         "ELEMENT_SORT_ORDER2" => "desc",
         "LIST_PROPERTY_CODE" => array(),
