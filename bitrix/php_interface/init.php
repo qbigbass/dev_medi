@@ -52,6 +52,8 @@ include("include/order.php");
 // обработчики для корзины
 include("include/basket.php");
 
+// обработчики для постов энциклопедии
+include("include/encyclopedia.php");
 
 // обработчики для админ.раздела
 if (defined("ADMIN_SECTION")) {
