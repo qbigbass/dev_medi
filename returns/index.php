@@ -122,4 +122,8 @@ $APPLICATION->SetTitle("Обмен и возврат изделий");
 		</div>
 	</div>
 </div>
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: 'view_returns'}]);
+</script>
  <br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

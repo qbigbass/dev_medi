@@ -938,7 +938,7 @@ h1.changeName {
     visibility: hidden;
 }
 
-#elementContainer #pictureContainer .pictureSlider .item {
+#elementContainer #pictureContainer .detail_product.pictureSlider .item {
     height: 450px;
 }
 
@@ -1293,14 +1293,6 @@ h1.changeName {
     position: relative;
     top: 1px;
     color: #e20074;
-}
-
-
-@media (max-width: 1300px) {
-    #elementContainer #pictureContainer .pictureSlider, #elementContainer #pictureContainer .pictureSlider {
-        height: 450px;
-    }
-
 }
 
 .newReviewTable {

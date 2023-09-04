@@ -2,6 +2,7 @@
 $mytaget_feed_id = '102';
 
 global $nUserID;
+
 ?>
 <script>
     $product_price = parseInt( $(".price .priceVal").attr("data-price"));
@@ -73,3 +74,5 @@ global $nUserID;
     _rutarget.push({'event': 'showOffer', 'sku': $product_id, 'price': $product_price});
 
 </script>
+
+

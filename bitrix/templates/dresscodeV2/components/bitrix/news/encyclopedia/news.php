@@ -75,3 +75,7 @@ $APPLICATION->AddHeadString('<link rel="canonical" href="https://www.medi-salon.
 	),
 	$component
 );?>
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: 'view_encyclopedia' }]);
+</script>

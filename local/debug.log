@@ -1,0 +1,326 @@
+--------- 08:59:23 01-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+EmitVirtual 2 errors--------- end  -------------
+--------- 08:59:23 01-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+Bitrix\Main\Result Object
+(
+    [isSuccess:protected] => 
+    [errors:protected] => Bitrix\Main\ErrorCollection Object
+        (
+            [values:protected] => Array
+                (
+                    [0] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 201
+                            [customData:protected] => 
+                        )
+
+                )
+
+        )
+
+    [data:protected] => Array
+        (
+        )
+
+)
+--------- end  -------------
+--------- 08:59:23 01-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+card_emit lk--------- end  -------------
+--------- 08:59:46 01-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+subs_email--------- end  -------------
+--------- 08:59:46 01-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+r.machmutov@astarus.com--------- end  -------------
+--------- 15:14:01 02-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79165793101--------- end  -------------
+--------- 16:32:25 04-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79104457785--------- end  -------------
+--------- 10:10:15 07-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79165793101--------- end  -------------
+--------- 12:59:25 08-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79127445503--------- end  -------------
+--------- 13:21:54 08-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79127445503--------- end  -------------
+--------- 13:37:31 08-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79127445503--------- end  -------------
+--------- 08:24:44 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79127445503--------- end  -------------
+--------- 08:25:29 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+user data errors--------- end  -------------
+--------- 08:25:29 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+user data errors--------- end  -------------
+--------- 08:25:29 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+Bitrix\Main\Result Object
+(
+    [isSuccess:protected] => 
+    [errors:protected] => Bitrix\Main\ErrorCollection Object
+        (
+            [values:protected] => Array
+                (
+                    [0] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                    [1] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                )
+
+        )
+
+    [data:protected] => Array
+        (
+        )
+
+)
+--------- end  -------------
+--------- 08:25:29 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+cards data errors--------- end  -------------
+--------- 08:25:29 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+Bitrix\Main\Result Object
+(
+    [isSuccess:protected] => 
+    [errors:protected] => Bitrix\Main\ErrorCollection Object
+        (
+            [values:protected] => Array
+                (
+                    [0] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                )
+
+        )
+
+    [data:protected] => Array
+        (
+        )
+
+)
+--------- end  -------------
+--------- 08:25:30 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+EmitVirtual 2 errors--------- end  -------------
+--------- 08:25:30 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+Bitrix\Main\Result Object
+(
+    [isSuccess:protected] => 
+    [errors:protected] => Bitrix\Main\ErrorCollection Object
+        (
+            [values:protected] => Array
+                (
+                    [0] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                )
+
+        )
+
+    [data:protected] => Array
+        (
+        )
+
+)
+--------- end  -------------
+--------- 08:25:30 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+card_emit lk--------- end  -------------
+--------- 08:25:30 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+cards data errors--------- end  -------------
+--------- 08:25:30 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+Bitrix\Main\Result Object
+(
+    [isSuccess:protected] => 
+    [errors:protected] => Bitrix\Main\ErrorCollection Object
+        (
+            [values:protected] => Array
+                (
+                    [0] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                )
+
+        )
+
+    [data:protected] => Array
+        (
+        )
+
+)
+--------- end  -------------
+--------- 08:26:01 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79127445503--------- end  -------------
+--------- 08:31:30 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79127445503--------- end  -------------
+--------- 12:58:19 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+login ok +79127445503--------- end  -------------
+--------- 14:38:14 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+user data errors--------- end  -------------
+--------- 14:38:15 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+user data errors--------- end  -------------
+--------- 14:38:15 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+Bitrix\Main\Result Object
+(
+    [isSuccess:protected] => 
+    [errors:protected] => Bitrix\Main\ErrorCollection Object
+        (
+            [values:protected] => Array
+                (
+                    [0] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                    [1] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                )
+
+        )
+
+    [data:protected] => Array
+        (
+        )
+
+)
+--------- end  -------------
+--------- 14:38:15 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+cards data errors--------- end  -------------
+--------- 14:38:15 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+Bitrix\Main\Result Object
+(
+    [isSuccess:protected] => 
+    [errors:protected] => Bitrix\Main\ErrorCollection Object
+        (
+            [values:protected] => Array
+                (
+                    [0] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                )
+
+        )
+
+    [data:protected] => Array
+        (
+        )
+
+)
+--------- end  -------------
+--------- 14:38:15 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+EmitVirtual 2 errors--------- end  -------------
+--------- 14:38:15 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+Bitrix\Main\Result Object
+(
+    [isSuccess:protected] => 
+    [errors:protected] => Bitrix\Main\ErrorCollection Object
+        (
+            [values:protected] => Array
+                (
+                    [0] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                )
+
+        )
+
+    [data:protected] => Array
+        (
+        )
+
+)
+--------- end  -------------
+--------- 14:38:15 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+card_emit lk--------- end  -------------
+--------- 14:38:15 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+cards data errors--------- end  -------------
+--------- 14:38:15 18-08-2023 -------------
+/home/bitrix/ext_www/dev2.medi-salon.ru/bitrix/php_interface/init.php
+Bitrix\Main\Result Object
+(
+    [isSuccess:protected] => 
+    [errors:protected] => Bitrix\Main\ErrorCollection Object
+        (
+            [values:protected] => Array
+                (
+                    [0] => Bitrix\Main\Error Object
+                        (
+                            [code:protected] => 0
+                            [message:protected] => Error 401
+                            [customData:protected] => 
+                        )
+
+                )
+
+        )
+
+    [data:protected] => Array
+        (
+        )
+
+)
+--------- end  -------------

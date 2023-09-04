@@ -48,4 +48,9 @@ $APPLICATION->SetTitle("Сообщение руководителю компан
 );?>
 	</div>
  
-</div><br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+</div><br>
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: 'view_director'}]);
+</script>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

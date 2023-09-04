@@ -64,20 +64,20 @@ $arUrlRewrite=array (
     'PATH' => '/salons/orders/index.php',
     'SORT' => 100,
   ),
+  44 => 
+  array (
+    'CONDITION' => '#^/kgd/services/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/kgd/services/index.php',
+    'SORT' => 100,
+  ),
   45 => 
   array (
     'CONDITION' => '#^/tmn/services/#',
     'RULE' => '',
     'ID' => 'bitrix:news',
     'PATH' => '/tmn/services/index.php',
-    'SORT' => 100,
-  ),
-  47 => 
-  array (
-    'CONDITION' => '#^/ekb/services/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/ekb/services/index.php',
     'SORT' => 100,
   ),
   43 => 
@@ -88,20 +88,20 @@ $arUrlRewrite=array (
     'PATH' => '/kzn/services/index.php',
     'SORT' => 100,
   ),
-  44 => 
+  42 => 
   array (
-    'CONDITION' => '#^/kgd/services/#',
+    'CONDITION' => '#^/spb/services/#',
     'RULE' => '',
     'ID' => 'bitrix:news',
-    'PATH' => '/kgd/services/index.php',
+    'PATH' => '/spb/services/index.php',
     'SORT' => 100,
   ),
-  59 => 
+  47 => 
   array (
-    'CONDITION' => '#^/encyclopedia/#',
+    'CONDITION' => '#^/ekb/services/#',
     'RULE' => '',
     'ID' => 'bitrix:news',
-    'PATH' => '/encyclopedia/index.php',
+    'PATH' => '/ekb/services/index.php',
     'SORT' => 100,
   ),
   48 => 
@@ -112,12 +112,12 @@ $arUrlRewrite=array (
     'PATH' => '/rnd/services/index.php',
     'SORT' => 100,
   ),
-  42 => 
+  59 => 
   array (
-    'CONDITION' => '#^/spb/services/#',
+    'CONDITION' => '#^/encyclopedia/#',
     'RULE' => '',
     'ID' => 'bitrix:news',
-    'PATH' => '/spb/services/index.php',
+    'PATH' => '/encyclopedia/index.php',
     'SORT' => 100,
   ),
   46 => 

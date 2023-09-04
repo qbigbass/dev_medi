@@ -113,4 +113,8 @@ $APPLICATION->SetTitle("Карьера");
 		);?>
 	</div>
 </div>
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: 'view_career' }]);
+</script>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

@@ -31,13 +31,15 @@ class DwProductEvents
         
         //get settings
         $arTemplateSettings = DwSettings::getInstance()->getSettingsFromOption();
+
+        //file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/logs/events_".date("Y_m_d").".txt", "arTemplateSettings:\n\n" . print_r($arTemplateSettings, true), FILE_APPEND);
         
         //check settings
         if (!empty($arTemplateSettings)) {
             
             //min max price
             self::sortPriceAutoUpdate($arg1, $arg2, $arTemplateSettings);
-            
+
             //auto collection
             //self::collectionAutoUpdate($arg1, $arg2, $arTemplateSettings);
             

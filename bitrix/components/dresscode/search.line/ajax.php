@@ -157,9 +157,7 @@ $arrFilter["PROPERTY_REGION_VALUE"] = $GLOBALS['medi']['region_cities'][SITE_ID]
             "IBLOCK_ID" => intval($_POST["IBLOCK_ID"]),
             "ELEMENT_SORT_FIELD" => $_POST["ELEMENT_SORT_FIELD"],
             "ELEMENT_SORT_ORDER" => $_POST["ELEMENT_SORT_ORDER"],
-            
             "ELEMENT_SORT_FIELD2" => "sort",
-            
             "ELEMENT_SORT_ORDER2" => "asc",
             "PROPERTY_CODE" => $_POST["PROPERTY_CODE"],
             "PAGE_ELEMENT_COUNT" => 6,//$_POST["PAGE_ELEMENT_COUNT"],
@@ -181,6 +179,7 @@ $arrFilter["PROPERTY_REGION_VALUE"] = $GLOBALS['medi']['region_cities'][SITE_ID]
             "AJAX_OPTION_HISTORY" => "N",
             "HIDE_NOT_AVAILABLE" => $_POST["HIDE_NOT_AVAILABLE"],
             "HIDE_MEASURES" => $_POST["HIDE_MEASURES"],
+            "SLIDER_ON" => "N"
         )
     );
     ?>

@@ -97,4 +97,8 @@ $APPLICATION->SetTitle("Гарантийные обязательства");
 			</div>
 	  </div>
 	</div>
+    <script>
+        var _gcTracker=_gcTracker||[];
+        _gcTracker.push(['view_page', { name: 'view_guaranty'}]);
+    </script>
 </div><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

@@ -346,7 +346,7 @@ elseif ($action == 'check_confirm_code')
 
                 wl("login ok ".$login);
 
-                $result = ['status'=>'ok', 'logged' =>$USER->GetID(), 'data'=> $res];
+                $result = ['status'=>'ok', 'logged' =>$USER->GetID(), 'data'=> $res, 'loymaxUserId' => $user_data['data']['id']];
     		}
             else{
 

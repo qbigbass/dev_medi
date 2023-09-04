@@ -76,6 +76,10 @@ if ($USER->IsAuthorized())
 	{
 		$active_tab = 'orders';
 	}
+    if (isset($_REQUEST['favorite']))
+    {
+        $active_tab = 'favorite';
+    }
 	?>
 
 <div class="row flex tabs-wrap">
@@ -97,6 +101,10 @@ if ($USER->IsAuthorized())
 		<div id="history" class="tab-content <?if ($active_tab == 'history'){?>active<?}?>">
 			<?include("pages/history.inc.php");?>
 		</div>
+
+        <div id="favorite" class="tab-content <?if ($active_tab == 'favorite'){?>active<?}?>">
+            <?include("pages/favorite.inc.php");?>
+        </div>
 
 		<div id="letter" class="tab-content  <?if ($active_tab == 'letter'){?>active<?}?>">
 			<?// Письмо директору?>

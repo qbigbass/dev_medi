@@ -42,8 +42,41 @@ var checkLazyItems = function () {
                 $item.attr("src", lazyPath);
             });
         }
-
     });
+}
+
+var slickItems = function() {
+    var items = $('.single-item');
+    var windowInnerWidth = window.innerWidth;
+    var detect = new MobileDetect(window.navigator.userAgent);
+    var isAdaptive = detect.mobile();
+    var userAgent = detect.userAgent();
+
+    if (isAdaptive || windowInnerWidth <= 1024) {
+        setTimeout(function () {
+            $.each(items, function () {
+                if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
+                    $(this).slick({
+                        dots: true,
+                        arrows:false,
+                        slidesToShow: 1,
+                        variableWidth: true,
+                        adaptiveHeight: true
+                    });
+
+                    if (windowInnerWidth <= 1024) { // На разрешении выше блок с цветами не отображается сбоку КТ
+                        $(this).on("touchstart", function(){
+                            $(this).parents('.productTable').find('.item_colors').hide();
+                        });
+                        $(this).on("touchend", function(){
+                            $(this).parents('.productTable').find('.item_colors').show();
+                        });
+                    }
+                }
+            });
+
+        }, 500);
+    }
 }
 
 var changeAddCartButton = function (jsonData) {

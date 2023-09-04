@@ -381,6 +381,9 @@ $APPLICATION->AddHeadString('<link rel="canonical" href="https://www.medi-salon.
 <span class="ff-medium">10.2.</span>	В случае если спор, возникший между Организатором и Участником, не может быть урегулирован в процессе переговоров, он разрешается в порядке, предусмотренном действующим законодательством РФ 
 </p>
 
-
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: 'view_loyalty_pl' }]);
+</script>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

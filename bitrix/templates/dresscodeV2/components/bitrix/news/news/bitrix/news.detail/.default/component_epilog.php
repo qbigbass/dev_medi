@@ -11,3 +11,18 @@ if(!empty($arResult["DETAIL_PICTURE"]["SRC"])){
 	$APPLICATION->AddHeadString('<meta property="og:image" content="'.(CMain::IsHTTPS() ? "https://" : "http://").SITE_SERVER_NAME.$arResult["DETAIL_PICTURE"]["SRC"].'" />');
 }
 ?>
+<?
+$arSections = array_filter(explode('/', $arResult['DETAIL_PAGE_URL']));
+$indexLastSection = array_key_last($arSections);
+$viewId = '';
+
+if ($arSections[$indexLastSection]) {
+	$viewId = 'view_' . preg_replace('/-/', '_', $arSections[$indexLastSection]);
+}
+?>
+<?if($viewId != ''):?>
+	<script>
+		var _gcTracker=_gcTracker||[];
+		_gcTracker.push(['view_page', { name: '<?=$viewId?>' }]);
+	</script>
+<?endif;?>

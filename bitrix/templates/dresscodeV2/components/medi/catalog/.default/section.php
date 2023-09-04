@@ -150,27 +150,21 @@ elseif ($obCache->StartDataCache()) {
     
 }
 
-if ($arResult["PRICE_SORT_FROM_PROPERTY"] == "N") {
-    $arSortFields["PRICE_ASC"] = array(
-        "ORDER" => "ASC",
-        "CODE" => "CATALOG_PRICE_" . $arResult["BASE_PRICE"]["ID"],
-        "NAME" => GetMessage("CATALOG_SORT_FIELD_PRICE_ASC")
-    );
-    $arSortFields["PRICE_DESC"] = array(
-        "ORDER" => "DESC",
-        "CODE" => "CATALOG_PRICE_" . $arResult["BASE_PRICE"]["ID"],
-        "NAME" => GetMessage("CATALOG_SORT_FIELD_PRICE_DESC")
-    );
-}
+//if ($arResult["PRICE_SORT_FROM_PROPERTY"] == "N") {
+$arSortFields["PRICE_ASC"] = array(
+    "ORDER" => "ASC",
+    "CODE" => "CATALOG_PRICE_" . $GLOBALS['price_id'],
+    "NAME" => GetMessage("CATALOG_SORT_FIELD_PRICE_ASC")
+);
+$arSortFields["PRICE_DESC"] = array(
+    "ORDER" => "DESC",
+    "CODE" => "CATALOG_PRICE_" . $GLOBALS['price_id'],
+    "NAME" => GetMessage("CATALOG_SORT_FIELD_PRICE_DESC")
+);
+//}
 
 ?>
-<h1><?= $APPLICATION->ShowTitle(false); ?>
-    <?/*
-if(!empty($arResult["IPROPERTY_VALUES"]["SECTION_PAGE_TITLE"])):?>
-<?=$arResult["IPROPERTY_VALUES"]["SECTION_PAGE_TITLE"]?>
-<?else:?><?=$arCurSection["NAME"]?><?endif;
-*/
-    ?></h1>
+    <h1><?= $APPLICATION->ShowTitle(false); ?></h1>
 <? if (!empty($arResult["SECTION_BANNERS"])
     /*&& (!strpos($APPLICATION->GetCurDir(), '/action_sign-is-')
         || strpos($APPLICATION->GetCurDir(), '/action_sign-is-medo0423/')
@@ -392,7 +386,6 @@ if(!empty($arResult["IPROPERTY_VALUES"]["SECTION_PAGE_TITLE"])):?>
             $arSortFields[$_COOKIE["CATALOG_SORT_FIELD" . $arResult["VARIABLES"]["SECTION_ID"]]]["SELECTED"] = "Y";
         }
         ?>
-        
         
         <? $arTemplates = array(
             "SQUARES" => array(
@@ -648,3 +641,6 @@ if(!empty($arResult["IPROPERTY_VALUES"]["SECTION_PAGE_TITLE"])):?>
         </div>
     </div>
 </div>
+<?php
+include_once($_SERVER['DOCUMENT_ROOT'] . '/include/catalog_sale_event.php');
+?>

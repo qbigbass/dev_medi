@@ -191,7 +191,10 @@ $APPLICATION->AddHeadString('<link rel="canonical" href="https://www.medi-salon.
 	<a href="/catalog/" class="btn-simple btn-medium">Перейти в&nbsp;каталог</a>
 </div>
 <br>
-
+<script>
+    var _gcTracker=_gcTracker||[];
+    _gcTracker.push(['view_page', { name: 'view_about' }]);
+</script>
 
 
 
