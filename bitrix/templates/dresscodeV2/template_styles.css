@@ -3404,7 +3404,8 @@ strong {
     top: 0;
 }
 
-#searchOverlap {
+#searchOverlap,
+#searchOverlapAdaptive {
     background-color: #000000;
     position: fixed;
     display: none;
