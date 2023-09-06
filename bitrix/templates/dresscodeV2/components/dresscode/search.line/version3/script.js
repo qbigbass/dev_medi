@@ -166,11 +166,20 @@ $(function(){
 		return event.preventDefault();
 	};
 
+	var setQuerySearchLineAdaptive = function (event) {
+		let phrase = event.target.textContent;
+		if (phrase != '') {
+			$searchQueryAdaptive.val(phrase);
+			$('#searchFinderGo').trigger('click');
+		}
+	}
+
 	//bind
 	$searchQuery.on("keyup", searchKeyPressed);
 	$searchQueryAdaptive.on("keyup input", searchKeyPressedAdaptive);
 	$(document).on("click", "#searchFinderGo", searchKeyPressedAdaptive);
+	$(document).on("click", "#searchHistoryResultAdaptive span", setQuerySearchLineAdaptive); // Клик по популярной поисковой фразе
+
 	$(document).on("click", "#searchProductsClose", searchCloseWindow);
 	$(document).on("click", "#searchResult .bx-pagination a", pageChangeProduct);
-
 });
