@@ -39,6 +39,7 @@ $(function(){
 	var searchQueryAdaptive = $("#topSearch3 #topSearchMob #searchQueryAdaptive");
 	var openSearchAdaptive = function (event) {
 		$('body .overlay:first').show();
+		$('body').css('overflow', 'hidden');
 		$('#topSearchMob #topSearchAdaptive').css("display", "flex");
 		var tmpSearchKeyword = searchQueryAdaptive.val();
 		searchVisible = true;
@@ -52,6 +53,7 @@ $(function(){
 
 	var closeSearchAdaptive = function(event){
 		$('body .overlay:first').hide();
+		$('body').css('overflow', 'unset');
 		if (searchVisible == true) {
 			if (event.which == 1) {
 				$("#topSearchMob #searchProductsClose").trigger("click");
