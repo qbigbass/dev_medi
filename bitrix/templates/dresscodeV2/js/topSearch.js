@@ -37,6 +37,9 @@ $(function(){
 	});
 
 	var searchQueryAdaptive = $("#topSearch3 #topSearchMob #searchQueryAdaptive");
+	var searchResultAdaptive = $("#topSearch3 #topSearchMob #searchResultAdaptive");
+	var searchHistoryResultAdaptive = $("#topSearch3 #topSearchMob #searchHistoryResultAdaptive");
+
 	var openSearchAdaptive = function (event) {
 		$('body .overlay:first').show();
 		$('body').css('overflow', 'hidden');
@@ -48,7 +51,21 @@ $(function(){
 		searchQueryAdaptive.focus();
 		$("#topSearch3").css("z-index", 1010);
 		$("#topSearch3 #topSearchMob #searchResultAdaptive").css("z-index", 1011);
+
+		// Получим популярные поисковые фразы из статистики
+		getPopularPhrasesAdaptive();
 		event.preventDefault();
+	}
+
+	var getPopularPhrasesAdaptive = function () {
+		let params = {
+			"search_popular_phrases": "Y"
+		}
+		var jqxhr = $.get('/ajax/search/', params, afterFindPopularPhrasesAdaptive);
+	}
+
+	var afterFindPopularPhrasesAdaptive = function (http) {
+		searchHistoryResultAdaptive.html(http);
 	}
 
 	var closeSearchAdaptive = function(event){
@@ -64,11 +81,20 @@ $(function(){
 		}
 	}
 
+	var clearSearchLineAdaptive = function (event) {
+		searchQueryAdaptive.val("");
+		searchResultAdaptive.empty();
+		return event.preventDefault();
+	}
+
 	$(document).on("click", "#headerTools, #topSearchForm, #searchResult", function(event){event.stopImmediatePropagation();});
 	$(document).on("click", ".topSearchDesktop #openSearch", openSearch);
 	$(document).on("click", ".topSearchDesktop .openSearch", openSearch);
 	$(document).on("click", "#topSeachCloseForm", closeSearch);
-	$(document).on("click", "#topSearchCloseFormAdaptive", closeSearchAdaptive);
 	$(document).on("click", ".overlay", closeSearch);
-	$(document).on("click", "#topSearchMob #searchQueryMob", openSearchAdaptive);
+
+	// События для работы со строкой поиска на адаптиве
+	$(document).on("click", "#topSearchMob #searchQueryMob", openSearchAdaptive); //Клик по строке поиска в шапке
+	$(document).on("click", "#topSearchCloseFormAdaptive", closeSearchAdaptive);
+	$(document).on("click", "#topSearchMob #topSearchAdaptive .searchFinder .tfl-popup__close", clearSearchLineAdaptive);
 });

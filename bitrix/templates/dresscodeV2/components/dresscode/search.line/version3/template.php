@@ -23,15 +23,15 @@
                         <input type="text" name="q" value="<?=!empty($arResult["q"]) ? $arResult["q"] : ""?>" autocomplete="off" id="searchQueryAdaptive">
                         <div class="searchFinder">
                             <div class="tfl-popup__close"></div>
-                            <button type="button" class="digi-search-form__submit">Найти</button>
+                            <button type="button" id="searchFinderGo">Найти</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
+        <div id="searchHistoryResultAdaptive"></div>
+        <div id="searchResultAdaptive"></div>
     </div>
-    <div id="searchResultAdaptive"></div>
-    <div id="searchOverlapAdaptive"></div>
 </div>
 <div class="topSearchDesktop">
     <input type="text" name="qf" autocomplete="false" class="b_head_search_input" placeholder="Поиск по каталогу"  id="openSearch"/><input type="submit" class="b_head_search_but" value=""/>

@@ -68,7 +68,6 @@ global $APPLICATION;
 	
 	<?if(is_array($arResult["SEARCH_HISTORY"]) && count($arResult["SEARCH_HISTORY"]) > 0):?>
 		<div class="ag-spage-history">
-			<?=GetMessage("SEARCH_HISTORY_TITLE")?>
 			<?foreach($arResult["SEARCH_HISTORY"] as $k=>$v):
 				if($k > 0) echo ', ';?><a href="?q=<?=$v?>"><?=$v?></a><?
 			endforeach?>
