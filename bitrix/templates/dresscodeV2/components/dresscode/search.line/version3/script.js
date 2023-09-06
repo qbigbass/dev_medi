@@ -5,7 +5,6 @@ $(function(){
 	var $searchResult = $("#searchResult");
 	var $searchResultAdaptive = $("#topSearch3 #topSearchMob #searchResultAdaptive");
 	var $searchOverlap = $("#searchOverlap");
-	var $searchOverlapAdaptive = $("#topSearch3 #topSearchMob #searchOverlapAdaptive");
 	var windowInnerWidth = window.innerWidth;
 	var detect = new MobileDetect(window.navigator.userAgent);
 	var isAdaptive = detect.mobile();
@@ -38,7 +37,6 @@ $(function(){
 				}, 250);
 			}else{
 				$searchResultAdaptive.empty().removeClass("visible");
-				$searchOverlapAdaptive.hide();
 			}
 		}
 	};
@@ -143,14 +141,12 @@ $(function(){
 	var afterSearchGetProductsAdaptive = function(http){
 		$searchQueryAdaptive.removeClass("loading");
 		$searchResultAdaptive.html(http).addClass("visible");
-		$searchOverlapAdaptive.show();
 		checkLazyItems();
 	};
 
 	var searchCloseWindow = function(event){
 		if (isAdaptive || windowInnerWidth <= 1024) {
 			$searchResultAdaptive.empty().removeClass("visible");
-			$searchOverlapAdaptive.hide();
 		} else {
 			$searchResult.empty().removeClass("visible");
 			clearTimeout(searchTimeoutID);
@@ -173,6 +169,7 @@ $(function(){
 	//bind
 	$searchQuery.on("keyup", searchKeyPressed);
 	$searchQueryAdaptive.on("keyup input", searchKeyPressedAdaptive);
+	$(document).on("click", "#searchFinderGo", searchKeyPressedAdaptive);
 	$(document).on("click", "#searchProductsClose", searchCloseWindow);
 	$(document).on("click", "#searchResult .bx-pagination a", pageChangeProduct);
 

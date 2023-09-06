@@ -199,8 +199,7 @@
 	top: 90px;
 }
 
-#subHeader4 #searchOverlap,
-#subHeader4 #searchOverlapAdaptive {
+#subHeader4 #searchOverlap {
 	top: 80px;
 }
 
@@ -543,12 +542,39 @@
 	color: #fff;
 }
 #searchResultAdaptive {
+	position: relative;
+	top: 0;
 	height: 100vh;
 	overflow-y: scroll;
+}
+#searchHistoryResultAdaptive {
+	display: flex;
+	align-items: center;
+	justify-content: start;
+	padding: 0 16px;
+	flex-wrap: wrap;
+}
+#searchHistoryResultAdaptive span {
+	margin-bottom: 7px;
+	margin-right: 8px;
+	color: #181818;
+	white-space: nowrap;
+	font-size: 15px;
+	line-height: 16px;
+	padding: 10px 12px;
+	border: 1px solid #e0e0e0;
+	border-radius: 30px;
+	text-align: center;
+	cursor: pointer;
 }
 @media screen and (max-width: 1024px) {
 	.min_menu #searchResultAdaptive img {
 		filter: none;
+	}
+}
+@media (max-width: 790px) {
+	#searchResultAdaptive {
+		height: 80vh;
 	}
 }
 @media (max-height: 1024px) {
@@ -556,9 +582,9 @@
 		height: 71vh;
 	}
 }
-@media (max-width: 790px) {
+@media (max-width: 768px) {
 	#searchResultAdaptive {
-		height: 80vh;
+		height: 78vh;
 	}
 }
 @media (max-width: 412px) {
