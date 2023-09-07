@@ -1,0 +1,57 @@
+# PHP Storm
+/.idea/
+
+# MAC OS
+*.DS_Store
+/**/*.DS_Store
+
+# npm
+node_modules
+
+# Bitrix
+/bitrix/*
+!/bitrix/components/
+/bitrix/components/bitrix/
+!/bitrix/templates/
+/bitrix/templates/landing24/
+!/bitrix/php_interface/
+/bitrix/php_interface/dbconn.php
+/bitrix/php_interface/after_connect*
+/bitrix/.settings.php
+/bitrix/.settings_extra.php
+
+# Upload
+/upload/
+
+# Files
+*.log
+*.html
+*.csv
+*.xml
+*.sql
+*.txt
+*.dt
+*.gz
+*.tar
+*.tar.gz
+*.bak
+*.old
+test*
+.htaccess
+.htaccess.restore
+.htsecure
+.htpasswd
+/web.config
+
+# Composer vendors
+/vendor/
+/local/php_interface/vendor/
+
+# Logs
+/log
+
+*.back*
+
+#Other
+/xlam/
+*install/*
