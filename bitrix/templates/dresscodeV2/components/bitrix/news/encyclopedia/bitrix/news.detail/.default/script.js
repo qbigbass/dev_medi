@@ -59,7 +59,7 @@ $(document).ready(function() {
 		});
 	}
 
-	$('.bubble').on('click', '.tfl-popup__close', function () {
+	$(document).on('click', '.bubble .tfl-popup__close', function () {
 		$(this).parent().removeClass('active');
 	});
 
@@ -75,5 +75,7 @@ $(document).ready(function() {
 		copyTextarea.select();
 		document.execCommand("copy");
 		document.body.removeChild(copyTextarea);
+
+		$(this).find('.bubble').addClass('active');
 	});
 });
