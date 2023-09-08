@@ -98,7 +98,6 @@ $(function () {
                         if (!$(this).hasClass("active")) {
                             var par = $(this).parents(".tabs-wrap");
                             var index = $(this).index();
-
                             $(this).addClass('active').siblings().removeClass("active");
                             $('.tab-content:eq(' + index + ')', par).addClass("active").siblings().removeClass("active");
                         }
@@ -119,15 +118,11 @@ $(function () {
                         $(".tab-content").removeClass("active");
                         $(".tab-link.salon").addClass("active");
                         $(".tab-content.stores").addClass("active");
-
                         $(".salon").addClass("active");
                         $(".tab_content.stores ").addClass("active").removeClass("hide");
-
                         $("#acor").attr('style', '');
-
                         $("#chacor5").click();
                         $("#chacor5").attr("checked", "checked");
-                        //$("body").scrollTo(".tabs-links", 500);
                         $("body").scrollTo('#acor');
                         $(".acor-container.active #acor").css("height", "auto");
                         return false;
@@ -162,15 +157,9 @@ $(function () {
 
                 // salon AVAILABLE show reserve button
                 if (jsonData[0]["PRODUCT"]['SALON_AVAILABLE'] > 0) {
-                    /*if (jsonData[0]["PRODUCT"]['CATALOG_AVAILABLE'] != 'Y') {*/
                     $(".greyBigButton.reserve").show();
-                    /*}*/
-                    //$(".tab[data-id='stores']").show();
-                    //$(".tab-content.stores").show();
                 } else {
                     $(".greyBigButton.reserve").hide();
-                    //$(".tab[data-id='stores']").hide();
-                    //$(".tab-content.stores").hide();
                 }
 
                 // salon AVAILABLE show reserve button
@@ -178,14 +167,11 @@ $(function () {
                     $(".salons_avail_later").removeClass("hidden");
                     $(".availability_block").show();
                     $(".availability_block").html(jsonData[0]["PRODUCT"]['SALON_COUNT_STR']);
-
                     $(".salons_avail_now").html(jsonData[0]["PRODUCT"]['SALONS_AVAIL_NOW']);
                     $(".salons_avail_later").show();
                     $(".available_link ").removeClass("hidden");
                     $(".tab-link.salon").show().html("Наличие в салонах (" + jsonData[0]["PRODUCT"]['SALON_COUNT'] + ")");
-
                     $(".tab-content.stores ").removeClass('hide');
-                    //$("#acor").show();
                 } else {
                     $(".salons_avail_later").removeClass("hidden");
                     $(".availability_block").hide();
@@ -199,7 +185,6 @@ $(function () {
                     }
                     $(".tab-link.salon").removeClass("active").hide();
                     $(".tab-content.stores ").removeClass("active").addClass('hide');
-
                     $(".available_link ").addClass("hidden");
                 }
                 var _tmr = _tmr || [];
@@ -218,101 +203,10 @@ $(function () {
                     list: "102"
                 });
 
-
-                // pictures
-                var countImages = 0;
-
-                if (jsonData[0]["PRODUCT"]["IMAGES"]) {
-
-                    for (var i in jsonData[0]["PRODUCT"]["IMAGES"]) {
-                        countImages = i;
-                    }
-
-                    // big slider vars
-                    var $pictureSlider = $("#pictureContainer .pictureSlider.detail_product").empty();
-                    $pictureSlider.removeClass();
-                    $pictureSlider.addClass('pictureSlider');
-                    $pictureSlider.addClass('detail_product');
-                    if (countImages > 0) {
-                        $pictureSlider.addClass('more-images');
-                    } else {
-                        $pictureSlider.addClass('one-image');
-                    }
-
-                    // small pictures slider
-                    var $moreImagesCarousel = $("#moreImagesCarousel").removeClass("hide");
-                    var $moreImagesCarouselSlideBox = $moreImagesCarousel.find(".slideBox");
-                    $moreImagesCarouselSlideBox.find(".item").remove();
-
-                    $.each(jsonData[0]["PRODUCT"]["IMAGES"], function (i, nextElement) {
-
-                        var $sliderImage = $("<img />", {src: nextElement["MEDIUM_IMAGE"]["SRC"]});
-
-                        //big slider
-                        $pictureSlider.append(
-                            $("<div />", {class: "item"}).append(
-                                $("<a/>", {
-                                    class: "zoom",
-                                    href: nextElement["LARGE_IMAGE"]["SRC"]
-                                }).data("large-picture", nextElement["LARGE_IMAGE"]["SRC"]).data("small-picture", nextElement["SMALL_IMAGE"]["SRC"]).append(
-                                    $sliderImage
-                                )
-                            )
-                        )
-
-                        if (countImages > 0) {
-                            //small slider
-                            $moreImagesCarouselSlideBox.append(
-                                $("<div />", {class: "item", "data-pic-index": i}).append(
-                                    $("<a/>", {
-                                        class: "zoom",
-                                        href: nextElement["LARGE_IMAGE"]["SRC"]
-                                    }).data("large-picture", nextElement["LARGE_IMAGE"]["SRC"]).append(
-                                        $("<img />", {src: nextElement["SMALL_IMAGE"]["SRC"]})
-                                    )
-                                )
-                            );
-                        } else {
-                            $moreImagesCarousel.addClass("hide");
-                        }
-                    });
-
-                    if ($pictureSlider.hasClass('detail_product')) {
-                        var defaultOptions = {
-                            dots: false,
-                            arrows:false,
-                            slidesToShow:1,
-                            adaptiveHeight:true,
-                            autoplay:true,
-                            autoplaySpeed:5000
-                        }
-                        $pictureSlider.slick(
-                            defaultOptions
-                        );
-                    }
-                    $pictureSlider.on('afterChange', function(event, slick, currentSlide, nextSlide){
-                        let currentIndexBigImg = currentSlide;
-                        $('#moreImagesCarousel .slideBox .item').each(function(){
-                            $(this).removeClass('selected');
-                        });
-                        $('#moreImagesCarousel .slideBox .item[data-pic-index='+currentIndexBigImg+']').addClass('selected');
-                    });
-
-
-                    //addCart button reload
-                    changeAddCartButton(basketProductsNow);
-                    //subscribe button reload
-                    //subscribeOnline();
-
-                    //apps
-                    //startPictureElementSlider();
-                    startMorePicturesElementCarousel();
-                    createZoomer();
-
-                }
+                changeAddCartButton(basketProductsNow);
 
                 $_mProduct.find(".changeID").data("id", jsonData[0]["PRODUCT"]["ID"]).attr("data-id", jsonData[0]["PRODUCT"]["ID"]);
-                $_mProduct.find(".changePicture").html($("<img/>").attr("src", jsonData[0]["PRODUCT"]["IMAGES"][0]["MEDIUM_IMAGE"]["SRC"]));
+                //$_mProduct.find(".changePicture").html($("<img/>").attr("src", jsonData[0]["PRODUCT"]["IMAGES"][0]["MEDIUM_IMAGE"]["SRC"]));
                 $_mProduct.find(".changePropertiesNoGroup").html(jsonData[0]["PRODUCT"]["RESULT_PROPERTIES_NO_GROUP"]);
                 $_mProduct.find(".changePropertiesGroup").html(jsonData[0]["PRODUCT"]["RESULT_PROPERTIES_GROUP"]);
 
@@ -327,17 +221,15 @@ $(function () {
                     list: "<?=$feed_id?>"
                 });
 
-
                 $changeCart.find("img").remove();
-                if (jsonData[0]["PRODUCT"]["PRICE"]["DISCOUNT_PRICE"]) {
 
+                if (jsonData[0]["PRODUCT"]["PRICE"]["DISCOUNT_PRICE"]) {
                     $changeFastOrder.removeClass("disabled").show();
                     $changeCart.removeClass("added").removeClass("disabled").removeClass("requestPrice")
                         .html(LANG["ADD_BASKET_DEFAULT_LABEL"])
                         .prepend($("<img />").attr({src: TEMPLATE_PATH + "/images/incart.png", class: "icon"}))
                         .attr("href", "#").attr("id", "GTM_add_cart_card");
                 } else {
-                    //$changeFastBack.addClass("disabled");
                     $changeFastOrder.addClass("disabled").hide();
                     $changeCart.removeClass("added").addClass("disabled").addClass("requestPrice")
                         .html(LANG["REQUEST_PRICE_BUTTON_LABEL"])
@@ -436,7 +328,6 @@ $(function () {
 
                             $(".qtyBlock").hide();
                         } else {
-                            //$changeCart.addClass("disabled").hide();
                             $(".qtyBlock").hide();
                             $changeFastOrder.addClass("disabled").hide();
                             $changeFastBack.addClass("disabled").hide();
