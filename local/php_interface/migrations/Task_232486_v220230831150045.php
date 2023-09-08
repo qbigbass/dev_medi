@@ -5,7 +5,7 @@ namespace Sprint\Migration;
 
 class Task_232486_v220230831150045 extends Version
 {
-    protected $description = "HL Эксперты к постам энциклопедии ";
+    protected $description = "HL Эксперты к постам энциклопедии";
 
     protected $moduleVersion = "4.2.4";
 
@@ -23,7 +23,7 @@ class Task_232486_v220230831150045 extends Version
   array (
     'ru' => 
     array (
-      'NAME' => 'Эксперты к постам энциклопедии ',
+      'NAME' => 'Эксперты к постам энциклопедии',
     ),
   ),
 ));
