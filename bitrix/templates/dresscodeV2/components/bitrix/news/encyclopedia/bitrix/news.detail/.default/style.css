@@ -511,6 +511,10 @@
 	position: relative;
 }
 
+.share-brick .copy-url {
+	position: relative;
+}
+
 .share,
 .like {
 	display: flex;
@@ -566,17 +570,21 @@
 	top: 0;
 	margin-left: -7px;
 }
+
 .like-count {
 	margin-left: 5px;
 }
-.like-brick .tfl-popup__close {
+.like-brick .tfl-popup__close,
+.share-brick .copy-url .tfl-popup__close {
 	position: absolute;
 	top: 18px;
 	right: 15px;
 	opacity: 0.5;
 }
 .like-brick .tfl-popup__close:before,
-.like-brick .tfl-popup__close:after {
+.like-brick .tfl-popup__close:after,
+.share-brick .copy-url .tfl-popup__close:before,
+.share-brick .copy-url .tfl-popup__close:after {
 	background-color: #fff;
 }
 

@@ -46,6 +46,10 @@ $url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP
                         <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/url.svg">
                         <div class="ff-medium">Скопировать ссылку</div>
                     </div>
+                    <div class="bubble bubbleBottom" title="Закрыть окно">
+                        <span class="tfl-popup__close" title="Закрыть окно"></span>
+                        <span>Ссылка скопирована</span>
+                    </div>
                 </a>
             </div>
         </div>
