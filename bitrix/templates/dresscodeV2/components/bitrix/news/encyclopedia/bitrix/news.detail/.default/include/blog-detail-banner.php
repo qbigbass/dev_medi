@@ -27,6 +27,7 @@
 	</div>
 </div>
 <?$this->EndViewTarget();?>
+<? include_once("seo_info_header.php"); ?>
 <div class="global-block-container">
 	<div class="global-content-block">
 		<div class="detail-text-wrap">
