@@ -14,7 +14,7 @@
 }
 
 .blog-banner .banner-elem{
-	height: 460px;
+	height: 420px;
 }
 
 .blog-banner .fullscreen-banner .tb .text-wrap{
@@ -116,11 +116,7 @@
 	.blog-banner .banner-elem .text-wrap{
 		padding-left: 48px;
 	}
-
-	.blog-banner .banner-elem{
-		height: 420px;
-	}
-
+	
 	.blog-banner .banner-elem .image img{
 		max-height: 420px;
 	}
