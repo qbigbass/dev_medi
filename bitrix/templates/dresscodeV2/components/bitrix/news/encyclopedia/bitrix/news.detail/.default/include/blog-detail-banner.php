@@ -1,4 +1,5 @@
-<?$this->SetViewTarget("before_breadcrumb_container");?>
+<? include_once("seo_info_header.php"); ?>
+
 <div class="blog-banner banner-wrap banner-bg">
 	<div class="banner-animated fullscreen-banner banner-elem" style="background: url('<?=$arResult["RESIZE_BANNER_PICTURE"]["src"]?>') center center / cover no-repeat;">
 		<div class="limiter">
@@ -26,9 +27,7 @@
 		</div>
 	</div>
 </div>
-<?$this->EndViewTarget();?>
 
-<? include_once("seo_info_header.php"); ?>
 <div class="global-block-container">
 	<div class="global-content-block">
 		<div class="detail-text-wrap">
