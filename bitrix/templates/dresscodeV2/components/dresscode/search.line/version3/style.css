@@ -229,6 +229,9 @@
 	margin: 0 15px 24px;
 	border-top: 1px solid #e7e8ea;
 }
+#searchResultAdaptive .productList {
+	margin-bottom: 10px;
+}
 
 #searchResult .item,
 #searchResultAdaptive .item {
