@@ -11728,6 +11728,7 @@ a.favorites_link.has_items .count {
     body._adaptive .product .cartButtons a.scan,
     body._adaptive .product .cartButtons a.greyBigButton  {
         font-size: 10px;
+        line-height: 12px;
     }
 }
 @media (max-width: 492px) {
