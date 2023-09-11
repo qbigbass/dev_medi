@@ -9702,10 +9702,6 @@ div.bx-debug-summary {
     vertical-align: top;
 }
 
-.banner-wrap + .global-block-container .detail-text-wrap {
-    margin-top: 0;
-}
-
 .banner-elem {
     height: 296px;
     overflow: hidden;
