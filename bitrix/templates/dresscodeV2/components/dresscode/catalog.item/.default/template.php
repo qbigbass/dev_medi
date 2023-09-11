@@ -1,5 +1,5 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?><? $this->setFrameMode(false); ?>
-<? if (!empty($arResult)): ?>
+<? if (!empty($arResult) && $arResult["ID"] > 0): ?>
     <? $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->__template->__name, false); ?>
     <?
     // формируем название категории для аналитики, убираем лишние элементы
