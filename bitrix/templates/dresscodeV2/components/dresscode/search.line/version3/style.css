@@ -254,6 +254,11 @@
     color: #000000;
     height: 85px;
 }
+#searchResultAdaptive .searchAllResult {
+	border-top: unset;
+	background-color: unset;
+	line-height: unset;
+}
 
 #searchResult .searchAllResult:hover,
 #searchResultAdaptive .searchAllResult:hover {
