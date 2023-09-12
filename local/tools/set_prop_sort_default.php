@@ -2,6 +2,8 @@
 /* Скрипт для установки значений в св-во "Значение сортировки без метки без бренда" ИБ "Основной каталог товаров" */
 require_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php");
 
+\Bitrix\Main\Loader::includeModule('iblock');
+
 $objElem = CIBlockElement::GetList(
     ["ID" => "ASC"],
     [
@@ -25,7 +27,7 @@ if (!empty($arrElem)) {
     $maxSortValue = max($arrElem);
 
     foreach ($arrElem as $id => $sortValue) {
-        $value = $maxSortValue - $arrElem[$id];
+        $value = $maxSortValue - $sortValue;
         $arrElemSortDefault[$id] = $value;
     }
 

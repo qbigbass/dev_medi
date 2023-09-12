@@ -1,7 +1,14 @@
 <?php
-set_time_limit(0);
+define("NO_KEEP_STATISTIC", true);
+define("NOT_CHECK_PERMISSIONS",true);
+
 /* Скрипт для установки значений в поле "Сортировка" ИБ "Основной каталог товаров" */
+$_SERVER['DOCUMENT_ROOT'] = "E:/htdocs/medi-salon/domains/local.medi-salon.ru";
 require_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php");
+
+set_time_limit(0);
+
+\Bitrix\Main\Loader::includeModule('iblock');
 
 // Получим товары и значения св-в: "Значение сортировки без метки без бренда", "Бренд", "Наши предложения"
 $objElem = CIBlockElement::GetList(
@@ -97,7 +104,7 @@ while ($elem = $objElem->Fetch()) {
 
 // Рассчитаем итоговое значение сортировки для каждого товара
 if (!empty($arrProducts)) {
-    $el = new CIBlockElement;
+
     foreach ($arrProducts as $productId => $data) {
         $newSortValue = $data["SORT_DEFAULT"]; // Значение из св-ва "Значение сортировки без метки без бренда"
         if ($data["IS_SHOES"] == "Y") {
@@ -110,8 +117,11 @@ if (!empty($arrProducts)) {
                 $newSortValue += SORT_SIGN[$signId];
             }
         }
-        //$arrProducts[$productId]["SORT"] = $newSortValue;
-        $el->Update($productId, ["SORT" => $newSortValue]);
+        $arrProducts[$productId]["SORT"] = $newSortValue;
+    }
+
+    $el = new CIBlockElement;
+    foreach ($arrProducts as $productId => $data) {
+        $el->Update($productId, ["SORT" => $data["SORT"]]);
     }
 }
-
