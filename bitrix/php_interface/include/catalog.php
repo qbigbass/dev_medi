@@ -1089,9 +1089,9 @@ function imageXmlSitemapGen()
 AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", "UpdateSortProductCatalog");
 function UpdateSortProductCatalog(&$arFields)
 {
-    if ($arFields['IBLOCK_ID'] == 17) {
+    if ($arFields['IBLOCK_ID'] == 17 && !$GLOBALS["NOT_RUN_UPDATE_SORT_PRODUCT_CATALOG"]) {
         // Изменение в ИБ "Основной каталог товаров"
-        
+
         // Получим старое значение св-ва "Наши предложения" у элемента
         $arrProductOldSigns = [];
         $objElemProduct = CIBlockElement::GetList(
@@ -1150,5 +1150,75 @@ function UpdateSortProductCatalog(&$arFields)
             // Изменилось значение св-ва "Наши предложения", обновим значение сортировки у товаров
             $arFields["SORT"] = $arFields["SORT"] - $sortSignOldValue + $sortSignNewValue;
         }
+    }
+}
+
+AddEventHandler("iblock", "OnBeforeIBlockElementAdd", "SetSortProductCatalog");
+function SetSortProductCatalog(&$arFields)
+{
+    if ($arFields['IBLOCK_ID'] == 17) {
+        // Изменение в ИБ "Основной каталог товаров"
+
+        // Получим значение св-в: "Наши предложения" и "Бренд" у элемента
+        $arrProductSignIds = [];
+        $productBrandId = 0;
+
+        if (!empty($arFields["PROPERTY_VALUES"])) {
+            foreach ($arFields["PROPERTY_VALUES"] as $propId => $arrValues) {
+                if ($propId == 133) {
+                    // Св-во "Наши предложения"
+                    if (!empty($arrValues)) {
+                        foreach ($arrValues as $key => $data) {
+                            $arrProductSignIds[] = $data["VALUE"];
+                        }
+                    }
+                }
+                if ($propId == 134) {
+                    if (!empty($arrValues)) {
+                        foreach ($arrValues as $key => $data) {
+                            $productBrandId = $data["VALUE"];
+                        }
+                    }
+                }
+            }
+        }
+
+        // Посчитаем значение сортировки только с учетом значений у св-ва "Наши предложения"
+        $sortSignValue = 0;
+        if (!empty($arrProductSignIds)) {
+            foreach ($arrProductSignIds as $newPropValue) {
+                $sortSignValue += SORT_SIGN[$newPropValue];
+            }
+        }
+
+        // Проверим категорию товара. Если товар принадлежит разделу "Ортопедическая обувь" (ID=88), то найдем установленную сортировку у бренда из св-ва "Значение сортировки бренда"
+        // Найдем все подразделы раздела "Ортопедическая обувь" (ID=88)
+        $arrSubSections = getSubSectionsSection(88);
+
+        // Проверим принадлежность товара к разделу "Ортопедическая обувь"
+        $isShoesCategory = "N";
+
+        if (!empty($arFields["IBLOCK_SECTION"])) {
+            foreach ($arFields["IBLOCK_SECTION"] as $sectionId) {
+                $isShoes = false;
+
+                if (in_array($sectionId, $arrSubSections)) {
+                    $isShoes = true;
+                    break;
+                }
+            }
+
+            if ($isShoes) {
+                $isShoesCategory = "Y";
+            }
+        }
+
+        $sortProductBrand = 0;
+        if ($isShoesCategory == "Y") {
+            $sortProductBrand = getSortProductBrand($productBrandId);
+        }
+
+        $sortProduct = $sortSignValue + $sortProductBrand;
+        $arFields["SORT"] = $sortProduct;
     }
 }

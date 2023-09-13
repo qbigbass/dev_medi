@@ -9,23 +9,9 @@ function UpdateSortProduct(&$arFields) {
         // Изменение в ИБ "Бренды"
 
         $brandId = $arFields['ID'];
-        $oldSortProductBrand = 0;
 
         // Получим старое значение св-ва
-        $objElemBrand = CIBlockElement::GetList(
-            ["ID" => "ASC"],
-            [
-                "IBLOCK_ID" => "1",
-                "ID" => $brandId
-            ],
-            false,
-            false,
-            ["ID", "IBLOCK_ID", "PROPERTY_SORT_PRODUCT_BRAND"]
-        );
-
-        while ($elem = $objElemBrand->Fetch()) {
-            $oldSortProductBrand = $elem["PROPERTY_SORT_PRODUCT_BRAND_VALUE"]; // Старое значение в св-ве "Значение сортировки бренда"
-        }
+        $oldSortProductBrand = getSortProductBrand($brandId);
 
         $newValueSortBrand = 0;
         // Получим новое значение св-ва
@@ -42,7 +28,10 @@ function UpdateSortProduct(&$arFields) {
         }
 
         if ($oldSortProductBrand !== $newValueSortBrand) {
-            // Изменилось значение св-ва у бренда, обновим значение сортировки у товаров этого бренда
+            // Изменилось значение св-ва у бренда. Обновим значение сортировки у товаров этого бренда если товар принадлежит разделу "Ортопедическая обувь" (ID=88)
+
+            // Найдем все подразделы раздела "Ортопедическая обувь" (ID=88)
+            $arrSubSections = getSubSectionsSection(88);
 
             // Найдем товары принадлежавшие этому бренду
             $objElemProduct = CIBlockElement::GetList(
@@ -57,17 +46,43 @@ function UpdateSortProduct(&$arFields) {
             );
 
             $arrProducts = [];
+            $arrIds = [];
 
             while ($elem = $objElemProduct->Fetch()) {
-                $newSortValue = $elem["SORT"] - $oldSortProductBrand + $newValueSortBrand;
-                $arrProducts[$elem["ID"]] = $newSortValue;
+                $arrProducts[$elem["ID"]]["SORT"] = $elem["SORT"]; // Текущее значение в поле "Сортировка" у товара
+                $arrIds[] = $elem["ID"];
             }
-        }
 
-        if (!empty($arrProducts)) {
-            $el = new CIBlockElement;
-            foreach ($arrProducts as $productId => $sortValue) {
-                $el->Update($productId, ["SORT" => $sortValue]);
+            // Найдем разделы к которым принадлежат найденные товары
+            $arrElemGroupSections = getGroupsElements($arrIds);
+
+            // Для товаров, которые принадлежат разделу "Ортопедическая обувь" (ID=88), рассчитаем сортировку с учетом сортировки брендов
+            if (!empty($arrElemGroupSections)) {
+                foreach ($arrElemGroupSections as $productId => $arrSections) {
+                    $isShoes = false;
+                    $arrProducts[$productId]["IS_SHOES"] = "N";
+                    foreach ($arrSections as $sectionId) {
+                        if (in_array($sectionId, $arrSubSections)) {
+                            $isShoes = true;
+                            break;
+                        }
+                    }
+                    if ($isShoes) {
+                        $arrProducts[$productId]["IS_SHOES"] = "Y";
+                    }
+                }
+            }
+
+            $GLOBALS["NOT_RUN_UPDATE_SORT_PRODUCT_CATALOG"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSortProductCatalog
+
+            if (!empty($arrProducts)) {
+                $el = new CIBlockElement;
+                foreach ($arrProducts as $productId => $dataProduct) {
+                    if ($dataProduct["IS_SHOES"] === "Y") {
+                        $newSortValue = $dataProduct["SORT"] - $oldSortProductBrand + $newValueSortBrand;
+                        $el->Update($productId, ["SORT" => $newSortValue]);
+                    }
+                }
             }
         }
     }

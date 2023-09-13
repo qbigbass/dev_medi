@@ -340,3 +340,72 @@ if (!function_exists("ctr")) {
         return round((microtime(1)) - $start, 8);
     }
 }
+
+if (!function_exists("getGroupsElements")) {
+    function getGroupsElements($arrIds): array
+    {
+        $arrElemGroupSections = [];
+        if (!empty($arrIds)) {
+            $objGroups = CIBlockElement::GetElementGroups($arrIds, true, ["ID", "NAME", "IBLOCK_ELEMENT_ID"]);
+            while($arrGroup = $objGroups->Fetch()) {
+                $arrElemGroupSections[$arrGroup["IBLOCK_ELEMENT_ID"]][] = $arrGroup["ID"];
+            }
+        }
+
+        return $arrElemGroupSections;
+    }
+}
+
+if (!function_exists("getSubSectionsSection")) {
+    function getSubSectionsSection($sectionId): array
+    {
+        $arrSubSections = [$sectionId];
+        $objParentSection = CIBlockSection::GetByID($sectionId);
+
+        if ($arParentSection = $objParentSection->Fetch()) {
+            $arFilter = [
+                "IBLOCK_ID" => "17",
+                ">LEFT_MARGIN" => $arParentSection["LEFT_MARGIN"],
+                "<RIGHT_MARGIN" => $arParentSection["RIGHT_MARGIN"],
+                ">DEPTH_LEVEL" => $arParentSection["DEPTH_LEVEL"]
+            ];
+
+            $rsSect = CIBlockSection::GetList(
+                [],
+                $arFilter,
+                false,
+                ["ID", "IBLOCK_ID"],
+                false
+
+            );
+            while ($arrSect = $rsSect->Fetch()) {
+                $arrSubSections[] = $arrSect["ID"];
+            }
+        }
+
+        return $arrSubSections;
+    }
+}
+
+if (!function_exists("getSortProductBrand")) {
+    function getSortProductBrand($brandId)
+    {
+        $sortProductBrand = 0;
+        $objElemBrand = CIBlockElement::GetList(
+            ["ID" => "ASC"],
+            [
+                "IBLOCK_ID" => "1",
+                "ID" => $brandId
+            ],
+            false,
+            false,
+            ["ID", "IBLOCK_ID", "PROPERTY_SORT_PRODUCT_BRAND"]
+        );
+
+        while ($elem = $objElemBrand->Fetch()) {
+            $sortProductBrand = $elem["PROPERTY_SORT_PRODUCT_BRAND_VALUE"];
+        }
+
+        return $sortProductBrand;
+    }
+}

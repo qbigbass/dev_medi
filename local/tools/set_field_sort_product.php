@@ -36,38 +36,9 @@ while ($elem = $objElem->Fetch()) {
 }
 
 // Найдем все подразделы раздела "Ортопедическая обувь" (ID=88)
-$arrSubSections = [88];
-$objParentSection = CIBlockSection::GetByID(88);
-
-if ($arParentSection = $objParentSection->Fetch()) {
-    $arFilter = [
-        "IBLOCK_ID" => "17",
-        ">LEFT_MARGIN" => $arParentSection["LEFT_MARGIN"],
-        "<RIGHT_MARGIN" => $arParentSection["RIGHT_MARGIN"],
-        ">DEPTH_LEVEL" => $arParentSection["DEPTH_LEVEL"]
-    ];
-
-    $rsSect = CIBlockSection::GetList(
-        [],
-        $arFilter,
-        false,
-        ["ID", "IBLOCK_ID"],
-        false
-
-    );
-    while ($arrSect = $rsSect->Fetch()) {
-        $arrSubSections[] = $arrSect["ID"];
-    }
-}
-
-$arrElemGroupSections = [];
-
-if (!empty($arrIds)) {
-    $objGroups = CIBlockElement::GetElementGroups($arrIds, true, ["ID", "NAME", "IBLOCK_ELEMENT_ID"]);
-    while($arrGroup = $objGroups->Fetch()) {
-        $arrElemGroupSections[$arrGroup["IBLOCK_ELEMENT_ID"]][] = $arrGroup["ID"];
-    }
-}
+$arrSubSections = getSubSectionsSection(88);
+// Найдем разделы к которым принадлежат найденные товары
+$arrElemGroupSections = getGroupsElements($arrIds);
 
 // Объединим сортировку товара и принадлежность товара к разделу "Обувь"
 if (!empty($arrElemGroupSections)) {
