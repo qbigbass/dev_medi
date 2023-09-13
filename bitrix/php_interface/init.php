@@ -51,6 +51,8 @@ include("include/order.php");
 // обработчики для корзины
 include("include/basket.php");
 
+// обработчики для брендов
+include("include/brand.php");
 
 // обработчики для админ.раздела
 if (defined("ADMIN_SECTION")) {

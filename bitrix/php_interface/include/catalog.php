@@ -1084,3 +1084,71 @@ function imageXmlSitemapGen()
     $dom->save($_SERVER['DOCUMENT_ROOT'] . "/sitemap-image.xml");
     return 'imageXmlSitemapGen();';
 }
+
+// При обновлении св-ва "Наши предложения" у элемента в ИБ "Основной каталог товаров" изменяется значение сортировки у товара
+AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", "UpdateSortProductCatalog");
+function UpdateSortProductCatalog(&$arFields)
+{
+    if ($arFields['IBLOCK_ID'] == 17) {
+        // Изменение в ИБ "Основной каталог товаров"
+        
+        // Получим старое значение св-ва "Наши предложения" у элемента
+        $arrProductOldSigns = [];
+        $objElemProduct = CIBlockElement::GetList(
+            ["ID" => "ASC"],
+            [
+                "IBLOCK_ID" => "17",
+                "ID" => $arFields["ID"]
+            ],
+            false,
+            false,
+            ["ID", "IBLOCK_ID", "PROPERTY_OFFERS"]
+        );
+
+        while ($elem = $objElemProduct->Fetch()) {
+            if (!empty($elem["PROPERTY_OFFERS_VALUE"])) {
+                $arrProductOldSigns = $elem["PROPERTY_OFFERS_VALUE"];
+            }
+        }
+
+        $arrProductOldSignIds = [];
+        if (!empty($arrProductOldSigns)) {
+            $arrProductOldSignIds = array_keys($arrProductOldSigns);
+        }
+
+        // Посчитаем старое значение сортировки только с учетом значений у св-ва "Наши предложения"
+        $sortSignOldValue = 0;
+        if (!empty($arrProductOldSignIds)) {
+            foreach ($arrProductOldSignIds as $oldPropValue) {
+                $sortSignOldValue += SORT_SIGN[$oldPropValue];
+            }
+        }
+
+        // Получим новое значение св-ва "Наши предложения" у элемента
+        $arrProductNewSignIds = [];
+        if (!empty($arFields["PROPERTY_VALUES"])) {
+            foreach ($arFields["PROPERTY_VALUES"] as $propId => $arrValues) {
+                if ($propId == 133) {
+                    if (!empty($arrValues)) {
+                        foreach ($arrValues as $key => $data) {
+                            $arrProductNewSignIds[] = $data["VALUE"];
+                        }
+                    }
+                }
+            }
+        }
+
+        // Посчитаем новое значение сортировки только с учетом значений у св-ва "Наши предложения"
+        $sortSignNewValue = 0;
+        if (!empty($arrProductNewSignIds)) {
+            foreach ($arrProductNewSignIds as $newPropValue) {
+                $sortSignNewValue += SORT_SIGN[$newPropValue];
+            }
+        }
+
+        if ($sortSignOldValue != $sortSignNewValue) {
+            // Изменилось значение св-ва "Наши предложения", обновим значение сортировки у товаров
+            $arFields["SORT"] = $arFields["SORT"] - $sortSignOldValue + $sortSignNewValue;
+        }
+    }
+}
