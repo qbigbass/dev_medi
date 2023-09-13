@@ -75,7 +75,7 @@ export default class ItemView {
 	columnCis(item, key) {
 		const cis = new Cis({
 			messages: this.options.messages,
-			name: this.getName('IDENTIFIERS'),
+			name: this.getName('CIS'),
 			required: !!this.value(item, 'MARKING_GROUP'),
 			total: this.value(item, 'COUNT'),
 			instances: this.value(item, 'INSTANCES'),

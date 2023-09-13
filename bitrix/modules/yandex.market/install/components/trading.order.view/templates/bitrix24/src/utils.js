@@ -38,15 +38,7 @@ export function collectValues(container) {
 	const result = {};
 
 	for (const [name, input] of Object.entries(inputs)) {
-		if (input.tagName.toLowerCase() === 'select') {
-			for (const option of input.querySelectorAll('option')) {
-				if (!option.selected) { continue; }
-
-				result[name] = option.value;
-			}
-		} else {
-			result[name] = input.value;
-		}
+		result[name] = input.value;
 	}
 
 	return result;
@@ -61,21 +53,10 @@ export function fillValues(container, values) {
 
 		const input = inputs[name];
 
-		if (input.tagName.toLowerCase() === 'select') {
-			for (const option of input.querySelectorAll('option')) {
-				const selected = (option.value === value);
+		if (input.value === value) { continue; }
 
-				if (selected === Boolean(option.selected)) { continue; }
-
-				option.selected = selected;
-				isChanged = true;
-			}
-		} else {
-			if (input.value === value) { continue; }
-
-			isChanged = true;
-			input.value = value;
-		}
+		isChanged = true;
+		input.value = value;
 	}
 
 	return isChanged;

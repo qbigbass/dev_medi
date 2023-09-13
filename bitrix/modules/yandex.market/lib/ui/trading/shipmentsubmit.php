@@ -215,7 +215,7 @@ class ShipmentSubmit extends Market\Ui\Reference\Page
 	protected function submit()
 	{
 		return [
-			$this->isItemsChanged() ? $this->submitItems() : $this->submitIdentifiers(),
+			$this->isItemsChanged() ? $this->submitItems() : $this->submitCis(),
 			$this->submitShipments(),
 			$this->submitDigitalGoods(),
 		];
@@ -277,30 +277,26 @@ class ShipmentSubmit extends Market\Ui\Reference\Page
 		{
 			if ($basketItem->needDelete()) { continue; }
 
-			$instances = $this->makeItemInstances($basketItem);
-			$item = [
+			$result[] = [
 				'id' => $basketItem->getId(),
 				'count' => $basketItem->getCount(),
+				'instances' => array_map(
+					static function($cis) { return [ 'cis' => Market\Data\Trading\Cis::formatMarkingCode($cis) ]; },
+					$basketItem->getCis()
+				),
 			];
-
-			if (!empty($instances))
-			{
-				$item['instances'] = $instances;
-			}
-
-			$result[] = $item;
 		}
 
 		return $result;
 	}
 
-	protected function submitIdentifiers()
+	protected function submitCis()
 	{
-		$path = 'send/identifiers';
+		$path = 'send/cis';
 
 		try
 		{
-			$items = $this->makeIdentifiers();
+			$items = $this->makeCisItems();
 
 			if (empty($items)) { return new Market\Result\Base(); }
 
@@ -316,50 +312,24 @@ class ShipmentSubmit extends Market\Ui\Reference\Page
 		return $result;
 	}
 
-	protected function makeIdentifiers()
+	protected function makeCisItems()
 	{
 		$result = [];
 
 		/** @var ShipmentRequest\BasketItem $basketItem */
 		foreach ($this->getRequestOrder()->getBasket() as $basketItem)
 		{
-			$instances = $this->makeItemInstances($basketItem);
+			$itemCis = $basketItem->getCis();
 
-			if (empty($instances)) { continue; }
+			if (empty($itemCis)) { continue; }
 
 			$result[] = [
 				'id' => $basketItem->getId(),
-				'instances' => $instances,
+				'instances' => array_map(
+					static function($cis) { return [ 'cis' => Market\Data\Trading\Cis::formatMarkingCode($cis) ]; },
+					$itemCis
+				),
  			];
-		}
-
-		return $result;
-	}
-
-	protected function makeItemInstances(ShipmentRequest\BasketItem $basketItem)
-	{
-		$identifiers = $basketItem->getIdentifiers();
-		$type = $basketItem->getIdentifierType();
-
-		if (empty($identifiers)) { return null; }
-
-		if ($type === Market\Data\Trading\MarkingRegistry::CIS)
-		{
-			$result = array_map(
-				static function($cis) { return [ 'cis' => Market\Data\Trading\Cis::formatMarkingCode($cis) ]; },
-				$identifiers
-			);
-		}
-		else if ($type === Market\Data\Trading\MarkingRegistry::UIN)
-		{
-			$result = array_map(
-				static function($uin) { return [ 'uin' => Market\Data\Trading\Uin::formatMarkingCode($uin) ]; },
-				$identifiers
-			);
-		}
-		else
-		{
-			throw new Main\ArgumentException(sprintf('unknown identifier type: %s', $type));
 		}
 
 		return $result;

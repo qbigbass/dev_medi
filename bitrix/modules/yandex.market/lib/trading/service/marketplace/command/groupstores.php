@@ -19,7 +19,6 @@ class GroupStores
 	protected $preload = [
 		'PRODUCT_STORE',
 		'USE_ORDER_RESERVE',
-		'STOCKS_BEHAVIOR',
 	];
 
 	public function __construct(TradingService\Marketplace\Provider $provider, array $linked = [])
@@ -37,14 +36,8 @@ class GroupStores
 
 	public function linkedWithReserve()
 	{
-		$compatibleCheckboxes = $this->setting('USE_ORDER_RESERVE');
-		$stocksBehaviors = $this->setting('STOCKS_BEHAVIOR');
-
-		$enabled = $this->valuePositive($compatibleCheckboxes);
-		$enabled += $this->valueFilter($stocksBehaviors, [
-			TradingService\Marketplace\Options::STOCKS_WITH_RESERVE,
-			TradingService\Marketplace\Options::STOCKS_ONLY_AVAILABLE,
-		]);
+		$checkboxes = $this->setting('USE_ORDER_RESERVE');
+		$enabled = $this->valuePositive($checkboxes);
 
 		return array_keys($enabled);
 	}
@@ -61,7 +54,7 @@ class GroupStores
 		return $this->linked;
 	}
 
-	protected function valueMerge(array $values)
+	protected function valueMerge($values)
 	{
 		$partials = [];
 
@@ -75,27 +68,13 @@ class GroupStores
 		return !empty($partials) ? array_merge(...$partials) : [];
 	}
 
-	protected function valuePositive(array $values)
-	{
-		return $this->valueFilter($values, ReferenceStorage\Table::BOOLEAN_Y);
-	}
-
-	protected function valueFilter(array $values, $filter)
+	protected function valuePositive($values)
 	{
 		$result = [];
 
 		foreach ($values as $setupId => $value)
 		{
-			if (is_array($filter))
-			{
-				$matched = in_array($value, $filter, true);
-			}
-			else
-			{
-				$matched = ((string)$value === $filter);
-			}
-
-			if ($matched)
+			if ((string)$value === ReferenceStorage\Table::BOOLEAN_Y)
 			{
 				$result[$setupId] = $value;
 				break;

@@ -1178,12 +1178,11 @@ class MeasoftEvents
                         'governmentCode' => $itemGovernmentCode['MARKING_CODE']
                     );
                 }
-            } else {  
+            } else {
                 $obPropRes = CIBlockElement::GetByID($item['PRODUCT_ID'])->GetNextElement();
                 unset($prop);
                 if ($obPropRes)
                     $prop = $obPropRes->GetProperties();
-
                 $result[] = array(
                     'name' => $item['NAME'],
                     'quantity' => $item['QUANTITY'],

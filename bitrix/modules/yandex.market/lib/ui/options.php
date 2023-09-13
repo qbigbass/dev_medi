@@ -425,20 +425,10 @@ class Options extends Market\Ui\Reference\Page
 	protected function getTradingStocksOptions()
 	{
 		return [
-			'trading_auto_product_offer' => [
-				'TYPE' => 'boolean',
-				'TAB' => 'TRADING',
-				'GROUP' => Market\Config::getLang('UI_OPTION_GROUP_TRADING_PRODUCT'),
-				'NAME' => Market\Config::getLang('UI_OPTION_TRADING_AUTO_PRODUCT_OFFER'),
-				'HELP_MESSAGE' => Market\Config::getLang('UI_OPTION_TRADING_AUTO_PRODUCT_OFFER_HELP'),
-				'SETTINGS' => [
-					'DEFAULT_VALUE' => 'Y',
-				],
-			],
 			'trading_reserve_days' => [
 				'TYPE' => 'number',
 				'TAB' => 'TRADING',
-				'GROUP' => Market\Config::getLang('UI_OPTION_GROUP_TRADING_PRODUCT'),
+				'GROUP' => Market\Config::getLang('UI_OPTION_GROUP_TRADING_STOCKS'),
 				'NAME' => Market\Config::getLang('UI_OPTION_TRADING_RESERVE_DAYS'),
 				'SETTINGS' => [
 					'DEFAULT_VALUE' => 7,

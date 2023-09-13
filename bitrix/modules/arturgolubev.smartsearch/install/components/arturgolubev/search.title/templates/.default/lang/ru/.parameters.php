@@ -17,6 +17,4 @@ $MESS["AG_TP_BST_CONTAINER_ID"] = "ID контейнера, по ширине к
 $MESS["TP_BST_SHOW_LOADING_ANIMATE"] = "Показывать анимацию загрузки";
 $MESS["TP_BST_INPUT_PLACEHOLDER"] = "Текст в поле ввода поискового запроса (placeholder)";
 $MESS["TP_BST_SHOW_HISTORY"] = "Показывать историю запросов";
-
-$MESS["TP_BST_SHOW_QUANTITY"] = "Показывать доступное количество";
 ?>

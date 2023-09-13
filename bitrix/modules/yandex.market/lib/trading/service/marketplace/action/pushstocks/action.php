@@ -44,14 +44,10 @@ class Action extends TradingService\Reference\Action\DataAction
 		$amounts = $this->applyDeleted($amounts, $deletedIds);
 		$amounts = $this->applyAmountsSku($amounts);
 		$amounts = $this->extendPushed($amounts, $productIds);
+		list($amounts, $unchanged) = $pushStore->splitChanged($amounts);
 		$chunkSize = $this->getSkusChunkSize();
 
-		if (!$this->request->isForce())
-		{
-			list($amounts, $unchanged) = $pushStore->splitChanged($amounts);
-
-			$pushStore->touch($unchanged);
-		}
+		$pushStore->touch($unchanged);
 
 		foreach (array_chunk($amounts, $chunkSize) as $amountsChunk)
 		{

@@ -168,38 +168,7 @@ class Action extends TradingService\Common\Action\OrderStatus\Action
 	{
 		$meaningfulValues = $this->request->getOrder()->getMeaningfulValues();
 
-		if (!empty($meaningfulValues['DATE_SHIPMENT']))
-		{
-			$meaningfulValues['DATE_SHIPMENT'] = $this->extendShipmentDates($meaningfulValues['DATE_SHIPMENT']);
-		}
-
 		$this->setMeaningfulPropertyValues($meaningfulValues);
-	}
-
-	protected function extendShipmentDates(array $shipmentDates)
-	{
-		if ($shipmentDates[0] instanceof Main\Type\DateTime || !($shipmentDates[0] instanceof Main\Type\Date))
-		{
-			return $shipmentDates;
-		}
-
-		$serviceKey = $this->provider->getUniqueKey();
-		$orderId = $this->request->getOrder()->getId();
-		$previousShipmentDateString = (string)Market\Trading\State\OrderData::getValue($serviceKey, $orderId, 'SHIPMENT_DATE');
-
-		if ($previousShipmentDateString === '')
-		{
-			return $shipmentDates;
-		}
-
-		$previousShipmentDate = new Main\Type\DateTime($previousShipmentDateString, Market\Data\DateTime::FORMAT_DEFAULT_FULL);
-
-		if ($previousShipmentDate->format('Y-m-d') === $shipmentDates[0]->format('Y-m-d'))
-		{
-			$shipmentDates[0] = $previousShipmentDate;
-		}
-
-		return $shipmentDates;
 	}
 
 	protected function fillCourierProperties()
@@ -486,7 +455,7 @@ class Action extends TradingService\Common\Action\OrderStatus\Action
 			/** @var TradingService\Marketplace\Model\Order\Item\Instance $instance */
 			foreach ($instances as $instance)
 			{
-				$code = (string)($instance->getCisFull() ?: $instance->getCis() ?: $instance->getUin());
+				$code = (string)($instance->getCisFull() ?: $instance->getCis());
 
 				if ($code === '') { continue; }
 
@@ -535,7 +504,6 @@ class Action extends TradingService\Common\Action\OrderStatus\Action
 		return
 			$this->makeStatusData()
 			+ $this->makeDeliveryData()
-			+ $this->makeShipmentData()
 			+ $this->makeItemsData();
 	}
 
@@ -550,18 +518,6 @@ class Action extends TradingService\Common\Action\OrderStatus\Action
 
 		return [
 			'SHIPMENT_ID' => $shipment !== false ? $shipment->getId() : null,
-		];
-	}
-
-	protected function makeShipmentData()
-	{
-		$shipmentDates = $this->request->getOrder()->getMeaningfulShipmentDates();
-		$shipmentDates = $this->extendShipmentDates($shipmentDates);
-
-		return [
-			'SHIPMENT_DATE' => !empty($shipmentDates)
-				? $shipmentDates[0]->format(Market\Data\DateTime::FORMAT_DEFAULT_FULL)
-				: null,
 		];
 	}
 

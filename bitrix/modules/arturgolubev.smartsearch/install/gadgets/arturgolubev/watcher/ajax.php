@@ -13,21 +13,18 @@ IncludeModuleLangFile($_SERVER["DOCUMENT_ROOT"]."/bitrix/gadgets/arturgolubev/wa
 
 $module_id = htmlspecialcharsbx($_POST["module"]);
 $check_all = (htmlspecialcharsbx($_POST["target"]) == 'all') ? 1 : 0;
-$exceptions = explode(',', (htmlspecialcharsbx($_POST["exceptions"])));
 
 global $USER;
 if($module_id && $USER->IsAdmin())
 {
 	// return false;
 	
-	$lckey = (method_exists('CUpdateClientPartner','GetLicenseKey')) ? md5("BITRIX".CUpdateClientPartner::GetLicenseKey()."LICENCE") : \Bitrix\Main\Application::getInstance()->getLicense()->getPublicHashKey();
-	
 	$linkToBuy = false;
 	$linkToBuyUpdate = false;
 	if(LANGUAGE_ID == "ru")
 	{
 		$linkToBuy = "https://marketplace.1c-bitrix.ru"."/tobasket.php?ID=#CODE#";
-		$linkToBuyUpdate = "https://marketplace.1c-bitrix.ru"."/tobasket.php?ID=#CODE#&lckey=".$lckey;
+		$linkToBuyUpdate = "https://marketplace.1c-bitrix.ru"."/tobasket.php?ID=#CODE#&lckey=".md5("BITRIX".CUpdateClientPartner::GetLicenseKey()."LICENCE");
 	}
 	
 	$arRequestedModules = array();
@@ -82,15 +79,6 @@ if($module_id && $USER->IsAdmin())
 						unset($arModules[$dir]);
 					}
 					
-					if(is_array($exceptions) && count($exceptions)){
-						foreach($exceptions as $exc){
-							$exc = trim($exc);
-							if($exc && strpos($arModules[$dir]["MODULE_ID"], $exc) !== false){
-								unset($arModules[$dir]);
-							}
-						}
-					}
-					
 					if(!$arModules[$dir]["IsInstalled"]){
 						unset($arModules[$dir]);
 					}
@@ -110,16 +98,14 @@ if($module_id && $USER->IsAdmin())
 	
 	if(!empty($arRequestedModules)){
 		$obCache = new CPHPCache();
-		$cacheID = 'updateinfo'.$check_all; $cachePath = '/module_watcher/'.$cacheID;
-		
-		if(is_array($exceptions) && count($exceptions)){
-			$cacheID .= implode(',', $exceptions);
-		}
-		
+		$cacheID = 'updateinfo1'.$check_all; $cachePath = '/module_watcher/'.$cacheID;
 		if($obCache->InitCache(3600, $cacheID, $cachePath)){
 		   $vars = $obCache->GetVars();
 		   $arModules = $vars['arModules'];
+		   $checkDate = $vars['checkDate'];
 		}elseif($obCache->StartDataCache()){
+			$checkDate = date('d.m.Y H:i');
+			
 			$stableVersionsOnly = COption::GetOptionString("main", "stable_versions_only", "Y");
 			$tmp = CUpdateClientPartner::GetUpdatesList($errorMessage, LANG, $stableVersionsOnly, $arRequestedModules, Array("fullmoduleinfo" => "Y"));
 
@@ -138,7 +124,7 @@ if($module_id && $USER->IsAdmin())
 					}
 				}
 				
-				$obCache->EndDataCache(array('arModules' => $arModules));
+				$obCache->EndDataCache(array('arModules' => $arModules, 'checkDate' => $checkDate));
 			}
 		}
 	}
@@ -195,7 +181,7 @@ if($module_id && $USER->IsAdmin())
 			{
 				if($linkToBuyUpdate)
 				{
-					$arModule["IMPORTANT_INFO"] = "<span style=\"color:green;\">".GetMessage("ARTURGOLUBEV_WATCHER_MOD_HAVE_UPDATE")."</span>";
+					$arModule["IMPORTANT_INFO"] = "<a href=\"/bitrix/admin/partner_modules.php?lang=ru\" target=\"_blank\"><span style=\"color:green;\">".GetMessage("ARTURGOLUBEV_WATCHER_MOD_HAVE_UPDATE")."</span></a>";
 				}
 				
 				$tableView['have_updates'][] = $arModule;
@@ -245,6 +231,10 @@ if($module_id && $USER->IsAdmin())
 				<?endforeach;?>
 			</table>
 		<?endforeach;?>
+		
+		<?if($checkDate):?>
+			<div class="ag-watcher-morehref"><?=GetMessage("ARTURGOLUBEV_WATCHER_CHECK_DATE", array("#checkdate#" => $checkDate));?></div>
+		<?endif;?>
 		
 		<div class="ag-watcher-morehref"><?=GetMessage("ARTURGOLUBEV_WATCHER_FULL_MODULE_LIST_HREF");?></div>
 	<?endif;?>

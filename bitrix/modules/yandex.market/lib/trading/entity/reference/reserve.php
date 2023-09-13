@@ -26,17 +26,6 @@ abstract class Reserve
 	 * @param int[] $orderIds
 	 * @param string[] $productIds
 	 *
-	 * @return array<string, array{QUANTITY: float}>
-	 */
-	public function getWaiting(array $orderIds, array $productIds)
-	{
-		throw new Market\Exceptions\NotImplementedMethod(static::class, 'getWaiting');
-	}
-
-	/**
-	 * @param int[] $orderIds
-	 * @param string[] $productIds
-	 *
 	 * @return array<string, array{QUANTITY: float, TIMESTAMP_X: Main\Type\DateTime}>
 	 */
 	public function getReserved(array $orderIds, array $productIds)

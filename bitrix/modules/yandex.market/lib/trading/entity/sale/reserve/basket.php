@@ -8,16 +8,6 @@ use Yandex\Market;
 
 class Basket extends Skeleton
 {
-	public function getWaiting(array $orderIds, array $productIds)
-	{
-		if ($this->isReservedOnCreate()) { return []; }
-
-		$basket = $this->mapBasketProducts($orderIds, $productIds);
-		$basket = $this->filterBasketWaiting($basket);
-
-		return $this->combineBasketQuantities($basket);
-	}
-
 	public function getReserved(array $orderIds, array $productIds)
 	{
 		if ($this->usedAvailableQuantity) { return []; }
@@ -74,29 +64,6 @@ class Basket extends Skeleton
 		return [$reserved, $shipped];
 	}
 
-	protected function filterBasketWaiting(array $basketProducts)
-	{
-		/** @var Sale\ReserveQuantityCollection $reserveCollectionClassName */
-		$registry = Sale\Registry::getInstance(Sale\Registry::ENTITY_ORDER);
-		$reserveCollectionClassName = $registry->getReserveCollectionClassName();
-		$found = [];
-
-		foreach (array_chunk($basketProducts, 500, true) as $basketChunk)
-		{
-			$query = $reserveCollectionClassName::getList([
-				'filter' => [ '=BASKET_ID' => array_keys($basketChunk) ],
-				'select' => [ 'BASKET_ID' ],
-			]);
-
-			while ($row = $query->fetch())
-			{
-				$found[$row['BASKET_ID']] = true;
-			}
-		}
-
-		return array_diff_key($basketProducts, $found);
-	}
-
 	protected function loadBasketReserves(array $basketProducts)
 	{
 		/** @var Sale\ReserveQuantityCollection $reserveCollectionClassName */
@@ -128,7 +95,6 @@ class Basket extends Skeleton
 			while ($row = $query->fetch())
 			{
 				$basketRow = $basketChunk[$row['BASKET_ID']];
-				$row['ORDER_ID'] = $basketRow['ORDER_ID'];
 
 				$result = $this->pushResultReserve($result, $basketRow['PRODUCT_ID'], $row);
 			}
@@ -171,7 +137,6 @@ class Basket extends Skeleton
 				'filter' => $filter,
 				'select' => [
 					'PRODUCT_ID' => 'BASKET.PRODUCT_ID',
-					'ORDER_ID' => 'BASKET.ORDER_ID',
 					'QUANTITY',
 					'DATE_RESERVE',
 					'DATE_RESERVE_END',
@@ -206,9 +171,6 @@ class Basket extends Skeleton
 			$result[$productId] = [
 				'QUANTITY' => $quantity,
 				'TIMESTAMP_X' => $timestamp,
-				'ORDER' => [
-					$row['ORDER_ID'] => $quantity,
-				],
 			];
 		}
 		else
@@ -218,9 +180,6 @@ class Basket extends Skeleton
 				$result[$productId]['TIMESTAMP_X'],
 				$timestamp
 			);
-			$result[$productId]['ORDER'][$row['ORDER_ID']] = isset($result[$productId]['ORDER'][$row['ORDER_ID']])
-				? $result[$productId]['ORDER'][$row['ORDER_ID']] + $quantity
-				: $quantity;
 		}
 
 		return $result;

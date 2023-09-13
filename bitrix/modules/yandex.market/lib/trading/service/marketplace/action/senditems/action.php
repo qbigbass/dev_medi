@@ -244,21 +244,9 @@ class Action extends TradingService\Reference\Action\DataAction
 
 			foreach ($basketData['INSTANCES'] as $instance)
 			{
-				$instanceFormatted = [];
+				if (!isset($instance['CIS'])) { continue; }
 
-				if (isset($instance['CIS']))
-				{
-					$instanceFormatted['cis'] = Market\Data\Trading\Cis::formatMarkingCode($instance['CIS']);
-				}
-
-				if (isset($instance['UIN']))
-				{
-					$instanceFormatted['uin'] = Market\Data\Trading\Uin::formatMarkingCode($instance['UIN']);
-				}
-
-				if (empty($instanceFormatted)) { continue; }
-
-				$instances[] = $instanceFormatted;
+				$instances[] = [ 'cis' => Market\Data\Trading\Cis::formatMarkingCode($instance['CIS']) ];
 			}
 
 			$result[$item['id']] = $instances;

@@ -8,16 +8,6 @@ use Bitrix\Sale;
 
 class Shipment extends Skeleton
 {
-	public function getWaiting(array $orderIds, array $productIds)
-	{
-		if ($this->isReservedOnCreate()) { return []; }
-
-		$waitingOrderIds = $this->findWaitingOrders($orderIds);
-		$basket = $this->mapBasketProducts($waitingOrderIds, $productIds);
-
-		return $this->combineBasketQuantities($basket);
-	}
-
 	public function getReserved(array $orderIds, array $productIds)
 	{
 		if ($this->usedAvailableQuantity || $this->isReservedEqualShipped()) { return []; }
@@ -89,16 +79,6 @@ class Shipment extends Skeleton
 		}
 
 		return [$reserved, $shipped];
-	}
-
-	protected function findWaitingOrders(array $orderIds)
-	{
-		$shipped = $this->findShippedOrders($orderIds);
-		$shippedOrderIds = array_column($shipped, 'ORDER_ID');
-		$reserved = $this->findReservedOrders(array_diff($orderIds, $shippedOrderIds), null, true);
-		$reservedOrderIds = array_column($reserved, 'ORDER_ID');
-
-		return array_diff($orderIds, $shippedOrderIds, $reservedOrderIds);
 	}
 
 	/**
@@ -397,6 +377,11 @@ class Shipment extends Skeleton
 		return $result;
 	}
 
+	protected function isReservedEqualShipped()
+	{
+		return (Sale\Configuration::getProductReservationCondition() === $this->saleReverseConstant('ON_SHIP'));
+	}
+
 	protected function reserveRule()
 	{
 		$condition = Sale\Configuration::getProductReservationCondition();
@@ -442,6 +427,23 @@ class Shipment extends Skeleton
 	protected function clearReservePeriod()
 	{
 		return Sale\Configuration::getProductReserveClearPeriod();
+	}
+
+	protected function saleReverseConstant($name)
+	{
+		$newClassName = Sale\Reservation\Configuration\ReserveCondition::class;
+		$oldClassName = Sale\Configuration::class;
+
+		if (defined($newClassName . '::' . $name))
+		{
+			$result = constant($newClassName . '::' . $name);
+		}
+		else
+		{
+			$result = constant($oldClassName . '::RESERVE_' . $name);
+		}
+
+		return $result;
 	}
 
 	/**

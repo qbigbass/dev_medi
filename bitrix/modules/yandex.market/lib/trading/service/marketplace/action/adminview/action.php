@@ -749,9 +749,6 @@ class Action extends TradingService\Reference\Action\DataAction
 				'MARKING_GROUP' => isset($basketData['MARKING_GROUP']) && (string)$basketData['MARKING_GROUP'] !== ''
 					? $basketData['MARKING_GROUP']
 					: null,
-				'MARKING_TYPE' => isset($basketData['MARKING_TYPE']) && (string)$basketData['MARKING_TYPE'] !== ''
-					? $basketData['MARKING_TYPE']
-					: null,
 				'PROMOS' => [],
 				'INSTANCES' => $instances !== null ? $this->getItemInstancesSummary($instances) : [],
 				'INTERNAL_INSTANCES' => isset($basketData['INSTANCES']) ? $basketData['INSTANCES'] : [],
@@ -896,7 +893,6 @@ class Action extends TradingService\Reference\Action\DataAction
 		{
 			$result[] = [
 				'CIS' => $instance->getCisFull() ?: $instance->getCis(),
-				'UIN' => $instance->getUin(),
 			];
 		}
 
@@ -987,7 +983,7 @@ class Action extends TradingService\Reference\Action\DataAction
 	{
 		$boxes = $shipment->getBoxes();
 
-		if ($boxes === null || $boxes->count() === 0) { return $this->emulateShipmentBoxes(); }
+		if ($boxes === null) { return $this->emulateShipmentBoxes(); }
 
 		$result = [];
 

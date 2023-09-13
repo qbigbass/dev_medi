@@ -2304,7 +2304,7 @@ class Offer extends Base
 			{
 				case 'change':
 				case 'refresh':
-					$filter['>=TIMESTAMP_X'] = $this->getParameter('initTimeUTC');
+					$filter['>=TIMESTAMP_X'] = $this->getParameter('initTime');
 				break;
 			}
 		}

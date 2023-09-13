@@ -113,16 +113,6 @@ if($preview){
 										<?endif; */?>
 									</span>
 								
-									<?if($arParams['SHOW_QUANTITY'] == 'Y' && $arElement['CATALOG_TYPE'] != 3):
-										// echo '<pre>'; print_r($arResult['MEASURES']); echo '</pre>';
-										// echo '<pre>'; print_r($arElement); echo '</pre>';
-									?>
-										<span class="bx_item_block_item_props">
-											<?=GetMessage('AG_SMARTIK_CATALOG_QUANTITY')?>: <?=$arElement['CATALOG_QUANTITY']?>
-											<?if($arElement['CATALOG_MEASURE'] && is_array($arResult['MEASURES'][$arElement['CATALOG_MEASURE']])) echo $arResult['MEASURES'][$arElement['CATALOG_MEASURE']]['SYMBOL'];?>
-										</span>
-									<?endif;?>
-									
 									<?if(!empty($arElement["PROPS"])):?>
 										<span class="bx_item_block_item_props">
 											<?foreach($arElement["PROPS"] as $prop):

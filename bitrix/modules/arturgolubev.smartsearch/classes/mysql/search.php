@@ -320,7 +320,8 @@ class CSearchExt extends CSearch
 			$limit = $this->offset.", ".$this->limit;
 		}
 		
-		if($limit < 1){
+		if($limit < 1)
+		{
 			$baseLimit = COption::GetOptionInt("search", "max_result_size");
 			$limit = ($baseLimit) ? $baseLimit : 500;
 		}

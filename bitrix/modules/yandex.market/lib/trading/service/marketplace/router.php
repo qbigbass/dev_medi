@@ -7,7 +7,6 @@ use Yandex\Market\Trading\Service as TradingService;
 
 class Router extends Market\Trading\Service\Reference\Router
 {
-	/** @noinspection PhpDeprecationInspection */
 	protected function getSystemMap()
 	{
 		return [
@@ -26,7 +25,6 @@ class Router extends Market\Trading\Service\Reference\Router
 			'send/items' => Action\SendItems\Action::class,
 			'send/boxes' => Action\SendBoxes\Action::class,
 			'send/cis' => Action\SendCis\Action::class,
-			'send/identifiers' => Action\SendIdentifiers\Action::class,
 			'send/shipment/confirm' => Action\SendShipmentConfirm\Action::class,
 			'send/shipment/excludeOrders' => Action\SendShipmentExcludeOrders\Action::class,
 			'send/verifyEac' => Action\VerifyEac\Action::class,

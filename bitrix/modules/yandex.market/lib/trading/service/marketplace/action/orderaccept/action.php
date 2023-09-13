@@ -209,9 +209,7 @@ class Action extends TradingService\Common\Action\OrderAccept\Action
 
 	protected function makeData()
 	{
-		return
-			$this->makeFakeData()
-			+ $this->makeShipmentData();
+		return $this->makeFakeData();
 	}
 
 	protected function makeFakeData()
@@ -220,20 +218,6 @@ class Action extends TradingService\Common\Action\OrderAccept\Action
 
 		return [
 			'FAKE' => 'Y',
-		];
-	}
-
-	protected function makeShipmentData()
-	{
-		$shipmentDates = $this->request->getOrder()->getMeaningfulShipmentDates();
-
-		if (empty($shipmentDates)) { return []; }
-
-		/** @var Main\Type\DateTime $shipmentDate */
-		$shipmentDate = reset($shipmentDates);
-
-		return [
-			'SHIPMENT_DATE' => $shipmentDate->format(Market\Data\DateTime::FORMAT_DEFAULT_FULL),
 		];
 	}
 }

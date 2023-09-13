@@ -256,7 +256,6 @@ class Action extends TradingService\Marketplace\Action\OrderAccept\Action
 		$outlet = $delivery->getOutlet();
 
 		if ($outlet === null || !$outlet->hasField('code')) { return; } // ignore self-test missing outlet code
-		if ((int)$delivery->getServiceId() !== TradingService\MarketplaceDbs\Delivery::SHOP_SERVICE_ID) { return; } // external service delivery
 
 		$filled = $this->fillOutletEnvironment($delivery, $outlet);
 

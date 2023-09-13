@@ -96,7 +96,7 @@ $arOptions = [
 		["disable_cache", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_DISABLE_CACHE"), "N", ["checkbox"]],
 		["debug", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_DEBUG"), "N", ["checkbox"]],
 		Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_EXCLUDE_FROM_SEARCH"),
-		["exclude_by_section", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_EXCLUDE_BY_SECTION"), "Y", ["checkbox"]],
+		["exclude_by_section", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_EXCLUDE_BY_SECTION"), "N", ["checkbox"]],
 		["exclude_by_wo_section", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_EXCLUDE_BY_WO_SECTION"), "", ["checkbox"]],
 		["exclude_by_product", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_EXCLUDE_BY_PRODUCT"), "N", ["checkbox"]],
 		["exclude_by_available", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_EXCLUDE_BY_AVAILABLE"), "N", ["checkbox"]],
@@ -126,9 +126,9 @@ $arOptions["search"][] = ["mode_guessplus", Loc::getMessage("ARTURGOLUBEV_SMARTS
 // }
 
 $arOptions["search"][] = Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_DOP_SORTING");
-$arOptions["search"][] = ["sort_secton_first", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_SORT_SECTION_FIRST"), "Y", ["checkbox"]];
+$arOptions["search"][] = ["sort_secton_first", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_SORT_SECTION_FIRST"), "", ["checkbox"]];
 if(Loader::includeModule("catalog")){
-	$arOptions["search"][] = ["sort_available_first", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_SORT_AVAILABLE_FIRST"), "Y", ["checkbox"]];
+	$arOptions["search"][] = ["sort_available_first", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_SORT_AVAILABLE_FIRST"), "", ["checkbox"]];
 	$arOptions["search"][] = ["sort_available_qt_first", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_SORT_AVAILABLE_QT_FIRST"), "", ["checkbox"]];
 }
 
@@ -138,7 +138,6 @@ $arOptions["search"][] = ["use_title_tag_search", Loc::getMessage("ARTURGOLUBEV_
 $arOptions["search"][] = ["use_title_prop_search", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_USE_TITLE_PROP_SEARCH"), "Y", ["checkbox"]];
 $arOptions["search"][] = ["use_title_id", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_USE_TITLE_ID"), "N", ["checkbox"]];
 $arOptions["search"][] = ["use_title_sname", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_USE_TITLE_SECTION_NAME"), "N", ["checkbox"]];
-$arOptions["search"][] = ["find_section_by_parent", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_FIND_SECTION_BY_PARENT"), "N", ["checkbox"]];
 $arOptions["search"][] = ["use_page_text_nosearch", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_USE_PAGE_STOP_TEXT"), "Y", ["checkbox"]];
 $arOptions["search"][] = ["exception_words_list", Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_EXCEPTIONS_WORDS_LIST"), Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_EXCEPTIONS_WORDS_LIST_DEF"), ["textarea"]];
 

@@ -16,15 +16,15 @@ use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\ArgumentOutOfRangeException;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
-use TwoFingers\Location\Options;
-use \TwoFingers\Location\Entity\Location as LocationEntity;
 use Bitrix\Main\LoaderException;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
-use TwoFingers\Location\Current;
+use CIBlockElement;
 use TwoFingers\Location\Model\Iblock;
 use TwoFingers\Location\Model\Location as LocationModel;
+use Twofingers\Location\Property\PriceType;
+use Twofingers\Location\Property\Store;
 
 Loc::loadMessages(__FILE__);
 
@@ -36,62 +36,24 @@ Loc::loadMessages(__FILE__);
  */
 class Content extends Iblock
 {
-    const CODE_DEFAULT              = 'default';
-    const CODE                      = 'tf_location_locations';
-    const PROPERTY_LOCATION_ID      = 'LOCATION_ID';
-    const PROPERTY_SITE_ID          = 'SITE_ID';
-    const PROPERTY_DOMAIN           = 'DOMAIN';
+    const CODE_DEFAULT         = 'default';
+    const CODE                 = 'tf_location_locations';
+    const PROPERTY_LOCATION_ID = 'LOCATION_ID';
+    const PROPERTY_SITE_ID     = 'SITE_ID';
+    const PROPERTY_DOMAIN      = 'DOMAIN';
+    const PROPERTY_PHONE       = 'PHONE';
+    const PROPERTY_ADDRESS     = 'ADDRESS';
+    const PROPERTY_PRICE_TYPES = 'PRICE_TYPES';
+    const PROPERTY_STORES      = 'STORES';
 
-    const PROPERTY_H1               = 'H1';
-    const PROPERTY_META_TITLE       = 'META_TITLE';
+    /** @deprecated */
+    const PROPERTY_H1 = 'H1';
+    /** @deprecated */
+    const PROPERTY_META_TITLE = 'META_TITLE';
+    /** @deprecated */
     const PROPERTY_META_DESCRIPTION = 'META_DESCRIPTION';
 
-    const OPTION_IBLOCK_ID      = 'content-iblock-id';
-
-    /**
-     * @param Current $current
-     * @param null    $siteId
-     * @return array|bool|mixed|null
-     * @throws ArgumentNullException
-     * @throws ArgumentException
-     * @throws ArgumentOutOfRangeException
-     * @throws LoaderException
-     * @throws SystemException
-     * @deprecated
-     */
-    public static function getByCurrent(Current $current, $siteId = null)
-    {
-        if (!$current->isDefined())
-            return self::getDefault(LANGUAGE_ID, $siteId);
-
-        $content = self::getByLocationId($current->getLocationId(), $siteId);
-        if ($content || !Options::isCapabilityMode())
-            return $content;
-
-        $content = self::getByName($current->getLocationName(), $siteId);
-        if ($content)
-            return $content;
-
-        return self::getDefault(LANGUAGE_ID, $siteId);
-    }
-
-    /**
-     * @param mixed|string $langId
-     * @param null         $siteId
-     * @return array|bool|mixed|null
-     * @throws ArgumentException
-     * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
-     * @throws LoaderException
-     * @throws SystemException
-     * @deprecated
-     */
-    public static function getByStorage($siteId = null)
-    {
-        $content = \TwoFingers\Location\Entity\Content::buildByStorage();
-
-        return $content ? $content->getData() : null;
-    }
+    const OPTION_IBLOCK_ID = 'content-iblock-id';
 
     /**
      * @return bool|int
@@ -105,52 +67,67 @@ class Content extends Iblock
      */
     public static function build()
     {
-        if (!self::createType())
+        if (!self::createType()) {
             return false;
+        }
 
-        if (!self::createIblock())
+        if (!self::createIblock()) {
             return false;
+        }
 
-        if (!self::createLocationRefProperty(100))
+        if (!self::createLocationRefProperty()) {
             return false;
+        }
 
-        if (!self::createSiteProperty(self::PROPERTY_SITE_ID, 200))
+        if (!self::createSiteProperty(self::PROPERTY_SITE_ID, 200)) {
             return false;
+        }
 
-        if (!self::createElementLinkProperty(self::PROPERTY_DOMAIN, Domain::getId(), 200))
+        if (!self::createElementLinkProperty(self::PROPERTY_DOMAIN, Domain::getId(), 300)) {
             return false;
+        }
 
-        /*if (!self::createStringProperty(self::PROPERTY_H1, 300))
+        if (!self::createStringProperty(self::PROPERTY_ADDRESS, 400)) {
             return false;
+        }
 
-        if (!self::createStringProperty(self::PROPERTY_META_TITLE, 400))
+        if (!self::createStringProperty(self::PROPERTY_PHONE, 500, 'N', 'Y')) {
             return false;
+        }
 
-        if (!self::createStringProperty(self::PROPERTY_META_DESCRIPTION, 500))
-            return false;*/
+        if (Loader::includeModule('sale')) {
+            if (!self::createStringProperty(self::PROPERTY_PRICE_TYPES, 600, 'N', 'Y', PriceType::USER_TYPE)) {
+                return false;
+            }
+            if (!self::createStringProperty(self::PROPERTY_STORES, 700, 'N', 'Y', Store::USER_TYPE)) {
+                return false;
+            }
+        }
 
         return self::createDefaultElement();
     }
 
     /**
      * @param int $sort
-     * @return bool|mixed
+     * @return bool
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
      */
-    protected static function createLocationRefProperty($sort = 100)
+    protected static function createLocationRefProperty(int $sort = 100): bool
     {
         $property = self::getPropertyByCode(self::PROPERTY_LOCATION_ID);
-        if ($property) return true;
+        if ($property) {
+            return true;
+        }
 
-        switch (LocationModel::getType())
-        {
-            case LocationModel::TYPE__INTERNAL:
+        switch (LocationModel::getType()) {
+            case LocationModel::TYPE_IBLOCK:
                 return self::createElementLinkProperty(self::PROPERTY_LOCATION_ID, Location::getId(), $sort, 'Y');
-            case LocationModel::TYPE__SALE_2:
-                return self::createLocationProperty(self::PROPERTY_LOCATION_ID, 100);
+            case LocationModel::TYPE_SALE:
+                return self::createLocationProperty(self::PROPERTY_LOCATION_ID);
             default:
-                return self::createStringProperty(self::PROPERTY_LOCATION_ID, 100);
+                return self::createStringProperty(self::PROPERTY_LOCATION_ID);
         }
     }
 
@@ -164,20 +141,23 @@ class Content extends Iblock
      */
     protected static function createDefaultElement()
     {
-        $default = self::getDefault();
-        if ($default) return true;
+        $defaultData = self::getDefaultData();
+        if ($defaultData) {
+            return true;
+        }
 
         $iblockId = self::getId();
-        if (!$iblockId)
+        if (!$iblockId) {
             return false;
+        }
 
         $fields = [
             'NAME'      => Loc::getMessage('TFL_IBLOCK_CONTENT_DEFAULT'),
-            //'CODE'      => self::CODE_DEFAULT,
+            'CODE'      => self::CODE_DEFAULT,
             'IBLOCK_ID' => $iblockId
         ];
 
-        return (new \CIBlockElement)->Add($fields);
+        return (new CIBlockElement)->Add($fields);
     }
 
     /**
@@ -190,13 +170,18 @@ class Content extends Iblock
      * @throws SystemException
      *
      */
-    public static function createIblock()
+    public static function createIblock(): bool
     {
-        if (self::getIblock()) return true;
+        if (self::getIblock()) {
+            return true;
+        }
 
-        $id = self::create(self::CODE, Loc::getMessage('TFL_IBLOCK_CONTENT_NAME'), Loc::getMessage('TFL_IBLOCK_CONTENT_DESCRIPTION'));
+        $id = self::create(self::CODE, Loc::getMessage('TFL_IBLOCK_CONTENT_NAME'),
+            Loc::getMessage('TFL_IBLOCK_CONTENT_DESCRIPTION'));
 
-        if (!$id) return false;
+        if (!$id) {
+            return false;
+        }
 
         Option::set('twofingers.location', self::OPTION_IBLOCK_ID, $id);
 
@@ -206,10 +191,10 @@ class Content extends Iblock
     /**
      * @return array|null
      * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
+     * @throws ArgumentOutOfRangeException|LoaderException
      *
      */
-    protected static function getIblockLocationProperty()
+    protected static function getIblockLocationProperty(): ?array
     {
         return self::getPropertyByCode(self::PROPERTY_LOCATION_ID);
     }
@@ -217,66 +202,69 @@ class Content extends Iblock
     /**
      * @return array|null
      * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
+     * @throws ArgumentOutOfRangeException|LoaderException
      *
      */
-    protected static function getIblockSiteProperty()
+    protected static function getIblockSiteProperty(): ?array
     {
         return self::getPropertyByCode(self::PROPERTY_SITE_ID);
     }
-
 
     /**
      * @return array|null
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
      *
      */
-    protected static function getIblockDomainProperty()
+    protected static function getIblockDomainProperty(): ?array
     {
         return self::getPropertyByCode(self::PROPERTY_DOMAIN);
     }
 
     /**
-     * @param       $locationId
-     * @param false $siteId
-     * @param false $reload
+     * @param int $locationId
+     * @param string|null $siteId
      * @return array|false|mixed|null
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
      * @throws LoaderException
-     * @throws SystemException
      */
-    public static function getByLocationId($locationId, $siteId = false, $reload = false)
+    public static function getByLocationId(int $locationId, string $siteId = null)
     {
-        $locationId = trim($locationId);
-        if (!$locationId)
+        if (!$locationId) {
             return null;
+        }
 
         $filter = [
-            'PROPERTY_' . self::PROPERTY_LOCATION_ID    => $locationId,
-            'PROPERTY_' . self::PROPERTY_SITE_ID        => $siteId
+            'PROPERTY_' . self::PROPERTY_LOCATION_ID => $locationId,
+            'PROPERTY_' . self::PROPERTY_SITE_ID     => [$siteId, false]
         ];
 
-        return self::getByFilter($filter, $reload);
+        return self::getByFilter($filter);
     }
 
     /**
-     * @param       $locationId
-     * @param false $siteId
-     * @param false $reload
-     * @return mixed|null
+     * @param string $locationCode
+     * @param string|null $siteId
+     * @return array|false|mixed|null
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
      * @throws LoaderException
-     * @throws SystemException
-     * @deprecated
      */
-    public static function getDomainByLocationId($locationId = null, $siteId = false, $reload = false)
+    public static function getByLocationCode(string $locationCode, string $siteId = null)
     {
-        return empty($locationId)
-            ? null
-            : LocationEntity::buildByPrimary($locationId, null, LANGUAGE_ID, $siteId)->getDomain();
+        $locationCode = trim($locationCode);
+        if (!strlen($locationCode)) {
+            return null;
+        }
+
+        $filter = [
+            'PROPERTY_' . self::PROPERTY_LOCATION_ID => $locationCode,
+            'PROPERTY_' . self::PROPERTY_SITE_ID     => [$siteId, false]
+        ];
+
+        return self::getByFilter($filter);
     }
 
     /**
@@ -287,25 +275,30 @@ class Content extends Iblock
      * @throws ArgumentOutOfRangeException
      * @throws LoaderException
      */
-    public static function getByFilter(array $filter, $reload = false)
+    public static function getByFilter(array $filter, bool $reload = false)
     {
-        $cacheId    = crc32(__METHOD__ . serialize($filter));
-        $cache      = Application::getInstance()->getManagedCache();
+        $cacheId = crc32(__METHOD__ . serialize($filter));
+        $cache   = Application::getInstance()
+            ->getManagedCache();
 
-        if (!$reload && $cache->read(LocationModel::CACHE_TTL, $cacheId))
+        if (!$reload && $cache->read(LocationModel::CACHE_TTL, $cacheId)) {
             return $cache->get($cacheId);
+        }
 
         $iblockId = self::getId();
-        if (!$iblockId || !Loader::includeModule('iblock')) return null;
+        if (!$iblockId || !Loader::includeModule('iblock')) {
+            return null;
+        }
 
-        $filter['IBLOCK_ID']    = $iblockId;
-        $filter['ACTIVE']       = 'Y';
+        $filter['IBLOCK_ID'] = $iblockId;
+        $filter['ACTIVE']    = 'Y';
 
-        $obElement = \CIBlockElement::GetList([], $filter)->GetNextElement();
+        $obElement = CIBlockElement::GetList([], $filter)
+            ->GetNextElement();
 
         if ($obElement) {
-            $element                = $obElement->GetFields();
-            $element['PROPERTIES']  = $obElement->GetProperties();
+            $element               = $obElement->GetFields();
+            $element['PROPERTIES'] = $obElement->GetProperties();
         } else {
             $element = [];
         }
@@ -316,33 +309,16 @@ class Content extends Iblock
     }
 
     /**
-     * @param mixed|string $langId
-     * @param mixed|string $siteId
      * @return array|bool|mixed|null
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
      * @throws LoaderException
-     * @throws SystemException
      */
-    public static function getDefault($langId = LANGUAGE_ID, $siteId = SITE_ID)
+    public static function getDefaultData()
     {
-        $data       = null;
-        $location   = LocationEntity::buildDefault($langId, $siteId);
-        if ($location)
-        {
-            $defaultContent = $location->getContent();
-            if ($defaultContent)
-                $data = $defaultContent->getData();
-        }
-
-        if (!$data && Options::isCapabilityMode())
-        {
-            $data = self::getByFilter(['CODE' => self::CODE_DEFAULT]);
-        }
-
-        return $data;
+        return self::getByFilter(['CODE' => self::CODE_DEFAULT]) ?? null;
     }
-    
+
     /**
      * @param      $name
      * @param null $siteId
@@ -354,16 +330,19 @@ class Content extends Iblock
      * @throws SystemException
      * @deprecated
      */
-    public static function getByName($name, $siteId = null, $reload = false)
+    public static function getByName($name, $siteId = null, bool $reload = false)
     {
         $name = trim($name);
 
-        if (!strlen($name)) return false;
+        if (!strlen($name)) {
+            return false;
+        }
 
         $filter = ['=NAME' => $name];
 
-        if (!is_null($siteId))
+        if (!is_null($siteId)) {
             $filter['PROPERTY_' . self::PROPERTY_SITE_ID] = $siteId;
+        }
 
         return self::getByFilter($filter, $reload);
     }

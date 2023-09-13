@@ -1,3 +1,3 @@
 <?php
 
-$MESS['YANDEX_MARKET_TEMPLATE_FUNCTION_SUM'] = 'Сумма стоимости';
+$MESS['YANDEX_MARKET_TEMPLATE_FUNCTION_SUM'] = 'Сумма';

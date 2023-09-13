@@ -58,7 +58,7 @@ class PromoGiftTable extends Market\Reference\Storage\Table
                 'validation' => [__CLASS__, 'validateStatus'],
             ]),
             new Main\Entity\TextField('CONTENTS'),
-            new Market\Reference\Storage\Field\CanonicalDateTime('TIMESTAMP_X', [
+            new Main\Entity\DatetimeField('TIMESTAMP_X', [
                 'required' => true
             ]),
 

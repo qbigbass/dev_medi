@@ -4,12 +4,8 @@ namespace Yandex\Market\Trading\Service\Marketplace\Command;
 
 class BasketReserves extends SkeletonReserves
 {
-	protected $debug = [];
-
 	public function execute(array $storeData)
 	{
-		$this->resetDebug();
-
 		$quantities = $this->mapQuantities($storeData);
 		$quantities = array_filter($quantities, static function($value) { return $value > 0; });
 
@@ -21,15 +17,9 @@ class BasketReserves extends SkeletonReserves
 		$allUsedStates = $processingStates + $otherStates;
 		$productIds = array_keys($quantities);
 
-		$waiting = $this->loadWaiting($processingStates, $productIds);
 		$reserves = $this->loadReserves($processingStates, $productIds);
 		$siblingReserves = $this->loadSiblingReserves($allUsedStates, $productIds);
 
-		$this->storeDebug('WAITING', $waiting);
-		$this->storeDebug('MARKET', $reserves);
-		$this->storeDebug('SIBLING', $siblingReserves);
-
-		$storeData = $this->applyReserves($storeData, $waiting);
 		$storeData = $this->applyReserves($storeData, $reserves);
 		$storeData = $this->applyReserves($storeData, $siblingReserves);
 
@@ -50,6 +40,13 @@ class BasketReserves extends SkeletonReserves
 		return $result;
 	}
 
+	protected function loadReserves(array $orderStates, array $productIds)
+	{
+		$orderIds = array_column($orderStates, 'INTERNAL_ID');
+
+		return $this->environment->getReserve()->getReserved($orderIds, $productIds);
+	}
+
 	protected function applyReserves(array $storeData, array $reserves)
 	{
 		foreach ($storeData as $productId => &$productValues)
@@ -61,29 +58,5 @@ class BasketReserves extends SkeletonReserves
 		unset($productValues);
 
 		return $storeData;
-	}
-
-	protected function resetDebug()
-	{
-		$this->debug = [];
-	}
-
-	protected function storeDebug($key, array $reserves)
-	{
-		$this->debug[$key] = $reserves;
-	}
-
-	public function findDebugProduct($productId)
-	{
-		$result = [];
-
-		foreach ($this->debug as $key => $reserves)
-		{
-			if (!isset($reserves[$productId])) { continue; }
-
-			$result[$key] = $reserves[$productId];
-		}
-
-		return $result;
 	}
 }

@@ -14,18 +14,12 @@ class BasketItem extends Market\Api\Reference\Model
 	}
 
 	/** @return string[] */
-	public function getIdentifiers()
+	public function getCis()
 	{
-		$values = (array)$this->getField('IDENTIFIERS.ITEMS');
+		$values = (array)$this->getField('CIS');
 		$values = array_map('trim', $values);
 
 		return array_filter($values, static function($value) { return $value !== ''; });
-	}
-
-	/** @return string */
-	public function getIdentifierType()
-	{
-		return $this->getField('IDENTIFIERS.TYPE') ?: Market\Data\Trading\MarkingRegistry::CIS;
 	}
 
 	/** @return float|null */

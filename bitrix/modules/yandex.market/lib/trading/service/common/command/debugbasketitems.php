@@ -254,26 +254,26 @@ class DebugBasketItems
 
 	protected function reserveData(array $productIds)
 	{
-		if (!($this->provider instanceof TradingService\Marketplace\Provider)) { return []; }
-
-		$behavior = $this->provider->getOptions()->getStocksBehavior();
-
-		if ($behavior === TradingService\Marketplace\Options::STOCKS_WITH_RESERVE)
+		if (
+			!($this->provider instanceof TradingService\Marketplace\Provider)
+			|| !$this->provider->getOptions()->useOrderReserve()
+		)
 		{
-			$result = $this->basketReserves($productIds);
+			return [];
+		}
 
-			foreach ($this->stocksReserves($productIds) as $productId => $stocksReserve)
+		$result = array_fill_keys($productIds, []);
+		$partials = [
+			'QUANTITY' => $this->basketReserves($productIds),
+			'STOCKS' => $this->stocksReserves($productIds),
+		];
+
+		foreach ($partials as $field => $quantities)
+		{
+			foreach ($quantities as $productId => $quantity)
 			{
-				$result[$productId]['STOCKS'] = $stocksReserve;
+				$result[$productId][$field] = $quantity;
 			}
-		}
-		else if ($behavior === TradingService\Marketplace\Options::STOCKS_ONLY_AVAILABLE)
-		{
-			$result = $this->basketReserves($productIds);
-		}
-		else
-		{
-			$result = [];
 		}
 
 		return $result;
@@ -294,16 +294,7 @@ class DebugBasketItems
 
 			if ($diff === 0) { continue; }
 
-			$row = [
-				'QUANTITY' => $diff,
-			];
-
-			foreach ($command->findDebugProduct($productId) as $key => $reserve)
-			{
-				$row[$key] = isset($reserve['ORDER']) ? $reserve['ORDER'] : $reserve['QUANTITY'];
-			}
-
-			$result[$productId] = $row;
+			$result[$productId] = $diff;
 		}
 
 		return $result;

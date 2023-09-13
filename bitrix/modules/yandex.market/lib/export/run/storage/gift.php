@@ -44,7 +44,7 @@ class GiftTable extends Market\Reference\Storage\Table
                 'size' => 1,
                 'validation' => [__CLASS__, 'validateStatus'],
             ]),
-            new Market\Reference\Storage\Field\CanonicalDateTime('TIMESTAMP_X', [
+            new Main\Entity\DatetimeField('TIMESTAMP_X', [
                 'required' => true
             ])
         ];

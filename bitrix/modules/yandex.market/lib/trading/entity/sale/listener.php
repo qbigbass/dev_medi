@@ -491,10 +491,9 @@ class Listener extends Market\Trading\Entity\Reference\Listener
 
 	protected static function makeOrderActions(Sale\OrderBase $internalOrder, Listener\TradingInfo $tradingInfo)
 	{
-		$setup = $tradingInfo->getSetup();
-		$options = $setup->wakeupService()->getOptions();
+		$options = $tradingInfo->getSetup()->wakeupService()->getOptions();
 		$fieldActions = array_merge(
-			$options->getEnvironmentFieldActions($setup->getEnvironment()),
+			$options->getEnvironmentFieldActions(),
 			static::getWatches($tradingInfo->getInternalId())
 		);
 		$usedFields = array_unique(array_column($fieldActions, 'FIELD'));
@@ -623,9 +622,6 @@ class Listener extends Market\Trading\Entity\Reference\Listener
 					$values[] = [
 						'PRODUCT_ID' => $basketItem->getProductId(),
 						'XML_ID' => $basketItem->getField('XML_ID'),
-						'MARKING_GROUP' => method_exists($basketItem, 'getMarkingCodeGroup')
-							? $basketItem->getMarkingCodeGroup()
-							: null,
 						'VALUE' => $storeValue,
 					];
 				}

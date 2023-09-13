@@ -11,6 +11,7 @@
 namespace TwoFingers\Location\Helper;
 
 use Bitrix\Main\Application;
+use Exception;
 
 /**
  * Class Ip
@@ -22,7 +23,7 @@ class Ip
 {
     /**
      * @return bool|mixed
-     * @deprecated 
+     * @deprecated
      */
     public static function getCur()
     {
@@ -47,7 +48,7 @@ class Ip
                 if(self::isValid($ip))
                     return $ip;
 
-        } catch (\Exception $e) {}
+        } catch (Exception $e) {}
 
         return false;
     }
@@ -57,7 +58,7 @@ class Ip
      * @return bool
      *
      */
-    public static function isV4($ip)
+    public static function isV4($ip): bool
     {
         return (bool)preg_match("#^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$#", $ip);
     }
@@ -67,7 +68,7 @@ class Ip
      * @return bool
      *
      */
-    public static function isV6($ip)
+    public static function isV6($ip): bool
     {
         return (bool)preg_match("#((^|:)([0-9a-fA-F]{0,4})){1,8}$#", $ip);
     }
@@ -77,7 +78,7 @@ class Ip
      * @return bool
      *
      */
-    public static function isValid($ip)
+    public static function isValid($ip): bool
     {
         return self::isV4($ip) || self::isV6($ip);
     }

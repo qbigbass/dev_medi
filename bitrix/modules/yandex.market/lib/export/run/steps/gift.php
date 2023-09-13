@@ -65,7 +65,7 @@ class Gift extends Offer
             {
                 case 'change':
                 case 'refresh':
-                    $filter['>=TIMESTAMP_X'] = $this->getParameter('initTimeUTC');
+                    $filter['>=TIMESTAMP_X'] = $this->getParameter('initTime');
                 break;
             }
         }
@@ -118,7 +118,7 @@ class Gift extends Offer
             if (!empty($offerChanges))
             {
                 $result[] = [
-                    '>=EXPORT_PROMO_GIFT.TIMESTAMP_X' => $this->getParameter('initTimeUTC')
+                    '>=EXPORT_PROMO_GIFT.TIMESTAMP_X' => $this->getParameter('initTime')
                 ];
             }
 
@@ -251,7 +251,7 @@ class Gift extends Offer
         {
             case 'change':
             case 'refresh':
-                $filter['>=TIMESTAMP_X'] = $this->getParameter('initTimeUTC');
+                $filter['>=TIMESTAMP_X'] = $this->getParameter('initTime');
             break;
         }
 

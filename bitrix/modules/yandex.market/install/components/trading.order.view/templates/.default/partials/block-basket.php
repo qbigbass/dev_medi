@@ -128,43 +128,10 @@ if ($allowItemsEdit && !empty($arResult['ITEMS_CHANGE_REASON']))
 						switch ($column)
 						{
 							case 'CIS':
-								$internalCis = array_filter(array_column($item['INTERNAL_INSTANCES'], 'UIN'));
-								$internalType = Market\Data\Trading\MarkingRegistry::UIN;
-
-								if (empty($internalCis))
-								{
-									$internalCis = array_filter(array_column($item['INTERNAL_INSTANCES'], 'CIS'));
-									$internalType = Market\Data\Trading\MarkingRegistry::CIS;
-								}
-
-								if (empty($internalCis) && !empty($item['MARKING_TYPE']))
-								{
-									$internalType = $item['MARKING_TYPE'];
-								}
-
+								$internalCis = array_filter(array_column($item['INTERNAL_INSTANCES'], 'CIS'));
 								$hasInternalCis = !empty($internalCis);
-								$internalCopyData = [ 'TYPE' => $internalType ];
-
-								foreach ($internalCis as $index => $code)
-								{
-									$internalCopyData[sprintf('ITEMS[%s]', $index)] = $code;
-								}
-
 								$isCisRequired = !empty($item['MARKING_GROUP']);
-								$itemCis = array_filter(array_column($item['INSTANCES'], 'UIN'));
-								$itemType = Market\Data\Trading\MarkingRegistry::UIN;
-
-								if (empty($itemCis))
-								{
-									$itemCis = array_filter(array_column($item['INSTANCES'], 'CIS'));
-									$itemType = Market\Data\Trading\MarkingRegistry::CIS;
-								}
-
-								if (empty($itemCis))
-								{
-									$itemType = $internalType;
-								}
-
+								$itemCis = array_filter(array_column($item['INSTANCES'], 'CIS'));
 								$itemCisCount = count($itemCis);
 
 								if ($itemCisCount >= $item['COUNT'])
@@ -196,9 +163,9 @@ if ($allowItemsEdit && !empty($arResult['ITEMS_CHANGE_REASON']))
 									<td
 										class="tal for--<?= Market\Data\TextString::toLower($column); ?> js-yamarket-basket-item__field"
 										data-plugin="OrderView.BasketItemCisSummary"
-										<?= $hasInternalCis ? sprintf("data-copy='%s'", Json::encode($internalCopyData)) : ''; ?>
+										<?= $hasInternalCis ? sprintf("data-copy='%s'", Json::encode($internalCis)) : ''; ?>
 										<?= $isCisRequired ? 'data-required="true"' : ''; ?>
-										data-name="IDENTIFIERS"
+										data-name="CIS"
 										data-count="<?= (int)$item['COUNT'] ?>"
 									>
 										<a class="yamarket-cis-summary js-yamarket-basket-item-cis__summary" href="#" data-status="<?= $itemCisStatus; ?>"><?php
@@ -220,73 +187,46 @@ if ($allowItemsEdit && !empty($arResult['ITEMS_CHANGE_REASON']))
 										?>
 										<div class="is--hidden js-yamarket-basket-item-cis__modal">
 											<h3 class="yamarket-cis-modal__title"><?= $item['NAME']; ?></h3>
-											<div class="js-yamarket-basket-item-cis__field" data-plugin="OrderView.BasketItemCis" data-name="IDENTIFIERS">
-												<table class="yamarket-cis-table">
-													<?php
-													for ($cisIndex = 0; $cisIndex < $item['COUNT']; ++$cisIndex)
-													{
-														$cisInputName = sprintf($itemInputName . '[IDENTIFIERS][ITEMS][%s]', $cisIndex);
-														$cisNumber = '&numero;' . ($cisIndex + 1);
-														$cisValue = isset($itemCis[$cisIndex]) ? (string)$itemCis[$cisIndex] : '';
-
-														?>
-														<tr>
-															<td class="yamarket-cis-table__number"><?= $cisNumber; ?></td>
-															<td class="yamarket-cis-table__control">
-																<input
-																	class="yamarket-cis-table__input js-yamarket-basket-item-cis__input"
-																	type="text"
-																	name="<?= $cisInputName; ?>"
-																	value="<?= htmlspecialcharsbx($cisValue); ?>"
-																	size="45"
-																	<?= $allowCisEdit ? '' : 'readonly'; ?>
-																	data-name="ITEMS[<?= $cisIndex ?>]"
-																/>
-															</td>
-														</tr>
-														<?php
-													}
+											<table class="yamarket-cis-table js-yamarket-basket-item-cis__field" data-plugin="OrderView.BasketItemCis">
+												<?php
+												for ($cisIndex = 0; $cisIndex < $item['COUNT']; ++$cisIndex)
+												{
+													$cisInputName = sprintf($itemInputName . '[CIS][%s]', $cisIndex);
+													$cisNumber = '&numero;' . ($cisIndex + 1);
+													$cisValue = isset($itemCis[$cisIndex]) ? (string)$itemCis[$cisIndex] : '';
 
 													?>
 													<tr>
-														<td class="yamarket-cis-table__type" colspan="2">
-															<label class="yamarket-cis-table__type-label"><?= Loc::getMessage('YANDEX_MARKET_T_TRADING_ORDER_VIEW_BASKET_ITEM_CIS_TYPE') ?></label>
-															<select class="yamarket-cis-table__type-value js-yamarket-basket-item-cis__input" name="<?= $itemInputName . '[IDENTIFIERS][TYPE]' ?>" data-name="TYPE">
-																<?php
-																$typeVariants = [
-																	Market\Data\Trading\MarkingRegistry::CIS,
-																	Market\Data\Trading\MarkingRegistry::UIN,
-																];
-
-																foreach ($typeVariants as $typeVariant)
-																{
-																	?>
-																	<option value="<?= $typeVariant ?>" <?= $typeVariant === $itemType ? 'selected' : '' ?>>
-																		<?= Loc::getMessage('YANDEX_MARKET_T_TRADING_ORDER_VIEW_BASKET_ITEM_CIS_TYPE_' . $typeVariant) ?>
-																	</option>
-																	<?php
-																}
-																?>
-															</select>
+														<td class="yamarket-cis-table__number"><?= $cisNumber; ?></td>
+														<td class="yamarket-cis-table__control">
+															<input
+																class="yamarket-cis-table__input js-yamarket-basket-item-cis__input"
+																type="text"
+																name="<?= $cisInputName; ?>"
+																value="<?= htmlspecialcharsbx($cisValue); ?>"
+																size="45"
+																<?= $allowCisEdit ? '' : 'readonly'; ?>
+																data-name="<?= $cisIndex ?>"
+															/>
 														</td>
 													</tr>
 													<?php
+												}
 
-													if ($hasInternalCis && $allowCisEdit)
-													{
-														?>
-														<tr>
-															<td class="yamarket-cis-table__actions" colspan="2">
-																<button class="yamarket-btn adm-btn js-yamarket-basket-item-cis__copy" type="button">
-																	<?= Loc::getMessage('YANDEX_MARKET_T_TRADING_ORDER_VIEW_BASKET_ITEM_CIS_COPY'); ?>
-																</button>
-															</td>
-														</tr>
-														<?php
-													}
+												if ($hasInternalCis && $allowCisEdit)
+												{
 													?>
-												</table>
-											</div>
+													<tr>
+														<td class="yamarket-cis-table__actions" colspan="2">
+															<button class="yamarket-btn adm-btn js-yamarket-basket-item-cis__copy" type="button">
+																<?= Loc::getMessage('YANDEX_MARKET_T_TRADING_ORDER_VIEW_BASKET_ITEM_CIS_COPY'); ?>
+															</button>
+														</td>
+													</tr>
+													<?php
+												}
+												?>
+											</table>
 										</div>
 									</td>
 									<?php

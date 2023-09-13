@@ -274,16 +274,8 @@ a.yamarket-digital-summary[data-status="READY"] {
     max-width: 100%;
 }
 
-.yamarket-cis-table__type {
-    padding-top: 15px;
-}
-
-.yamarket-cis-table__type-label {
-	margin-right: 5px;
-}
-
 .yamarket-cis-table__actions {
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 /* shipment */

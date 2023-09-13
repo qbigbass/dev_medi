@@ -247,11 +247,11 @@ class Promo extends Base
         if ($isNeedCheckProduct)
         {
             $result[] = [
-                '>=EXPORT_PROMO_PRODUCT.TIMESTAMP_X' => $this->getParameter('initTimeUTC')
+                '>=EXPORT_PROMO_PRODUCT.TIMESTAMP_X' => $this->getParameter('initTime')
             ];
 
             $result[] = [
-                '>=EXPORT_PROMO_GIFT.TIMESTAMP_X' => $this->getParameter('initTimeUTC')
+                '>=EXPORT_PROMO_GIFT.TIMESTAMP_X' => $this->getParameter('initTime')
             ];
         }
 

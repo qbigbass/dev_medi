@@ -34,24 +34,11 @@ class Processor
 	public function __construct(Market\Export\Setup\Model $setup, $parameters = [])
 	{
 		$this->setup = $setup;
-		$this->parameters = $this->extendParameters($parameters);
+		$this->parameters = $parameters;
 		$this->resourceLimit = new ResourceLimit([
 			'startTime' => $this->getParameter('startTime'),
 			'timeLimit' => $this->getParameter('timeLimit')
 		]);
-	}
-
-	protected function extendParameters($parameters)
-	{
-		if (isset($parameters['initTime']) && $parameters['initTime'] instanceof Main\Type\DateTime)
-		{
-			$canonicalTime = Market\Data\DateTime::toCanonical($parameters['initTime']);
-			$canonicalTime->setDefaultTimeZone();
-
-			$parameters['initTimeUTC'] = $canonicalTime;
-		}
-
-		return $parameters;
 	}
 
 	public function clear($isStrict = false)

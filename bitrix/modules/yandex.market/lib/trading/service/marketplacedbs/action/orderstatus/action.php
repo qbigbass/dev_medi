@@ -381,13 +381,7 @@ class Action extends TradingService\Marketplace\Action\OrderStatus\Action
 			return;
 		}
 
-        $delivery = $this->request->getOrder()->getDelivery();
-		$deliveryId = $delivery->hasShopDeliveryId()
-            ? $delivery->getShopDeliveryId()
-            : Market\Trading\State\OrderData::getValue($this->provider->getUniqueKey(), $this->request->getOrder()->getId(), 'DELIVERY_ID');
-
-        if (empty($deliveryId)) { return; }
-
+		$deliveryId = $this->request->getOrder()->getDelivery()->getShopDeliveryId();
 		$deliveryOption = $this->provider->getOptions()->getDeliveryOptions()->getItemByServiceId($deliveryId);
 
 		if (

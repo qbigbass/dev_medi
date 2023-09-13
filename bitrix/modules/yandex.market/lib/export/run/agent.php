@@ -55,7 +55,7 @@ class Agent extends Market\Reference\Agent\Base
 						? $state['START_TIME']
 						: null
 				);
-				$startTime = ($stateStartTime !== null ? $stateStartTime : new Market\Data\Type\CanonicalDateTime());
+				$startTime = ($stateStartTime !== null ? $stateStartTime : new Main\Type\DateTime());
 				$changes = static::getSetupChanges($setupId, $stateStartTime);
 				$changesBySource = static::groupChangesByType($changes);
 
@@ -228,7 +228,7 @@ class Agent extends Market\Reference\Agent\Base
 			Market\Environment::restore();
 			$interceptor->bind();
 
-			$startTime = !empty($state['START_TIME']) ? $state['START_TIME'] : new Market\Data\Type\CanonicalDateTime();
+			$startTime = !empty($state['START_TIME']) ? $state['START_TIME'] : new Main\Type\DateTime();
 
 			try
 			{
@@ -442,7 +442,7 @@ class Agent extends Market\Reference\Agent\Base
 
 		if ($row = $query->fetch())
 		{
-			if ((string)$row['STEP'] === '' || (int)$row['VERSION'] !== Storage\AgentTable::VERSION)
+			if ((string)$row['STEP'] === '')
 			{
 				$row['STEP'] = null;
 				$row['OFFSET'] = null;
@@ -462,8 +462,7 @@ class Agent extends Market\Reference\Agent\Base
 			'SETUP_ID' => $setupId,
 			'STEP' => $step !== null ? $step : '',
 			'OFFSET' => $offset !== null ? $offset : '',
-			'START_TIME' => $startTime,
-			'VERSION' => Storage\AgentTable::VERSION,
+			'START_TIME' => $startTime
 		];
 
 		if (isset($currentState))

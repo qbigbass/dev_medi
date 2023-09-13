@@ -37,10 +37,4 @@ $arParameters["USER_PARAMETERS"]["SHOW_TARGET"] = array(
 	"DEFAULT" => "",
 	"VALUES" => $show_targets
 );
-$arParameters["USER_PARAMETERS"]["EXCEPTIONS"] = array(
-	"NAME" => GetMessage("ARTURGOLUBEV_WATCHER_PARAM_EXCEPTIONS"),
-	"TYPE" => "STRING",
-	"MULTIPLE" => "N",
-	"DEFAULT" => "",
-);
 ?>

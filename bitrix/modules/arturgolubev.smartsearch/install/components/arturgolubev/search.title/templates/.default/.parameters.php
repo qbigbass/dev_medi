@@ -41,11 +41,38 @@ $arTemplateParameters = array(
 		"PARENT" => "VISUAL",
 	),
 	
+	"SHOW_LOADING_ANIMATE" => array(
+		"NAME" => Loc::getMessage("TP_BST_SHOW_LOADING_ANIMATE"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "Y",
+		"REFRESH" => "",
+		"PARENT" => "VISUAL",
+	),
+	
+	"PRICE_CODE" => array(
+		"PARENT" => "VISUAL",
+		"NAME" => Loc::getMessage("TP_BST_PRICE_CODE"),
+		"TYPE" => "LIST",
+		"MULTIPLE" => "Y",
+		"VALUES" => $arPrice,
+	),
+	"PRICE_VAT_INCLUDE" => array(
+		"PARENT" => "VISUAL",
+		"NAME" => Loc::getMessage("TP_BST_PRICE_VAT_INCLUDE"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "Y",
+	),
 	"SHOW_PROPS" => array(
 		"NAME" => Loc::getMessage("TP_BST_SHOW_PROPS"),
 		"TYPE" => "STRING",
 		"DEFAULT" => "",
 		"MULTIPLE" => "Y",
+		"PARENT" => "VISUAL",
+	),
+	"SHOW_HISTORY" => array(
+		"NAME" => Loc::getMessage("TP_BST_SHOW_HISTORY"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "N",
 		"PARENT" => "VISUAL",
 	),
 	"SHOW_PREVIEW" => array(
@@ -73,22 +100,6 @@ if (isset($arCurrentValues['SHOW_PREVIEW']) && 'Y' == $arCurrentValues['SHOW_PRE
 	);
 }
 
-$arTemplateParameters["SHOW_LOADING_ANIMATE"] = array(
-	"NAME" => Loc::getMessage("TP_BST_SHOW_LOADING_ANIMATE"),
-	"TYPE" => "CHECKBOX",
-	"DEFAULT" => "Y",
-	"REFRESH" => "",
-	"PARENT" => "VISUAL",
-);
-
-$arTemplateParameters["SHOW_HISTORY"] = array(
-	"NAME" => Loc::getMessage("TP_BST_SHOW_HISTORY"),
-	"TYPE" => "CHECKBOX",
-	"DEFAULT" => "N",
-	"PARENT" => "VISUAL",
-);
-
-
 
 $arTemplateParameters["SHOW_PREVIEW_TEXT"] = array(
 	"NAME" => Loc::getMessage("ARTURGOLUBEV_SMARTSEARCH_TEMPLATE_SHOW_PREVIEW_TEXT"),
@@ -108,30 +119,8 @@ if (isset($arCurrentValues['SHOW_PREVIEW_TEXT']) && 'Y' == $arCurrentValues['SHO
 	);
 }
 
-if (Loader::includeModule('catalog') && Loader::includeModule('currency')){
-	$arTemplateParameters['SHOW_QUANTITY'] = array(
-		"PARENT" => "VISUAL",
-		'NAME' => Loc::getMessage('TP_BST_SHOW_QUANTITY'),
-		'TYPE' => 'CHECKBOX',
-		'DEFAULT' => 'N',
-		'REFRESH' => 'N',
-	);
-	
-	$arTemplateParameters['PRICE_CODE'] = array(
-		"PARENT" => "VISUAL",
-		"NAME" => Loc::getMessage("TP_BST_PRICE_CODE"),
-		"TYPE" => "LIST",
-		"MULTIPLE" => "Y",
-		"VALUES" => $arPrice,
-	);
-	
-	$arTemplateParameters['PRICE_VAT_INCLUDE'] = array(
-		"PARENT" => "VISUAL",
-		"NAME" => Loc::getMessage("TP_BST_PRICE_VAT_INCLUDE"),
-		"TYPE" => "CHECKBOX",
-		"DEFAULT" => "Y",
-	);
-	
+if (Loader::includeModule('catalog') && Loader::includeModule('currency'))
+{
 	$arTemplateParameters['CONVERT_CURRENCY'] = array(
 		"PARENT" => "VISUAL",
 		'NAME' => Loc::getMessage('TP_BST_CONVERT_CURRENCY'),

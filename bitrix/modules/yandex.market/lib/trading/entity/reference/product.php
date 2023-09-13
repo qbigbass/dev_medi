@@ -77,16 +77,4 @@ abstract class Product
 	{
 		return [];
 	}
-
-	/**
-	 * Тип маркировки товара
-	 *
-	 * @param string $code
-	 *
-	 * @return string
-	 */
-	public function getMarkingGroupType($code)
-	{
-		return null;
-	}
 }

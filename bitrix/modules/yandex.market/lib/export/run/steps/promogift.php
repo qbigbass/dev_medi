@@ -109,7 +109,7 @@ class PromoGift extends Offer
             {
                 case 'change':
                 case 'refresh':
-                    $filter['>=TIMESTAMP_X'] = $this->getParameter('initTimeUTC');
+                    $filter['>=TIMESTAMP_X'] = $this->getParameter('initTime');
                 break;
             }
         }
@@ -200,7 +200,7 @@ class PromoGift extends Offer
             if ($isNeedCheckProduct)
             {
                 $result[] = [
-                    '>=EXPORT_OFFER.TIMESTAMP_X' => $this->getParameter('initTimeUTC')
+                    '>=EXPORT_OFFER.TIMESTAMP_X' => $this->getParameter('initTime')
                 ];
             }
         }

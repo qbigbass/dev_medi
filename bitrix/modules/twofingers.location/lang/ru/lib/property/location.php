@@ -1,2 +1,2 @@
-<?
-$MESS["tf-location__prop-location-description"] = "Привязка к местоположению";
+<?php
+$MESS["tf-location__prop-location-description"] = "Location: Привязка к местоположению";

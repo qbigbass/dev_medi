@@ -24,20 +24,8 @@ $MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_TAB_STATUS_NOTE'] = '
 $MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_GROUP_STATUS_IN'] = 'Маркетплейс может передавать вам статусы:';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_GROUP_STATUS_OUT'] = 'Вы можете передавать маркетплейсу статусы:';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_SELF_TEST'] = 'Самопроверка';
-$MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR'] = 'Учет остатков';
-$MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR_HELP'] = '
-<p>При запросе остатков будет учтены резервы по&nbsp;заказам кампании, принятым в&nbsp;1С-Битрикс.</p>
-<ul>
-<li>Только доступные&nbsp;&mdash; за&nbsp;вычетом заказов, ожидающих резервирования.</li>
-<li>Включая резервы&nbsp;&mdash; с&nbsp;учетом уже зарезервированных заказов.</li>
-<li>Без изменений&nbsp;&mdash; без дополнительных изменений.</li>
-</ul>
-<p>Обратите внимание, при резервировании остаток списывается только из&nbsp;&laquo;Общего количества&raquo;, остаток на&nbsp;складе уменьшается после отгрузки заказа.</p>
-<p>Поэтому при передаче остатков со&nbsp;склада, для варианта &laquo;Только доступные&raquo; будет дополнительно вычтен остаток по&nbsp;зарезервированным заказам кампании.</p>
-';
-$MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR_PLAIN'] = 'Без изменений';
-$MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR_ONLY_AVAILABLE'] = 'Только доступные (новая схема)';
-$MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR_WITH_RESERVE'] = 'Включая резервы (старая схема)';
+$MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_USE_ORDER_RESERVE'] = 'Учитывать резервы по заказам';
+$MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_USE_ORDER_RESERVE_HELP'] = 'При запросе остатков будет учтено зарезервированное количество по заказам кампании, принятым в 1С-Битрикс.';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_USE_WAREHOUSES'] = 'Использовать несколько складов';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_USE_WAREHOUSES_HELP'] = 'Для продажи товаров, которые вы храните на разных складах, теперь необязательно заводить несколько разных кабинетов. Достаточно добавить все ваши склады в один кабинет и начать передавать для каждого остатки.';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_MARKETPLACE_OPTION_WAREHOUSE_STORE_FIELD'] = 'Поле, в котором хранится ваш ID склада';

@@ -30,7 +30,7 @@ class Changes
 		Storage\ChangesTable::deleteBatch([
 			'filter' => [
 				'=SETUP_ID' => $setupId,
-				'<=TIMESTAMP_X' => Market\Data\DateTime::toCanonical($dateTime),
+				'<=TIMESTAMP_X' => $dateTime
 			]
 		]);
 	}
@@ -78,7 +78,7 @@ class Changes
 	protected static function markChangesTimestamp($changes)
 	{
 		$result = $changes;
-		$dateTime = new Market\Data\Type\CanonicalDateTime();
+		$dateTime = new Main\Type\DateTime();
 
 		foreach ($result as &$change)
 		{

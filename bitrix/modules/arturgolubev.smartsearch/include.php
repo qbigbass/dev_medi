@@ -97,7 +97,6 @@ Class CArturgolubevSmartsearch
 				"id_include" => (UTools::getSetting("use_title_id") == "Y" ? 1 : 0),
 				"sname_include" => (UTools::getSetting("use_title_sname") == "Y" ? 1 : 0),
 				"page_stop_body" => (UTools::getSetting("use_page_text_nosearch") == "Y" ? 1 : 0),
-				"section_findby_parent" => (UTools::getSetting("find_section_by_parent") == "Y" ? 1 : 0),
 				
 				"section_first" => (UTools::getSetting("sort_secton_first") == "Y" ? 1 : 0),
 				"available_first" => (UTools::getSetting("sort_available_first") == "Y" ? 1 : 0),
@@ -155,15 +154,6 @@ Class CArturgolubevSmartsearch
 									$info .= ' '.$arTmpFields[$v];
 								}
 							}
-						}
-					}
-				}
-				
-				if($sett['section_findby_parent']){
-					$nav = CIBlockSection::GetNavChain($arFields['PARAM2'], $realSectionID, array("ID", "NAME", "ACTIVE"), true);
-					foreach($nav as $item){
-						if($item['ID'] != $realSectionID){
-							$info .= ' '.$item['NAME'];
 						}
 					}
 				}
@@ -278,7 +268,7 @@ Class CArturgolubevSmartsearch
 										$info .= ' '.implode(' ', $arRealVals);
 									}
 								}elseif($sProp["PROPERTY_TYPE"] == 'S' && $sProp["USER_TYPE"] == 'HTML'){
-									if(is_array($itemProp["VALUE"]) && $itemProp["VALUE"]['TEXT']){
+									if($itemProp["VALUE"]['TEXT']){
 										$info .= ' '.$itemProp["VALUE"]['TEXT'];
 									}
 								}else{
@@ -426,7 +416,7 @@ Class CArturgolubevSmartsearch
 				
 				$result[$arElement["ID"]] = array(
 					"ID" => $arElement["ID"],
-					"NAME" => htmlspecialchars_decode($arElement["NAME"]),
+					"NAME" => htmlspecialcharsbx($arElement["NAME"]),
 				);
 			}
 		}
@@ -446,7 +436,7 @@ Class CArturgolubevSmartsearch
 				
 				$result["S".$ar_result["ID"]] = array(
 					"ID" => $ar_result["ID"],
-					"NAME" => htmlspecialchars_decode($ar_result["NAME"]),
+					"NAME" => htmlspecialcharsbx($ar_result["NAME"]),
 				);
 			}
 		}
@@ -1016,7 +1006,7 @@ Class CArturgolubevSmartsearch
 				$settings["stemming_full"] = stemming($settings["word"]);
 				if(!empty($settings["stemming_full"])){
 					foreach($settings["stemming_full"] as $k=>$v){
-						if($k) $settings["word_stemming"] = ToLower($k);
+						if($k) $settings["word_stemming"] = $k;
 						break;
 					}
 				}
@@ -1311,50 +1301,10 @@ Class CArturgolubevSmartsearch
 		return ($a["similarity"] < $b["similarity"]) ? -1 : 1;
 	}
 	
-	/* empty lines */
-	static function getMatrixLineHash($query){
-		$arWords = explode(' ', str_replace('"', '', $query));
-		sort($arWords);
-		$md = implode('_', $arWords);
-		
-		return $md;
-	}
 	
-	static function saveMatrixLineEmpty($query, $cnt){
-		$hash = self::getMatrixLineHash($query);
-		// echo '<pre>'; print_r($hash); echo '</pre>';
-		
-		if($cnt < 1){
-			$obCache = new CPHPCache();
-			$cachePath = '/'.SITE_ID.'/ag_smartsearch_'.self::CACHE_VERSION.'/emptylines';	
-			if($obCache->InitCache(self::CACHE_TIME, md5($hash), $cachePath)){
-				$vars = $obCache->GetVars();
-				// echo '<pre>save has cache: '; print_r($vars); echo '</pre>';
-			}elseif($obCache->StartDataCache()){
-				$vars = ['empty' => 'Y'];
-				$obCache->EndDataCache($vars);
-				// echo '<pre>save add cache: '; print_r($vars); echo '</pre>';
-			}
-		}
-	}
 	
-	static function checkMatrixLineEmpty($query){	
-		if(UTools::getSetting("disable_cache") == 'Y') return 0;
 	
-		$hash = self::getMatrixLineHash($query);
-		
-		$obCache = new CPHPCache();
-		$cachePath = '/'.SITE_ID.'/ag_smartsearch_'.self::CACHE_VERSION.'/emptylines';	
-		if($obCache->InitCache(self::CACHE_TIME, md5($hash), $cachePath)){
-			$vars = $obCache->GetVars();
-			// echo '<pre>check has cache: '; print_r($vars); echo '</pre>';
-			if($vars['empty'] == 'Y'){
-				return 1;
-			}
-		}
-		
-		return 0;
-	}
+	
 	
 	/* old versions ready for delete */
 	static function prepareQueryWords($q){

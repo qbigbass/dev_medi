@@ -31,7 +31,7 @@ $jsFunctionName = str_replace('@', '', $arGadget['ID']).'_js_worker';
 					BX.ajax({
 						url: '<?=$path?>ajax.php',
 						method: 'POST',
-						data: {'module': '<?=$module_id?>', 'target': '<?=$arGadgetParams["SHOW_TARGET"]?>', 'exceptions': '<?=$arGadgetParams["EXCEPTIONS"]?>'},
+						data: {'module': '<?=$module_id?>', 'target': '<?=$arGadgetParams["SHOW_TARGET"]?>'},
 						dataType: 'html',
 						timeout: 30,
 						async: true,

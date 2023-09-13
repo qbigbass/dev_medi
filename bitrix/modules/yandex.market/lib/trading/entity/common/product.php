@@ -3,16 +3,13 @@
 namespace Yandex\Market\Trading\Entity\Common;
 
 use Yandex\Market;
-use Yandex\Market\Utils\ArrayHelper;
 use Bitrix\Main;
 use Bitrix\Catalog;
 use Bitrix\Iblock;
-use Bitrix\Highloadblock;
 
 class Product extends Market\Trading\Entity\Reference\Product
 {
 	use Market\Reference\Concerns\HasLang;
-	use Market\Reference\Concerns\HasOnce;
 
 	protected $propertyDataCache = [];
 	protected $accessAlreadyWait = [];
@@ -25,45 +22,16 @@ class Product extends Market\Trading\Entity\Reference\Product
 	public function getSkuMap($productIds, $skuMap)
 	{
 		$result = [];
-		$iblockProductIds = $this->splitProductIdsByIblock($productIds);
+		$leftProductIds = $productIds;
 
 		foreach ($skuMap as $skuMapItem)
 		{
-			foreach ($iblockProductIds as $iblockId => &$leftProductIds)
-			{
-				if (empty($leftProductIds)) { break; }
+			if (empty($leftProductIds)) { break; }
 
-				if ((int)$skuMapItem['IBLOCK'] === $iblockId)
-				{
-					$foundOffers = $this->queryOfferMap($skuMapItem, $leftProductIds, '=ID');
-					$leftProductIds = array_diff($leftProductIds, array_keys($foundOffers));
+			$foundOffers = $this->queryOfferMap($skuMapItem, $leftProductIds, '=ID');
 
-					if ($this->useAutoSelectProductOffer())
-					{
-						$foundOffers = $this->unsetSkuProducts($skuMapItem, $foundOffers);
-					}
-
-					$result += $foundOffers;
-				}
-				else if (
-					$this->useAutoSelectProductOffer()
-					&& $this->skuOfferIblockId($skuMapItem['IBLOCK']) === $iblockId
-				)
-				{
-					$offerProductData = \CCatalogSku::getProductList($leftProductIds, $iblockId);
-					$offerProductMap = ArrayHelper::column($offerProductData, 'ID');
-					$parentProductIds = array_unique($offerProductMap);
-
-					$foundParents = $this->queryOfferMap($skuMapItem, $parentProductIds, '=ID');
-					$foundParents = $this->autoSelectProductsOffer($skuMapItem, $foundParents);
-
-					$foundOffers = array_intersect_key($foundParents, array_flip($leftProductIds));
-
-					$leftProductIds = array_diff($leftProductIds, array_keys($foundOffers));
-					$result += $foundOffers;
-				}
-			}
-			unset($leftProductIds);
+			$result += $foundOffers;
+			$leftProductIds = array_diff($leftProductIds, array_keys($foundOffers));
 		}
 
 		return $result;
@@ -92,11 +60,6 @@ class Product extends Market\Trading\Entity\Reference\Product
 			}
 
 			$foundOffers = $this->queryOfferMap($skuMapItem, $leftOfferIds, $filterKey);
-
-			if ($this->useAutoSelectProductOffer())
-			{
-				$foundOffers = $this->autoSelectProductsOffer($skuMapItem, $foundOffers);
-			}
 
 			$result += array_flip($foundOffers);
 			$leftOfferIds = array_diff($leftOfferIds, $foundOffers);
@@ -154,133 +117,6 @@ class Product extends Market\Trading\Entity\Reference\Product
 		}
 
 		return $foundOffers;
-	}
-
-	protected function splitProductIdsByIblock($productIds)
-	{
-		$result = [];
-
-		foreach (array_chunk($productIds, 500) as $productChunk)
-		{
-			$query = Iblock\ElementTable::getList([
-				'filter' => [ '=ID' => $productChunk ],
-				'select' => [ 'IBLOCK_ID', 'ID' ],
-			]);
-
-			while ($row = $query->fetch())
-			{
-				$iblockId = (int)$row['IBLOCK_ID'];
-				$id = (int)$row['ID'];
-
-				if (!isset($result[$iblockId]))
-				{
-					$result[$iblockId] = [];
-				}
-
-				$result[$iblockId][] = $id;
-			}
-		}
-
-		return $result;
-	}
-
-	protected function unsetSkuProducts($skuMapItem, array $offerMap)
-	{
-		if (empty($offerMap) || !$this->isSkuIblock($skuMapItem['IBLOCK'])) { return $offerMap; }
-
-		foreach (array_chunk($offerMap, 500, true) as $offerMapChunk)
-		{
-			$querySkuProducts = Catalog\ProductTable::getList([
-				'filter' => [
-					'=ID' => array_keys($offerMapChunk),
-					'=TYPE' => Catalog\ProductTable::TYPE_SKU,
-				],
-				'select' => [ 'ID' ],
-			]);
-
-			while ($row = $querySkuProducts->fetchAll())
-			{
-				if (!isset($offerMap[$row['ID']])) { continue; }
-
-				unset($offerMap[$row['ID']]);
-			}
-		}
-
-		return $offerMap;
-	}
-
-	protected function autoSelectProductsOffer($skuMapItem, array $offerMap)
-	{
-		if (empty($offerMap) || !$this->isSkuIblock($skuMapItem['IBLOCK'])) { return $offerMap; }
-
-		foreach (array_chunk($offerMap, 500, true) as $offerMapChunk)
-		{
-			$querySkuProducts = Catalog\ProductTable::getList([
-				'filter' => [
-					'=ID' => array_keys($offerMapChunk),
-					'=TYPE' => Catalog\ProductTable::TYPE_SKU,
-				],
-				'select' => [ 'ID' ],
-			]);
-			$skuProductIds = array_column($querySkuProducts->fetchAll(), 'ID');
-
-			if (empty($skuProductIds)) { continue; }
-
-			$availableKey = Market\Export\Entity\Catalog\Provider::useCatalogShortFields()
-				? 'AVAILABLE'
-				: 'CATALOG_AVAILABLE';
-
-			$skuOffers = \CCatalogSku::getOffersList(
-				$skuProductIds,
-				$skuMapItem['IBLOCK'],
-				[],
-				[ 'ID' ],
-				[],
-				[],
-				[ 'ACTIVE' => 'DESC', $availableKey => 'DESC' ]
-			);
-
-			foreach ($skuOffers as $productId => $productOffers)
-			{
-				if (!isset($offerMap[$productId]) || empty($productOffers)) { continue; }
-
-				$firstOffer = reset($productOffers);
-
-				$offerMap[$firstOffer['ID']] = $offerMap[$productId];
-				unset($offerMap[$productId]);
-			}
-		}
-
-		return $offerMap;
-	}
-
-	protected function useAutoSelectProductOffer()
-	{
-		return (Market\Config::getOption('trading_auto_product_offer', 'Y') === 'Y');
-	}
-
-	protected function isSkuIblock($iblockId)
-	{
-		$iblockCatalog = \CCatalogSku::GetInfoByIBlock($iblockId);
-
-		return $iblockCatalog && in_array($iblockCatalog['CATALOG_TYPE'], [
-			\CCatalogSku::TYPE_PRODUCT,
-			\CCatalogSku::TYPE_FULL,
-		], true);
-	}
-
-	protected function skuOfferIblockId($iblockId)
-	{
-		$iblockCatalog = \CCatalogSku::GetInfoByIBlock($iblockId);
-
-		if (!$iblockCatalog) { return null; }
-
-		return (
-			(int)$iblockId === (int)$iblockCatalog['PRODUCT_IBLOCK_ID']
-			&& (int)$iblockId !== (int)$iblockCatalog['IBLOCK_ID']
-				? (int)$iblockCatalog['IBLOCK_ID']
-				: null
-		);
 	}
 
 	protected function getFieldPropertyData($field)
@@ -929,88 +765,5 @@ class Product extends Market\Trading\Entity\Reference\Product
 		}
 
 		return $result;
-	}
-
-	public function getMarkingGroupType($code)
-	{
-		if ($code === '' || !is_string($code)) { return null; }
-
-		if ($this->isKnownCisCodeGroup($code))
-		{
-			return Market\Data\Trading\MarkingRegistry::CIS;
-		}
-
-		return $this->once('getMarkingGroupType', [$code], function($code) {
-			$hlblock = $this->markingGroupDataManager();
-
-			if ($hlblock === null) { return null; }
-
-			$query = $hlblock::getList([
-				'select' => [ 'UF_NAME' ],
-				'filter' => [ '=UF_XML_ID' => $code ],
-				'limit' => 1,
-			]);
-			$row = $query->fetch();
-
-			if (!$row) { return null; }
-
-			$result = null;
-			$markerMap = [
-				Market\Data\Trading\MarkingRegistry::UIN => static::getLang('TRADING_ENTITY_COMMON_PRODUCT_UIN_GROUP_MARKER'),
-			];
-
-			foreach ($markerMap as $type => $markerString)
-			{
-				$markers = explode(',', $markerString);
-
-				foreach ($markers as $marker)
-				{
-					if (mb_stripos($row['UF_NAME'], $marker) !== false)
-					{
-						$result = $type;
-						break;
-					}
-				}
-
-				if ($result !== null) { break; }
-			}
-
-			return $result;
-		});
-	}
-
-	protected function isKnownCisCodeGroup($code)
-	{
-		return in_array($code, [
-			'02',
-			'03',
-			'05',
-			'17485',
-			'8258',
-			'8721',
-			'9840',
-			'06',
-			'5010',
-			'5137',
-			'5139',
-			'5140',
-		], true);
-	}
-
-	/** @return Main\Entity\DataManager */
-	protected function markingGroupDataManager()
-	{
-		return $this->once('markingGroupDataManager', null, static function() {
-			$field = Catalog\Product\SystemField\MarkingCodeGroup::load();
-
-			if (empty($field['SETTINGS']['HLBLOCK_ID'])) { return null; }
-			if (!Main\Loader::includeModule('highloadblock')) { return null; }
-
-			$hlblock = Highloadblock\HighloadBlockTable::getById($field['SETTINGS']['HLBLOCK_ID'])->fetch();
-
-			if ($hlblock === null) { return null; }
-
-			return Highloadblock\HighloadBlockTable::compileEntity($hlblock)->getDataClass();
-		});
 	}
 }

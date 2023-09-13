@@ -5,14 +5,14 @@
  * Date: 13.03.2019
  * Time: 11:26
  *
- * @author Pavel Shulaev (https://rover-it.me)
+ * 
  */
 
 use Bitrix\Main\Web\Json;
 use Bitrix\Main\Localization\Loc;
 use TwoFingers\Location\Options;
 
-if ($GLOBALS['TF_LOCATION_TEMPLATE_LOADED'] == 'Y') return;
+if (TfLocationComponent::$templateLoaded) return;
 
 Loc::loadMessages(__DIR__ . '/template.php');
 
@@ -64,7 +64,7 @@ $arResult['JS_PARAMS'] = [
     'request_uri'   => $_SERVER['REQUEST_URI'],
     'ajax_search'   => $arResult['AJAX_SEARCH'],
     'mobile_width'  => $arResult['SETTINGS'][Options::LIST_MOBILE_BREAKPOINT],
-    'load_type'     => $arResult['SETTINGS']['TF_LOCATION_LOAD_LOCATIONS']
+    'load_type'     => $arResult['SETTINGS'][Options::LIST_LOCATIONS_LOAD]
 ];
 
 $arResult['JS_PARAMS'] = Json::encode($arResult['JS_PARAMS']);
@@ -83,6 +83,4 @@ else
         ? : Loc::getMessage('tfl__no-location');
 }
 
-
-
-
+$this->__component->SetResultCacheKeys(array('SETTINGS'));

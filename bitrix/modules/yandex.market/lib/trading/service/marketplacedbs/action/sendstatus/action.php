@@ -145,10 +145,7 @@ class Action extends TradingService\Marketplace\Action\SendStatus\Action
 			?: $this->getRealDeliveryDateFromExternalOrder()
 			?: new Main\Type\Date();
 
-		$marketDate = new Main\Type\DateTime();
-		$marketDate->setTimeZone(new \DateTimeZone('Europe/Moscow'));
-
-		return Market\Data\Date::min($predicted, $marketDate);
+		return Market\Data\Date::min($predicted, new Main\Type\Date());
 	}
 
 	protected function getRealDeliveryDateFromRequest()

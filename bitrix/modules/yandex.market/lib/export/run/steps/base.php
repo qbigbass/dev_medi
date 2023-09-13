@@ -625,7 +625,7 @@ abstract class Base
 		$filter['=ELEMENT_ID'] = $elementIds;
 
 		$this->updateDataStorage($filter, [
-			'TIMESTAMP_X' => new Market\Data\Type\CanonicalDateTime(),
+			'TIMESTAMP_X' => new Main\Type\DateTime(),
 		]);
 	}
 
@@ -648,7 +648,7 @@ abstract class Base
 			'HASH' => '',
 			'PRIMARY' => '',
 			'CONTENTS' => '',
-			'TIMESTAMP_X' => new Market\Data\Type\CanonicalDateTime(),
+			'TIMESTAMP_X' => new Main\Type\DateTime(),
 		];
 
 		$this->updateDataStorage($filter, $fields);
@@ -925,7 +925,7 @@ abstract class Base
 			{
 				case 'change':
 				case 'refresh':
-					$filter['>=TIMESTAMP_X'] = $this->getParameter('initTimeUTC');
+					$filter['>=TIMESTAMP_X'] = $this->getParameter('initTime');
 				break;
 			}
 		}
@@ -946,7 +946,7 @@ abstract class Base
 	 */
 	protected function makeStorageDataList($tagResultList, $tagValuesList, $elementList, $context, $data)
 	{
-		$timestamp = new Market\Data\Type\CanonicalDateTime();
+		$timestamp = new Main\Type\DateTime();
 		$result = [];
 
 		foreach ($tagResultList as $elementId => $tagResult)
@@ -1359,7 +1359,7 @@ abstract class Base
 
 			if ($this->getRunAction() !== 'full')
 			{
-				$refreshDate = $this->getParameter('initTimeUTC');
+				$refreshDate = $this->getParameter('initTime');
 				$refreshDateString = $refreshDate->format('Y-m-d H:i:s');
 
 				$select[] = 'TIMESTAMP_X';
@@ -1933,7 +1933,7 @@ abstract class Base
 			$filter = [
 				'=SETUP_ID' => $context['SETUP_ID'],
 				'!=STATUS' => static::STORAGE_STATUS_DELETE,
-				'<TIMESTAMP_X' => $this->getParameter('initTimeUTC')
+				'<TIMESTAMP_X' => $this->getParameter('initTime')
 			];
 
 			if (!empty($changesFilter))
@@ -1956,7 +1956,7 @@ abstract class Base
 		$filter = [
 			'=SETUP_ID' => $context['SETUP_ID'],
 			'!=STATUS' => static::STORAGE_STATUS_DELETE,
-			'<TIMESTAMP_X' => $this->getParameter('initTimeUTC')
+			'<TIMESTAMP_X' => $this->getParameter('initTime')
 		];
 
 		$this->removeByFilter($filter, $context);
@@ -1988,7 +1988,7 @@ abstract class Base
 			'HASH' => '',
 			'PRIMARY' => '',
 			'CONTENTS' => '',
-			'TIMESTAMP_X' => new Market\Data\Type\CanonicalDateTime(),
+			'TIMESTAMP_X' => new Main\Type\DateTime(),
 		];
 
 		$hasUpdateStorage = $this->updateDataStorage($filter, $updateFields);

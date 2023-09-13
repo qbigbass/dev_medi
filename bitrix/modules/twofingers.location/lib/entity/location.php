@@ -13,45 +13,90 @@ namespace TwoFingers\Location\Entity;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\ArgumentOutOfRangeException;
+use Bitrix\Main\Context;
 use Bitrix\Main\LoaderException;
-use Bitrix\Main\Service\GeoIp\Manager;
+use Bitrix\Main\SiteTable;
 use Bitrix\Main\SystemException;
-use TwoFingers\Location\Helper\Ip;
-use TwoFingers\Location\Helper\Tools;
+use NCLNameCaseRu;
+use TwoFingers\Location\Factory\ContentFactory;
+use TwoFingers\Location\Factory\LocationFactory;
+use Twofingers\Location\Internal\Collection;
+use Twofingers\Location\Internal\HasCollectionTrait;
 use TwoFingers\Location\Model\Location as LocationModel;
-use \TwoFingers\Location\Entity\Content as ContentEntity;
+use TwoFingers\Location\Entity\Content as ContentEntity;
 use TwoFingers\Location\Options;
-use TwoFingers\Location\Service\SxGeo;
 
 /**
  * Class Location
  *
  * @package TwoFingers\Location\Entity
  * @method setPrimary($primary): Location
- * @method setParent($parent)
+ * @method getId()
+ * @method getCode()
  * @method setLangId($langId)
- * @method setLat($lat)
- * @method setLon($lon)
+ * @method setLatitude($lat)
+ * @method setLongitude($lon)
  * @method setName($name)
  * @method setSiteId($siteId)
- * @method getParent($parent = ''): ?Location
  * @method getLangId($langId = '')
- * @method getLat($lat = '')
- * @method getLon($lon = '')
+ * @method getLatitude($lat = '')
+ * @method getLongitude($lon = '')
  * @method getSiteId($siteId = '')
- * @method getShowRegion($default = 'N')
- * $method setShowRegion($flag)
+ * @method getCustomType
+ * @method setCustomType($type)
+ * @method setParentId($parentId)
+ * @method getParentId()
+ * @method getParentCode()
+ * @method getType()
+ * @method setType($type)
  */
 class Location
 {
-    protected $data = [];
+    use HasCollectionTrait;
+
+    public const TYPE_COUNTRY   = 'COUNTRY';
+    public const TYPE_REGION    = 'REGION';
+    public const TYPE_SUBREGION = 'SUBREGION';
+    public const TYPE_CITY      = 'CITY';
+    public const TYPE_VILLAGE   = 'VILLAGE';
+
+    const NAME        = 'name';
+    const LATITUDE    = 'latitude';
+    const LONGITUDE   = 'longitude';
+    const ID          = 'id';
+    const CODE        = 'code';
+    const PARENT_ID   = 'parent_id';
+    const PARENT_CODE = 'parent_code';
+    const TYPE        = 'type';
+    const SOURCE      = 'source';
+    const ZIP         = 'zip';
+    const SITE_ID     = 'site_id';
+    const LANG_ID     = 'lang_id';
+
+    const CASE_IM   = 0;
+    const CASE_ROD  = 1;
+    const CASE_DAT  = 2;
+    const CASE_VIN  = 3;
+    const CASE_TVOR = 4;
+    const CASE_PRED = 5;
+
+    /** @deprecated */
+    const TRANSLIT = 'translit';
+    /** @deprecated */
+    const PRIMARY = 'primary';
+    /** @deprecated */
+    const PARENT = 'parent';
 
     /** @var ContentEntity */
     protected $content;
+
     /**
      * Location constructor.
      */
-    protected function __construct(){}
+    public function __construct(Collection $collection)
+    {
+        $this->collection = $collection;
+    }
 
     /**
      * @param $name
@@ -60,277 +105,40 @@ class Location
      */
     public function __call($name, $arguments)
     {
-        if ((strpos($name, 'get') === 0) || (strpos($name, 'set') === 0))
-        {
+        if ((mb_strpos($name, 'get') === 0) || (strpos($name, 'set') === 0)) {
             $optionName = mb_substr($name, 3);
-            $optionName = Options::fromCamelCase($optionName);
+            $optionName = Options::fromCamelCase($optionName, '_');
 
-            if (strpos($name, 'get') === 0)
-                return $this->getField($optionName, $arguments[0]);
+            if (mb_strpos($name, 'get') === 0) {
+                return $this->get($optionName, $arguments[0]);
+            }
 
-            return $this->setField($optionName, $arguments[0]);
+            return $this->set($optionName, $arguments[0]);
         }
+
+        return null;
     }
 
     /**
-     * @param $field
+     * @param $offset
      * @param $value
      * @return $this
      */
-    public function setField($field, $value): Location
+    public function set($offset, $value): Location
     {
-        $this->data[$field] = $value;
+        $this->collection->offsetSet($offset, $value);
+
         return $this;
     }
 
     /**
-     * @param      $field
-     * @param null $default
+     * @param $offset
+     * @param $default
      * @return mixed|null
      */
-    public function getField($field, $default = null)
+    public function get($offset, $default = null)
     {
-        return array_key_exists($field, $this->data) ? $this->data[$field] : $default;
-    }
-
-    /**
-     * @param mixed|string $langId
-     * @param mixed|string $siteId
-     * @return Location|null
-     * @throws ArgumentException
-     * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
-     */
-    public static function buildCurrent($langId = LANGUAGE_ID, $siteId = SITE_ID): ?Location
-    {
-        return self::buildByIp(null, $langId, $siteId);
-    }
-
-    /**
-     * @param mixed|string $langId
-     * @param mixed|string $siteId
-     * @return Location|null
-     * @throws ArgumentNullException
-     */
-    public static function buildDefault($langId = LANGUAGE_ID, $siteId = SITE_ID):? Location
-    {
-        $default = LocationModel::getDefault($langId, $siteId);
-        if (!$default)
-            return null;
-
-        $country = $region = null;
-        if (isset($default['COUNTRY_ID']) || isset($default['COUNTRY_NAME']))
-            $country = self::buildByPrimaryName($default['COUNTRY_ID'], $default['COUNTRY_NAME'], null, $langId, $siteId);
-
-        if (isset($default['REGION_ID']) || isset($default['REGION_NAME']))
-            $region = self::buildByPrimaryName($default['REGION_ID'], $default['REGION_NAME'], $country, $langId, $siteId);
-
-        return self::buildByPrimaryName($default['CODE'], $default['NAME'], $region, $langId, $siteId);
-    }
-
-    /**
-     * @param null         $ip
-     * @param mixed|string $langId
-     * @param mixed|string $siteId
-     * @return Location|null
-     * @throws ArgumentException
-     * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
-     */
-    public static function buildByIp($ip = null, $langId = LANGUAGE_ID, $siteId = SITE_ID): ?Location
-    {
-        if (is_null($ip))
-            $ip = Manager::getRealIp();
-
-        $ip = trim($ip);
-        if (!Ip::isValid($ip))
-            throw new ArgumentOutOfRangeException('ip');
-
-        $data = SxGeo::getLocation($ip);
-
-        if (empty($data['city']['id']))
-            return null;
-
-        $countryLocation    = self::buildBySxGeoData($data['country'], null, $langId, $siteId);
-        $regionLocation     = self::buildBySxGeoData($data['region'], $countryLocation, $langId, $siteId);
-
-        return self::buildBySxGeoData($data['city'], $regionLocation, $langId, $siteId);
-    }
-
-    /**
-     * @param               $data
-     * @param Location|null $parent
-     * @param mixed|string  $langId
-     * @param mixed|string  $siteId
-     * @return Location|null
-     * @throws ArgumentNullException
-     */
-    protected static function buildBySxGeoData($data, Location $parent = null, $langId = LANGUAGE_ID, $siteId = SITE_ID): ?Location
-    {
-        if (empty($data['id']))
-            return null;
-
-        $name = isset($data['name_' . strtolower($langId)])
-            ? $data['name_' . strtolower($langId)]
-            : $data['name_ru'];
-
-        $name       = iconv('UTF-8', LANG_CHARSET, $name);
-        $location   = self::buildByName($name, $parent, $langId, $siteId);
-
-        if (isset($data['lat']))
-            $location->setLat($data['lat']);
-
-        if (isset($data['lon']))
-            $location->setLon($data['lon']);
-
-        return $location;
-    }
-
-    /**
-     * @param               $primary
-     * @param Location|null $parent
-     * @param mixed|string  $langId
-     * @param mixed|string  $siteId
-     * @return Location
-     * @throws ArgumentNullException
-     */
-    public static function buildByPrimary($primary, Location $parent = null, $langId = LANGUAGE_ID, $siteId = SITE_ID): Location
-    {
-        $primary = trim($primary);
-        if (!strlen($primary))
-            throw new ArgumentNullException('primary');
-
-        return (new self())
-            ->setPrimary($primary)
-            ->setParent($parent)
-            ->setLangId($langId)
-            ->setSiteId($siteId);
-    }
-
-    /**
-     * @param $hash
-     * @return Location
-     * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
-     */
-    public static function buildByHash($hash): Location
-    {
-        /** @var array $data */
-        $data = unserialize(base64_decode($hash));
-        if (!isset($data['location_id']) && !isset($data['location_name']))
-            throw new ArgumentOutOfRangeException('hash');
-
-        $langId = isset($data['lang_id']) ? $data['lang_id'] : LANGUAGE_ID;
-        $siteId = isset($data['site_id']) ? $data['site_id'] : SITE_ID;
-        $country = $region = null;
-        if (isset($data['country_id']) || isset($data['country_name']))
-            $country = self::buildByPrimaryName($data['country_id'], $data['country_name'], null, $langId, $siteId);
-
-        if (isset($data['region_id']) || isset($data['region_name']))
-            $region = self::buildByPrimaryName($data['region_id'], $data['region_name'], $country, $langId, $siteId);
-
-        return self::buildByPrimaryName($data['location_id'], $data['location_name'], $region, $langId, $siteId);
-    }
-
-    /**
-     * @return false|string
-     * @throws ArgumentOutOfRangeException
-     */
-    public function getHash()
-    {
-        $data = [
-            'location_id' => $this->getPrimary(),
-            'location_name' => $this->getName(),
-            'region_id' => $this->hasParent() ? $this->getParent()->getPrimary() : null,
-            'region_name' => $this->hasParent() ? $this->getParent()->getName() : null,
-            'country_id' => $this->hasParent() && $this->getParent()->hasParent()
-                ? $this->getParent()->getParent()->getPrimary() : null,
-            'country_name' =>$this->hasParent() && $this->getParent()->hasParent()
-                ? $this->getParent()->getParent()->getName() : null,
-            'lang_id' => $this->getLangId(),
-            'site_id' => $this->getSiteId(),
-        ];
-
-        return base64_encode(serialize($data));
-    }
-
-    /**
-     * @param               $primary
-     * @param               $name
-     * @param Location|null $parent
-     * @param mixed|string  $langId
-     * @param mixed|string  $siteId
-     * @return Location
-     * @throws ArgumentNullException
-     */
-    public static function buildByPrimaryName($primary, $name, Location $parent = null, $langId = LANGUAGE_ID, $siteId = SITE_ID): Location
-    {
-        $primary    = trim($primary);
-        $name       = trim($name);
-
-        if (!strlen($name) && !strlen($primary))
-            throw new ArgumentNullException('primary and name');
-
-        return (new self())
-            ->setPrimary($primary)
-            ->setName($name)
-            ->setParent($parent)
-            ->setLangId($langId)
-            ->setSiteId($siteId);
-    }
-
-    /**
-     * @param               $name
-     * @param mixed|string  $langId
-     * @param mixed|string  $siteId
-     * @param Location|null $parent
-     * @return Location|null
-     * @throws ArgumentNullException
-     */
-    public static function buildByName($name, Location $parent = null, $langId = LANGUAGE_ID, $siteId = SITE_ID): ?Location
-    {
-        $name = trim($name);
-        if (!strlen($name))
-            throw new ArgumentNullException('name');
-
-        return (new self())
-            ->setName($name)
-            ->setParent($parent)
-            ->setLangId($langId)
-            ->setSiteId($siteId);
-    }
-
-    /**
-     * @return int|string|null
-     * @throws ArgumentOutOfRangeException
-     */
-    public function getPrimary()
-    {
-        if (!isset($this->data['primary']))
-            $this->data['primary'] = $this->getSiteId() && LocationModel::hasLocations($this->getLangId(), $this->getSiteId())
-                ? LocationModel::getIdByName($this->getName(), $this->getLangId(), $this->getSiteId())
-                : LocationModel::getIdByName($this->getName(), $this->getLangId(), false);
-
-        return $this->data['primary'];
-    }
-
-    /**
-     * @return string|null
-     * @throws ArgumentOutOfRangeException
-     */
-    public function getName()
-    {
-        if (!isset($this->data['name']))
-        {
-            $this->data['name'] = $this->getSiteId() && LocationModel::hasLocations($this->getLangId(), $this->getSiteId())
-                ? LocationModel::getNameByPrimary($this->getPrimary(), $this->getLangId(), $this->getSiteId())
-                : LocationModel::getNameByPrimary($this->getPrimary(), $this->getLangId(), false);
-
-            if (!strlen($this->data['name']))
-                throw new ArgumentOutOfRangeException('primary');
-        }
-
-        return $this->data['name'];
+        return $this->collection->offsetGet($offset) ?? $default;
     }
 
     /**
@@ -338,7 +146,20 @@ class Location
      */
     public function hasParent(): bool
     {
-        return $this->getParent() instanceof self;
+        return (bool)$this->getParentId();
+    }
+
+    /**
+     * @return Location|null
+     * @throws ArgumentNullException
+     * @deprecated
+     */
+    public function getParent(): ?Location
+    {
+        if (!$this->collection->offsetExists(self::PARENT)) {
+            $this->set(self::PARENT, LocationFactory::buildParent($this));
+        }
+        return $this->get(self::PARENT);
     }
 
     /**
@@ -352,7 +173,58 @@ class Location
     {
         $content = $this->getContent();
 
-        return $content ? $content->getDomain() : null;
+        if ($content && $content->getDomain()) {
+            return $content->getDomain();
+        }
+
+        switch (Options::getNoDomainAction()) {
+            case Options::NO_DOMAIN_ACTION_CURRENT_SITE:
+                $filter = ['=LID' => SITE_ID];
+            case Options::NO_DOMAIN_ACTION_DEFAULT_SITE:
+                if (!isset($filter)) {
+                    $filter = ['=DEF' => 'Y'];
+                }
+
+                $query = [
+                    'filter' => $filter + ['!SERVER_NAME' => false],
+                    'select' => ['SERVER_NAME'],
+                    'cache'  => ['ttl' => 3600]
+                ];
+
+                $site = SiteTable::getRow($query);
+                if (!$site) {
+                    return null;
+                }
+
+                $protocol = Context::getCurrent()->getRequest()->isHttps() ? 'https://' : 'http://';
+
+                return $protocol . $site['SERVER_NAME'];
+
+            /* case Options::NO_DOMAIN_ACTION_SITE_DEFAULT_LOCATION_DOMAIN:
+                 $defaultSiteLocation = Location::buildDefault(LANGUAGE_ID, SITE_ID);
+             case Options::NO_DOMAIN_ACTION_ALL_SITES_DEFAULT_LOCATION_DOMAIN:
+                 if (!isset($defaultSiteLocation))
+                     $defaultSiteLocation = Location::buildDefault(LANGUAGE_ID, false);
+
+                 if (isset($defaultSiteLocation))
+                     return $defaultSiteLocation->getContent()->getDomain();*/
+
+            case Options::NO_DOMAIN_ACTION_NONE:
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getZip()
+    {
+        if (!$this->getCollection()->offsetExists(self::ZIP)) {
+            $this->set(self::ZIP, LocationModel::getZipById($this->getId()));
+        }
+
+        return $this->get(self::ZIP);
     }
 
     /**
@@ -361,53 +233,256 @@ class Location
      * @throws ArgumentOutOfRangeException
      * @throws LoaderException
      * @throws SystemException
+     * @deprecated
      */
     public function getContent(): ?Content
     {
-        if (is_null($this->content))
-            $this->content = ContentEntity::buildByLocation($this);
-
-        // try to build by parent
-        if (is_null($this->content) && $this->hasParent())
-            $this->content = ContentEntity::buildByLocation($this->getParent());
-
-        // try to build by parent parent
-        if (is_null($this->content) && $this->hasParent() && $this->getParent()->hasParent())
-            $this->content = ContentEntity::buildByLocation($this->getParent()->getParent());
-
-        // default for cur site
-        if (is_null($this->content))
-        {
-            $location = self::buildDefault($this->getLangId(), $this->getSiteId());
-            if ($location)
-                $this->content = ContentEntity::buildByLocation($location);
-        }
-
-        // default for all sites
-        if (is_null($this->content))
-        {
-            $location = self::buildDefault($this->getLangId(), false);
-            if ($location)
-                $this->content = ContentEntity::buildByLocation($location);
+        if (!isset($this->content)) {
+            $this->content = ContentFactory::buildByFirstSuitableLocation($this);
         }
 
         return $this->content;
     }
 
     /**
-     * @return string
-     * @throws ArgumentOutOfRangeException
+     * @param               $primary
+     * @param Location|null $parent
+     * @param mixed|string $langId
+     * @param mixed|string $siteId
+     * @return Location
+     * @throws ArgumentNullException
+     * @deprecated delete in 2023
      */
-    public function getCode(): ?string
-    {
-        return Tools::translit($this->getName(), $this->getLangId());
+    public static function buildByPrimary(
+        $primary,
+        Location $parent = null,
+        $langId = LANGUAGE_ID,
+        $siteId = SITE_ID
+    ): Location {
+        if ((LocationModel::getType() == LocationModel::TYPE_SALE) && Options::isCapabilityMode()) {
+            $location = LocationFactory::buildByCode($primary, $siteId, $langId);
+        } else {
+            $location = LocationFactory::buildById($primary, $siteId, $langId);
+        }
+
+        if (isset($parent)) {
+            $location->setParent($parent);
+        }
+
+        return $location;
     }
 
     /**
-     * @return array
+     * @param               $name
+     * @param mixed|string $langId
+     * @param mixed|string $siteId
+     * @param Location|null $parent
+     * @return Location|null
+     * @throws ArgumentNullException
+     * @deprecated delete in 2023
      */
-    public function getData(): array
+    public static function buildByName(
+        $name,
+        Location $parent = null,
+        $langId = LANGUAGE_ID,
+        $siteId = SITE_ID
+    ): ?Location {
+        $location = LocationFactory::buildByName($name, null, $parent, $siteId, $langId);
+        if (isset($parent)) {
+            $location->setParent($location);
+        }
+
+        return $location;
+    }
+
+
+    /**
+     * @param               $primary
+     * @param               $name
+     * @param Location|null $parent
+     * @param mixed|string $langId
+     * @param mixed|string $siteId
+     * @return Location
+     * @throws ArgumentNullException
+     * @deprecated delete in 2023
+     */
+    public static function buildByPrimaryName(
+        $primary,
+        $name,
+        Location $parent = null,
+        $langId = LANGUAGE_ID,
+        $siteId = SITE_ID
+    ): Location {
+        if (!strlen($name) && !strlen($primary)) {
+            throw new ArgumentNullException('primary and name');
+        }
+
+        if (strlen($name)) {
+            $location = LocationFactory::buildByName($name, null, $parent, $siteId, $langId);
+        } else {
+            $location = self::buildByPrimary($primary, $langId, $siteId);
+        }
+
+        if (isset($parent)) {
+            $location->setParent($parent);
+        }
+
+        return $location;
+    }
+
+    /**
+     * @param mixed|string $langId
+     * @param mixed|string $siteId
+     * @return Location|null
+     * @deprecated delete in 2023
+     */
+    public static function buildDefault($langId = LANGUAGE_ID, $siteId = SITE_ID): ?Location
     {
-        return $this->data;
+        return LocationFactory::buildDefault($siteId, $langId);
+    }
+
+    /**
+     * @param null $ip
+     * @param mixed|string $langId
+     * @param mixed|string $siteId
+     * @return Location|null
+     * @throws ArgumentException
+     * @throws ArgumentNullException
+     * @throws ArgumentOutOfRangeException
+     * @deprecated delete in 2023
+     */
+    public static function buildByIp($ip = null, $langId = LANGUAGE_ID, $siteId = SITE_ID): ?Location
+    {
+        return LocationFactory::buildByIp($ip, $siteId, $langId);
+    }
+
+    /**
+     * @param mixed|string $langId
+     * @param mixed|string $siteId
+     * @return Location|null
+     * @throws ArgumentException
+     * @throws ArgumentNullException
+     * @throws ArgumentOutOfRangeException
+     * @deprecated delete in 2023
+     */
+    public static function buildCurrent($langId = LANGUAGE_ID, $siteId = SITE_ID): ?Location
+    {
+        return LocationFactory::buildCurrent($siteId, $langId);
+    }
+
+    /**
+     * @param $field
+     * @param $value
+     * @return $this
+     * @deprecated
+     */
+    public function setField($field, $value): Location
+    {
+        return $this->set($field, $value);
+    }
+
+    /**
+     * @param      $field
+     * @param null $default
+     * @return mixed|null
+     * @deprecated
+     */
+    public function getField($field, $default = null)
+    {
+        return $this->get($field, $default);
+    }
+
+    /**
+     * @return int|mixed|null
+     * @deprecated
+     */
+    public function getPrimary()
+    {
+        $primary = $this->get(self::PRIMARY);
+        if (!isset($primary)) {
+            // @TODO: add sections
+            $primary = LocationModel::getIdByName($this->getName(), $this->getLangId(), $this->getSiteId());
+            $this->setPrimary($primary);
+        }
+
+        return $this->get(self::PRIMARY);
+    }
+
+    /**
+     * @param $hash
+     * @return Location
+     * @throws ArgumentNullException
+     * @deprecated
+     */
+    public static function buildByHash($hash): Location
+    {
+        return LocationFactory::buildByCode($hash, SITE_ID, LANGUAGE_ID);
+    }
+
+    /**
+     * @throws ArgumentException
+     * @throws ArgumentNullException
+     * @throws SystemException
+     * @deprecated
+     */
+    public function loadParents()
+    {
+        if (false === $this->getParent() instanceof self) {
+            $locationData = LocationModel::getByPrimary($this->getPrimary());
+            if (isset($locationData['REGION_ID'])) {
+                $region = self::buildByPrimary($locationData['REGION_ID'], null, LANGUAGE_ID, SITE_ID);
+                if ($region && (LocationModel::getType() == LocationModel::TYPE_IBLOCK)) {
+                    $region->setCustomType('section'); // @TODO: refactor
+                }
+            }
+
+            if (isset($locationData['COUNTRY_ID'])) {
+                $country = self::buildByPrimary($locationData['COUNTRY_ID'], null, LANGUAGE_ID, SITE_ID);
+                if ($country && (LocationModel::getType() == LocationModel::TYPE_IBLOCK)) {
+                    $country->setCustomType('section'); // @TODO: refactor
+                }
+            }
+
+            if (isset($region)) {
+                if (isset($country)) {
+                    $region->setParent($country);
+                }
+
+                $this->setParent($region);
+            } elseif (isset($country)) {
+                $this->setParent($country);
+            }
+        }
+    }
+
+
+    /**
+     * @param Location $location
+     * @return $this
+     * @deprecated
+     */
+    public function setParent(Location $location): Location
+    {
+        $this->set(self::PARENT, $location);
+        $this->setParentId($location->getId());
+
+        return $this;
+    }
+
+    /**
+     * @param int $case
+     * @param int $gender
+     * @return string|null
+     */
+    public function getName(int $case = self::CASE_IM, int $gender = 0): ?string
+    {
+        $name = $this->get(self::NAME);
+
+        if ($case != self::CASE_IM) {
+            $nc   = new NCLNameCaseRu();
+            $name = $nc->q($name, $case, $gender);
+        }
+
+        return $name;
     }
 }

@@ -6,7 +6,7 @@ $MESS['YANDEX_MARKET_TRADING_SERVICE_COMMON_GROUP_COMPANY_INFO'] = 'Информ
 $MESS['YANDEX_MARKET_TRADING_SERVICE_COMMON_GROUP_SERVICE_REQUEST'] = 'Обмен данными через API';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_COMMON_OPTION_CAMPAIGN_ID'] = 'Номер кампании';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_COMMON_OPTION_CAMPAIGN_ID_PLACEHOLDER'] = '21579827';
-$MESS['YANDEX_MARKET_TRADING_SERVICE_COMMON_OPTION_CAMPAIGN_ID_DESCRIPTION'] = 'Зайдите в раздел <a href="https://partner.market.yandex.ru/" target="_blank">личного кабинета</a> &laquo;Настройки&raquo; и скопируйте сюда номер кампании на странице &laquo;Настройки API&raquo;.';
+$MESS['YANDEX_MARKET_TRADING_SERVICE_COMMON_OPTION_CAMPAIGN_ID_DESCRIPTION'] = 'Зайдите в раздел <a href="https://partner.market.yandex.ru/" target="_blank">личного кабинета</a> &laquo;Настройки&raquo; и скопируйте сюда номер кампании на странице &laquo;Настройки API&raquo;. Номер кампании указан в формате № XX-12345678 — скопируйте сюда восемь цифр после дефиса.';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_COMMON_OPTION_TAX_SYSTEM'] = 'Система налогообложения магазина';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_COMMON_OPTION_YANDEX_TOKEN'] = 'Токен для запросов';
 $MESS['YANDEX_MARKET_TRADING_SERVICE_COMMON_OPTION_YANDEX_TOKEN_PLACEHOLDER'] = '3D000001B86C3C97';

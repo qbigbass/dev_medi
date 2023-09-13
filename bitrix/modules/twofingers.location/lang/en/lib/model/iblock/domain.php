@@ -8,9 +8,14 @@
  * @author Pavel Shulaev (https://rover-it.me)
  */
 
+use Bitrix\Main\Loader;
 use TwoFingers\Location\Model\Iblock\Domain;
 
-$MESS['TFL_IBLOCK_DOMAIN_NAME']                     = 'Домены';
-$MESS['TFL_IBLOCK_DOMAIN_DESCRIPTION']              = 'Содержит домены, на которые может быть выполнено атвоматическое перенаправление';
-$MESS['TFL_IBLOCK_PROP_' . Domain::CODE . Domain::PROPERTY_DOMAIN] = 'Домен';
-$MESS['TFL_IBLOCK_PROP_' . Domain::CODE . Domain::PROPERTY_DOMAIN .'_HINT']         = 'Укажите полное название домена, с http или https, например, https://yandex.ru';
+if (class_exists('TwoFingers\Location\Model\Iblock\Domain')) {
+    $MESS['TFL_IBLOCK_DOMAIN_NAME']                                              = 'Домены';
+    $MESS['TFL_IBLOCK_DOMAIN_DESCRIPTION']                                       =
+        'Содержит домены, на которые может быть выполнено атвоматическое перенаправление';
+    $MESS['TFL_IBLOCK_PROP_' . Domain::CODE . Domain::PROPERTY_DOMAIN]           = 'Домен';
+    $MESS['TFL_IBLOCK_PROP_' . Domain::CODE . Domain::PROPERTY_DOMAIN . '_HINT'] =
+        'Укажите полное название домена, с http или https, например, https://yandex.ru';
+}

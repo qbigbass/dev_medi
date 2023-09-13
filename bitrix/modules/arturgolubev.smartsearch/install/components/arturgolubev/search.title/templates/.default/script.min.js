@@ -224,10 +224,7 @@ function JCTitleSearchAG(arParams)
 					
 					if(_this.arParams.PRELODER_ID)
 					{
-						if(BX(_this.arParams.PRELODER_ID))
-						{
-							BX.show(BX(_this.arParams.PRELODER_ID));
-						}
+						BX.show(BX(_this.arParams.PRELODER_ID));
 					}
 					
 					// console.log('ajax call ' + _this.INPUT.value);
@@ -251,10 +248,7 @@ function JCTitleSearchAG(arParams)
 							
 							if(_this.arParams.PRELODER_ID)
 							{
-								if(BX(_this.arParams.PRELODER_ID))
-								{
-									BX.hide(BX(_this.arParams.PRELODER_ID));
-								}
+								BX.hide(BX(_this.arParams.PRELODER_ID));
 							}
 							
 							

@@ -3,7 +3,6 @@
 namespace Yandex\Market\Trading\Service\Marketplace\Command;
 
 use Yandex\Market;
-use Yandex\Market\Trading\Service\Marketplace;
 
 class ProductReserves extends SkeletonReserves
 {
@@ -11,39 +10,22 @@ class ProductReserves extends SkeletonReserves
 	{
 		if (empty($amounts)) { return []; }
 
-		$behavior = $this->provider->getOptions()->getStocksBehavior();
-
-		if ($behavior === Marketplace\Options::STOCKS_PLAIN) { return $amounts; }
-
 		$this->configureEnvironment();
 
 		$productIds = array_column($amounts, 'ID');
 		list($processingStates, $otherStates) = $this->loadOrders();
 		$allUsedStates = $processingStates + $otherStates;
 
-		if ($behavior === Marketplace\Options::STOCKS_WITH_RESERVE)
-		{
-			$reserves = $this->loadAmounts($processingStates, $productIds);
-			$siblingReserved = $this->loadSiblingReserves($allUsedStates, $productIds);
+		$reserves = $this->loadReserves($processingStates, $productIds);
+		$siblingReserved = $this->loadSiblingReserves($allUsedStates, $productIds);
 
-			$amounts = $this->applyReserves($amounts, $reserves);
-			$amounts = $this->applyReserves($amounts, $siblingReserved, true);
-		}
-		else
-		{
-			$waiting = $this->loadWaiting($processingStates, $productIds);
-			$reserves = $this->loadReserves($processingStates, $productIds);
-			$siblingReserved = $this->loadSiblingReserves($allUsedStates, $productIds);
-
-			$amounts = $this->applyReserves($amounts, $waiting, true);
-			$amounts = $this->applyReserves($amounts, $reserves, true);
-			$amounts = $this->applyReserves($amounts, $siblingReserved, true);
-		}
+		$amounts = $this->applyReserves($amounts, $reserves);
+		$amounts = $this->applyReserves($amounts, $siblingReserved, true);
 
 		return $amounts;
 	}
 
-	protected function loadAmounts(array $orderStates, array $productIds)
+	protected function loadReserves(array $orderStates, array $productIds)
 	{
 		$orderIds = array_column($orderStates, 'INTERNAL_ID');
 
@@ -70,10 +52,7 @@ class ProductReserves extends SkeletonReserves
 				$amount['QUANTITY'] += $sign * $reserve['QUANTITY'];
 			}
 
-			if (
-				isset($reserve['TIMESTAMP_X'])
-				&& Market\Data\DateTime::compare($reserve['TIMESTAMP_X'], $amount['TIMESTAMP_X']) === 1
-			)
+			if (Market\Data\DateTime::compare($reserve['TIMESTAMP_X'], $amount['TIMESTAMP_X']) === 1)
 			{
 				$amount['TIMESTAMP_X'] = $reserve['TIMESTAMP_X'];
 			}

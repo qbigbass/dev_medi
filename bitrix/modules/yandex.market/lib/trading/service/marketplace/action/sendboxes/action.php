@@ -84,6 +84,8 @@ class Action extends TradingService\Reference\Action\DataAction
 
 	protected function saveData()
 	{
+		if ($this->request->getShipmentId() !== null) { return; }
+
 		$uniqueKey = $this->provider->getUniqueKey();
 		$orderId = $this->request->getOrderId();
 		$boxes = $this->request->getBoxes();

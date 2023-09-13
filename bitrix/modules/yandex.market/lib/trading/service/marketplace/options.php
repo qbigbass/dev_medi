@@ -10,10 +10,6 @@ use Yandex\Market\Trading\Entity as TradingEntity;
 
 class Options extends TradingService\Common\Options
 {
-	const STOCKS_PLAIN = 'plain';
-	const STOCKS_ONLY_AVAILABLE = 'onlyAvailable';
-	const STOCKS_WITH_RESERVE = 'withReserve';
-
 	/** @var Provider */
 	protected $provider;
 
@@ -140,11 +136,6 @@ class Options extends TradingService\Common\Options
 		);
 	}
 
-	public function getStocksBehavior()
-	{
-		return $this->getValue('STOCKS_BEHAVIOR');
-	}
-
 	public function useOrderReserve()
 	{
 		return (
@@ -155,10 +146,7 @@ class Options extends TradingService\Common\Options
 
 	public function selfOrderReserve()
 	{
-		return in_array($this->getStocksBehavior(), [
-			static::STOCKS_ONLY_AVAILABLE,
-			static::STOCKS_WITH_RESERVE,
-		], true);
+		return (string)$this->getValue('USE_ORDER_RESERVE') === Market\Reference\Storage\Table::BOOLEAN_Y;
 	}
 
 	public function getReserveGroupSetupIds()
@@ -187,21 +175,21 @@ class Options extends TradingService\Common\Options
 		return $this->getValue('STATUS_SHIPMENT_' . $action);
 	}
 
-	public function getEnvironmentFieldActions(TradingEntity\Reference\Environment $environment)
+	public function getEnvironmentFieldActions()
 	{
 		return array_filter([
-			$this->getEnvironmentCisActions($environment),
+			$this->getEnvironmentCisActions(),
 			$this->getEnvironmentItemsActions(),
 			$this->getEnvironmentCashboxActions(),
 		]);
 	}
 
-	protected function getEnvironmentCisActions(TradingEntity\Reference\Environment $environment)
+	protected function getEnvironmentCisActions()
 	{
 		return [
 			'FIELD' => 'SHIPMENT.ITEM.STORE.MARKING_CODE',
-			'PATH' => 'send/identifiers',
-			'PAYLOAD' => static function(array $action) use ($environment) {
+			'PATH' => 'send/cis',
+			'PAYLOAD' => static function(array $action) {
 				$itemsMap = [];
 				$newIndex = 0;
 				$result = [
@@ -214,24 +202,13 @@ class Options extends TradingService\Common\Options
 
 					if ($markingCode === '') { continue; }
 
-					$markingType = $environment->getProduct()->getMarkingGroupType($storeItem['MARKING_GROUP']);
 					$itemKey = $storeItem['XML_ID'] . ':' . $storeItem['PRODUCT_ID'];
-
-					if ($markingType === Market\Data\Trading\MarkingRegistry::UIN)
-					{
-						$identifier = Market\Data\Trading\Uin::formatMarkingCode($markingCode);
-						$key = 'uin';
-					}
-					else
-					{
-						$identifier = Market\Data\Trading\Cis::formatMarkingCode($markingCode);
-						$key = 'cis';
-					}
+					$cis = Market\Data\Trading\Cis::formatMarkingCode($markingCode);
 
 					if (isset($itemsMap[$itemKey]))
 					{
 						$itemIndex = $itemsMap[$itemKey];
-						$result['items'][$itemIndex]['instances'][] = [ $key => $identifier ];
+						$result['items'][$itemIndex]['instances'][] = [ 'cis' => $cis ];
 					}
 					else
 					{
@@ -240,7 +217,7 @@ class Options extends TradingService\Common\Options
 							'productId' => $storeItem['PRODUCT_ID'],
 							'xmlId' => $storeItem['XML_ID'],
 							'instances' => [
-								[ $key => $identifier ],
+								[ 'cis' => $cis ],
 							],
 						];
 
@@ -301,7 +278,6 @@ class Options extends TradingService\Common\Options
 		$this->applyOrderCourierProperties();
 		$this->applyElectronicAcceptanceCertificateProperties();
 		$this->applyPaySystemId();
-		$this->applyStocksBehavior();
 	}
 
 	protected function applyProductStoresReserve()
@@ -364,19 +340,6 @@ class Options extends TradingService\Common\Options
 		}
 
 		unset($this->values['PAY_SYSTEM_ID']);
-	}
-
-	protected function applyStocksBehavior()
-	{
-		if (!isset($this->values['USE_ORDER_RESERVE'])) { return; }
-
-		if (empty($this->values['STOCKS_BEHAVIOR']))
-		{
-			$useReserve = ((string)$this->values['USE_ORDER_RESERVE'] === Market\Reference\Storage\Table::BOOLEAN_Y);
-			$this->values['STOCKS_BEHAVIOR'] = $useReserve ? static::STOCKS_WITH_RESERVE : static::STOCKS_PLAIN;
-		}
-
-		unset($this->values['USE_ORDER_RESERVE']);
 	}
 
 	public function takeChanges(TradingService\Reference\Options\Skeleton $previous)
@@ -804,29 +767,14 @@ class Options extends TradingService\Common\Options
 			];
 			$commonFields = parent::getProductStoreFields($environment, $siteId);
 			$commonFields += [
-				'STOCKS_BEHAVIOR' =>  [
-					'TYPE' => 'enumeration',
+				'USE_ORDER_RESERVE' =>  [
+					'TYPE' => 'boolean',
 					'TAB' => 'STORE',
-					'NAME' => static::getLang('TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR'),
-					'HELP_MESSAGE' => static::getLang('TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR_HELP'),
+					'NAME' => static::getLang('TRADING_SERVICE_MARKETPLACE_OPTION_USE_ORDER_RESERVE'),
+					'HELP_MESSAGE' => static::getLang('TRADING_SERVICE_MARKETPLACE_OPTION_USE_ORDER_RESERVE_HELP'),
 					'SORT' => 1105,
-					'VALUES' => [
-						[
-							'ID' => static::STOCKS_ONLY_AVAILABLE,
-							'VALUE' => static::getLang('TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR_ONLY_AVAILABLE'),
-						],
-						[
-							'ID' => static::STOCKS_WITH_RESERVE,
-							'VALUE' => static::getLang('TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR_WITH_RESERVE'),
-						],
-						[
-							'ID' => static::STOCKS_PLAIN,
-							'VALUE' => static::getLang('TRADING_SERVICE_MARKETPLACE_OPTION_STOCKS_BEHAVIOR_PLAIN'),
-						],
-					],
 					'SETTINGS' => [
-						'DEFAULT_VALUE' => static::STOCKS_ONLY_AVAILABLE,
-						'ALLOW_NO_VALUE' => 'N',
+						'DEFAULT_VALUE' => Market\Ui\UserField\BooleanType::VALUE_Y,
 					],
 				],
 			];

@@ -202,7 +202,6 @@ abstract class Skeleton extends EntityReference\Reserve
 						'ID',
 						'PRODUCT_ID',
 						'ORDER_ID',
-						'QUANTITY',
 					],
 				]);
 
@@ -211,35 +210,9 @@ abstract class Skeleton extends EntityReference\Reserve
 					$result[$row['ID']] = [
 						'PRODUCT_ID' => $row['PRODUCT_ID'],
 						'ORDER_ID' => $row['ORDER_ID'],
-						'QUANTITY' => (float)$row['QUANTITY'],
 					];
 				}
 			}
-		}
-
-		return $result;
-	}
-
-	protected function combineBasketQuantities(array $basket)
-	{
-		$result = [];
-
-		foreach ($basket as $row)
-		{
-			$productId = $row['PRODUCT_ID'];
-
-			if (!isset($result[$productId]))
-			{
-				$result[$productId] = [
-					'QUANTITY' => 0,
-					'ORDER' => [],
-				];
-			}
-
-			$result[$productId]['QUANTITY'] += $row['QUANTITY'];
-			$result[$productId]['ORDER'][$row['ORDER_ID']] = isset($result[$productId]['ORDER'][$row['ORDER_ID']])
-				? $result[$productId]['ORDER'][$row['ORDER_ID']] + $row['QUANTITY']
-				: $row['QUANTITY'];
 		}
 
 		return $result;
@@ -276,32 +249,5 @@ abstract class Skeleton extends EntityReference\Reserve
 		}
 
 		return $this->defaultStoreUsed;
-	}
-
-	protected function isReservedOnCreate()
-	{
-		return (Sale\Configuration::getProductReservationCondition() === $this->saleReverseConstant('ON_CREATE'));
-	}
-
-	protected function isReservedEqualShipped()
-	{
-		return (Sale\Configuration::getProductReservationCondition() === $this->saleReverseConstant('ON_SHIP'));
-	}
-
-	protected function saleReverseConstant($name)
-	{
-		$newClassName = Sale\Reservation\Configuration\ReserveCondition::class;
-		$oldClassName = Sale\Configuration::class;
-
-		if (defined($newClassName . '::' . $name))
-		{
-			$result = constant($newClassName . '::' . $name);
-		}
-		else
-		{
-			$result = constant($oldClassName . '::RESERVE_' . $name);
-		}
-
-		return $result;
 	}
 }

@@ -8,7 +8,6 @@ class Registry
 {
 	const FUNCTION_NOT = 'not';
 	const FUNCTION_SUM = 'sum';
-	const FUNCTION_TOTAL = 'total';
 	const FUNCTION_SUBTRACT = 'subtract';
 	const FUNCTION_MULTIPLY = 'multiply';
 	const FUNCTION_IF = 'if';
@@ -21,7 +20,6 @@ class Registry
 		return [
 			static::FUNCTION_NOT,
 			static::FUNCTION_SUM,
-			static::FUNCTION_TOTAL,
 			static::FUNCTION_SUBTRACT,
 			static::FUNCTION_MULTIPLY,
 			static::FUNCTION_IF,

@@ -3,6 +3,7 @@
 namespace TwoFingers\Location\Model\Iblock;
 
 use Bitrix\Iblock\ElementTable;
+use Bitrix\Iblock\PropertyEnumerationTable;
 use Bitrix\Iblock\SectionTable;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ArgumentNullException;
@@ -10,12 +11,16 @@ use Bitrix\Main\ArgumentOutOfRangeException;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\LoaderException;
 use Bitrix\Main\Localization\Loc;
-
 use Bitrix\Main\ObjectException;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
 use Bitrix\Main\Type\DateTime;
+use CIBlockElement;
+use CIBlockSection;
+use CUtil;
+use TwoFingers\Location\Agent;
 use TwoFingers\Location\Model\Iblock;
+use TwoFingers\Location\Options;
 
 Loc::loadMessages(__FILE__);
 
@@ -26,12 +31,17 @@ Loc::loadMessages(__FILE__);
  */
 class Location extends Iblock
 {
-    const CODE              = 'tf_location_location';
-    const OPTION_IBLOCK_ID  = 'location-iblock-id';
+    const CODE             = 'tf_location_location';
+    const OPTION_IBLOCK_ID = 'location-iblock-id';
 
-    const PROPERTY_FEATURED = 'FEATURED';
-    const PROPERTY_DEFAULT  = 'DEFAULT';
-    const PROPERTY_SITE_ID  = 'SITE_ID';
+    const PROPERTY_FEATURED  = 'FEATURED';
+    const PROPERTY_DEFAULT   = 'DEFAULT';
+    const PROPERTY_SITE_ID   = 'SITE_ID';
+
+    const PROPERTY_ZIP       = 'ZIP';
+    const PROPERTY_TYPE      = 'TYPE';
+    const PROPERTY_LATITUDE  = 'LATITUDE';
+    const PROPERTY_LONGITUDE = 'LONGITUDE';
 
     protected static $fileData;
 
@@ -45,31 +55,39 @@ class Location extends Iblock
      * @throws ObjectPropertyException
      * @throws SystemException
      */
-    public static function build()
+    public static function build(): bool
     {
-        if (!self::createType())
+        if (!self::createType()) {
             return false;
+        }
 
-        if (!self::createIblock())
+        if (!self::createIblock()) {
             return false;
+        }
 
-        if (!self::createCheckBoxProperty(self::PROPERTY_FEATURED, 100))
+        if (!self::createCheckBoxProperty(self::PROPERTY_FEATURED)) {
             return false;
+        }
 
-        if (!self::createCheckBoxProperty(self::PROPERTY_DEFAULT, 200))
+        if (!self::createCheckBoxProperty(self::PROPERTY_DEFAULT, 200)) {
             return false;
+        }
 
-        if (!self::createSiteProperty(self::PROPERTY_SITE_ID, 300))
+        if (!self::createSiteProperty(self::PROPERTY_SITE_ID, 300)) {
             return false;
+        }
 
-        if (!self::addCountries())
+        if (!self::addCountries()) {
             return false;
+        }
 
-        if (!self::addRegions())
+        if (!self::addRegions()) {
             return false;
+        }
 
-        if (!self::addLocations())
+        if (!self::addLocations()) {
             return false;
+        }
 
         return true;
     }
@@ -77,21 +95,22 @@ class Location extends Iblock
     /**
      * @return array
      */
-    protected static function getFileData()
+    protected static function getFileData(): array
     {
         if (is_null(self::$fileData)) {
             self::$fileData = [];
 
-            if (($handle = fopen(__DIR__ . "/../../../include/cities.csv", "r")) !== FALSE)
-                while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE)
-                {
-                    if (LANG_CHARSET != 'UTF-8')
-                        foreach(array_keys($data) as $key){
+            if (($handle = fopen(__DIR__ . "/../../../include/cities.csv", "r")) !== false) {
+                while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
+                    if (LANG_CHARSET != 'UTF-8') {
+                        foreach (array_keys($data) as $key) {
                             $data[$key] = iconv('UTF-8', LANG_CHARSET, $data[$key]);
                         }
+                    }
 
                     self::$fileData[] = $data;
                 }
+            }
         }
 
         return self::$fileData;
@@ -105,25 +124,27 @@ class Location extends Iblock
      * @throws ObjectPropertyException
      * @throws SystemException
      */
-    public static function addCountries()
+    public static function addCountries(): bool
     {
-        $data       = self::getFileData();
-        $countries  = [Loc::getMessage('TFL_IBLOCK_LOCATION_RUSSIA')];
+        $data      = self::getFileData();
+        $countries = [Loc::getMessage('TFL_IBLOCK_LOCATION_RUSSIA')];
 
-        foreach ($data as $location)
-            if (isset($location[6]) && !in_array($location[6], $countries))
+        foreach ($data as $location) {
+            if (isset($location[6]) && !in_array($location[6], $countries)) {
                 $countries[] = $location[6];
+            }
+        }
 
         $countries = array_unique($countries);
-        foreach ($countries as $country)
-        {
-            $countryCode    = \CUtil::translit($country, LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-']);
-            $countryExists  = self::getCountryByCode($countryCode);
+        foreach ($countries as $country) {
+            $countryCode   = CUtil::translit($country, LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-']);
+            $countryExists = self::getCountryByCode($countryCode);
 
-            if ($countryExists)
+            if ($countryExists) {
                 continue;
+            }
 
-            (new \CIBlockSection())->Add([
+            (new CIBlockSection())->Add([
                 'NAME'              => $country,
                 'CODE'              => $countryCode,
                 'XML_ID'            => $countryCode,
@@ -146,7 +167,7 @@ class Location extends Iblock
      * @throws ObjectPropertyException
      * @throws SystemException
      */
-    public static function getCountryByCode($countryCode)
+    public static function getCountryByCode($countryCode): ?array
     {
         return SectionTable::getRow([
             'filter' => ['=CODE' => $countryCode, '=IBLOCK_ID' => self::getId()],
@@ -165,11 +186,11 @@ class Location extends Iblock
      * @throws ObjectPropertyException
      * @throws SystemException
      */
-    public static function getRegionByCodeCountryId($regionCode, $countryId)
+    public static function getRegionByCodeCountryId($regionCode, $countryId): ?array
     {
         return SectionTable::getRow([
-            'filter'    => ['=CODE' => $regionCode, '=IBLOCK_SECTION_ID' => $countryId, '=IBLOCK_ID' => self::getId()],
-            'select'    => ['ID'],
+            'filter' => ['=CODE' => $regionCode, '=IBLOCK_SECTION_ID' => $countryId, '=IBLOCK_ID' => self::getId()],
+            'select' => ['ID'],
             //'cache'     => ['ttl' => 3600]
         ]);
     }
@@ -178,55 +199,64 @@ class Location extends Iblock
      * @param $locationCode
      * @param $regionId
      * @return array|null
+     * @throws ArgumentException
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws ObjectPropertyException
+     * @throws SystemException
      */
-    public static function getLocationByCodeRegionId($locationCode, $regionId)
+    public static function getLocationByCodeRegionId($locationCode, $regionId): ?array
     {
         return ElementTable::getRow([
-            'filter'    => ['=CODE' => $locationCode, '=IBLOCK_SECTION_ID' => $regionId, '=IBLOCK_ID' => self::getId()],
-            'select'    => ['ID'],
+            'filter' => ['=CODE' => $locationCode, '=IBLOCK_SECTION_ID' => $regionId, '=IBLOCK_ID' => self::getId()],
+            'select' => ['ID'],
             //'cache'     => ['ttl' => 3600]
         ]);
     }
 
     /**
      * @return bool
+     * @throws ArgumentException
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
-     * @throws ObjectException
+     * @throws ObjectPropertyException
+     * @throws SystemException
      */
-    public static function addRegions()
+    public static function addRegions(): bool
     {
-        $data           = self::getFileData();
-        $regionsNames   = [];
-        $regions        = [];
+        $data         = self::getFileData();
+        $regionsNames = [];
+        $regions      = [];
 
-        foreach ($data as $location)
-            if (isset($location[2]) && !in_array($location[2], $regionsNames))
+        foreach ($data as $location) {
+            if (isset($location[2]) && !in_array($location[2], $regionsNames)) {
                 $regions[] = $location;
+            }
+        }
 
-        foreach ($regions as $region)
-        {
+        foreach ($regions as $region) {
             // check country
             $countryCode = isset($region[6])
-                ? \CUtil::translit($region[6], LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-'])
-                : \CUtil::translit(Loc::getMessage('TFL_IBLOCK_LOCATION_RUSSIA'), LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-']);
+                ? CUtil::translit($region[6], LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-'])
+                : CUtil::translit(Loc::getMessage('TFL_IBLOCK_LOCATION_RUSSIA'), LANGUAGE_ID,
+                    ['replace_space' => '-', 'replace_other' => '-']);
 
             $country = self::getCountryByCode($countryCode);
 
-            if (!isset($country['ID']))
+            if (!isset($country['ID'])) {
                 continue;
+            }
 
             // check region
-            $regionCode     = \CUtil::translit($region[2], LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-']);
+            $regionCode = CUtil::translit($region[2], LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-']);
 
-            $regionExists   = self::getRegionByCodeCountryId($regionCode, $country['ID']);
+            $regionExists = self::getRegionByCodeCountryId($regionCode, $country['ID']);
 
-            if ($regionExists)
+            if ($regionExists) {
                 continue;
+            }
 
-            (new \CIBlockSection())->Add([
+            (new CIBlockSection())->Add([
                 'NAME'              => $region[2],
                 'CODE'              => $regionCode,
                 'XML_ID'            => $regionCode,
@@ -241,42 +271,50 @@ class Location extends Iblock
     }
 
     /**
+     * @return bool
+     * @throws ArgumentException
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws ObjectPropertyException
+     * @throws SystemException
      */
-    public static function addLocations()
+    public static function addLocations(): bool
     {
         $data = self::getFileData();
 
-        foreach ($data as $location)
-        {
+        foreach ($data as $location) {
             // check country
             $countryCode = isset($location[6])
-                ? \CUtil::translit($location[6], LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-'])
-                : \CUtil::translit(Loc::getMessage('TFL_IBLOCK_LOCATION_RUSSIA'), LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-']);
+                ? CUtil::translit($location[6], LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-'])
+                : CUtil::translit(Loc::getMessage('TFL_IBLOCK_LOCATION_RUSSIA'), LANGUAGE_ID,
+                    ['replace_space' => '-', 'replace_other' => '-']);
 
             $country = self::getCountryByCode($countryCode);
 
-            if (!isset($country['ID']))
+            if (!isset($country['ID'])) {
                 continue;
+            }
 
-            $regionCode     = \CUtil::translit($location[2], LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-']);
-            $region   = self::getRegionByCodeCountryId($regionCode, $country['ID']);
-            if (!isset($region['ID']))
+            $regionCode = CUtil::translit($location[2], LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-']);
+            $region     = self::getRegionByCodeCountryId($regionCode, $country['ID']);
+            if (!isset($region['ID'])) {
                 continue;
+            }
 
-            $locationCode   = \CUtil::translit($location[1], LANGUAGE_ID, ['replace_space' => '-', 'replace_other' => '-']);
+            $locationCode = CUtil::translit($location[1], LANGUAGE_ID,
+                ['replace_space' => '-', 'replace_other' => '-']);
 
             $existsLocation = self::getLocationByCodeRegionId($locationCode, $region['ID']);
-            if ($existsLocation)
+            if ($existsLocation) {
                 continue;
+            }
 
-            (new \CIBlockElement())->Add([
-                'NAME'  => $location[1],
-                'CODE'  => $locationCode,
-                'XML_ID'  => $locationCode,
+            (new CIBlockElement())->Add([
+                'NAME'              => $location[1],
+                'CODE'              => $locationCode,
+                'XML_ID'            => $locationCode,
                 'IBLOCK_SECTION_ID' => $region['ID'],
-                'IBLOCK_ID' => self::getId()
+                'IBLOCK_ID'         => self::getId()
             ]);
         }
 
@@ -293,13 +331,18 @@ class Location extends Iblock
      * @throws SystemException
      *
      */
-    public static function createIblock()
+    public static function createIblock(): bool
     {
-        if (self::getIblock()) return true;
+        if (self::getIblock()) {
+            return true;
+        }
 
-        $id = self::create(self::CODE, Loc::getMessage('TFL_IBLOCK_LOCATION_NAME'), Loc::getMessage('TFL_IBLOCK_LOCATION_DESCRIPTION'));
+        $id = self::create(self::CODE, Loc::getMessage('TFL_IBLOCK_LOCATION_NAME'),
+            Loc::getMessage('TFL_IBLOCK_LOCATION_DESCRIPTION'));
 
-        if (!$id) return false;
+        if (!$id) {
+            return false;
+        }
 
         Option::set('twofingers.location', self::OPTION_IBLOCK_ID, $id);
 

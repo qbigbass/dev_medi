@@ -259,14 +259,6 @@ foreach($arResult["SEARCH"] as $i=>$arItem)
 	$arResult["SEARCH"][$i]["ICON"] = true;
 }
 
-if(CModule::IncludeModule("catalog")){
-	$arResult['MEASURES'] = [];
-	$res_measure = CCatalogMeasure::getList();
-	while($measure = $res_measure->Fetch()) {
-		$arResult['MEASURES'][$measure['ID']] = $measure;
-	}      
-}      
-
 $arResult["SEARCH_HISTORY"] = array();
 if($arParams["SHOW_HISTORY"] == 'Y'){
 	$arResult["SEARCH_HISTORY"] = \Arturgolubev\Smartsearch\Tools::getSearchHistory(10);

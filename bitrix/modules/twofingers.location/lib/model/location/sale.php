@@ -15,11 +15,11 @@ use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\ArgumentOutOfRangeException;
 use Bitrix\Main\LoaderException;
 use Bitrix\Main\SystemException;
+use CSaleLocation;
 use TwoFingers\Location\Model\Location,
     Bitrix\Main\Loader,
     TwoFingers\Location\Helper\Tools,
-    TwoFingers\Location\Settings,
-    \Bitrix\Main\Application;
+    Bitrix\Main\Application;
 use TwoFingers\Location\Options;
 
 /**
@@ -31,13 +31,30 @@ use TwoFingers\Location\Options;
 class Sale extends Location
 {
     /**
+     * @param      $primary
+     * @param bool $byCode
+     * @return false|mixed|null
+     * @throws ArgumentNullException
+     * @throws LoaderException
+     */
+    public static function getByPrimary($primary, bool $byCode = false): ?array
+    {
+        $primary = intval($primary);
+        if (!$primary)
+            throw new ArgumentNullException('primary');
+
+        $locations = self::getByFilter(['filter' => ['ID' => $primary]]);
+
+        return count($locations) ? reset($locations) : null;
+    }
+    /**
      * @param              $cityName
      * @param mixed|string $langId
      * @param mixed|string $siteId
      * @return int|null
      * @throws LoaderException
      */
-    public static function getIdByName($cityName, $langId = LANGUAGE_ID, $siteId = SITE_ID)
+    public static function getIdByName($cityName, $langId = LANGUAGE_ID, $siteId = SITE_ID): ?int
     {
         if (!Loader::IncludeModule('sale'))
             return null;
@@ -51,7 +68,7 @@ class Sale extends Location
         if ($cache->read(self::CACHE_TTL, $cacheId))
             return $cache->get($cacheId);
 
-        $saleLocation = \CSaleLocation::GetList(
+        $saleLocation = CSaleLocation::GetList(
             array("CITY_NAME"=>"ASC"),
             array("LID" => $langId, 'CITY_NAME' => $cityName),
             false,
@@ -102,7 +119,7 @@ class Sale extends Location
         if ($cache->read(self::CACHE_TTL, $cacheId))
             return $cache->get($cacheId);
 
-        $saleLocation = \CSaleLocation::GetList(
+        $saleLocation = CSaleLocation::GetList(
             array("CITY_NAME" => "ASC"),
             array("LID" => $langId, 'ID' => $primary),
             false,
@@ -132,7 +149,7 @@ class Sale extends Location
     public static function getFavoritesList($langId = LANGUAGE_ID, $siteId = SITE_ID): array
     {
         $cities         = self::getList($langId);
-        $defaultCities  = Settings::get('TF_LOCATION_DEFAULT_CITIES');
+        $defaultCities  = Options::getValue('TF_LOCATION_DEFAULT_CITIES');
         $result         = [];
 
         foreach ($cities as $city)
@@ -165,62 +182,56 @@ class Sale extends Location
     }
 
     /**
-     * @param $filter
+     * @param array $query
      * @return bool|mixed|null
      * @throws LoaderException
-     *
      */
-    public static function getByFilter($filter)
+    public static function getByFilter(array $query = [])
     {
         if (!Loader::includeModule('sale'))
             return null;
 
-        $cacheId    = crc32(__METHOD__ . serialize($filter));
+        $cacheId    = crc32(__METHOD__ . serialize($query));
         $cache      = Application::getInstance()->getManagedCache();
 
         if ($cache->read(self::CACHE_TTL, $cacheId))
             return $cache->get($cacheId);
 
-        $db_vars = \CSaleLocation::GetList(
-            array("CITY_NAME_LANG"=>"ASC"),
-            isset($filter['filter']) ? $filter['filter'] : [],
+        $order  = $query['order'] ?? ["CITY_NAME_LANG"=>"ASC"];
+        $select = $query['select'] ?? ['ID', 'CITY_ID', 'CITY_NAME', 'REGION_NAME', 'REGION_ID', 'COUNTRY_ID', 'COUNTRY_NAME'];
+
+        $dbLocations = CSaleLocation::GetList(
+            $order,
+            $query['filter'] ?? [],
             false,
-            isset($filter['nav']) ? $filter['nav'] : false,
-            array(
-                'ID',
-                'CITY_ID',
-                'CITY_NAME',
-                'REGION_NAME',
-                'REGION_ID',
-                'COUNTRY_ID',
-                'COUNTRY_NAME'
-            ));
+            $query['nav'] ?? ['nTopCount' => Options::getLocationsLimit()],
+            $select);
 
-        $cities = [];
-        $langId = isset($filter['LID']) ? $filter['LID'] : LANGUAGE_ID;
+        $locations = [];
+        $langId    = $query['filter']['LID'] ?? LANGUAGE_ID;
 
-        while ($vars = $db_vars->Fetch()) {
+        while ($locationRaw = $dbLocations->Fetch()) {
 
-            if (empty($vars['CITY_ID']))
+            if (empty($locationRaw['CITY_ID']))
                 continue;
 
-            $city = Array(
-                'NAME'          => htmlspecialcharsEx($vars['CITY_NAME']),
-                'ID'            => $vars['ID'],
-                'TRANSLIT'      => Tools::translit($vars['CITY_NAME'], $langId),
-                'REGION_NAME'   => $vars['REGION_NAME'],
-                'REGION_ID'     => $vars['REGION_ID'],
-                'COUNTRY_NAME'  => $vars['COUNTRY_NAME'],
-                'COUNTRY_ID'    => $vars['COUNTRY_ID'],
+            $locationData = Array(
+                'NAME'          => htmlspecialcharsEx($locationRaw['CITY_NAME']),
+                'ID'            => $locationRaw['ID'],
+                'TRANSLIT'      => Tools::translit($locationRaw['CITY_NAME'], $langId),
+                'REGION_NAME'   => $locationRaw['REGION_NAME'],
+                'REGION_ID'     => $locationRaw['REGION_ID'],
+                'COUNTRY_NAME'  => $locationRaw['COUNTRY_NAME'],
+                'COUNTRY_ID'    => $locationRaw['COUNTRY_ID'],
                 'SHOW_REGION'   => 'N'
             );
 
-            $cities[$vars['ID']] = $city;
+            $locations[$locationRaw['ID']] = $locationData;
         }
 
-        $cache->set($cacheId, $cities);
+        $cache->set($cacheId, $locations);
 
-        return $cities;
+        return $locations;
     }
 
     /**
@@ -250,7 +261,7 @@ class Sale extends Location
         if ($cache->read(self::CACHE_TTL, $cacheId))
             return $cache->get($cacheId);
 
-        $rsZip      = \CSaleLocation::GetLocationZIP($locationId);
+        $rsZip      = CSaleLocation::GetLocationZIP($locationId);
         $arResult   = '';
         while ($arZip = $rsZip->fetch())
         {

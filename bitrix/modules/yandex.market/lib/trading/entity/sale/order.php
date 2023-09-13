@@ -742,12 +742,9 @@ class Order extends Market\Trading\Entity\Reference\Order
 			if ($basketItem === null) { continue; }
 			if (!method_exists($basketItem, 'isSupportedMarkingCode') || !$basketItem->isSupportedMarkingCode()) { continue; }
 
-			$type = $this->basketItemMarkingType($basketItem) ?: Market\Data\Trading\MarkingRegistry::CIS;
-			$filled = array_column($this->collectBasketItemInstances($basketItem), $type);
+			$filled = array_column($this->collectBasketItemInstances($basketItem), 'CIS');
 			$filled = array_filter($filled);
-			$new = $type === Market\Data\Trading\MarkingRegistry::UIN
-				? Market\Data\Trading\Uin::diff($itemMarkings, $filled)
-				: Market\Data\Trading\Cis::diff($itemMarkings, $filled);
+			$new = Market\Data\Trading\Cis::diff($itemMarkings, $filled);
 			$itemChanges = [];
 
 			if (empty($new)) { continue; }
@@ -933,7 +930,6 @@ class Order extends Market\Trading\Entity\Reference\Order
 				'MARKING_GROUP' => method_exists($basketItem, 'getMarkingCodeGroup')
 					? $basketItem->getMarkingCodeGroup()
 					: null,
-				'MARKING_TYPE' => $this->basketItemMarkingType($basketItem),
 			]);
 		}
 
@@ -943,7 +939,6 @@ class Order extends Market\Trading\Entity\Reference\Order
 	protected function collectBasketItemInstances(Sale\BasketItemBase $basketItem)
 	{
 		$basketItemCode = $basketItem->getBasketCode();
-		$markingType = $this->basketItemMarkingType($basketItem) ?: Market\Data\Trading\MarkingRegistry::CIS;
 		$result = [];
 
 		/** @var Sale\Shipment $shipment */
@@ -963,21 +958,12 @@ class Order extends Market\Trading\Entity\Reference\Order
 					: '';
 
 				$result[] = [
-					$markingType => $markingCode !== '' ? $markingCode : null,
+					'CIS' => $markingCode !== '' ? $markingCode : null,
 				];
 			}
 		}
 
 		return $result;
-	}
-
-	protected function basketItemMarkingType(Sale\BasketItemBase $basketItem)
-	{
-		if (!method_exists($basketItem, 'getMarkingCodeGroup')) { return null; }
-
-		return $this->environment->getProduct()->getMarkingGroupType(
-			$basketItem->getMarkingCodeGroup()
-		);
 	}
 
 	public function setBasketItemPrice($basketCode, $price)
@@ -2014,28 +2000,16 @@ class Order extends Market\Trading\Entity\Reference\Order
 		/** @var Sale\Shipment $shipment */
 		foreach ($order->getShipmentCollection() as $shipment)
 		{
+			if ($shipment->isSystem()) { continue; }
+
 			if ($shipment->isShipped())
 			{
-				if ($shipment->isSystem())
-				{
-					$shipment->setFieldNoDemand('DEDUCTED', 'N');
-				}
-				else
-				{
-					$shipment->setField('DEDUCTED', 'N');
-				}
+				$shipment->setField('DEDUCTED', 'N');
 			}
 
 			if ($shipment->isAllowDelivery())
 			{
-				if ($shipment->isSystem())
-				{
-					$shipment->setFieldNoDemand('ALLOW_DELIVERY', 'N');
-				}
-				else
-				{
-					$shipment->disallowDelivery();
-				}
+				$shipment->disallowDelivery();
 			}
 		}
 	}

@@ -90,21 +90,6 @@ class Root extends Base
 			$initTime = new Main\Type\DateTime();
 		}
 
-		if ($initTime instanceof Market\Data\Type\CanonicalDateTime)
-		{
-			if (!Market\Utils::isCli() && $this->getRunAction() === 'full')
-			{
-				$timezone = date_default_timezone_get();
-			}
-			else
-			{
-				$timezone = Market\Environment::getTimezone() ?: date_default_timezone_get();
-			}
-
-			$initTime = clone $initTime;
-			$initTime->setTimeZone(new \DateTimeZone($timezone));
-		}
-
 		$lastUpdated = $this->lastUpdated();
 
 		if ($lastUpdated !== null && Market\Data\DateTime::compare($lastUpdated, $initTime) === 1)

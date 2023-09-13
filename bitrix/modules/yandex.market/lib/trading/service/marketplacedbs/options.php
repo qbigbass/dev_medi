@@ -121,14 +121,14 @@ class Options extends TradingService\Marketplace\Options
 		return $this->getFieldsetCollection('STATUS_OUT_CANCELLED_OPTION');
 	}
 
-	public function getEnvironmentFieldActions(TradingEntity\Reference\Environment $environment)
+	public function getEnvironmentFieldActions()
 	{
 		return array_filter([
 			$this->getEnvironmentCancellationAcceptActions(),
 			$this->getEnvironmentDeliveryDateActions(),
 			$this->getEnvironmentOutletStorageLimitActions(),
 			$this->getEnvironmentItemsActions(),
-			$this->getEnvironmentCisActions($environment),
+			$this->getEnvironmentCisActions(),
 			$this->getEnvironmentCashboxActions(),
 		]);
 	}

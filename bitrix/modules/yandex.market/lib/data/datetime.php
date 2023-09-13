@@ -6,25 +6,6 @@ use Bitrix\Main;
 
 class DateTime extends Date
 {
-	// same date with UTC timezone shift
-	public static function toCanonical(Main\Type\DateTime $dateTime)
-	{
-		if ($dateTime instanceof Type\CanonicalDateTime) { return $dateTime; }
-
-		return Type\CanonicalDateTime::createFromTimestamp($dateTime->getTimestamp());
-	}
-
-	// same time with UTC timezone without shift
-	public static function asCanonical(Main\Type\DateTime $dateTime)
-	{
-		if ($dateTime instanceof Type\CanonicalDateTime) { return $dateTime; }
-
-		$format = 'Y-m-d H:i:s';
-		$dateString = $dateTime->format($format);
-
-		return new Type\CanonicalDateTime($dateString, $format);
-	}
-
 	public static function format(Main\Type\Date $date)
 	{
 		$timestamp = $date->getTimestamp();

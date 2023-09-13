@@ -198,7 +198,7 @@ if(
 				}
 			} */
 			
-			$cnt = 0;
+			
 			$time_start2 = microtime(true); 
 			if($obTitle->Search(
 				$arResult["work_query"]
@@ -229,11 +229,10 @@ if(
 						);
 						
 						$alreadyFinded[] = $ar["ITEM_ID"];
-						$cnt++;
 					}
 				}
 			}
-			$arResult["DEBUG"]["Q"][] = $arResult["work_query"] . ' (time: '.round((microtime(true) - $time_start2), 4).', cnt: '.$cnt.')';
+			$arResult["DEBUG"]["Q"][] = $arResult["work_query"] . ' ('.round((microtime(true) - $time_start2), 4).')';
 	
 			if(empty($alreadyFinded) && $arParams["USE_LANGUAGE_GUESS"] !== "N")
 			{
@@ -250,7 +249,6 @@ if(
 				
 				if($guessQuery)
 				{
-					$cnt = 0;
 					$time_start2 = microtime(true); 
 					if($obTitle->Search(
 						$guessQuery
@@ -281,7 +279,6 @@ if(
 								);
 								
 								$alreadyFinded[] = $ar["ITEM_ID"];
-								$cnt++;
 							}
 						}
 					}
@@ -290,7 +287,7 @@ if(
 						$arResult["DEBUG"]["TYPE"] = Loc::getMessage("SEARCH_DEBUG_TYPE_KEY");
 					}
 					
-					$arResult["DEBUG"]["Q"][] = $guessQuery . ' (time: '.round((microtime(true) - $time_start2), 4).', cnt: '.$cnt.')';
+					$arResult["DEBUG"]["Q"][] = $guessQuery . ' ('.round((microtime(true) - $time_start2), 4).')';
 				}
 			}
 			
@@ -318,16 +315,10 @@ if(
 							if(Enc::toLower($sWord) == Enc::toLower($arResult["work_query"]))
 								continue;
 							
-							if(CArturgolubevSmartsearch::checkMatrixLineEmpty($sWord)){
-								$arResult["DEBUG"]["Q"][] = $sWord . ' (skip)';
-								continue;
-							}
-							
 							if(!$smartcomponent->options['disable_item_id_filter']){
 								$exFILTER["!ITEM_ID"] = $alreadyFinded;
 							}
 							
-							$cnt = 0;
 							$time_start2 = microtime(true); 
 							if ($obTitle->Search(
 								  $sWord
@@ -355,14 +346,10 @@ if(
 										);
 										
 										$alreadyFinded[] = $ar["ITEM_ID"];
-										$cnt++;
 									}
 								}
 							}
-							
-							CArturgolubevSmartsearch::saveMatrixLineEmpty($sWord, $cnt);
-							
-							$arResult["DEBUG"]["Q"][] = $sWord . ' (time: '.round((microtime(true) - $time_start2), 4).', cnt: '.$cnt.')';
+							$arResult["DEBUG"]["Q"][] = $sWord . ' ('.round((microtime(true) - $time_start2), 4).')';
 							
 							if ($j > $arParams["TOP_COUNT"]) {
 								break(2);

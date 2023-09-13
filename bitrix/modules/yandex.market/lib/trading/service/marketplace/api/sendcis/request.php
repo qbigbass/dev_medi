@@ -8,6 +8,7 @@ use Yandex\Market;
 class Request extends Market\Api\Partner\Reference\Request
 {
 	protected $orderId;
+	protected $shipmentId;
 	protected $items;
 
 	public function getPath()
@@ -54,6 +55,21 @@ class Request extends Market\Api\Partner\Reference\Request
 		}
 
 		return (string)$this->orderId;
+	}
+
+	public function setShipmentId($shipmentId)
+	{
+		$this->shipmentId = $shipmentId;
+	}
+
+	public function getShipmentId()
+	{
+		if ($this->shipmentId === null)
+		{
+			throw new Main\SystemException('shipmentId not set');
+		}
+
+		return (string)$this->shipmentId;
 	}
 
 	public function setItems($items)

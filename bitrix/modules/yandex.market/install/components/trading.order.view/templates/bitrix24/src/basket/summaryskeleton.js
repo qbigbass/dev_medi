@@ -118,7 +118,6 @@ export default class SummarySkeleton {
 		]);
 
 		messageBox.show();
-		copyValues(this.el, messageBox.popupWindow.contentContainer);
 	}
 
 	onSaveClick(messageBox) {

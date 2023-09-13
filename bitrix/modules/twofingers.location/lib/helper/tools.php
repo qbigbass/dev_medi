@@ -14,9 +14,11 @@ use Bitrix\Main\Application;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\ArgumentOutOfRangeException;
+use Bitrix\Main\LoaderException;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SiteTable;
 use Bitrix\Main\SystemException;
+use CUtil;
 use TwoFingers\Location\Model\Iblock\Domain;
 
 /**
@@ -35,7 +37,7 @@ class Tools
      */
     public static function translit($name, $langId = LANGUAGE_ID): string
     {
-        return \CUtil::translit($name, $langId, ['replace_space' => '-', 'replace_other' => '-']);
+        return CUtil::translit($name, $langId, ['replace_space' => '-', 'replace_other' => '-']);
     }
 
     /**
@@ -47,14 +49,15 @@ class Tools
     public static function getSitesIds(): array
     {
         $query = [
-            'select'    => ['LID'],
-            'order'     => ['SORT' => 'ASC']
+            'select' => ['LID'],
+            'order'  => ['SORT' => 'ASC']
         ];
 
         $sites  = SiteTable::getList($query);
         $result = [];
-        while ($site = $sites->fetch())
+        while ($site = $sites->fetch()) {
             $result[] = $site['LID'];
+        }
 
         return $result;
     }
@@ -63,30 +66,32 @@ class Tools
      * @return array|false|mixed
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
      */
     public static function getAvailableDomains()
     {
-        $cache = Application::getInstance()->getManagedCache();
-        $cacheId= crc32(__METHOD__);
+        $cache   = Application::getInstance()->getManagedCache();
+        $cacheId = crc32(__METHOD__);
 
-        if ($cache->read(360000, $cacheId))
+        if ($cache->read(360000, $cacheId)) {
             return $cache->get($cacheId);
+        }
 
         // system domains
         $sites  = \CLang::GetList($by = 'SORT', $order = 'ASC', ['ACTIVE' => 'Y']);
         $result = [];
-        while ($site = $sites->Fetch())
-        {
+        while ($site = $sites->Fetch()) {
             $site['SERVER_NAME'] = trim($site['SERVER_NAME']);
-            if (strlen($site['SERVER_NAME']))
+            if (strlen($site['SERVER_NAME'])) {
                 $result[] = self::clearDomain($site['SERVER_NAME']);
+            }
 
             $domains = explode("\r\n", $site['DOMAINS']);
-            foreach ($domains as $domain)
-            {
+            foreach ($domains as $domain) {
                 $domain = trim($domain);
-                if (!strlen($domain))
+                if (!strlen($domain)) {
                     continue;
+                }
 
                 $result[] = self::clearDomain($domain);
             }
@@ -94,11 +99,11 @@ class Tools
 
         // domains iblock
         $domains = Domain::getByFilter(['!PROPERTY_' . Domain::PROPERTY_DOMAIN => false]);
-        foreach ($domains as $domain)
-        {
+        foreach ($domains as $domain) {
             $domainValue = trim($domain['PROPERTY_' . Domain::PROPERTY_DOMAIN . '_VALUE']);
-            if (!strlen($domainValue))
+            if (!strlen($domainValue)) {
                 continue;
+            }
 
             $result[] = self::clearDomain($domainValue);
         }

@@ -304,7 +304,7 @@ class PromoProduct extends Offer
             {
                 case 'change':
                 case 'refresh':
-                    $filter['>=TIMESTAMP_X'] = $this->getParameter('initTimeUTC');
+                    $filter['>=TIMESTAMP_X'] = $this->getParameter('initTime');
                 break;
             }
         }
@@ -340,11 +340,11 @@ class PromoProduct extends Offer
             if (!empty($offerChanges))
             {
                 $result[] = [
-                    '>=EXPORT_OFFER.TIMESTAMP_X' => $this->getParameter('initTimeUTC')
+                    '>=EXPORT_OFFER.TIMESTAMP_X' => $this->getParameter('initTime')
                 ];
 
 				$result[] = [
-					'>=EXPORT_CATEGORY.TIMESTAMP_X' => $this->getParameter('initTimeUTC'),
+					'>=EXPORT_CATEGORY.TIMESTAMP_X' => $this->getParameter('initTime'),
 					'=EXPORT_CATEGORY.STATUS' => static::STORAGE_STATUS_DELETE
 				];
             }

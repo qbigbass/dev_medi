@@ -28,7 +28,7 @@ class Environment
 		Market\Config::setOption('environment_timezone', date_default_timezone_get());
 	}
 
-	public static function getTimezone()
+	protected static function getTimezone()
 	{
 		return (string)Market\Config::getOption('environment_timezone');
 	}

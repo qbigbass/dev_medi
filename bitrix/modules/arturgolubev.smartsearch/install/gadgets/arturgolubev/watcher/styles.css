@@ -22,16 +22,15 @@
 	.ag-watcher-info td + td {
 		/* padding: 0 8px 4px 4px; */
 	}
-	.ag-watcher-info .colname {
+	.colname {
 		/* text-align: right; */
-		width: 65%;
+		width: 55%;
 	}
-	.ag-watcher-info .colcounter {
+	.colcounter {
 		font-weight: bold;
 		text-align: center;
-		min-width: 180px;
 	}
-	.ag-watcher-info .col_tac {
+	.col_tac {
 		text-align: center;
 	}
 

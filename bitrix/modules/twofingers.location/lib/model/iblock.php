@@ -19,6 +19,9 @@ use Bitrix\Main\LoaderException;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
+use CIBlock;
+use CIBlockProperty;
+use CIBlockType;
 use TwoFingers\Location\Helper\Tools;
 use TwoFingers\Location\Options;
 use Twofingers\Location\Property\Site;
@@ -42,41 +45,44 @@ class Iblock
     {
         $filter = ['ID' => self::TYPE];
 
-        return \CIBlockType::GetList([], $filter)->Fetch();
+        return CIBlockType::GetList([], $filter)->Fetch();
     }
 
     /**
-     * @return bool
+     * @return bool|int
      * @throws LoaderException
      */
     public static function createType()
     {
-        if (!Loader::includeModule('iblock'))
+        if (!Loader::includeModule('iblock')) {
             return false;
+        }
 
         $element = self::getType();
-        if ($element) return true;
+        if (isset($element['ID'])) {
+            return $element['ID'];
+        }
 
         $fields = [
-            'ID'        => self::TYPE,
-            'SECTIONS'  => 'Y',
-            'IN_RSS'    => 'N',
-            'SORT'      => 1000,
-            'LANG' => [
+            'ID'       => self::TYPE,
+            'SECTIONS' => 'Y',
+            'IN_RSS'   => 'N',
+            'SORT'     => 1000,
+            'LANG'     => [
                 'en' => [
-                    'NAME'          => Loc::getMessage('TFL_IBLOCK_TYPE_NAME', null, 'en'),
-                    'SECTION_NAME'  => Loc::getMessage('TFL_IBLOCK_TYPE_SECTION_NAME', null, 'en'),
-                    'ELEMENT_NAME'  => Loc::getMessage('TFL_IBLOCK_TYPE_ELEMENT_NAME', null, 'en')
+                    'NAME'         => Loc::getMessage('TFL_IBLOCK_TYPE_NAME', null, 'en'),
+                    'SECTION_NAME' => Loc::getMessage('TFL_IBLOCK_TYPE_SECTION_NAME', null, 'en'),
+                    'ELEMENT_NAME' => Loc::getMessage('TFL_IBLOCK_TYPE_ELEMENT_NAME', null, 'en')
                 ],
                 'ru' => [
-                    'NAME'          => Loc::getMessage('TFL_IBLOCK_TYPE_NAME', null, 'ru'),
-                    'SECTION_NAME'  => Loc::getMessage('TFL_IBLOCK_TYPE_SECTION_NAME', null, 'ru'),
-                    'ELEMENT_NAME'  => Loc::getMessage('TFL_IBLOCK_TYPE_ELEMENT_NAME', null, 'ru')
+                    'NAME'         => Loc::getMessage('TFL_IBLOCK_TYPE_NAME', null, 'ru'),
+                    'SECTION_NAME' => Loc::getMessage('TFL_IBLOCK_TYPE_SECTION_NAME', null, 'ru'),
+                    'ELEMENT_NAME' => Loc::getMessage('TFL_IBLOCK_TYPE_ELEMENT_NAME', null, 'ru')
                 ]
             ]
         ];
 
-        return (new \CIBlockType)->Add($fields);
+        return (new CIBlockType)->Add($fields);
     }
 
     /**
@@ -89,47 +95,51 @@ class Iblock
      * @throws SystemException
      *
      */
-    public static function create($code, $name = '', $description = '')
+    public static function create($code, string $name = '', string $description = '')
     {
         $name = trim($name);
-        if (!strlen($name))
+        if (!strlen($name)) {
             $name = Loc::getMessage('TFL_IBLOCK_' . $code . '_NAME');
+        }
 
         $description = trim($description);
-        if (!strlen($description))
+        if (!strlen($description)) {
             $description = Loc::getMessage('TFL_IBLOCK_' . $code . '_DESCRIPTION');
+        }
 
         $data = [
-            'ACTIVE'            => 'Y',
-            'NAME'              => $name,
-            'CODE'              => $code,
-            'IBLOCK_TYPE_ID'    => self::TYPE,
-            'SITE_ID'           => Tools::getSitesIds(),
-            'SORT'              => 50,
-            'DESCRIPTION'       => $description,
-            "GROUP_ID"          => ["2"=>"R"]
+            'ACTIVE'         => 'Y',
+            'NAME'           => $name,
+            'CODE'           => $code,
+            'IBLOCK_TYPE_ID' => self::TYPE,
+            'SITE_ID'        => Tools::getSitesIds(),
+            'SORT'           => 50,
+            'DESCRIPTION'    => $description,
+            "GROUP_ID"       => ["2" => "R"]
         ];
 
-        return (new \CIBlock)->Add($data);
+        return (new CIBlock)->Add($data);
     }
 
     /**
      * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
+     * @throws ArgumentOutOfRangeException|LoaderException
      */
     public static function remove()
     {
-        if (Loader::includeModule('iblock') && \CIBlock::Delete(static::getId()))
+        if (Loader::includeModule('iblock') && CIBlock::Delete(static::getId())) {
             Option::set(Options::MODULE_ID, static::OPTION_IBLOCK_ID, null);
+        }
     }
 
     /**
-     *
+     * @throws LoaderException
      */
     public static function removeType()
     {
-        if (Loader::includeModule('iblock'))
-            \CIBlockType::Delete(self::TYPE);
+        if (Loader::includeModule('iblock')) {
+            CIBlockType::Delete(self::TYPE);
+        }
     }
 
     /**
@@ -138,13 +148,13 @@ class Iblock
      * @throws ArgumentOutOfRangeException
      *
      */
-    public static function getId()
+    public static function getId(): int
     {
         return intval(Option::get('twofingers.location', static::OPTION_IBLOCK_ID));
     }
 
     /**
-     * @return array|null
+     * @return array|false
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
      * @throws LoaderException
@@ -153,54 +163,67 @@ class Iblock
     public static function getIblock()
     {
         $iblockId = static::getId();
-        if (!$iblockId || !Loader::includeModule('iblock'))
-            return null;
+        if (!$iblockId || !Loader::includeModule('iblock')) {
+            return false;
+        }
 
-        return \CIBlock::GetByID($iblockId)->Fetch();
+        return CIBlock::GetByID($iblockId)->Fetch();
     }
 
     /**
      * @param $code
-     * @return array|null
+     * @return array|false
      * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
+     * @throws ArgumentOutOfRangeException|LoaderException
      *
      */
     public static function getPropertyByCode($code)
     {
+        if (!Loader::includeModule('iblock')) {
+            return false;
+        }
+
         $iblockId = static::getId();
-        if (!$iblockId) return null;
+        if (!$iblockId) {
+            return false;
+        }
 
         $filter = [
             'CODE'      => $code,
             'IBLOCK_ID' => static::getId()
         ];
 
-        return \CIBlockProperty::GetList([], $filter)->Fetch();
+        return CIBlockProperty::GetList([], $filter)->Fetch();
     }
 
     /**
-     * @param     $code
+     * @param $code
      * @param int $sort
-     * @return bool
+     * @return false|mixed
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
      */
-    protected static function createCheckBoxProperty($code, $sort = 100)
+    protected static function createCheckBoxProperty($code, int $sort = 100)
     {
         $code = trim($code);
-        if (!strlen($code))
+        if (!strlen($code)) {
             throw new ArgumentNullException('code');
+        }
 
         $property = self::getPropertyByCode($code);
-        if ($property) return true;
+        if (isset($property['ID'])) {
+            return $property['ID'];
+        }
 
         $iblockId = self::getId();
-        if (!$iblockId) return false;
+        if (!$iblockId) {
+            return false;
+        }
 
-        $arFields = Array(
+        $arFields = [
             "NAME"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code),
-            "HINT"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code .'_HINT'),
+            "HINT"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code . '_HINT'),
             "ACTIVE"        => "Y",
             "SORT"          => $sort,
             "CODE"          => $code,
@@ -209,43 +232,49 @@ class Iblock
             'LIST_TYPE'     => 'C',
             'VALUES'        => [
                 [
-                    'VALUE' => Loc::getMessage('TFL_IBLOCK_PROP_' . $code . '_YES'),
-                    'DEF'   => 'N',
-                    'SORT'  => 100,
-                    'XML_ID'=> 'Y'
+                    'VALUE'  => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code . '_YES'),
+                    'DEF'    => 'N',
+                    'SORT'   => 100,
+                    'XML_ID' => 'Y'
                 ]
             ]
-        );
+        ];
 
-        return (new \CIBlockProperty)->Add($arFields);
+        return (new CIBlockProperty)->Add($arFields);
     }
 
     /**
-     * @param        $code
-     * @param array  $values
+     * @param $code
+     * @param array $values
      * @param string $multiple
-     * @param int    $sort
-     * @return bool|mixed
+     * @param int $sort
+     * @return false|mixed
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
+     * @throws SystemException
      */
-    protected static function createListProperty($code, array $values = [], $multiple = 'N', $sort = 100)
+    protected static function createListProperty($code, array $values = [], string $multiple = 'N', int $sort = 100)
     {
         $code = trim($code);
-        if (!strlen($code))
+        if (!strlen($code)) {
             throw new ArgumentNullException('code');
+        }
 
         $property = self::getPropertyByCode($code);
-        if ($property)
-            return true;
+
+        if (isset($property['ID'])) {
+            return $property['ID'];
+        }
 
         $iblockId = self::getId();
-        if (!$iblockId)
+        if (!$iblockId) {
             return false;
+        }
 
-        $arFields = Array(
+        $arFields = [
             "NAME"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code),
-            "HINT"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code .'_HINT'),
+            "HINT"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code . '_HINT'),
             "ACTIVE"        => "Y",
             "SORT"          => $sort,
             "CODE"          => $code,
@@ -254,31 +283,51 @@ class Iblock
             'LIST_TYPE'     => 'L',
             'MULTIPLE'      => $multiple,
             'VALUES'        => $values
-        );
+        ];
 
-        return (new \CIBlockProperty)->Add($arFields);
+        $iblockProperty = new CIBlockProperty;
+        $propertyId     = $iblockProperty->Add($arFields);
+        if (!$propertyId) {
+            throw new SystemException($iblockProperty->LAST_ERROR);
+        }
+
+        return $propertyId;
     }
+
     /**
-     * @param        $code
-     * @param int    $sort
+     * @param $code
+     * @param int $sort
      * @param string $required
-     * @return bool
+     * @param string $multiple
+     * @param string|null $userType
+     * @return bool|int
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
      */
-    public static function createStringProperty($code, $sort = 100, $required = 'N')
-    {
+    public static function createStringProperty(
+        $code,
+        int $sort = 100,
+        string $required = 'N',
+        string $multiple = 'N',
+        string $userType = null
+    ) {
         $code = trim($code);
-        if (!strlen($code))
+        if (!strlen($code)) {
             throw new ArgumentNullException('code');
+        }
 
         $property = self::getPropertyByCode($code);
-        if ($property) return true;
+        if (isset($property['ID'])) {
+            return $property['ID'];
+        }
 
         $iblockId = self::getId();
-        if (!$iblockId) return false;
+        if (!$iblockId) {
+            return false;
+        }
 
-        $arFields = Array(
+        $arFields = [
             "NAME"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code),
             "HINT"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code . '_HINT'),
             "ACTIVE"        => "Y",
@@ -286,122 +335,92 @@ class Iblock
             "CODE"          => $code,
             "PROPERTY_TYPE" => "S",
             "IBLOCK_ID"     => $iblockId,
-            'IS_REQUIRED'   => $required
-        );
+            'IS_REQUIRED'   => $required,
+            'MULTIPLE'      => $multiple
+        ];
 
-        return (new \CIBlockProperty)->Add($arFields);
+        if (isset($userType)) {
+            $arFields['USER_TYPE'] = $userType;
+        }
+
+        return (new CIBlockProperty)->Add($arFields);
     }
 
     /**
-     * @param        $code
-     * @param int    $sort
+     * @param $code
+     * @param int $sort
+     * @param string $multiple
+     * @return int|bool
+     * @throws ArgumentNullException
+     * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
+     * @deprecated
+     */
+    public static function createSiteProperty($code, int $sort = 100, string $multiple = 'Y')
+    {
+        return self::createStringProperty($code, $sort, 'N', $multiple, Site::USER_TYPE);
+    }
+
+    /**
+     * @param $code
+     * @param int $sort
      * @param string $multiple
      * @return bool
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
+     * @deprecated
      */
-    public static function createSiteProperty($code, $sort = 100, $multiple = 'Y')
+    protected static function createLocationProperty($code, int $sort = 100, string $multiple = 'Y')
     {
-        $code = trim($code);
-        if (!strlen($code))
-            throw new ArgumentNullException('code');
-
-        $property = self::getPropertyByCode($code);
-        if ($property) return true;
-
-        $iblockId = self::getId();
-        if (!$iblockId) return false;
-
-        $arFields = Array(
-            "NAME"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code),
-            "HINT"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code . '_HINT'),
-            "ACTIVE"        => "Y",
-            "SORT"          => $sort,
-            "CODE"          => $code,
-            "PROPERTY_TYPE" => "S",
-            'USER_TYPE'     => Site::USER_TYPE,
-            "IBLOCK_ID"     => $iblockId,
-            'IS_REQUIRED'   => 'N',
-            'MULTIPLE'      => $multiple == 'Y' ? 'Y' : 'N'
-        );
-
-        return (new \CIBlockProperty)->Add($arFields);
+        return self::createStringProperty($code, $sort, 'N', $multiple, \Twofingers\Location\Property\Location::USER_TYPE);
     }
 
     /**
-     * @param        $code
-     * @param int    $sort
+     * @param $code
+     * @param $linkIblockId
+     * @param int $sort
      * @param string $multiple
-     * @return bool
+     * @return false|mixed
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
      */
-    protected static function createLocationProperty($code, $sort = 100, $multiple = 'Y')
+    public static function createElementLinkProperty($code, $linkIblockId, int $sort = 100, string $multiple = 'N')
     {
         $code = trim($code);
-        if (!strlen($code))
+        if (!strlen($code)) {
             throw new ArgumentNullException('code');
-
-        $property = self::getPropertyByCode($code);
-        if ($property) return true;
-
-        $iblockId = self::getId();
-        if (!$iblockId) return false;
-
-        $arFields = Array(
-            "NAME"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code),
-            "HINT"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code . '_HINT'),
-            "ACTIVE"        => "Y",
-            "SORT"          => $sort,
-            "CODE"          => $code,
-            "PROPERTY_TYPE" => "S",
-            'USER_TYPE'     => \Twofingers\Location\Property\Location::USER_TYPE,
-            "IBLOCK_ID"     => $iblockId,
-            'IS_REQUIRED'   => 'N',
-            'MULTIPLE'      => $multiple == 'Y' ? 'Y' : 'N'
-        );
-
-        return (new \CIBlockProperty)->Add($arFields);
-    }
-
-    /**
-     * @param        $code
-     * @param        $linkIblockId
-     * @param int    $sort
-     * @param string $multiple
-     * @return bool|mixed
-     * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
-     */
-    public static function createElementLinkProperty($code, $linkIblockId, $sort = 100, $multiple = 'N')
-    {
-        $code = trim($code);
-        if (!strlen($code))
-            throw new ArgumentNullException('code');
+        }
 
         $linkIblockId = intval($linkIblockId);
-        if (!$linkIblockId)
+        if (!$linkIblockId) {
             throw new ArgumentNullException('linkIblockId');
+        }
 
         $property = self::getPropertyByCode($code);
-        if ($property) return true;
+        if (isset($property['ID'])) {
+            return $property['ID'];
+        }
 
         $iblockId = self::getId();
 
-        if (!$iblockId) return false;
+        if (!$iblockId) {
+            return false;
+        }
 
-        $arFields = Array(
-            "NAME"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code),
-            "HINT"          => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code . '_HINT'),
-            "ACTIVE"        => "Y",
-            "SORT"          => $sort,
-            "CODE"          => $code,
-            "PROPERTY_TYPE" => "E",
-            "IBLOCK_ID"     => $iblockId,
-            'LINK_IBLOCK_ID'=> $linkIblockId,
-            'MULTIPLE'      => $multiple == 'Y' ? 'Y' : 'N'
-        );
+        $arFields = [
+            "NAME"           => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code),
+            "HINT"           => Loc::getMessage('TFL_IBLOCK_PROP_' . static::CODE . $code . '_HINT'),
+            "ACTIVE"         => "Y",
+            "SORT"           => $sort,
+            "CODE"           => $code,
+            "PROPERTY_TYPE"  => "E",
+            "IBLOCK_ID"      => $iblockId,
+            'LINK_IBLOCK_ID' => $linkIblockId,
+            'MULTIPLE'       => $multiple == 'Y' ? 'Y' : 'N'
+        ];
 
-        return (new \CIBlockProperty)->Add($arFields);
+        return (new CIBlockProperty)->Add($arFields);
     }
 }

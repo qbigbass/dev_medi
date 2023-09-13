@@ -169,20 +169,6 @@ abstract class SkeletonReserves
 		]);
 	}
 
-	protected function loadWaiting(array $orderStates, array $productIds)
-	{
-		$orderIds = array_column($orderStates, 'INTERNAL_ID');
-
-		return $this->environment->getReserve()->getWaiting($orderIds, $productIds);
-	}
-
-	protected function loadReserves(array $orderStates, array $productIds)
-	{
-		$orderIds = array_column($orderStates, 'INTERNAL_ID');
-
-		return $this->environment->getReserve()->getReserved($orderIds, $productIds);
-	}
-
 	protected function loadSiblingReserves(array $orderStates, array $productIds)
 	{
 		$orderIds = array_map(static function($orderState) { return $orderState['INTERNAL_ID']; }, $orderStates);

@@ -245,6 +245,10 @@ class Store extends Market\Trading\Entity\Reference\Store
 	{
 		if (!empty($context['TRACE'])) { return $productIds; }
 
+		$stores = isset($context['STORES']) ? (array)$context['STORES'] : [];
+
+		if (empty($context['RESERVE']) || in_array(static::PRODUCT_FIELD_QUANTITY, $stores, true)) { return []; }
+
 		$result = [];
 
 		foreach (array_chunk($productIds, 500) as $chunkIds)

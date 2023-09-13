@@ -237,7 +237,7 @@ if($smartcomponent->baseQuery != ''){
 	
 	$q = $smartcomponent->query;
 	
-	CArturgolubevSmartsearch::checkRedirectRules(SITE_ID, $smartcomponent->baseQuery);
+	CArturgolubevSmartsearch::checkRedirectRules(SITE_ID, $q);
 }
 else
 {
@@ -348,7 +348,6 @@ if($this->InitComponentTemplate($templatePage))
 				
 		if(($smartcomponent->options['use_stemming'] || $smartcomponent->options['mode'] == 'standart') || !$arFilter["QUERY"])
 		{
-			$cnt = 0;
 			$time_start2 = microtime(true); 
 			$obSearch->Search($arFilter, $aSort, $exFILTER);
 			$arResult["ERROR_CODE"] = $obSearch->errorno;
@@ -363,11 +362,9 @@ if($this->InitComponentTemplate($templatePage))
 					
 					$ar = $smartcomponent->searchRowPrepare($ar);
 					$arResult["SEARCH"][]=$ar;
-					$cnt++;
 				}
 			}
-			
-			$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"] . ' (time: '.round((microtime(true) - $time_start2), 4).', cnt: '.$cnt.')';
+			$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"] . ' ('.round((microtime(true) - $time_start2), 4).')';
 		}
 		// end base-1
 		
@@ -377,7 +374,6 @@ if($this->InitComponentTemplate($templatePage))
 			$arFilter["QUERY"] = '"'.str_replace(' ', '" "', $q).'"';
 			if(!empty($arResult["arReturn"]) && !$smartcomponent->options['disable_item_id_filter']) $arFilter["!ITEM_ID"] = array_values($arResult["arReturn"]);
 			
-			$cnt = 0;
 			$time_start2 = microtime(true); 
 			$obSearch->Search($arFilter, $aSort, $exFILTER);
 			$arResult["ERROR_CODE"] = $obSearch->errorno;
@@ -395,7 +391,6 @@ if($this->InitComponentTemplate($templatePage))
 					
 					$ar = $smartcomponent->searchRowPrepare($ar);
 					$arResult["SEARCH"][]=$ar;
-					$cnt++;
 				}
 			}
 			
@@ -416,7 +411,7 @@ if($this->InitComponentTemplate($templatePage))
 				}
 			}
 			
-			$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"] . ' (time: '.round((microtime(true) - $time_start2), 4).', cnt: '.$cnt.')';
+			$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"].' ('.round((microtime(true) - $time_start2), 4).')';
 		}
 		// end base-2
 		
@@ -443,7 +438,6 @@ if($this->InitComponentTemplate($templatePage))
 				$arFilter["QUERY"] = $guessQuery;
 				if(!empty($arResult["arReturn"]) && !$smartcomponent->options['disable_item_id_filter']) $arFilter["!ITEM_ID"] = array_values($arResult["arReturn"]);
 				
-				$cnt = 0;
 				$time_start2 = microtime(true); 
 				$obSearch->Search($arFilter, $aSort, $exFILTER);
 				if($obSearch->errorno==0)
@@ -459,16 +453,14 @@ if($this->InitComponentTemplate($templatePage))
 						
 						$ar = $smartcomponent->searchRowPrepare($ar);
 						$arResult["SEARCH"][]=$ar;
-						$cnt++;
 					}
 				}
-				$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"] . ' (time: '.round((microtime(true) - $time_start2), 4).', cnt: '.$cnt.')';
+				$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"] . ' ('.round((microtime(true) - $time_start2), 4).')';
 				
 				if(count($arResult["SEARCH"]) > 0 && $smartcomponent->options['use_guessplus'] && $smartcomponent->options['use_stemming'] && $smartcomponent->options['mode'] != 'standart'){
 					$arFilter["QUERY"] = '"'.str_replace(' ', '" "', $guessQuery).'"';
 					if(!empty($arResult["arReturn"]) && !$smartcomponent->options['disable_item_id_filter']) $arFilter["!ITEM_ID"] = array_values($arResult["arReturn"]);
 					
-					$cnt = 0;
 					$time_start2 = microtime(true); 
 					$obSearch->Search($arFilter, $aSort, $exFILTER);
 					if($obSearch->errorno==0)
@@ -484,10 +476,9 @@ if($this->InitComponentTemplate($templatePage))
 							
 							$ar = $smartcomponent->searchRowPrepare($ar);
 							$arResult["SEARCH"][]=$ar;
-							$cnt++;
 						}
 					}
-					$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"] . ' (time: '.round((microtime(true) - $time_start2), 4).', cnt: '.$cnt.')';
+					$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"] . ' ('.round((microtime(true) - $time_start2), 4).')';
 				}
 				
 				if(count($arResult["SEARCH"]) > 0)
@@ -522,17 +513,11 @@ if($this->InitComponentTemplate($templatePage))
 			{
 				foreach($arLavelsWords as $level=>$searchArray)
 				{
-					foreach($searchArray as $searchIteration){
-						if(CArturgolubevSmartsearch::checkMatrixLineEmpty($searchIteration)){
-							$arResult["DEBUG"]["Q"][] = $searchIteration . ' (skip)';
-							continue;
-						}
-						
+					foreach($searchArray as $searchIteration){						
 						$arFilter["QUERY"] = $searchIteration;
 						
 						if(!empty($arResult["arReturn"]) && !$smartcomponent->options['disable_item_id_filter']) $arFilter["!ITEM_ID"] = array_values($arResult["arReturn"]);
 						
-						$cnt = 0;
 						$time_start2 = microtime(true); 
 						$obSearch->Search($arFilter, $aSort, $exFILTER);
 						if($obSearch->errorno==0)
@@ -548,13 +533,9 @@ if($this->InitComponentTemplate($templatePage))
 								
 								$ar = $smartcomponent->searchRowPrepare($ar);
 								$arResult["SEARCH"][]=$ar;
-								$cnt++;
 							}
 						}
-						
-						CArturgolubevSmartsearch::saveMatrixLineEmpty($searchIteration, $cnt);
-						
-						$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"] . ' (time: '.round((microtime(true) - $time_start2), 4).', cnt: '.$cnt.')';
+						$arResult["DEBUG"]["Q"][] = $arFilter["QUERY"] . ' ('.round((microtime(true) - $time_start2), 4).')';
 					}
 
 					if (!empty($arResult["arReturn"])) {

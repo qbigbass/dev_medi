@@ -7,8 +7,6 @@ use Yandex\Market;
 
 class AgentTable extends Market\Reference\Storage\Table
 {
-	const VERSION = 2;
-
 	public static function getTableName()
 	{
 		return 'yamarket_export_run_agent';
@@ -35,12 +33,7 @@ class AgentTable extends Market\Reference\Storage\Table
 				'size' => 64,
 				'validation' => [__CLASS__, 'validateOffset']
 			]),
-			new Market\Reference\Storage\Field\CanonicalDateTime('START_TIME'),
-			new Main\Entity\EnumField('VERSION', [
-				'required' => true,
-				'default_value' => static::VERSION,
-				'values' => range(1, static::VERSION),
-			]),
+			new Main\Entity\DatetimeField('START_TIME')
 		];
 	}
 
@@ -67,7 +60,6 @@ class AgentTable extends Market\Reference\Storage\Table
 
 	public static function migrate(Main\DB\Connection $connection)
 	{
-		parent::migrate($connection);
 		static::migrateIncreaseOffsetLength($connection);
 	}
 

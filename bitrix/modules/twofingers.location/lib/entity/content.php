@@ -7,10 +7,13 @@ use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\ArgumentOutOfRangeException;
 use Bitrix\Main\LoaderException;
 use Bitrix\Main\SystemException;
-use \TwoFingers\Location\Model\Iblock\Content as ContentIblock;
+use TwoFingers\Location\Factory\ContentFactory;
+use TwoFingers\Location\Factory\LocationFactory;
+use Twofingers\Location\Internal\Collection;
+use Twofingers\Location\Internal\HasCollectionTrait;
+use TwoFingers\Location\Model\Iblock\Content as ContentIblock;
 use TwoFingers\Location\Model\Iblock\Domain;
 use TwoFingers\Location\Options;
-use TwoFingers\Location\Storage;
 
 /**
  * Class Content
@@ -19,55 +22,40 @@ use TwoFingers\Location\Storage;
  */
 class Content
 {
-    /** @var array */
-    protected $data;
+    use HasCollectionTrait;
 
     /** @var string */
     protected $domain = false;
 
+
     /**
      * Content constructor.
      *
-     * @param array $data
+     * @param Collection $collection
      */
-    protected function __construct(array $data)
+    public function __construct(Collection $collection)
     {
-        $this->data = $data;
+        $this->collection = $collection;
     }
 
     /**
-     * @param Location|null $location
-     * @return Content|null
-     * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
-     * @throws LoaderException
-     * @throws SystemException
+     * @param $name
+     * @param $arguments
+     * @return mixed|null
      */
-    public static function buildByLocation(Location $location = null): ?Content
+    public function __call($name, $arguments)
     {
-        $data = ContentIblock::getByLocationId($location->getPrimary(), $location->getSiteId());
+        if (strpos($name, 'get') !== 0) {
+            return null;
+        }
 
-        if (empty($data) && Options::isCapabilityMode())
-            $data = ContentIblock::getByName($location->getName(), $location->getSiteId());;
+        $fieldName = Options::fromCamelCase(substr($name, 3), '_', true);
 
-        return $data ? new self($data) : null;
-    }
+        if ($this->collection->offsetExists($fieldName)) {
+            return $this->getFieldValue($fieldName);
+        }
 
-    /**
-     * @return Content|null
-     * @throws ArgumentNullException
-     * @throws ArgumentOutOfRangeException
-     * @throws LoaderException
-     * @throws SystemException
-     * @throws ArgumentException
-     */
-    public static function buildByStorage(): ?Content
-    {
-        $location = Storage::getLocation();
-        if (empty($location))
-            $location = Location::buildDefault();
-
-        return $location ? $location->getContent() : null;
+        return $this->getPropertyValue($fieldName);
     }
 
     /**
@@ -77,12 +65,11 @@ class Content
     public function getFieldValue($field)
     {
         $field = trim($field);
-        if (!strlen($field))
+        if (!strlen($field)) {
             return null;
+        }
 
-        return isset($this->data[$field])
-            ? $this->data[$field]
-            : null;
+        return $this->collection->offsetGet($field);
     }
 
     /**
@@ -92,15 +79,16 @@ class Content
     public function getPropertyValue($propertyCode)
     {
         $propertyCode = trim($propertyCode);
-        if (!strlen($propertyCode))
+        $data         = $this->getData();
+        if (!strlen($propertyCode)) {
             return null;
+        }
 
-        if (isset($this->data['PROPERTIES'][$propertyCode]['DISPLAY_VALUE']))
-            return $this->data['PROPERTIES'][$propertyCode]['DISPLAY_VALUE'];
+        if (isset($data['PROPERTIES'][$propertyCode]['DISPLAY_VALUE'])) {
+            return $data['PROPERTIES'][$propertyCode]['DISPLAY_VALUE'];
+        }
 
-        return isset($this->data['PROPERTIES'][$propertyCode]['VALUE'])
-            ? $this->data['PROPERTIES'][$propertyCode]['VALUE']
-            : null;
+        return $data['PROPERTIES'][$propertyCode]['VALUE'] ?? null;
     }
 
     /**
@@ -126,8 +114,9 @@ class Content
     public function getValue($fieldName)
     {
         $value = $this->getFieldValue($fieldName);
-        if (is_null($value))
+        if (is_null($value)) {
             $value = $this->getPropertyValue($fieldName);
+        }
 
         return $value;
     }
@@ -136,20 +125,17 @@ class Content
      * @return mixed|string|null
      * @throws ArgumentNullException
      * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
      */
     public function getDomain()
     {
-        if ($this->domain === false)
-        {
+        if ($this->domain === false) {
             $domainId = $this->getPropertyValue(ContentIblock::PROPERTY_DOMAIN);
-            if (!$domainId)
-            {
-                $this->domain = null;;
+            if (!$domainId) {
+                $this->domain = null;
             } else {
-                $domain = Domain::getByFilter(['ID' => $domainId]);
-                $this->domain = isset($domain[0]['PROPERTY_DOMAIN_VALUE'])
-                    ? $domain[0]['PROPERTY_DOMAIN_VALUE']
-                    : null;
+                $domain       = Domain::getByFilter(['ID' => $domainId]);
+                $this->domain = rtrim($domain[0]['PROPERTY_DOMAIN_VALUE'], '/\\') ?? null;
             }
         }
 
@@ -165,10 +151,69 @@ class Content
     }
 
     /**
+     * @return mixed|null
+     */
+    public function getPhone()
+    {
+        return $this->getPropertyValue(ContentIblock::PROPERTY_PHONE);
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getPriceTypes()
+    {
+        return $this->getPropertyValue(ContentIblock::PROPERTY_PRICE_TYPES);
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getStores()
+    {
+        return $this->getPropertyValue(ContentIblock::PROPERTY_STORES);
+    }
+
+    /**
      * @return array
      */
     public function getData(): array
     {
-        return $this->data;
+        return $this->collection->getCollection();
+    }
+
+
+    /**
+     * @param Location|null $location
+     * @return Content|null
+     * @throws ArgumentException
+     * @throws ArgumentNullException
+     * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
+     * @throws SystemException
+     * @deprecated
+     */
+    public static function buildByLocation(Location $location = null): ?Content
+    {
+        return $location ? ContentFactory::buildByLocation($location) : null;
+    }
+
+    /**
+     * @return Content|null
+     * @throws ArgumentNullException
+     * @throws ArgumentOutOfRangeException
+     * @throws LoaderException
+     * @throws SystemException
+     * @throws ArgumentException
+     * @deprecated
+     */
+    public static function buildByStorage(): ?Content
+    {
+        $location = LocationFactory::buildByStorage(SITE_ID, LANGUAGE_ID);
+        if (empty($location)) {
+            $location = LocationFactory::buildDefault(SITE_ID, LANGUAGE_ID);
+        }
+
+        return $location ? $location->getContent() : null;
     }
 }

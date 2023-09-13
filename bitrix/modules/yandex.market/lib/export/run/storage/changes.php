@@ -38,7 +38,7 @@ class ChangesTable extends Market\Reference\Storage\Table
 				'size' => 20,
 				'validation' => [__CLASS__, 'validateEntityId'],
 			]), // may be currency id and bigInt
-			new Market\Reference\Storage\Field\CanonicalDateTime('TIMESTAMP_X', [
+			new Main\Entity\DatetimeField('TIMESTAMP_X', [
 				'required' => true
 			])
 		];
