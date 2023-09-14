@@ -3,7 +3,6 @@ define("NO_KEEP_STATISTIC", true);
 define("NOT_CHECK_PERMISSIONS",true);
 
 /* Скрипт для установки значений в поле "Сортировка" ИБ "Основной каталог товаров" */
-$_SERVER['DOCUMENT_ROOT'] = "E:/htdocs/medi-salon/domains/local.medi-salon.ru";
 require_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php");
 
 set_time_limit(0);
