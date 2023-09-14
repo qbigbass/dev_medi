@@ -101,6 +101,9 @@ if (!empty($arrProducts)) {
     }
 
     $el = new CIBlockElement;
+
+    $GLOBALS["NOT_RUN_UPDATE_SORT_PRODUCT_CATALOG"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSortProductCatalog
+
     foreach ($arrProducts as $productId => $data) {
         $el->Update($productId, ["SORT" => $data["SORT"]]);
     }
