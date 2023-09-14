@@ -591,6 +591,9 @@
 .share a {
 	margin-right: 8px;
 }
+.share iframe {
+	display: none;
+}
 .text-url {
 	display: flex;
 	align-items: center;
