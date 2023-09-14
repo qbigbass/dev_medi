@@ -3,6 +3,16 @@ define("NO_KEEP_STATISTIC", true);
 define("NOT_CHECK_PERMISSIONS",true);
 
 /* Скрипт для установки значений в поле "Сортировка" ИБ "Основной каталог товаров" */
+if (strlen($argv[1])) {
+    if ($argv[1] === 'prod') {
+        $_SERVER['DOCUMENT_ROOT'] = "/home/bitrix/www/";
+    } elseif ($argv[1] === 'dev2') {
+        $_SERVER['DOCUMENT_ROOT'] = "/home/bitrix/ext_www/dev2.medi-salon.ru/";
+    } else {
+        die();
+    }
+}
+
 require_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php");
 
 set_time_limit(0);
