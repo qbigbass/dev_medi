@@ -1085,7 +1085,7 @@ function imageXmlSitemapGen()
     return 'imageXmlSitemapGen();';
 }
 
-// При обновлении св-ва "Наши предложения" у элемента в ИБ "Основной каталог товаров" изменяется значение сортировки у товара
+// При обновлении св-ва "Наши предложения" у элемента в ИБ "Основной каталог товаров" изменяется значение сортировки у этого товара
 AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", "UpdateSortProductCatalog");
 function UpdateSortProductCatalog(&$arFields)
 {
@@ -1153,6 +1153,7 @@ function UpdateSortProductCatalog(&$arFields)
     }
 }
 
+// При создании нового элемента в ИБ "Основной каталог товаров" рассчитывается значение сортировки у этого товара
 AddEventHandler("iblock", "OnBeforeIBlockElementAdd", "SetSortProductCatalog");
 function SetSortProductCatalog(&$arFields)
 {
