@@ -8,15 +8,10 @@ global $APPLICATION;
 
 $arSortFields = array(
     "SORT" => array(
-        "ORDER" => "ASC",
+        "ORDER" => "DESC",
         "CODE" => "SORT",
         "NAME" => GetMessage("CATALOG_SORT_FIELD_SHOWS")
     ),
-    /*"NAME" => array( // параметр в url
-        "ORDER"=> "ASC", //в возрастающем порядке
-        "CODE" => "NAME", // Код поля для сортировки
-        "NAME" => GetMessage("CATALOG_SORT_FIELD_NAME") // имя для вывода в публичной части, редактировать в (/lang/ru/section.php)
-    ),*/
     "PRICE_ASC" => array(
         "ORDER" => "ASC",
         "CODE" => "PROPERTY_MINIMUM_PRICE",  // изменен для сортировки по ТП
