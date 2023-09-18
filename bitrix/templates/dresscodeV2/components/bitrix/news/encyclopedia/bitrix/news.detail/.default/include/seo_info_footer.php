@@ -29,7 +29,7 @@ $url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP
         <div class="share-brick">
             <div class="ff-medium h3 marg">Поделиться статьей:</div>
             <div class="share">
-                <a href="whatsapp://send?text=followed" data-href="<?=$url?>" class="wa_btn">
+                <a href="whatsapp://send" data-href="<?=$url?>" class="wa_btn" data-text="Пройдите по ссылке">
                     <img src="/bitrix/templates/dresscodeV2/components/bitrix/news/encyclopedia/bitrix/news.detail/.default/include/wa.svg">
                 </a>
                 <a href="https://connect.ok.ru/offer?url=<?=$url?>">
