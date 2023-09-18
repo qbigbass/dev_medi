@@ -1,6 +1,56 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+
+use Bitrix\Main\Loader;
+
+Loader::includeModule("highloadblock");
+
+use Bitrix\Highloadblock as HL;
+use Bitrix\Main\Entity;
+
 $preview_text = $arResult['IPROPERTY_VALUES']['ELEMENT_META_DESCRIPTION'] != '' ?
     $arResult['IPROPERTY_VALUES']['ELEMENT_META_DESCRIPTION'] : $arResult['NAME'];
+
+/* Автор статьи */
+if ($arResult["PROPERTIES"]["AUTHOR_POST"]["VALUE"] !== "") {
+    $value = $arResult["PROPERTIES"]["AUTHOR_POST"]["VALUE"];
+
+    $hlBlock = HL\HighloadBlockTable::getList([
+        'filter' => ['=NAME' => 'ExpertsEncPosts']
+    ])->fetch();
+
+    if (!empty($hlBlock)) {
+        $hlBlockId = $hlBlock["ID"];
+        $entity = HL\HighloadBlockTable::compileEntity($hlBlock);
+        $entityDataClass = $entity->getDataClass();
+
+        $rsData = $entityDataClass::getList(array(
+            "select" => array("*"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array("UF_XML_ID" => $value),
+            "limit" => 1
+        ));
+
+        while ($arData = $rsData->Fetch()){
+            $arResult["EXPERT_POST"]["NAME"] = $arData["UF_ENC_EXPERT_NAME"];
+            $arResult["EXPERT_POST"]["EXPERIENCE"] = $arData["UF_ENC_EXPERT_EXP"];
+            $arResult["EXPERT_POST"]["SPECIALTY"] = $arData["UF_ENC_EXPERT_PROF"];
+
+            if ($arData["UF_ENC_EXPERT_IMG"] !== "") {
+                $file = CFile::ResizeImageGet(
+                    $arData["UF_ENC_EXPERT_IMG"],
+                    [
+                        "width" => 83, "height" => 83
+                    ],
+                    BX_RESIZE_IMAGE_PROPORTIONAL
+                );
+
+                if (!empty($file)) {
+                    $arResult["EXPERT_POST"]["IMG"] = $file["src"];
+                }
+            }
+        }
+    }
+}
 
 ?>
     <script type="application/ld+json">
@@ -33,11 +83,13 @@ $preview_text = $arResult['IPROPERTY_VALUES']['ELEMENT_META_DESCRIPTION'] != '' 
     
     </script>
 <?
+$this->__component->arResult['LIKES_CNT'] = $arResult["PROPERTIES"]["LIKES_CNT"]["VALUE"];
 $this->__component->SetResultCacheKeys(array(
     "NAME",
     "PREVIEW_TEXT",
     "PREVIEW_PICTURE",
     "DETAIL_PICTURE",
     "DETAIL_PAGE_URL",
-    "RELATED"
+    "RELATED",
+    "LIKES_CNT"
 )); ?>

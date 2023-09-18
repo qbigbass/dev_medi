@@ -182,6 +182,12 @@
                    id="catalogSlideButton"><br><span>Каталог</span></a>
             </div>
             <div>
+                <?
+                $APPLICATION->IncludeComponent("medi:favorites.products", "", []);
+                ?>
+                <br><span class="<?= (strpos($APPLICATION->GetCurDir(), 'lk/') ? 'active' : '') ?>">Избранное</span>
+            </div>
+            <div>
                 <div id="flushFooterCart">
                     <? $APPLICATION->IncludeComponent(
                         "bitrix:sale.basket.basket.line",
@@ -242,7 +248,7 @@
 
 <? if ($USER->IsAuthorized() && !empty(array_intersect([29], $USER->GetUserGroupArray()))) {
     $APPLICATION->IncludeComponent(
-        
+
         "bitrix:main.include",
         ".default",
         array(
@@ -283,32 +289,32 @@
 </div>
 
 <script type="text/javascript">
-    var ajaxPath = "<?=SITE_DIR?>ajax.php";
-    var SITE_DIR = "<?=SITE_DIR?>";
-    var SITE_ID = "<?=SITE_ID?>";
-    var TEMPLATE_PATH = "<?=SITE_TEMPLATE_PATH?>";
+  var ajaxPath = "<?=SITE_DIR?>ajax.php";
+  var SITE_DIR = "<?=SITE_DIR?>";
+  var SITE_ID = "<?=SITE_ID?>";
+  var TEMPLATE_PATH = "<?=SITE_TEMPLATE_PATH?>";
 </script>
 
 <script type="text/javascript">
-    var LANG = {
-        BASKET_ADDED: "<?=GetMessage("BASKET_ADDED")?>",
-        WISHLIST_ADDED: "<?=GetMessage("WISHLIST_ADDED")?>",
-        ADD_COMPARE_ADDED: "<?=GetMessage("ADD_COMPARE_ADDED")?>",
-        ADD_CART_LOADING: "<?=GetMessage("ADD_CART_LOADING")?>",
-        ADD_BASKET_DEFAULT_LABEL: "<?=GetMessage("ADD_BASKET_DEFAULT_LABEL")?>",
-        ADDED_CART_SMALL: "<?=GetMessage("ADDED_CART_SMALL")?>",
-        CATALOG_AVAILABLE: "<?=GetMessage("CATALOG_AVAILABLE")?>",
-        GIFT_PRICE_LABEL: "<?=GetMessage("GIFT_PRICE_LABEL")?>",
-        CATALOG_ON_ORDER: "<?=GetMessage("CATALOG_ON_ORDER")?>",
-        CATALOG_NO_AVAILABLE: "<?=GetMessage("CATALOG_NO_AVAILABLE")?>",
-        FAST_VIEW_PRODUCT_LABEL: "<?=GetMessage("FAST_VIEW_PRODUCT_LABEL")?>",
-        CATALOG_ECONOMY: "<?=GetMessage("CATALOG_ECONOMY")?>",
-        WISHLIST_SENDED: "<?=GetMessage("WISHLIST_SENDED")?>",
-        REQUEST_PRICE_LABEL: "<?=GetMessage("REQUEST_PRICE_LABEL")?>",
-        REQUEST_PRICE_BUTTON_LABEL: "<?=GetMessage("REQUEST_PRICE_BUTTON_LABEL")?>",
-        ADD_SUBSCRIBE_LABEL: "<?=GetMessage("ADD_SUBSCRIBE_LABEL")?>",
-        REMOVE_SUBSCRIBE_LABEL: "<?=GetMessage("REMOVE_SUBSCRIBE_LABEL")?>"
-    };
+  var LANG = {
+    BASKET_ADDED: "<?=GetMessage("BASKET_ADDED")?>",
+    WISHLIST_ADDED: "<?=GetMessage("WISHLIST_ADDED")?>",
+    ADD_COMPARE_ADDED: "<?=GetMessage("ADD_COMPARE_ADDED")?>",
+    ADD_CART_LOADING: "<?=GetMessage("ADD_CART_LOADING")?>",
+    ADD_BASKET_DEFAULT_LABEL: "<?=GetMessage("ADD_BASKET_DEFAULT_LABEL")?>",
+    ADDED_CART_SMALL: "<?=GetMessage("ADDED_CART_SMALL")?>",
+    CATALOG_AVAILABLE: "<?=GetMessage("CATALOG_AVAILABLE")?>",
+    GIFT_PRICE_LABEL: "<?=GetMessage("GIFT_PRICE_LABEL")?>",
+    CATALOG_ON_ORDER: "<?=GetMessage("CATALOG_ON_ORDER")?>",
+    CATALOG_NO_AVAILABLE: "<?=GetMessage("CATALOG_NO_AVAILABLE")?>",
+    FAST_VIEW_PRODUCT_LABEL: "<?=GetMessage("FAST_VIEW_PRODUCT_LABEL")?>",
+    CATALOG_ECONOMY: "<?=GetMessage("CATALOG_ECONOMY")?>",
+    WISHLIST_SENDED: "<?=GetMessage("WISHLIST_SENDED")?>",
+    REQUEST_PRICE_LABEL: "<?=GetMessage("REQUEST_PRICE_LABEL")?>",
+    REQUEST_PRICE_BUTTON_LABEL: "<?=GetMessage("REQUEST_PRICE_BUTTON_LABEL")?>",
+    ADD_SUBSCRIBE_LABEL: "<?=GetMessage("ADD_SUBSCRIBE_LABEL")?>",
+    REMOVE_SUBSCRIBE_LABEL: "<?=GetMessage("REMOVE_SUBSCRIBE_LABEL")?>"
+  };
 </script>
 
 <script type="text/javascript">
@@ -316,7 +322,7 @@
     var globalSettings = {
         <?foreach($arTemplateSettings as $settingsIndex => $nextSettingValue):?>
         <?if(!DwSettings::checkSecretSettingsByIndex($settingsIndex)):?>
-        "<?=$settingsIndex?>": '<?=$nextSettingValue?>',
+      "<?=$settingsIndex?>": '<?=$nextSettingValue?>',
         <?endif;?>
         <?endforeach;?>
     }
@@ -335,33 +341,33 @@
     )
 ); ?>
 <script>
-    waitForVk(function () {
-        if (vViewedProdsPrice > 0) {
-            const eventParams = {
-                "products": vViewedProds,
+  waitForVk(function () {
+    if (vViewedProdsPrice > 0) {
+      const eventParams = {
+        "products": vViewedProds,
 
-                //"business_value" : 88,
-                "total_price": vViewedProdsPrice
-            };
-            <?if (!strpos($APPLICATION->GetCurDir(), 'catalog/') && !strpos($APPLICATION->GetCurDir(), 'personal/')) {?>
-            <?if ($APPLICATION->GetCurDir() == '/') {
-            $view_event = 'view_home';
-        } else {
-            $view_event = 'view_other';
-        }?>
-            VK.Retargeting.ProductEvent(PRICE_LIST_ID, '<?=$view_event;?>', eventParams);
-            <?}?>
-        }
-    });
+        //"business_value" : 88,
+        "total_price": vViewedProdsPrice
+      };
+        <?if (!strpos($APPLICATION->GetCurDir(), 'catalog/') && !strpos($APPLICATION->GetCurDir(), 'personal/')) {?>
+        <?if ($APPLICATION->GetCurDir() == '/') {
+        $view_event = 'view_home';
+    } else {
+        $view_event = 'view_other';
+    }?>
+      VK.Retargeting.ProductEvent(PRICE_LIST_ID, '<?=$view_event;?>', eventParams);
+        <?}?>
+    }
+  });
 </script>
 <? if ($nUserID > 0):
     ?>
     <script>
-        waitForYm(function () {
-            ym(30121774, 'userParams', {
-                UserID: <?=$nUserID?>
-            });
-        });</script><?
+      waitForYm(function () {
+        ym(30121774, 'userParams', {
+          UserID: <?=$nUserID?>
+        });
+      });</script><?
 endif; ?>
 
 <? $Mobile_Detect = new Mobile_Detect;
@@ -369,7 +375,7 @@ if ($Mobile_Detect->isMobile()) {
     $phone = $GLOBALS['medi']['phones'][SITE_ID];
     $sphone = str_replace([' ', '-'], '', $phone);
     ?>
-    
+
     <? php/*
 <a href="tel:<?=$sphone?>" class="phButton  link callBack" id="phoneMobButton" onclick="ym(30121774, 'reachGoal', 'CLICK_PHONE');return true;"></a>
 */
@@ -391,5 +397,78 @@ if ($Mobile_Detect->isMobile()) {
     ),
     false
 ); ?><!--/noindex-->
+<?
+global $FAVORITE_ITEMS;
+?>
+<script>
+  $('.b-card-favorite').each(function (){
+    $(this).removeClass('active');
+  });
+</script>
+<?
+/* Отмечаем избранные товары во всех блоках на всех страницах */
+if (!empty($FAVORITE_ITEMS)) {
+    ?>
+    <input type="hidden" name="favorite_items" value="<?=json_encode($FAVORITE_ITEMS)?>">
+    <?php
+    foreach ($FAVORITE_ITEMS as $favoriteProductItem) {?>
+        <script>
+          if ($('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]')) {
+            $('.b-card-favorite[data-product-id="<?=$favoriteProductItem?>"]').addClass('active');
+          }
+        </script>
+    <?}
+}
+if ($USER->IsAuthorized()) {?>
+    <input type="hidden" name="user_auth" value="1">
+    <?
+}
+?>
+<script>
+  var windowInnerWidth = window.innerWidth;
+  var detect = new MobileDetect(window.navigator.userAgent);
+  var isAdaptive = detect.mobile();
+  var userAgent = detect.userAgent();
+  
+  if (isAdaptive || windowInnerWidth <= 1024) {
+    $('body').addClass('_adaptive');
+    $('body').addClass(userAgent);
+    $('.single-item').each(function() {
+      if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
+        var defaultOptions = {
+          dots: true,
+          arrows:false,
+          slidesToShow: 1,
+          variableWidth: true,
+          adaptiveHeight: true
+        }
+        if ($(this).hasClass('detail_product')) {
+          defaultOptions.dots = false;
+          defaultOptions.autoplay = true;
+          defaultOptions.autoplaySpeed = 5000;
+          defaultOptions.variableWidth = false;
+        }
+        if (windowInnerWidth > 820) {
+          defaultOptions.variableWidth = false;
+        }
+
+        $(this).slick(defaultOptions);
+
+        if (windowInnerWidth <= 1024) { // На разрешении выше блок с цветами не отображается сбоку КТ
+            $(this).on("touchstart", function(){
+              $(this).parents('.productTable').find('.item_colors').hide();
+            });
+            $(this).on("touchend", function(){
+              $(this).parents('.productTable').find('.item_colors').show();
+            });
+        }
+      }
+    });
+  }
+</script>
+<? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/slick.min.js"); ?>
+<script type="text/javascript">
+    if(typeof wabtn4fg==="undefined"){wabtn4fg=1;h=document.head||document.getElementsByTagName("head")[0],s=document.createElement("script");s.type="text/javascript";s.src="<?=SITE_TEMPLATE_PATH?>/js/whatsapp-button.js";h.appendChild(s);}
+</script>
 </body>
 </html>

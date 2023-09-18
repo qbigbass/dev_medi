@@ -137,6 +137,7 @@ if (!empty($cItems)) {
              data-phone='" . $_SESSION['lmx']['phone'] . "'
              data-card='" . $_SESSION['lmx']['client_card'] . "'
              data-consult='" . $_SESSION['lmx']['consultant'] . "'
+             data-recommender='" . $_SESSION['lmx']['recommender'] . "'
              data-date-min = '" . date("Y-m-d", time() - 86400) . "'
              data-date-max = '" . date("Y-m-d", time() + 30 * 86400) . "'
              data-date-val = '" . date("Y-m-d", time() + 86400) . "'
@@ -172,6 +173,14 @@ if (!empty($cItems)) {
             'bx-soa-customer-input bx-ios-fix"></div></div>';
 
         $("#orderDescription").parents("div.col-sm-12").append($str);
+
+        $str1 = '<div class="form-group bx-soa-customer-field" data-property-id-row="53">' +
+            '<label for="soa-property-53" class="bx-soa-custom-label">Рекомендатель</label>' +
+            '<div class="soa-property-container"><input type="text" size="35" name="ORDER_PROP_53"' +
+            ' id="soa-property-53" placeholder="" value="<?=$_SESSION['lmx']['recommender']?>" class="form-control ' +
+            'bx-soa-customer-input bx-ios-fix"></div></div>';
+
+        $("#orderDescription").parents("div.col-sm-12").append($str1);
 
         $str2 = '<div class="form-group bx-soa-customer-field" data-property-id-row="52">' +
             '<label for="soa-property-52-inp" class="bx-soa-custom-label">Дата доставки</label>' +

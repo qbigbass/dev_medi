@@ -1,0 +1,80 @@
+<?
+$specMenu = [
+    [
+    'link' => '/catalog/odezhda-dlya-sporta/beg-fitnes/',
+    'title' => 'Бег и фитнес',
+    'img' => '/upload/menu/cep/1.jpg',
+    ],
+    [
+    'link' => '/catalog/odezhda-dlya-sporta/gornolyzhnyy/',
+    'title' => 'Горнолыжный спорт',
+    'img' => '/upload/menu/cep/2.jpg',
+    ],
+    [
+    'link' => '/catalog/odezhda-dlya-sporta/igrovye/',
+    'title' => 'Игровые виды спорта',
+    'img' => '/upload/menu/cep/3.jpg',
+    ],
+    [
+    'link' => '/catalog/odezhda-dlya-sporta/turizm-otdykh/',
+    'title' => 'Туризм и активный отдых',
+    'img' => '/upload/menu/cep/4.jpg',
+    ],
+    [
+    'link' => '/catalog/odezhda-dlya-sporta/posle-nagruzok/',
+    'title' => 'Восстановление после нагрузок',
+    'img' => '/upload/menu/cep/5.jpg',
+    ],
+    [
+    'link' => '/catalog/odezhda-dlya-sporta/velosport/',
+    'title' => 'Велоспорт',
+    'img' => '/upload/menu/cep/6.jpg',
+    ],
+];
+?>
+<div class="desktop_menu">
+    <div class="limiter">
+        <div class="new_menu">
+            <div class="new_menu_col">
+                <?foreach($specMenu as $s=>$smenu ){?>
+                <div class="new_menu_item">
+                    <a href="<?=$smenu['link']?>" class="image"><img src="<?=$smenu['img']?>"/></a>
+                    <a href="<?=$smenu['link']?>" class="title"><?=$smenu['title']?></a>
+                </div>
+                <?}?>
+            </div>
+            <div class="new_menu_col">
+                <?if ($arResult['ITEMS'][$ik]['ADDLINK'] && $arResult['ITEMS'][$ik]['ADDPHOTO'] && in_array(SITE_ID, ['s1','s2','s6'])) {?>
+                <div class="new_menu_item">
+                    <a href="<?=$arResult['ITEMS'][$ik]['ADDLINK']?>" class="image spec"><img src="<?=$arResult['ITEMS'][$ik]['ADDPHOTO']['SRC']?>"/></a>
+                    <a href="<?=$arResult['ITEMS'][$ik]['ADDLINK']?>" class="title"><?=$arResult['ITEMS'][$ik]['ADDNAME']?></a>
+                </div>
+                <?}?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile_menu">
+    <div class="limiter">
+    <?foreach($specMenu as $next2Column):?>
+        <?if(!empty($next2Column)):?>
+            <ul class="nextColumn <?if($nextElement['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+                    <li>
+                        <a href="<?=$next2Column["link"]?>" class="menu2Link <?=($next2Column["additional"] == '1' ? 'additional' : '' );?>">
+                            <?=$next2Column["title"]?>
+                        </a>
+                    </li>
+            </ul>
+
+        <?endif;?>
+    <?endforeach;?>
+
+    <?if ($arResult['ITEMS'][$ik]['ADDLINK'] && $arResult['ITEMS'][$ik]['ADDPHOTO'] && in_array(SITE_ID, ['s1','s2','s6'])) {?>
+    <ul class="nextColumn <?if($arResult['ITEMS'][$ik]['MENU_TMPL'] != ''){?>mob_menu<?}?>">
+    <li>
+        <a href="<?=$arResult['ITEMS'][$ik]['ADDLINK']?>" class="speclink menu2Link"><?=$arResult['ITEMS'][$ik]['ADDNAME']?></a>
+    </li>
+    </ul>
+    <?}?>
+</div>
+</div>

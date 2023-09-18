@@ -6,6 +6,8 @@ $APPLICATION->IncludeComponent("twofingers:location", "", array());
 $location_html = ob_get_contents();
 ob_end_clean();
 ?>
+
+<header>
     <div id="subHeader8">
         <div class="limiter">
             <div class="header_mob">
@@ -155,6 +157,11 @@ ob_end_clean();
                                 ); ?>
                             </div>
                         </div>
+                        <div class="b_head_favorites">
+                            <?
+                                $APPLICATION->IncludeComponent("medi:favorites.products", "", []);
+                            ?>
+                        </div>
                         <div class="b_head_cart cart">
                             <div id="flushTopCart">
                                 <? $APPLICATION->IncludeComponent(
@@ -195,7 +202,6 @@ ob_end_clean();
             </div>
         </div>
     </div>
-
     <div class="menuContainerColor">
         <? $APPLICATION->IncludeComponent(
             "bitrix:menu",
@@ -220,6 +226,7 @@ ob_end_clean();
             )
         ); ?>
     </div>
+</header>
 
 <? $APPLICATION->IncludeComponent(
     "medi:topalert",

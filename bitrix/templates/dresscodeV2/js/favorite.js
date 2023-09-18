@@ -1,0 +1,66 @@
+$(document).ready(function() {
+    /* Вешаем обработчик для добавления товара в избранное (Детальная карточка товара) */
+    $('#elementContainer .mainContainer').on('click', '.b-card-favorite', function () {
+        if ($('input[name=user_auth]').length > 0) {
+            let productId = $(this).attr('data-product-id');
+            let doAction = '';
+
+            if ($(this).hasClass('active')) {
+                doAction = 'delete';
+            } else {
+                doAction = 'add';
+            }
+
+            addFavorite(productId, doAction);
+        } else {
+            window.location.href = "/lk/?favorite";
+        }
+    });
+
+    function addFavorite(productId, action) {
+
+        let param = 'id='+productId+"&action="+action;
+
+        $.ajax({
+            url: '/ajax/favorite/',
+            type: 'GET',
+            dataType: 'html',
+            data: param,
+            success: function (response) {
+                let result = $.parseJSON(response);
+                let wishCount = 1;
+
+                if (result == 1) {
+                    $('.b-card-favorite[data-product-id="'+productId+'"]').addClass('active');
+                    $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранном');
+                    let currentCount = parseInt($('.favorites_link .count').html());
+
+                    if (currentCount >= 0) {
+                        wishCount = currentCount + 1;
+                    }
+
+                    $('.favorites_link .count').html(wishCount);
+                    if (!$('.favorites_link').hasClass('has_items')) {
+                        $('.favorites_link').addClass('has_items');
+                    }
+                }
+
+                if (result == 2) {
+                    $('.b-card-favorite[data-product-id="'+productId+'"]').removeClass('active');
+                    $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранное');
+                    wishCount = parseInt($('.favorites_link .count').html()) - 1;
+
+                    if (wishCount == 0) {
+                        $('.favorites_link .count').html('');
+                        $('.favorites_link').removeClass('has_items');
+                    } else {
+                        $('.favorites_link .count').html(wishCount);
+                    }
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('Error: '+ errorThrown);
+            }
+        });
+    }
+});

@@ -42,8 +42,41 @@ var checkLazyItems = function () {
                 $item.attr("src", lazyPath);
             });
         }
-
     });
+}
+
+var slickItems = function() {
+    var items = $('.single-item');
+    var windowInnerWidth = window.innerWidth;
+    var detect = new MobileDetect(window.navigator.userAgent);
+    var isAdaptive = detect.mobile();
+    var userAgent = detect.userAgent();
+
+    if (isAdaptive || windowInnerWidth <= 1024) {
+        setTimeout(function () {
+            $.each(items, function () {
+                if ($(this).hasClass('more-images') && !$(this).hasClass('slick-initialized')) {
+                    $(this).slick({
+                        dots: true,
+                        arrows:false,
+                        slidesToShow: 1,
+                        variableWidth: true,
+                        adaptiveHeight: true
+                    });
+
+                    if (windowInnerWidth <= 1024) { // На разрешении выше блок с цветами не отображается сбоку КТ
+                        $(this).on("touchstart", function(){
+                            $(this).parents('.productTable').find('.item_colors').hide();
+                        });
+                        $(this).on("touchend", function(){
+                            $(this).parents('.productTable').find('.item_colors').show();
+                        });
+                    }
+                }
+            });
+
+        }, 500);
+    }
 }
 
 var changeAddCartButton = function (jsonData) {
@@ -710,16 +743,12 @@ $(window).on("ready", function (event) {
 
         };
 
-    var close_medi_popup_Window = function(event) {
-        $(".medi_popup").remove();
-$("body").removeClass("body_noscroll");
-const scrollY = document.body.style.top;
-document.body.style.top = '';
-window.scrollTo(0, parseInt(scrollY || '0') * -1);
-        medi_popup_Open = false;
-        if (event !== undefined)
-            return event.preventDefault();
-    };
+        var close_medi_popup_Window = function (event) {
+            $(".medi_popup").remove();
+            medi_popup_Open = false;
+            if (event !== undefined)
+                return event.preventDefault();
+        };
 
         var getPricesWindow = function (event) {
 

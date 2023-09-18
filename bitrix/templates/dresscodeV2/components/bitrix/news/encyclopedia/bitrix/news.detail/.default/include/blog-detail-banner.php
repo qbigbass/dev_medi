@@ -1,4 +1,5 @@
-<?$this->SetViewTarget("before_breadcrumb_container");?>
+<? include_once("seo_info_header.php"); ?>
+
 <div class="blog-banner banner-wrap banner-bg">
 	<div class="banner-animated fullscreen-banner banner-elem" style="background: url('<?=$arResult["RESIZE_BANNER_PICTURE"]["src"]?>') center center / cover no-repeat;">
 		<div class="limiter">
@@ -26,7 +27,7 @@
 		</div>
 	</div>
 </div>
-<?$this->EndViewTarget();?>
+
 <div class="global-block-container">
 	<div class="global-content-block">
 		<div class="detail-text-wrap">
@@ -44,5 +45,6 @@
 		$component
 	);?>
 </div>
+<? include_once("seo_info_footer.php"); ?>
 <script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js" charset="utf-8"></script>
 <script src="//yastatic.net/share2/share.js" charset="utf-8"></script>

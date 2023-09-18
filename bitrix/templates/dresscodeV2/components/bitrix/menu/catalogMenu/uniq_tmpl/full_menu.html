@@ -1,0 +1,83 @@
+<div id="menuCatalogSection">
+    <div class="menuSection">
+        <a href="<?=SITE_DIR?>catalog/" class="catalogButton"><span class="catalogButtonImage"></span></a>
+        <div class="drop">
+            <div class="limiter">
+                <ul class="menuSectionList">
+                    <?$sort_col = 0;?>
+                    <?foreach($arResult["DROP_MENU"] as $nextElement)://__($nextElement);
+                        if ($sort_col == '0'){
+                            $sort_col = 1;
+                            ?>
+                            <li class="sectionColumn"><?
+                        }
+                        elseif (ceil($nextElement['SORT']/50) > $sort_col){
+                            $sort_col = ceil($nextElement['SORT']/50);
+                            ?></li>
+                            <li class="sectionColumn">
+                            <?
+                        }?>
+                            <?
+
+                            $link = '';
+                            if (!empty($nextElement["UF_LINK"])){
+                                $link = $nextElement["UF_LINK"];
+                            }
+                            else{
+                                $link = $nextElement["CATLINK"]['SECTION_PAGE_URL'];
+
+                            }?>
+                            <div class="container">
+								<table>
+									<tr>
+										<td class="picture"><?if(!empty($nextElement["ICON"])):?>
+											<a href="<?=$link?>" class="picture">
+												<img src="<?=$nextElement["ICON"]["SRC"]?>" alt="<?=($nextElement["UF_FULLNAME"] != '' ? $nextElement["UF_FULLNAME"]  : $nextElement["NAME"] )?>">
+											</a>
+											<?endif;?>
+										</td>
+										<td>
+										<a href="<?=$link?>" class="menuLink<?if ($nextElement["SELECTED"]):?> selected<?endif?>">
+											<?=($nextElement["UF_FULLNAME"] != '' ? $nextElement["UF_FULLNAME"]  : $nextElement["NAME"] )?><?//=$sort_col?>
+										</a>
+										</td>
+									</tr>
+									<?
+									// второй уровень
+									if (!empty($nextElement['ELEMENTS']))
+									{
+
+										foreach($nextElement['ELEMENTS'] as $k=> $sub){
+
+
+												$sublink = '';
+												if (!empty($sub["UF_LINK"])){
+													$sublink = $sub["UF_LINK"];
+												}
+												else{
+													$sublink = $sub["CATLINK"]['SECTION_PAGE_URL'];
+
+												}?>
+										<tr>
+											<td></td>
+											<td>
+												<a href="<?=$sublink?>" class="submenuLink <?if ($sub["SELECTED"]):?> selected<?endif?> <?if ($sub["UF_ADDITIONAL"]):?> magenta<?endif?>">
+                                                    <?if ($sub["UF_ADDITIONAL"]):?>
+                                                        <?=str_replace("по ", "по&nbsp;", trim($sub["NAME"]))?>
+                                                    <?else:?>
+                                                        <?=str_replace(" ", "&nbsp;", trim($sub["NAME"]))?>
+                                                    <?endif;?>
+												</a>
+											</td>
+										</tr>
+											<?
+										}
+									}?>
+								</table>
+                            </div>
+                    <?endforeach;?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

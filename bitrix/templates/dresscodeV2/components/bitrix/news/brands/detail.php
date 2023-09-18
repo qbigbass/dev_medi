@@ -492,4 +492,10 @@ if (CModule::IncludeModule("iblock")) {
     ?>
 
 <?endif;
- 
+
+$viewBrandName = 'view_' . strtolower($arResult['ITEM']['NAME']);
+?>
+<script>
+    var _gcTracker = _gcTracker || [];
+    _gcTracker.push(['view_page', {name: '<?=$viewBrandName?>'}]);
+</script>

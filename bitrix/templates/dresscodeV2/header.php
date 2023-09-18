@@ -73,7 +73,7 @@ IncludeTemplateLangFile(__FILE__);
         unset($_COOKIE['gdeslon_ru_user_id']);
         unset($_COOKIE['gdeslon_ru___arc_domain']);
         $dedupl = htmlspecialchars($_REQUEST['utm_source']);
-        
+
     } elseif (isset($_REQUEST['gsaid']) && !empty(htmlspecialchars($_REQUEST['gsaid']))) {
         setcookie('client_utm_source', "gdeslon", time() + 30 * 86400, "/");
         $dedupl = "gdeslon";
@@ -83,7 +83,7 @@ IncludeTemplateLangFile(__FILE__);
         $dedupl = $_COOKIE['gdeslon_ru___arc_domain'];
     }
     define("DEDUPLICATION", $dedupl);
-    
+
     global $nUserEmail;
     global $nUserName;
     $nUserName = 'guest';
@@ -91,9 +91,9 @@ IncludeTemplateLangFile(__FILE__);
     if ($nUserID > 0):
         $nUserName = $USER->GetFullName();
         $nUserEmail = md5($USER->GetEmail());
-        
+
         if (!isset($_COOKIE['medi_cos'])) {
-            
+
             CModule::IncludeModule("sale");
             $arOrderFilter = array(
                 "USER_ID" => $nUserID,
@@ -103,14 +103,14 @@ IncludeTemplateLangFile(__FILE__);
             );
             $sum = CSaleOrder::__SaleOrderCount($arOrderFilter, 'RUB');
             $userOrdersSum = $sum['PRICE'];
-            
+
             setcookie('medi_cos', $userOrdersSum, time() + 86400, "/");
         }
-    
+
     endif; ?>
     <script>var $nUserEmail = '<?=$nUserEmail?>';
-        var msite_id = '<?=SITE_ID?>';
-        vViewedProdsPrice = 0;</script>
+      var msite_id = '<?=SITE_ID?>';
+      vViewedProdsPrice = 0;</script>
     <? if ($APPLICATION->GetCurDir() == '/catalog/') { ?>
         <link rel="canonical" href="https://www.medi-salon.ru/catalog/"/>
     <? } ?>
@@ -126,36 +126,39 @@ IncludeTemplateLangFile(__FILE__);
         <link rel="canonical" href="https://www.medi-salon.ru"/>
 
         <script>
-            var dataLayer = window.dataLayer || [];
-            dataLayer.push({
-                'event': 'page_view',
-                'items': [{
-                    'google_business_vertical': 'retail'
-                }]
-            });
-            dataLayer.push({'event': 'crto_homepage', crto: {'email': '<?=$nUserEmail?>'}});
+          var dataLayer = window.dataLayer || [];
+          dataLayer.push({
+            'event': 'page_view',
+            'items': [{
+              'google_business_vertical': 'retail'
+            }]
+          });
+          dataLayer.push({'event': 'crto_homepage', crto: {'email': '<?=$nUserEmail?>'}});
         </script>
     <? } ?>
     <? $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/fonts/roboto/roboto.css"); ?>
     <? $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/themes/" . $TEMPLATE_THEME_NAME . "/style.css"); ?>
-    
+
     <? //$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/jquery-1.11.0.min.js");?>
     <? $APPLICATION->AddHeadScript("https://yastatic.net/jquery/2.0.1/jquery.min.js"); ?>
-    
+
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/jquery.easing.1.3.js"); ?>
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/jquery.cookie.js"); ?>
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/jquery.scrollTo.min.js"); ?>
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/rangeSlider.js"); ?>
     <? //$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/maskedinput.js");?>
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/jquery.mask.min.js"); ?>
-    
+
     <? $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/style.min.css"); ?>
+    <? $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/css/slick.css"); ?>
+    <? $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/css/slick-theme.css"); ?>
+
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/main.min.js"); ?>
-    
+
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/gdeslon.js"); ?>
-    
+
     <? $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/css/bootstrap-grid.min.css"); ?>
-    
+
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/system.js?1"); ?>
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/topMenu.js"); ?>
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/topSearch.js"); ?>
@@ -164,6 +167,9 @@ IncludeTemplateLangFile(__FILE__);
     <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/dwTimer.js"); ?>
     <? //$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/dwZoomer.js");?>
     <? $APPLICATION->AddHeadScript("https://kit.fontawesome.com/4e1ccc2c65.js"); ?>
+    <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/favorite.js"); ?>
+    <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/mobile-detect.min.js"); ?>
+    <? $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/header.js"); ?>
 
     <!-- calltouch -->
     <script>(function (w, d, n, c) {
@@ -255,16 +261,16 @@ IncludeTemplateLangFile(__FILE__);
         </script>
     
     <? } ?>
-    
+
     <?
     if (strpos($APPLICATION->GetCurPage(), ".html") !== false || strpos($APPLICATION->GetCurDir(), "salons") || strpos($APPLICATION->GetCurDir(), "services") || strpos($APPLICATION->GetCurDir(), "stock")) {
         $APPLICATION->AddHeadScript('https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=391d1c41-5055-400d-8afc-49ee21c8f4a1&load=package.full');
     } ?>
-    
+
     <? //$APPLICATION->AddHeadString('<script src="https://kit.fontawesome.com/4e1ccc2c65.js" crossorigin="anonymous"></script>');?>
     <? /*if(DwSettings::isPagen()):?><?$APPLICATION->AddHeadString('<link rel="canonical" href="'.DwSettings::getPagenCanonical().'" />');//pagen canonical?><?endif;*/ ?>
     <? if (!DwSettings::isBot() && !empty($arTemplateSettings["TEMPLATE_METRICA_CODE"])): ?><? $APPLICATION->AddHeadString($arTemplateSettings["TEMPLATE_METRICA_CODE"]);//metrica counter code?><? endif; ?>
-    
+
     <? $APPLICATION->ShowHead(); ?>
     <title><? $APPLICATION->ShowTitle("title"); ?></title>
 
@@ -292,7 +298,7 @@ IncludeTemplateLangFile(__FILE__);
     <link rel="dns-prefetch" href="//mod.calltouch.ru"/>
     <link rel="dns-prefetch" href="//cdn.rutarget.ru"/>
     <link rel="dns-prefetch" href="//yastatic.net"/>
-    
+
     <? /*<script defer >
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -350,7 +356,6 @@ src="https://www.facebook.com/tr?id=1387626394933707&ev=PageView&noscript=1"
     <row><span></span><span></span></row>
     <row><span></span><span></span></row>
 </div>
-
 
 <div id="foundation"<? if (!empty($TEMPLATE_SLIDER_HEIGHT) && $TEMPLATE_SLIDER_HEIGHT != "default"): ?> class="slider_<?= $TEMPLATE_SLIDER_HEIGHT ?>"<? endif; ?>>
     <div id="top_alert">

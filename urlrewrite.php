@@ -64,28 +64,12 @@ $arUrlRewrite=array (
     'PATH' => '/salons/orders/index.php',
     'SORT' => 100,
   ),
-  47 => 
+  44 => 
   array (
-    'CONDITION' => '#^/ekb/services/#',
+    'CONDITION' => '#^/kgd/services/#',
     'RULE' => '',
     'ID' => 'bitrix:news',
-    'PATH' => '/ekb/services/index.php',
-    'SORT' => 100,
-  ),
-  59 => 
-  array (
-    'CONDITION' => '#^/encyclopedia/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/encyclopedia/index.php',
-    'SORT' => 100,
-  ),
-  48 => 
-  array (
-    'CONDITION' => '#^/rnd/services/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/rnd/services/index.php',
+    'PATH' => '/kgd/services/index.php',
     'SORT' => 100,
   ),
   45 => 
@@ -96,14 +80,6 @@ $arUrlRewrite=array (
     'PATH' => '/tmn/services/index.php',
     'SORT' => 100,
   ),
-  42 => 
-  array (
-    'CONDITION' => '#^/spb/services/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/spb/services/index.php',
-    'SORT' => 100,
-  ),
   43 => 
   array (
     'CONDITION' => '#^/kzn/services/#',
@@ -112,12 +88,36 @@ $arUrlRewrite=array (
     'PATH' => '/kzn/services/index.php',
     'SORT' => 100,
   ),
-  44 => 
+  42 => 
   array (
-    'CONDITION' => '#^/kgd/services/#',
+    'CONDITION' => '#^/spb/services/#',
     'RULE' => '',
     'ID' => 'bitrix:news',
-    'PATH' => '/kgd/services/index.php',
+    'PATH' => '/spb/services/index.php',
+    'SORT' => 100,
+  ),
+  47 => 
+  array (
+    'CONDITION' => '#^/ekb/services/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/ekb/services/index.php',
+    'SORT' => 100,
+  ),
+  48 => 
+  array (
+    'CONDITION' => '#^/rnd/services/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/rnd/services/index.php',
+    'SORT' => 100,
+  ),
+  59 => 
+  array (
+    'CONDITION' => '#^/encyclopedia/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/encyclopedia/index.php',
     'SORT' => 100,
   ),
   46 => 
@@ -128,44 +128,12 @@ $arUrlRewrite=array (
     'PATH' => '/nn/services/index.php',
     'SORT' => 100,
   ),
-  27 => 
+  70 => 
   array (
-    'CONDITION' => '#^/kzn/salons/#',
-    'RULE' => '',
-    'ID' => 'bitrix:catalog.store',
-    'PATH' => '/kzn/salons/index.php',
-    'SORT' => 100,
-  ),
-  66 => 
-  array (
-    'CONDITION' => '#^/ekb/salons/#',
+    'CONDITION' => '#^/tmn/salons/#',
     'RULE' => '',
     'ID' => 'dresscode:catalog.store',
-    'PATH' => '/ekb/salons/index.php',
-    'SORT' => 100,
-  ),
-  68 => 
-  array (
-    'CONDITION' => '#^/spb/salons/#',
-    'RULE' => '',
-    'ID' => 'dresscode:catalog.store',
-    'PATH' => '/spb/salons/index.php',
-    'SORT' => 100,
-  ),
-  34 => 
-  array (
-    'CONDITION' => '#^/collection/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/collection/index.php',
-    'SORT' => 100,
-  ),
-  69 => 
-  array (
-    'CONDITION' => '#^/kgd/salons/#',
-    'RULE' => '',
-    'ID' => 'dresscode:catalog.store',
-    'PATH' => '/kgd/salons/index.php',
+    'PATH' => '/tmn/salons/index.php',
     'SORT' => 100,
   ),
   76 => 
@@ -176,12 +144,44 @@ $arUrlRewrite=array (
     'PATH' => '/rnd/salons/index.php',
     'SORT' => 100,
   ),
-  70 => 
+  69 => 
   array (
-    'CONDITION' => '#^/tmn/salons/#',
+    'CONDITION' => '#^/kgd/salons/#',
     'RULE' => '',
     'ID' => 'dresscode:catalog.store',
-    'PATH' => '/tmn/salons/index.php',
+    'PATH' => '/kgd/salons/index.php',
+    'SORT' => 100,
+  ),
+  34 => 
+  array (
+    'CONDITION' => '#^/collection/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/collection/index.php',
+    'SORT' => 100,
+  ),
+  68 => 
+  array (
+    'CONDITION' => '#^/spb/salons/#',
+    'RULE' => '',
+    'ID' => 'dresscode:catalog.store',
+    'PATH' => '/spb/salons/index.php',
+    'SORT' => 100,
+  ),
+  66 => 
+  array (
+    'CONDITION' => '#^/ekb/salons/#',
+    'RULE' => '',
+    'ID' => 'dresscode:catalog.store',
+    'PATH' => '/ekb/salons/index.php',
+    'SORT' => 100,
+  ),
+  27 => 
+  array (
+    'CONDITION' => '#^/kzn/salons/#',
+    'RULE' => '',
+    'ID' => 'bitrix:catalog.store',
+    'PATH' => '/kzn/salons/index.php',
     'SORT' => 100,
   ),
   64 => 
@@ -224,12 +224,12 @@ $arUrlRewrite=array (
     'PATH' => '/catalog/index.php',
     'SORT' => 100,
   ),
-  6 => 
+  61 => 
   array (
-    'CONDITION' => '#^/stores/#',
+    'CONDITION' => '#^/salons/#',
     'RULE' => '',
-    'ID' => 'bitrix:catalog.store',
-    'PATH' => '/stores/index.php',
+    'ID' => 'dresscode:catalog.store',
+    'PATH' => '/salons/index.php',
     'SORT' => 100,
   ),
   56 => 
@@ -248,12 +248,12 @@ $arUrlRewrite=array (
     'PATH' => '/survey/index.php',
     'SORT' => 100,
   ),
-  61 => 
+  6 => 
   array (
-    'CONDITION' => '#^/salons/#',
+    'CONDITION' => '#^/stores/#',
     'RULE' => '',
-    'ID' => 'dresscode:catalog.store',
-    'PATH' => '/salons/index.php',
+    'ID' => 'bitrix:catalog.store',
+    'PATH' => '/stores/index.php',
     'SORT' => 100,
   ),
   8 => 

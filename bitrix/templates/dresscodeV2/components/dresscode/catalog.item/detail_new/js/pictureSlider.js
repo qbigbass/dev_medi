@@ -1,9 +1,15 @@
 // global function var
+var windowInnerWidth = window.innerWidth;
+var detect = new MobileDetect(window.navigator.userAgent);
+var isAdaptive = detect.mobile();
+var userAgent = detect.userAgent();
+
+if (windowInnerWidth > 1024 && !isAdaptive) {
 	var startPictureElementSlider;
 	
-	$(function(){
+	$(function () {
 
-		startPictureElementSlider = function(){
+		startPictureElementSlider = function () {
 
 			var $pictureContainer = $("#pictureContainer");
 			var $pictureSlider = $pictureContainer.find(".pictureSlider");
@@ -37,28 +43,28 @@
 			});
 
 
-			var slideCalcToMove = function(event){
-							
+			var slideCalcToMove = function (event) {
+
 				$this = $(this);
-				
-				if(!$this.hasClass("selected")){
+
+				if (!$this.hasClass("selected")) {
 					$this.siblings(".item").removeClass("selected").find("a").removeClass("zoom");
 					$this.addClass("selected").find("a").addClass("zoom");
 					event.stopImmediatePropagation();
 				}
-				
+
 				return event.preventDefault(slideMove($this.index()));
-			
+
 			}
 
-			var slideMove = function(to){
-				
+			var slideMove = function (to) {
+
 				$pictureSlider.animate({
 					left: "-" + to * 100 + "%"
 				}, 250);
 
 				return true;
-			
+
 			};
 
 			$itemClickToEvent.on("click", slideCalcToMove);
@@ -67,3 +73,4 @@
 		startPictureElementSlider(); // start slider =)
 
 	});
+}

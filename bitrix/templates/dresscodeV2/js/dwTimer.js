@@ -11,10 +11,10 @@ $(function(){
 
         //j vars
         var $this = this;
-        var $dayContainer = $this.find(".timerDayValue");
-        var $hourContainer = $this.find(".timerHourValue");
-        var $minuteContainer = $this.find(".timerMinuteValue");
-        var $secondContainer = $this.find(".timerSecondValue");
+        var $dayContainer = $(".timerDayValue");
+        var $hourContainer = $(".timerHourValue");
+        var $minuteContainer = $(".timerMinuteValue");
+        var $secondContainer = $(".timerSecondValue");
 
         //functions
         var calculateValues = function(){
@@ -30,11 +30,21 @@ $(function(){
 			var remainingDay = Math.floor(remainingDate / (1000 * 60 * 60 * 24));
 
 			//write DOM
-			$dayContainer.text(remainingDay);
-	        $hourContainer.text(remainingHour);
-	        $minuteContainer.text(remainingMinute);
-	        $secondContainer.text(remainingSecond);
+			$dayContainer.each(function () {
+				$(this).text(remainingDay);
+			});
 
+			$hourContainer.each(function () {
+				$(this).text(remainingHour);
+			});
+
+			$minuteContainer.each(function () {
+				$(this).text(remainingMinute);
+			});
+
+			$secondContainer.each(function () {
+				$(this).text(remainingSecond);
+			});
 	    };
 
         // set end time value

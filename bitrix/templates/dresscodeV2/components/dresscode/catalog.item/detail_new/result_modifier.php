@@ -256,10 +256,10 @@ if (!empty($arResult)) {
         $vote_count = 0;
         $vote_sum = 0;
         while ($arReviews = $rsReviews->GetNext()) {
-            
             $arResult["REVIEWS"][] = $arReviews;
-            
-            $vote_count++;
+            if ($arReviews['PROPERTY_RATING_VALUE'] > 0) {
+                $vote_count++;
+            }
             $vote_sum += $arReviews['PROPERTY_RATING_VALUE'];
         }
         if (count($arResult['REVIEWS']) > 0) {
@@ -720,7 +720,7 @@ if (!empty($arResult)) {
             ],
             false,
             false,
-            ['ID', 'IBLOCK_ID', 'NAME', 'DETAIL_PAGE_URL', 'PREVIEW_TEXT', 'PROPERTY_ACTION_TAG', 'PROPERTY_HIDE']
+            ['ID', 'IBLOCK_ID', 'NAME', 'DETAIL_PAGE_URL', 'PREVIEW_TEXT', 'PROPERTY_ACTION_TAG', 'PROPERTY_HIDE', 'PROPERTY_TIMER_ON', 'ACTIVE_TO', 'PROPERTY_CNT_DAYS_TIMER']
         );
         
         while ($arAction = $obActions->GetNext()) {

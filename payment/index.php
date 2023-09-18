@@ -54,4 +54,8 @@ $APPLICATION->SetTitle("Способы оплаты");
 	</div>
 
 </div><br /><br />
+<script>
+var _gcTracker=_gcTracker||[];
+_gcTracker.push(['view_page', { name: 'view_payment'}]);
+</script>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

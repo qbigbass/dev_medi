@@ -132,5 +132,8 @@ if ($_SESSION["USER_GEO_POSITION"]['city'] != "Москва" && SITE_ID == 's1')
             ]
         }
     </script>
-
+    <script>
+        var _gcTracker=_gcTracker||[];
+        _gcTracker.push(['view_page', { name: 'view_contacts' }]);
+    </script>
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php") ?>

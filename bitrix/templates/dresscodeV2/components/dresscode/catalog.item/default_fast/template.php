@@ -180,7 +180,7 @@
 							<?if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON']):/*?>
 								<span class="fastOrder fastBut changeID"  data-id="<?=$arResult["ID"]?>" id="GTM_fastorder_catalog_get"><?=GetMessage("FAST_ORDER_PRODUCT_LABEL")?></span>
 							<?*/?>
-							<a href="#" class="addCart" data-id="<?=$arResult["ID"]?>"  id="GTM_add_cart_catalog_<?=($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'].'_' : '' )?><?=$arParams['POS_COUNT']?>_<?=$arResult["ID"]?>"><img src="<?=SITE_TEMPLATE_PATH?>/images/incart.png" alt="<?=GetMessage("ADDCART_LABEL")?>" class="icon" ><?=GetMessage("ADDCART_LABEL")?></a>
+							<a href="#" class="addCart _desktop" data-id="<?=$arResult["ID"]?>"  id="GTM_add_cart_catalog_<?=($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'].'_' : '' )?><?=$arParams['POS_COUNT']?>_<?=$arResult["ID"]?>"><img src="<?=SITE_TEMPLATE_PATH?>/images/incart.png" alt="<?=GetMessage("ADDCART_LABEL")?>" class="icon" ><?=GetMessage("ADDCART_LABEL")?></a>
 
 							<?else:?>
 								<?// Сканирование стоп, основная кнопка?>
@@ -197,7 +197,7 @@
 					<?*/endif;?>
 
 					<?if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] == false):?>
-					<a href="#" class="greyBigButton reserve changeID get_medi_popup_Window" data-src="/ajax/catalog/?action=reserve" data-title="Забронировать в салоне" data-id="<?=$arResult["ID"]?>"  <?if($arResult['SALON_AVAILABLE'] == "0" ||  $arResult['SALON_COUNT'] == "0" || ($arResult["CATALOG_AVAILABLE"] != "N" && $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] == true)){?>style="display:none;"<?}?> data-action="reserve">Забронировать</a>
+					<a href="#" class="greyBigButton reserve _desktop changeID get_medi_popup_Window" data-src="/ajax/catalog/?action=reserve" data-title="Забронировать в салоне" data-id="<?=$arResult["ID"]?>"  <?if($arResult['SALON_AVAILABLE'] == "0" ||  $arResult['SALON_COUNT'] == "0" || ($arResult["CATALOG_AVAILABLE"] != "N" && $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] == true)){?>style="display:none;"<?}?> data-action="reserve">Забронировать</a>
 					<?endif;?>
 					<?/*<a href="<?=$arResult["DETAIL_PAGE_URL"]?>" class="btn-simple add-cart"><?=GetMessage("SEE_ON_PAGE")?></a> */ ?>
 					<?/*if ($arResult['DISPLAY_BUTTONS']['CART_BUTTON'] && $arResult["CATALOG_AVAILABLE"] == "Y"):?>
@@ -206,7 +206,103 @@
 					<?endif;*/
 					?>
 		    	</div>
+                <div class="favoriteContainer">
+                    <div class="b-card-favorite" data-product-id="<?= !empty($arResult["~ID"]) ? $arResult["~ID"] : $arResult["ID"] ?>"><span>В избранное</span>
+                    </div>
+                </div>
 		    </div>
+            <script>
+                /* Вешаем обработчик для добавления товара в избранное (Товары из компонента dresscode:catalog.item) */
+                $('#<?=$this->GetEditAreaId($arResult["ID"]);?>').on('click', '.b-card-favorite', function () {
+                    if ($('input[name=user_auth]').length > 0) {
+                        let productId = $(this).attr('data-product-id');
+                        let doAction = '';
+
+                        if ($(this).hasClass('active')) {
+                            doAction = 'delete';
+                        } else {
+                            doAction = 'add';
+                        }
+
+                        addFavorite(productId, doAction);
+                    } else {
+                        window.location.href = "/lk/?favorite";
+                    }
+                });
+
+                function addFavorite(productId, action) {
+
+                    let param = 'id='+productId+"&action="+action;
+
+                    $.ajax({
+                        url: '/ajax/favorite/',
+                        type: 'GET',
+                        dataType: 'html',
+                        data: param,
+                        success: function (response) {
+                            let result = $.parseJSON(response);
+                            let wishCount = 1;
+
+                            if (result == 1) {
+                                $('.b-card-favorite[data-product-id="'+productId+'"]').addClass('active');
+                                $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранном');
+                                let currentCount = parseInt($('.favorites_link .count').html());
+
+                                if (currentCount >= 0) {
+                                    wishCount = currentCount + 1;
+                                }
+
+                                $('.favorites_link .count').html(wishCount);
+                                if (!$('.favorites_link').hasClass('has_items')) {
+                                    $('.favorites_link').addClass('has_items');
+                                }
+
+                                if ($('input[name=favorite_items]').length > 0) {
+                                    let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
+
+                                    if (inputFavoriteItemsValue != '') {
+                                        let favoriteItems = JSON.parse(inputFavoriteItemsValue);
+                                        favoriteItems.push(parseInt(productId));
+                                        let jsonFavoriteItems = JSON.stringify(favoriteItems);
+                                        $('input[name=favorite_items]').val(jsonFavoriteItems);
+                                    }
+                                }
+                            }
+
+                            if (result == 2) {
+                                $('.b-card-favorite[data-product-id="'+productId+'"]').removeClass('active');
+                                $('.b-card-favorite[data-product-id="'+productId+'"]').find('span').text('В избранное');
+                                wishCount = parseInt($('.favorites_link .count').html()) - 1;
+
+                                if (wishCount == 0) {
+                                    $('.favorites_link .count').html('');
+                                    $('.favorites_link').removeClass('has_items');
+                                } else {
+                                    $('.favorites_link .count').html(wishCount);
+                                }
+
+                                if ($('input[name=favorite_items]').length > 0) {
+                                    let inputFavoriteItemsValue = $('input[name=favorite_items]').val();
+
+                                    if (inputFavoriteItemsValue != '') {
+                                        let favoriteItems = JSON.parse(inputFavoriteItemsValue);
+                                        let indexElem = favoriteItems.indexOf(parseInt(productId));
+
+                                        if (indexElem >= 0) {
+                                            favoriteItems.splice(indexElem, 1);
+                                            let jsonFavoriteItems = JSON.stringify(favoriteItems);
+                                            $('input[name=favorite_items]').val(jsonFavoriteItems);
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log('Error: '+ errorThrown);
+                        }
+                    });
+                }
+            </script>
 			<?if(!empty($arResult["SKU_OFFERS"])):?>
 				<?if(!empty($arResult["SKU_PROPERTIES"]) && $level = 1):?>
 					<?foreach ($arResult["SKU_PROPERTIES"] as $propName => $arNextProp):?>

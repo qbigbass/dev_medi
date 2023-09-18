@@ -12,3 +12,12 @@ if (!empty(intval($_GET['PAGEN_1'])) && intval($_GET['PAGEN_1']) > 1){
 }
 
 //$APPLICATION->AddHeadString('<link href="https://www.medi-salon.ru'.$APPLICATION->GetCurDir().'" rel="canonical">');
+?>
+<? if($arParams['SECTION_ID'] > 0):?>
+    <script>
+        var _gcTracker=_gcTracker||[];
+        _gcTracker.push(['view_category', { category_id: '<?=$arResult['ID']?>'}]);
+    </script>
+<?endif;?>
+
+

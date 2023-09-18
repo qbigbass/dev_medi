@@ -1714,7 +1714,14 @@ endif; ?>
                                 "USER_ID" => $arUsers
                             )
                         );
-                        
+
+                        // Отправим письмо для модерации
+                        $arEventFields = [
+                            "URL" => $_SERVER['HTTP_ORIGIN'].'/bitrix/admin/iblock_element_edit.php?IBLOCK_ID=12&type=1c_catalog&lang=ru&ID='.$PRODUCT_ID,
+                        ];
+
+                        CEvent::Send("NEW_REVIEW",SITE_ID, $arEventFields);
+
                     } else {
                         $result = array(
                             "heading" => "Ошибка",

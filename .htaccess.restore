@@ -1,0 +1,158 @@
+Options -Indexes
+ErrorDocument 404 /404.php
+
+	php_flag allow_call_time_pass_reference 1
+	php_flag session.use_trans_sid off
+	php_value memory_limit 768M
+	php_value display_errors 0
+
+	#php_value mbstring.internal_encoding UTF-8
+
+
+<IfModule mod_rewrite.c>
+	Options +FollowSymLinks
+	RewriteEngine On
+
+	RewriteRule ^bitrix/redirect.php /  [R=301,L,QSD]
+	RewriteRule ^bitrix/click.php /  [R=301,L,QSD]
+	RewriteRule ^bitrix/rk.php /  [R=301,L,QSD]
+
+	RewriteCond %{THE_REQUEST} ^[^\s]+\s+[^?]*?\?
+	RewriteCond %{QUERY_STRING} ^$
+	RewriteRule .? %{REQUEST_URI}? [R=301,L]
+
+	RewriteCond %{REQUEST_URI} !\?
+	RewriteCond %{REQUEST_URI} !\&
+	RewriteCond %{REQUEST_URI} !\=
+	RewriteCond %{REQUEST_URI} !\.
+	RewriteCond %{REQUEST_URI} !\/$
+	RewriteRule ^(.*[^\/])$ /$1/ [R=301,L]
+
+
+	RewriteRule ^catalog/actions/$ /catalog/  [R=301,L]
+
+	RewriteRule ^salons/auth/(.{30})/$ /salons/auth/login.php?authcode=$1  [R=301,L]
+	RewriteRule ^smp/auth/(.{30})/$ /smp/auth/login.php?authcode=$1  [R=301,L]
+
+	#RewriteRule ^sitemap-iblock-19.xml$ /  [R=301,L]
+
+	RewriteRule ^nn/about/$ /about/  [R=301,L]
+	RewriteRule ^kgd/about/$ /about/  [R=301,L]
+	RewriteRule ^tmn/about/$ /about/  [R=301,L]
+	RewriteRule ^ekb/about/$ /about/  [R=301,L]
+	RewriteRule ^spb/about/$ /about/  [R=301,L]
+	RewriteRule ^rgns/about/$ /about/  [R=301,L]
+	RewriteRule ^rnd/about/$ /about/  [R=301,L]
+
+	RewriteRule ^nn/delivery/$ /rgns/delivery/  [R=301,L]
+	RewriteRule ^kgd/delivery/$ /rgns/delivery/  [R=301,L]
+	RewriteRule ^tmn/delivery/$ /rgns/delivery/  [R=301,L]
+	RewriteRule ^ekb/delivery/$ /rgns/delivery/  [R=301,L]
+	RewriteRule ^rnd/delivery/$ /rgns/delivery/  [R=301,L]
+
+
+	RewriteRule ^nn/contacts/$ /contacts/  [R=301,L]
+	RewriteRule ^kgd/contacts/$ /contacts/  [R=301,L]
+	RewriteRule ^tmn/contacts/$ /contacts/  [R=301,L]
+	RewriteRule ^ekb/contacts/$ /contacts/  [R=301,L]
+	RewriteRule ^spb/contacts/$ /contacts/  [R=301,L]
+	RewriteRule ^rgns/contacts/$ /contacts/  [R=301,L]
+	RewriteRule ^rnd/contacts/$ /contacts/  [R=301,L]
+
+	RewriteRule ^nn/payment/$ /payment/  [R=301,L]
+	RewriteRule ^kgd/payment/$ /payment/  [R=301,L]
+	RewriteRule ^tmn/payment/$ /payment/  [R=301,L]
+	RewriteRule ^ekb/payment/$ /payment/  [R=301,L]
+	RewriteRule ^spb/payment/$ /payment/  [R=301,L]
+	RewriteRule ^rgns/payment/$ /payment/  [R=301,L]
+	RewriteRule ^rnd/payment/$ /payment/  [R=301,L]
+
+
+	RewriteRule ^x/v-strane-grez/$ /p/v-strane-grez/  [R=301,L]
+	RewriteRule ^x/mediven-elegance/$ /p/mediven-elegance/  [R=301,L]
+	RewriteRule ^x/season-colors-20/$ /p/season-colors-20/  [R=301,L]
+	RewriteRule ^x/lumbamed-basic/$ /p/lumbamed-basic/  [R=301,L]
+
+
+	#RewriteCond %{SERVER_PORT} !^443$
+   #RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
+   RewriteCond %{HTTP_HOST} ^(.*)$ [NC]
+   RewriteCond %{HTTP_HOST} !^www\. [NC]
+   RewriteRule ^(.*)$ https://www.medi-salon.ru/$1 [R=301,L,QSA]
+
+   RewriteCond %{HTTP_HOST} medi-shop\.ru [NC]
+   RewriteRule ^(.*)$ https://www.medi-salon.ru/$1 [R=301,L,QSA]
+
+	# редирект для яндекс.турбо
+	RewriteRule ^personal/basket.php$ /personal/cart/ [R=301,L]
+
+
+	RewriteRule ^about/medi/$ /about/ [R=301,L]
+
+
+	RewriteRule ^auth/$ /lk/ [R=301,L]
+	RewriteRule ^personal/$ /lk/ [R=301,L]
+
+	RewriteRule ^stock/loyalty/$ /about/loyalty/ [R=301,L]
+
+	RewriteRule ^personal/orders/$ /lk/?orders [R=301,L]
+
+
+	RewriteRule ^stock/homerelax/$ /catalog/massazhery-i-trenazhery/filter/action_sign-is-slippers/apply/ [R=301,L]
+
+	RewriteRule ^stock/skidka-na-massazhnye-kovriki-20/$ /catalog/massazhery-i-trenazhery/filter/action_sign-is-feb-28/apply/ [R=301,L]
+
+	RewriteRule ^stock/tovar-dnya-podushki/$ /catalog/matrasy-podushki/filter/action_sign-is-sale-02-22/apply/ [R=301,L]
+
+	RewriteRule ^stock/shoes-sale-0521/$ /catalog/ortopedicheskaya-obuv/filter/offers-is-m-percent/apply/ [R=301,L]
+
+	RewriteRule ^stock/kinezioteypy-20/$ /catalog/odezhda-dlya-sporta/filter/action_sign-is-bbtape/apply/ [R=301,L]
+
+	RewriteRule ^stock/zaryadite-svoy-immunitet/$ /catalog/badi/filter/action_sign-is-projectv/apply/ [R=301,L]
+
+	RewriteRule ^stock/igli-sale-0821/$ /services/izgotovlenie-ortopedicheskikh-stelek/ [R=301,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !/bitrix/urlrewrite.php$
+
+    RewriteCond %{REQUEST_URI} !=/983749827347628743-apache-status
+    RewriteCond %{REQUEST_URI} !=/983749827347628743-apache-info
+
+    RewriteRule ^(.*)$ /bitrix/urlrewrite.php [L]
+    RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization}]
+
+	RewriteCond %{HTTP_USER_AGENT} msnbot [OR]
+	RewriteCond %{HTTP_USER_AGENT} Slurp [OR]
+	RewriteCond %{HTTP_USER_AGENT} SemrushBot [OR]
+	RewriteCond %{HTTP_USER_AGENT} BlueChip [OR]
+	RewriteCond %{HTTP_USER_AGENT} MJ12bot [OR]
+	RewriteCond %{HTTP_USER_AGENT} ia_archiver [OR]
+	RewriteCond %{HTTP_USER_AGENT} WebCopier [OR]
+	RewriteCond %{HTTP_USER_AGENT} Teleport [OR]
+	RewriteCond %{HTTP_USER_AGENT} psbot [OR]
+	RewriteCond %{HTTP_USER_AGENT} TeleportPro [OR]
+	RewriteCond %{HTTP_USER_AGENT} EmailSiphon [OR]
+	RewriteCond %{HTTP_USER_AGENT} EmailCollector [OR]
+	RewriteCond %{HTTP_USER_AGENT} larbin [OR]
+	RewriteCond %{HTTP_USER_AGENT} BLEXBot [OR]
+	RewriteCond %{HTTP_USER_AGENT} MSIECrawler [OR]
+	RewriteCond %{HTTP_USER_AGENT} moget [OR]
+	RewriteCond %{HTTP_USER_AGENT} AhrefsBot
+	RewriteRule ^(.*)$ – [F,L]
+</IfModule>
+
+<IfModule mod_dir.c>
+	DirectoryIndex index.php index.html
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresByType image/jpeg "access plus 3 day"
+    ExpiresByType image/gif "access plus 3 day"
+    ExpiresByType image/png "access plus 3 day"
+    ExpiresByType text/css "access plus 3 day"
+    ExpiresByType application/javascript "access plus 3 day"
+</IfModule>
