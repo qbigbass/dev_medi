@@ -70,7 +70,7 @@ global $nUserID; ?>
                 
             }
             if (!empty($cItems)) {
-                $obElement = CIBlockElement::GetList(['ID' => 'DESC'], ['IBLOCK_ID' => 19, 'ATCIVE' => 'Y', 'PROPERTY_CML2_LINK' => $cItems], ['PROPERTY_CML2_LINK', 'ID'], false, ['ID', 'IBLOCK_ID']);
+                $obElement = CIBlockElement::GetList(['ID' => 'DESC'], ['IBLOCK_ID' => 19, 'ACTIVE' => 'Y', 'PROPERTY_CML2_LINK' => $cItems], ['PROPERTY_CML2_LINK', 'ID'], false, ['ID', 'IBLOCK_ID']);
                 $prods = [];
                 while ($arElement = $obElement->GetNext()) {
                     $prods[$arElement['PROPERTY_CML2_LINK_VALUE']] = $arElement['ID'];

@@ -51,7 +51,6 @@ var slickItems = function() {
     var detect = new MobileDetect(window.navigator.userAgent);
     var isAdaptive = detect.mobile();
     var userAgent = detect.userAgent();
-
     if (isAdaptive || windowInnerWidth <= 1024) {
         setTimeout(function () {
             $.each(items, function () {
