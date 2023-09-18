@@ -1,4 +1,0 @@
-<?
-	$MESS["CATALOG_SUBSCRIBE_ONLINE_ADD_LABEL"] = "Подписаться";
-	$MESS["CATALOG_SUBSCRIBE_ONLINE_DEL_LABEL"] = "Отписаться";
-?>

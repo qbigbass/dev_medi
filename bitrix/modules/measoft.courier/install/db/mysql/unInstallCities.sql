@@ -1,1 +1,0 @@
-drop table if exists measoft_cities;

@@ -1,1 +1,0 @@
-<a href="<?=SITE_DIR?>stock/rasprodazha-elektroniki-i-bytovoy-tekhniki/"><img src="<?=SITE_TEMPLATE_PATH?>/images/left_banner1.jpg" alt=""></a>

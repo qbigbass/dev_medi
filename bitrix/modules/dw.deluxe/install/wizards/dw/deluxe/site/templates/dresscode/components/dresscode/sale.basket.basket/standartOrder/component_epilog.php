@@ -1,1 +1,0 @@
-<?$APPLICATION->AddHeadScript($templateFolder."/js/fast-order.js");?>

@@ -1,1 +1,0 @@
-<a href="mailto:info@digitalweb.ru" class="email">info@digitalweb.ru</a>

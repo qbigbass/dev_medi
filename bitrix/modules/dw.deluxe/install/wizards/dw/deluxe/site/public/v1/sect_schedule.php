@@ -1,1 +1,0 @@
-<span class="heading">С 9:00 до 22:00 ежедневно</span>

@@ -1,1 +1,0 @@
-<?$MESS['PVZ_REQUIRED'] = '<span>Необходимо выбрать пункт выдачи Boxberry</span>';?>

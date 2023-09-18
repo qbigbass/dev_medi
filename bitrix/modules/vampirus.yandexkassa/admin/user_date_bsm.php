@@ -1,1 +1,0 @@
-<?define("vampirus_yandexkassa_TEMPORARY_CACHE", "cWBUAn4wVVVsA3BqVDUEfAgh");?>

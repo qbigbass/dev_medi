@@ -1,1 +1,0 @@
-<img src="<?=SITE_TEMPLATE_PATH?>/images/left_banner1.jpg" alt="">

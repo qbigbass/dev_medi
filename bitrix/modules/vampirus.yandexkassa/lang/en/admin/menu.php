@@ -1,4 +1,0 @@
-<?php
-$MESS['VAMPIRUS.YANDEXKASSA_MENU_TITLE'] = 'ЮKassa';
-$MESS['VAMPIRUS.YANDEXKASSA_MENU_TITLE_OLD'] = 'Payment transactions (HTTP)';
-$MESS['VAMPIRUS.YANDEXKASSA_MENU_TITLE_NEW'] = 'Payment transactions (API)';

@@ -1,1 +1,0 @@
-<span class="heading">+7 (800) 505-40-38</span>
