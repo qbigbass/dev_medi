@@ -726,11 +726,13 @@ $extraParams = array(
 //get extra content (section info, more pictures, brand info, etc//)
 if ($card != 'small') {
     $extraContent = DwItemInfo::get_extra_content($arParams["CACHE_TIME"], $arParams["CACHE_TYPE"], $cacheID, $cacheDir, $extraParams, $arParams, $arResult, $opCurrency);
+} else {
+    $extraContent = DwItemInfo::get_extra_content_small($arParams["CACHE_TIME"], $arParams["CACHE_TYPE"], $cacheID, $cacheDir, $extraParams, $arParams, $arResult, $opCurrency);
+}
     
     if (!empty($extraContent)) {
         $arResult = $extraContent;
     }
-}
 
 //no cache
 if (!empty($arResult)) {
@@ -740,7 +742,7 @@ if (!empty($arResult)) {
     $elementTitle = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] : $arResult["NAME"]));
     $elementBrowserTitle = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"] : $arResult["NAME"]));
     $elementMetaKeywords = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_META_KEYWORDS"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_META_KEYWORDS"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_KEYWORDS"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_KEYWORDS"] : ""));
-    $elementMetaDescription = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"] : "")) . ' 📞 Звоните +7 495 225-06-00.';
+    $elementMetaDescription = (!empty($arResult["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"]) ? $arResult["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"] : (!empty($arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"]) ? $arResult["PARENT_PRODUCT"]["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"] : ""));
     
     //title params
     if (!empty($arParams["SET_TITLE"]) && $arParams["SET_TITLE"] == "Y") {
