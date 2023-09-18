@@ -52,7 +52,7 @@
                 meta.setAttribute("charset", "utf-8"),
                     this.contentDocument.getElementsByTagName("head")[0].appendChild(meta),
                     (this.width = Math.ceil(this.contentDocument.getElementsByTagName("a")[0].getBoundingClientRect().width)),
-                    (this.height = this.width);
+                    (this.height = Math.ceil(this.contentDocument.getElementsByTagName("a")[0].getBoundingClientRect().height));
             };
         }),
         (WASHAREBTN.prototype.crBtn = function () {
