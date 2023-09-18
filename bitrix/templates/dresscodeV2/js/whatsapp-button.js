@@ -35,7 +35,12 @@
                 doc[add](pre + "DOMContentLoaded", init, !1), doc[add](pre + "readystatechange", init, !1), win[add](pre + "load", init, !1);
             }
         }),
-
+        (WASHAREBTN.prototype.addStyling = function () {
+            var s = document.createElement("style"),
+                c =
+                    "body,html{padding:0;margin:0;height:100%;width:100%}.wa_btn_s{font-size:12px;background-size:16px;background-position:5px 2px;padding:3px 6px 3px 25px}.wa_btn_m{font-size:16px;background-size:20px;background-position:4px 2px;padding:4px 6px 4px 30px}.wa_btn_l{font-size:16px;background-size:20px;background-position:5px 5px;padding:8px 6px 8px 30px}";
+            return (s.type = "text/css"), s.styleSheet ? (s.styleSheet.cssText = c) : s.appendChild(document.createTextNode(c)), s;
+        }),
         (WASHAREBTN.prototype.setButtonAttributes = function (b) {
             var url = b.getAttribute("data-href"),
                 text = "?text=" + encodeURIComponent(b.getAttribute("data-text")) + (b.getAttribute("data-text") ? "%20" : "");
@@ -43,7 +48,7 @@
         }),
         (WASHAREBTN.prototype.setIframeAttributes = function (b) {
             var i = document.createElement("iframe");
-            return (i.width = 1), (i.height = 1), (i.button = b), (i.style.border = 0), (i.style.overflow = "hidden"), (i.border = 0), i.setAttribute("scrolling", "no"), i.addEventListener("load", root.WASHAREBTN.iFrameOnload()), i;
+            return (i.width = 1), (i.height = 1), (i.button = b), (i.style.border = 0), (i.style.overflow = "hidden"), (i.style.marginRight = "8px"), (i.border = 0), i.setAttribute("scrolling", "no"), i.addEventListener("load", root.WASHAREBTN.iFrameOnload()), i;
         }),
         (WASHAREBTN.prototype.iFrameOnload = function () {
             return function () {
@@ -51,8 +56,8 @@
                 var meta = document.createElement("meta");
                 meta.setAttribute("charset", "utf-8"),
                     this.contentDocument.getElementsByTagName("head")[0].appendChild(meta),
-                    (this.width = Math.ceil(this.contentDocument.getElementsByTagName("a")[0].getBoundingClientRect().width)),
-                    (this.height = Math.ceil(this.contentDocument.getElementsByTagName("a")[0].getBoundingClientRect().height));
+                    (this.width = 40),
+                    (this.height = 40);
             };
         }),
         (WASHAREBTN.prototype.crBtn = function () {
