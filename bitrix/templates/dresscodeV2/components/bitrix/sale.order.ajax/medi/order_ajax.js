@@ -308,6 +308,14 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
                 $("#orderDescription").parents("div.col-sm-12").append($str);
 
+                $str1 = '<div class="form-group bx-soa-customer-field" data-property-id-row="53">' +
+                    '<label for="soa-property-53" class="bx-soa-custom-label">Рекомендатель</label>' +
+                    '<div class="soa-property-container"><input type="text" size="35" name="ORDER_PROP_53"' +
+                    ' id="soa-property-53" placeholder="" value="' + $client.data('recommender') + '" class="form-control ' +
+                    'bx-soa-customer-input bx-ios-fix"></div></div>';
+
+                $("#orderDescription").parents("div.col-sm-12").append($str1);
+
                 $str2 = '<div class="form-group bx-soa-customer-field" data-property-id-row="52">' +
                     '<label for="soa-property-52-inp" class="bx-soa-custom-label">Дата доставки</label>' +
                     '<div class="soa-property-container"><input type="date" class="form-control bx-soa-customer-input ' +
