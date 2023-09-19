@@ -1,10 +1,6 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?><?$this->setFrameMode(true);
 use Bitrix\Main\Grid\Declension;?>
 
-<?php
-//echo "<pre>"; print_r($arResult["ITEMS"]); echo "</pre>"
-?>
-
 <?if(!empty($arResult["ITEMS"])):?>
 	<?$uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->__template->__name, false);?>
     <div class="bindAction" id="<?=$this->GetEditAreaId($arNextElement["ID"]);?>">
@@ -15,20 +11,6 @@ use Bitrix\Main\Grid\Declension;?>
         <?foreach($arResult["ITEMS"] as $ii => $arNextElement):
             $hide_link = $arNextElement['PROPERTY_HIDE_VALUE'] == 'Да' ? 'Y' : 'N';?>
             <?
-//            $dayDiff = '';
-//            if ($arNextElement['DATE_ACTIVE_TO'] > 0) {
-//                $date = DateTime::createFromFormat('d.m.Y H:i:s', $arNextElement['DATE_ACTIVE_TO']);
-//                $now = new DateTime();
-//                if ($date) {
-//                    $dayDiff = $date->diff($now)->format('%a');
-//                    if ($dayDiff > 0)
-//                    {
-//                        $sDeclension = new Declension('день', 'дня', 'дней');
-//                        $dayDiff_str = '<br/><span class="action_over">Заканчивается через '.$dayDiff.'&nbsp;'.$sDeclension->get($dayDiff).'</span>';
-//                    }
-//                }
-//            }
-
             $date = DateTime::createFromFormat('d.m.Y H:i:s', $arNextElement['ACTIVE_TO']);
             $now = new DateTime();
             $daysLeft = $date->diff($now)->format('%a'); // Кол-во дней до окончания акции

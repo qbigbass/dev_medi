@@ -35,7 +35,7 @@
 				$arSales = array();
 
 				//get sale items from iblock
-				$arSelect = Array("ID", "NAME", "IBLOCK_ID", "IBLOCK_TYPE", "PREVIEW_TEXT", "DETAIL_TEXT", "PREVIEW_PICTURE", "DETAIL_PICTURE", "DATE_ACTIVE_FROM", "DETAIL_PAGE_URL");
+				$arSelect = Array("ID", "NAME", "IBLOCK_ID", "IBLOCK_TYPE", "PREVIEW_TEXT", "DETAIL_TEXT", "PREVIEW_PICTURE", "DETAIL_PICTURE", "DATE_ACTIVE_FROM", "DETAIL_PAGE_URL", "ACTIVE_TO");
 				$arFilter = Array("IBLOCK_ID" => IntVal($arParams["IBLOCK_ID"]), "<=SORT" => "500", "ACTIVE_DATE" => "Y", "ACTIVE" => "Y", "PROPERTY_PRODUCTS_REFERENCE" => $arParams["PRODUCT_ID"], "PROPERTY_CITY_VALUE"=>$GLOBALS['medi']['region_cities'][SITE_ID]);
 				$rsSales = CIBlockElement::GetList(Array("SORT" => "ASC"), $arFilter, false, Array("nTopCount" => $arParams["SALES_COUNT"]), $arSelect);
 				while($oSales = $rsSales->GetNextElement()){
