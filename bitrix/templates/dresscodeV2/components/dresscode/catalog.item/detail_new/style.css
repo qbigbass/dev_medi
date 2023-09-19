@@ -200,7 +200,7 @@ h1.changeName {
 #elementSmallNavigation .tab:first-child {
     border-left: 1px solid #e7e8ea;
     padding-left: 18px;
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 #elementSmallNavigation a {
@@ -261,8 +261,8 @@ h1.changeName {
 
 #elementNavigation .tabs.maxScroll {
     position: absolute;
-    bottom: 0px;
-    right: 0px;
+    bottom: 0;
+    right: 0;
     top: unset;
 }
 
@@ -467,7 +467,7 @@ h1.changeName {
 #elementTools .fixContainer.maxScroll {
     padding-bottom: 12px;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     top: unset;
 }
 
@@ -546,7 +546,7 @@ h1.changeName {
 }
 
 #catalogElement .qtyBlock .minus:active {
-    background-position: -38px 0px;
+    background-position: -38px 0;
 }
 
 #catalogElement .qtyBlock label {
@@ -554,7 +554,7 @@ h1.changeName {
 }
 
 #elementTools .secondTool .row:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 #elementTools .row img,
@@ -611,7 +611,7 @@ h1.changeName {
 }
 
 #smallElementTools .qtyBlock img {
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 #elementTools .label:hover,
@@ -829,15 +829,15 @@ h1.changeName {
     width: 79px;
     position: absolute;
     display: block;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
 }
 
 #elementTools .rating i.m,
 #elementContainer .mainContainer .rating i.m,
 #smallElementTools .rating i.m {
     background: url(images/rating.png) repeat 0 -14px transparent;
-    width: 0px;
+    width: 0;
     z-index: 10;
 }
 
@@ -1114,11 +1114,11 @@ h1.changeName {
 }
 
 #elementContainer .wishCompWrap .addWishlist:before {
-    background-position: 0px 0px;
+    background-position: 0px 0;
 }
 
 #elementContainer .wishCompWrap .addWishlist:after {
-    background-position: -16px 0px;
+    background-position: -16px 0;
 }
 
 #elementContainer .wishCompWrap .addCompare:before {
@@ -1684,7 +1684,7 @@ h1.changeName {
     box-sizing: content-box;
     overflow: visible;
     min-width: auto;
-    padding: 0px;
+    padding: 0;
     float: none;
 }
 
@@ -1757,7 +1757,7 @@ h1.changeName {
 }
 
 #catalogElement .skuDropdownList .elementSkuPropertyValue:first-child {
-    border-top: 0px;
+    border-top: 0;
 }
 
 #catalogElement .skuDropdownList .selected {
@@ -1783,11 +1783,11 @@ h1.changeName {
     font-size: 13px;
     color: #000000;
     display: block;
-    border: 0px;
+    border: 0;
 }
 
 #catalogElement .skuDropdownList .skuDropdownListItem.selected .skuPropertyItemLink {
-    border: 0px;
+    border: 0;
 }
 
 #catalogElement .skuDropdownList .skuDropdownListItem.disabled {
@@ -1818,7 +1818,7 @@ h1.changeName {
 }
 
 #elementContainer #detailTags {
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 #elementContainer #detailText .heading,
@@ -1846,7 +1846,7 @@ h1.changeName {
 }
 
 #elementContainer .detailTagsItems .detailTagsItem:last-child {
-    margin-right: 0px;
+    margin-right: 0;
 }
 
 #elementContainer .detailTagsItems .detailTagsLink {
@@ -1950,7 +1950,7 @@ h1.changeName {
     content: "";
     width: 30%;
     left: 50%;
-    bottom: 0px;
+    bottom: 0;
 }
 
 #morePhotoSlider .morePhotos .photoItem a {
@@ -2132,7 +2132,7 @@ h1.changeName {
 }
 
 #elementProperties .stats td {
-    padding: 6px 0px;
+    padding: 6px 0;
 }
 
 #elementProperties .stats .name {
@@ -2308,7 +2308,7 @@ h1.changeName {
 }
 
 #video .items.sz1 .item {
-    padding: 0px;
+    padding: 0;
     width: 100%;
 }
 
@@ -2329,10 +2329,10 @@ h1.changeName {
     background-color: rgba(0, 0, 0, 0.298);
     display: none;
     height: 100%;
-    left: 0px;
+    left: 0;
     overflow: visible;
     position: fixed;
-    top: 0px;
+    top: 0;
     width: 100%;
     z-index: 998;
 }
@@ -2527,7 +2527,7 @@ h1.changeName {
 
 #skuOffersTable .offersTable th {
     background-color: #f1f1f1;
-    padding: 12px 0px;
+    padding: 12px 0;
     font-weight: 400;
     font-size: 14px;
     color: #000000;
@@ -2649,7 +2649,7 @@ h1.changeName {
 }
 
 #skuOffersTable .offersTable .basket .addCart.requestPrice {
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 #skuOffersTable .offersTable .basket .addCart:active {
@@ -2977,7 +2977,7 @@ h1.changeName {
     text-align: center;
     overflow: hidden;
     margin-left: 4px;
-    padding: 8px 0px;
+    padding: 8px 0;
     line-height: 14px;
     height: 42px;
     width: 48px;
@@ -2985,7 +2985,7 @@ h1.changeName {
 }
 
 .smallSpecialTime .specialTimeItem:first-child {
-    /*margin-left: 0px;*/
+    /*margin-left: 0;*/
 }
 
 .smallSpecialTime .specialTimeItemValue {
@@ -3008,7 +3008,7 @@ h1.changeName {
 
 .detail-text-wrap .heading {
     font-family: "robotomedium";
-    padding: 30px 0 0px;
+    padding: 30px 0 0;
     display: block;
     font-size: 20px;
     text-transform: uppercase;
