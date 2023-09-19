@@ -4,6 +4,7 @@ use Bitrix\Main;
 use Bitrix\Main\Entity;
 use Bitrix\Main\Loader;
 use Bitrix\Sale;
+use Bitrix\Main\Numerator\Numerator;
 use Bitrix\Main\SystemException;
 use Bitrix\Main\PhoneNumber\Format;
 use Bitrix\Main\PhoneNumber\Parser;
@@ -23,6 +24,17 @@ if (defined("ADMIN_SECTION")) {
     
 }
 
+function updateAccountNumber()
+{
+    $numerator = Numerator::load(1);
+    if ($numerator) {
+        $res = $numerator->setNextSequentialNumber(1);
+        if (!$res->isSuccess()) {
+            w2l('numerator fail', 1, 'numerator.log');
+        }
+    }
+    return 'updateAccountNumber();';
+}
 
 function saleOrderBeforeSaved(Main\Event $event)
 {
