@@ -181,6 +181,7 @@ $arrFilter["PROPERTY_REGION_VALUE"] = $GLOBALS['medi']['region_cities'][SITE_ID]
             "AJAX_OPTION_HISTORY" => "N",
             "HIDE_NOT_AVAILABLE" => $_POST["HIDE_NOT_AVAILABLE"],
             "HIDE_MEASURES" => $_POST["HIDE_MEASURES"],
+            "SLIDER_ON" => "N"
         )
     );
     ?>
