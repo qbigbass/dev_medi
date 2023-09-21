@@ -361,6 +361,9 @@ if (!empty($arResult)) {
             if ($arData['UF_SVG'] > 0) {
                 $arData["SVG"] = CFile::GetFileArray($arData['UF_SVG']);
             }
+            if ($arData['UF__FILE__MOB'] > 0) {
+                $arData["SVG_MOB"] = CFile::GetFileArray($arData['UF__FILE__MOB']);
+            }
             
             if ($arData['UF_VIDEO'] != '') {
                 $arResult['PROPERTIES']["SIZE_VIDEO"] = $arData['UF_VIDEO'];

@@ -215,12 +215,9 @@ $uniqID = CAjax::GetComponentID($this->__component->__name, $this->__component->
                                                         } ?>:<?
                                                         if (($propName == 'SIZE' || $propName == 'LENGTH') && $sizechart != '1' && $arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST'] && ($arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST']['IMG']['SRC'] != '' || $arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST']['SVG']['SRC'] != '')) {
                                                             $sizechart = 1;
-                                                            ?><span class="size_select get_medi_popup_Window"
-                                                                    data-id="<?= $arResult['PROPERTIES']['SIZE_CHART']['VALUE'] ?>"
-                                                                    data-title="Подбор размера"
-                                                                    data-img="<?= $arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST']['IMG']['SRC'] ?>"
-                                                                    data-svg="<?= $arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST']['SVG']['SRC'] ?>"
-                                                                    id="GTM_size_map">таблица размеров</span><?
+                                                    ?><span class="size_select get_medi_popup_Window desc" data-id="<?=$arResult['PROPERTIES']['SIZE_CHART']['VALUE']?>" data-title="Подбор размера" data-img = "<?=$arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST']['IMG']['SRC'] ?>" data-svg = "<?=$arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST']['SVG']['SRC'] ?>">таблица размеров</span>
+<span class="size_select get_medi_popup_Window mob" data-id="<?=$arResult['PROPERTIES']['SIZE_CHART']['VALUE']?>" data-title="Подбор размера" data-img = "<?=$arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST']['IMG']['SRC'] ?>" data-svg = "<?=$arResult['PROPERTIES']['SIZE_CHART']['VALUES_LIST']['SVG_MOB']['SRC'] ?>" id="GTM_size_map">таблица размеров</span>
+<?
                                                         }
                                                         if (($propName == 'SIZE' || $propName == 'LENGTH') && $sizevideo != '1') {
                                                             if ($arResult['PROPERTIES']['SIZE_VIDEO']) {
