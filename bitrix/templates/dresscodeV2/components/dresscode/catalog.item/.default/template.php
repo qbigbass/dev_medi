@@ -18,9 +18,12 @@
         $this->AddDeleteAction($arResult["ID"], $arResult["DELETE_LINK"], CIBlock::GetArrayByID($arResult["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage("CT_BNL_ELEMENT_DELETE_CONFIRM")));
     }
     ?>
-    <div class="item product sku itemCard" id="<?= $this->GetEditAreaId($arResult["ID"]); ?>"
-         data-product-iblock-id="<?= $arParams["IBLOCK_ID"] ?>" data-position="<?= $arResult['POS_COUNT'] ?>"
-         data-from-cache="<?= $arResult["FROM_CACHE"] ?>" data-convert-currency="<?= $arParams["CONVERT_CURRENCY"] ?>"
+    <div class="item product sku itemCard"
+         id="<?= $this->GetEditAreaId($arResult["ID"]); ?>"
+         data-product-iblock-id="<?= $arParams["IBLOCK_ID"] ?>"
+         data-position="<?= $arResult['POS_COUNT'] ?>"
+         data-from-cache="<?= $arResult["FROM_CACHE"] ?>"
+         data-convert-currency="<?= $arParams["CONVERT_CURRENCY"] ?>"
          data-product-price="<?= $arResult['PRICE']['DISCOUNT_PRICE']; ?>"
          data-product-category="<?= implode("/", $secturl); ?>"
          data-product-category_id="<?= ($arResult['PARENT_PRODUCT']['IBLOCK_SECTION_ID'] ? $arResult['PARENT_PRODUCT']['IBLOCK_SECTION_ID'] : $arResult['IBLOCK_SECTION_ID']); ?>"
@@ -46,14 +49,10 @@
         }
         ?>
         <div class="tabloid nowp">
-            <? /*<a href="#" class="removeFromWishlist" data-id="<?=$arResult["~ID"]?>"></a>*/ ?>
             <div class="markerContainer">
                 <? if (!empty($arResult["PROPERTIES"]["OFFERS"]["VALUE"])): ?>
-
                     <? foreach ($arResult["PROPERTIES"]["OFFERS"]["VALUE"] as $ifv => $marker):
-
                         if ((($arParams['LIST_TYPE'] == 'hit' && $marker == 'Хит продаж') ||
-                                //($arParams['LIST_TYPE'] == 'sale' && $marker  == 'Распродажа') ||
                                 ($arParams['LIST_TYPE'] == 'new' && $marker == 'Новинка') ||
                                 (!in_array($marker, ['Хит продаж', 'Новинка'])) ||
                                 !isset($arParams['LIST_TYPE']))
@@ -62,20 +61,17 @@
                             <div class="marker <?= strstr($arResult["PROPERTIES"]["OFFERS"]["VALUE_XML_ID"][$ifv], "m-") ? $arResult["PROPERTIES"]["OFFERS"]["VALUE_XML_ID"][$ifv] : "m-def" ?>"><?= $marker ?></div>
                         <? } ?>
                     <? endforeach; ?>
-
                 <? endif; ?>
-                <? if (!empty($arResult["PRICE"]["DISCOUNT_PRICE"])): ?><? if ($arResult["PRICE"]['DISCOUNT_PRICE'] < $max_price_mindiff):
-                    $price_diff_percent = 100 - round($arResult["PRICE"]['DISCOUNT_PRICE'] / $max_price * 100, 0); ?>
-                    <div class="marker m-sale">
-                        <?= '-' . $price_diff_percent . '%'; ?>
-                    </div>
-                <? endif; ?>
+                <? if (!empty($arResult["PRICE"]["DISCOUNT_PRICE"])): ?>
+                    <? if ($arResult["PRICE"]['DISCOUNT_PRICE'] < $max_price_mindiff):
+                        $price_diff_percent = 100 - round($arResult["PRICE"]['DISCOUNT_PRICE'] / $max_price * 100, 0);
+                    ?>
+                        <div class="marker m-sale">
+                            <?= '-' . $price_diff_percent . '%'; ?>
+                        </div>
+                    <? endif; ?>
                 <? endif; ?>
             </div>
-            <? /*<div class="rating">
-				<i class="m" style="width:<?=(intval($arResult["PROPERTIES"]["RATING"]["VALUE"]) * 100 / 5)?>%"></i>
-				<i class="h"></i>
-			</div>*/ ?>
             <? if (!empty($arResult["EXTRA_SETTINGS"]["SHOW_TIMER"])): ?>
                 <div class="specialTime productSpecialTime"
                      id="timer_<?= $arResult["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"]; ?>_<?= $uniqID ?>">
@@ -192,23 +188,21 @@
                     <? endif; ?>
                 </div>
                 <div class="productColText">
-                    <span class="item_brand <? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] == 'medi') { ?>flag-medi<? } ?>"><? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] != 'medi') { ?><?= $arResult['PROPERTIES']['BRAND_1C']['VALUE'] ?><? } ?></span>
-
-                    <a href="<?= $arResult["DETAIL_PAGE_URL"] ?>" class="name"><span
-                            class="middle"><?= $arResult["NAME"] ?></span></a>
-
+                    <span class="item_brand <? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] == 'medi') { ?>flag-medi<? } ?>"><? if ($arResult['PROPERTIES']['BRAND_1C']['VALUE'] != 'medi') { ?><?= $arResult['PROPERTIES']['BRAND_1C']['VALUE'] ?><? } ?>
+                    </span>
+                    <a href="<?= $arResult["DETAIL_PAGE_URL"] ?>" class="name">
+                        <span class="middle"><?= $arResult["NAME"] ?></span>
+                    </a>
                     <? if (!empty($arResult["EXTRA_SETTINGS"])): ?>
                         <a class="price"><?= CCurrencyLang::CurrencyFormat($arResult["PRICE"]["DISCOUNT_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true) ?>
                             <script>vViewedProdsPrice += parseInt(<?=$arResult["PRICE"]["DISCOUNT_PRICE"]?>);  </script>
-                            <? /*if($arParams["HIDE_MEASURES"] != "Y" && !empty($arResult["EXTRA_SETTINGS"]["MEASURES"][$arResult["CATALOG_MEASURE"]]["SYMBOL_RUS"])):?>
-									<span class="measure"> / <?=$arResult["EXTRA_SETTINGS"]["MEASURES"][$arResult["CATALOG_MEASURE"]]["SYMBOL_RUS"]?></span>
-								<?endif;*/ ?>
                             <s class="discount"><? if ($arResult['PRICE']['PRICE']['PRICE'] < $max_price_mindiff):
                                     $price_diff = $max_price - $arResult['PRICE']['PRICE']['PRICE']; ?>
                                     <?= CCurrencyLang::CurrencyFormat($max_price, $arResult["EXTRA_SETTINGS"]["CURRENCY"], true) ?>
                                 <? elseif (!empty($arResult["PRICE"]["DISCOUNT"])): ?>
                                     <?= CCurrencyLang::CurrencyFormat($arResult["PRICE"]["RESULT_PRICE"]["BASE_PRICE"], $arResult["EXTRA_SETTINGS"]["CURRENCY"], true) ?>
-                                <? endif; ?></s>
+                                <? endif; ?>
+                            </s>
                         </a>
                         <? if ($arResult['PROPERTIES']['COUNTRY_BRAND']['VALUE'] == 'Германия') { ?>
                             <span class="flag-ge"></span><?
@@ -253,10 +247,7 @@
                                             data-id="<?= $arResult["ID"] ?>"
                                             id="GTM_add_cart_catalog_<?= ($arParams['LIST_TYPE'] ? $arParams['LIST_TYPE'] . '_' : '') ?><?= $arParams['POS_COUNT'] ?>_<?= $arResult["ID"] ?>"
                                         >
-                                            <img
-                                                src="<?= SITE_TEMPLATE_PATH ?>/images/basketPink.svg"
-                                                alt="<?= GetMessage("TO_BUY") ?>"
-                                                class="icon"><?= GetMessage("TO_BUY") ?>
+                                            <?= GetMessage("TO_BUY") ?>
                                         </a>
                                     <?elseif(
                                         ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] == false && !$arResult['DISPLAY_BUTTONS']['SMP_BUTTON']) &&
@@ -387,7 +378,7 @@
                                 <? endif; ?>
                             <? endif; ?>
                         <? endif; ?>
-                    <?endif; ?>
+                    <? endif; ?>
                     <? if ($arResult['DISPLAY_BUTTONS']['INSOLE_BUTTON'] == false && !$arResult['DISPLAY_BUTTONS']['SMP_BUTTON']):?>
                         <a href="#" class="greyBigButton reserve _desktop changeID get_medi_popup_Window"
                            data-src="/ajax/catalog/?action=reserve" data-title="Забронировать в салоне"
