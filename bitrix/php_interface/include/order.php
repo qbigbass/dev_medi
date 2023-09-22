@@ -28,10 +28,11 @@ function updateAccountNumber()
 {
     $numerator = Numerator::load(1);
     if ($numerator) {
-        $res = $numerator->setNextSequentialNumber(1);
+        $res = $numerator->setNextSequentialNumber(0);
         if (!$res->isSuccess()) {
             w2l('numerator fail', 1, 'numerator.log');
         }
+        $accountNumber = $numerator->getNext();
     }
     return 'updateAccountNumber();';
 }
