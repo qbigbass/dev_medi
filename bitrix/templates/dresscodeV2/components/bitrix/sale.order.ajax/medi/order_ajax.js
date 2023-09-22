@@ -343,10 +343,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
             if (result && result.order) {
                 result = result.order;
 
-                // JS-трекер Loymax (Событие: завершение оформления заказа)
-                var _gcTracker = window._gcTracker || [];
-                _gcTracker.push(['order_complete', { order_id: result.order.ID }]);
-
                 if (result.REDIRECT_URL) {
                     if (this.params.USE_ENHANCED_ECOMMERCE === 'Y') {
                         this.setAnalyticsDataLayer('purchase', result.ID);
