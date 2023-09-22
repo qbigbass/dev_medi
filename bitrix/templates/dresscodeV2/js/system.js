@@ -744,6 +744,10 @@ $(window).on("ready", function (event) {
 
         var close_medi_popup_Window = function (event) {
             $(".medi_popup").remove();
+$("body").removeClass("body_noscroll");
+const scrollY = document.body.style.top;
+document.body.style.top = '';
+window.scrollTo(0, parseInt(scrollY || '0') * -1);
             medi_popup_Open = false;
             if (event !== undefined)
                 return event.preventDefault();
@@ -1945,6 +1949,9 @@ $(window).on("ready", function (event) {
 
                     ym(30121774, 'reachGoal', 'SEND_ORDER');
 
+
+				var _tmr = window._tmr || (window._tmr = []);
+				_tmr.push({"type":"reachGoal","id":3206755,"goal":"purchase"});
 
                     dataLayer.push({
                         'event': 'crto_transactionpage',
