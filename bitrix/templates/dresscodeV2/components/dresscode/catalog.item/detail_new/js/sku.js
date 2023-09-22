@@ -200,13 +200,146 @@ $(function () {
                     productid: jsonData[0]["PRODUCT"]["ID"],
                     pagetype: "product",
                     totalvalue: jsonData[0]["PRODUCT"]["PRICE"]["DISCOUNT_PRICE"],
-                    list: "102"
+					list: "102" });
+
+
+				// pictures
+				var countImages = 0;
+
+				if(jsonData[0]["PRODUCT"]["IMAGES"]){
+
+					for(var i in jsonData[0]["PRODUCT"]["IMAGES"]) {
+						countImages = i;
+					}
+
+					// big slider vars
+					var $pictureSlider = $("#pictureContainer .pictureSlider").empty();
+
+					// small pictures slider
+					var $moreImagesCarousel = $("#moreImagesCarousel").removeClass("hide");
+					var $moreImagesCarouselSlideBox = $moreImagesCarousel.find(".slideBox");
+					$moreImagesCarouselSlideBox.find(".item").remove();
+
+					$.each(jsonData[0]["PRODUCT"]["IMAGES"], function(i, nextElement){
+
+						var $sliderImage = $("<img />", {src: nextElement["MEDIUM_IMAGE"]["SRC"]});
+
+						//big slider
+						$pictureSlider.append(
+							$("<div />", {class: "item"}).append(
+								$("<a/>", {class: "zoom", href: nextElement["LARGE_IMAGE"]["SRC"]}).data("large-picture", nextElement["LARGE_IMAGE"]["SRC"]).data("small-picture", nextElement["SMALL_IMAGE"]["SRC"]).append(
+									$sliderImage
+								)
+							)
+						)
+
+						if(countImages > 0){
+							//small slider
+							$moreImagesCarouselSlideBox.append(
+								$("<div />", {class: "item"}).append(
+									$("<a/>", {class: "zoom", href: nextElement["LARGE_IMAGE"]["SRC"]}).data("large-picture", nextElement["LARGE_IMAGE"]["SRC"]).append(
+										$("<img />", {src: nextElement["SMALL_IMAGE"]["SRC"]})
+									)
+								)
+							);
+						}else{
+							$moreImagesCarousel.addClass("hide");
+						}
                 });
 
+					//addCart button reload
                 changeAddCartButton(basketProductsNow);
+					//subscribe button reload
+					//subscribeOnline();
+
+                    var $pictureSlider = $("#pictureContainer .pictureSlider.detail_product");
+                    $pictureSlider.on('afterChange', function(event, slick, currentSlide, nextSlide){
+                        let currentIndexBigImg = currentSlide;
+                        $('#moreImagesCarousel .slideBox .item').each(function(){
+                            $(this).removeClass('selected');
+                        });
+                        $('#moreImagesCarousel .slideBox .item[data-pic-index='+currentIndexBigImg+']').addClass('selected');
+                    });
+                    // global function var
+                    var windowInnerWidth = window.innerWidth;
+                    var detect = new MobileDetect(window.navigator.userAgent);
+                    var isAdaptive = detect.mobile();
+                    var userAgent = detect.userAgent();
+
+                        var startPictureElementSlider;
+
+                        $(function () {
+
+                            startPictureElementSlider = function () {
+
+                                var $pictureContainer = $("#pictureContainer");
+                                var $pictureSlider = $pictureContainer.find(".pictureSlider");
+                                var $pictureSliderElements = $pictureSlider.find(".item");
+
+                                var $moreImagesCarousel = $("#moreImagesCarousel");
+                                var $itemClickToEvent = $moreImagesCarousel.find(".item");
+
+                                var elementsCount = $pictureSliderElements.length;
+                                var currentPosition = 0;
+
+                                // add styles
+                                $pictureContainer.css({
+                                    overflow: "hidden",
+                                    width: "100%",
+                                });
+
+                                $pictureSlider.css({
+                                    width: elementsCount * 100 + "%",
+                                    position: "relative",
+                                    overflow: "hidden",
+                                    display: "flex",
+                                    left: "0px",
+                                    visibility: "visible"
+                                });
+
+                                $pictureSliderElements.css({
+                                    width: 100 / elementsCount + "%",
+                                    position: "relative",
+                                    textAlign: "center"
+                                });
+
+
+                                var slideCalcToMove = function (event) {
+
+                                    $this = $(this);
+
+                                    if (!$this.hasClass("selected")) {
+                                        $this.siblings(".item").removeClass("selected").find("a").removeClass("zoom");
+                                        $this.addClass("selected").find("a").addClass("zoom");
+                                        event.stopImmediatePropagation();
+                                    }
+
+                                    return event.preventDefault(slideMove($this.index()));
+
+                                }
+
+                                var slideMove = function (to) {
+
+                                    $pictureSlider.animate({
+                                        left: "-" + to * 100 + "%"
+                                    }, 250);
+
+                                    return true;
+
+                                };
+
+                                $itemClickToEvent.on("click", slideCalcToMove);
+                            }
+
+                            startPictureElementSlider(); // start slider =)
+
+                        });
+
+
+				}
 
                 $_mProduct.find(".changeID").data("id", jsonData[0]["PRODUCT"]["ID"]).attr("data-id", jsonData[0]["PRODUCT"]["ID"]);
-                //$_mProduct.find(".changePicture").html($("<img/>").attr("src", jsonData[0]["PRODUCT"]["IMAGES"][0]["MEDIUM_IMAGE"]["SRC"]));
+				$_mProduct.find(".changePicture").html($("<img/>").attr("src", jsonData[0]["PRODUCT"]["IMAGES"][0]["MEDIUM_IMAGE"]["SRC"]));
                 $_mProduct.find(".changePropertiesNoGroup").html(jsonData[0]["PRODUCT"]["RESULT_PROPERTIES_NO_GROUP"]);
                 $_mProduct.find(".changePropertiesGroup").html(jsonData[0]["PRODUCT"]["RESULT_PROPERTIES_GROUP"]);
 
