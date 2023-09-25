@@ -61,6 +61,12 @@ if (!empty($arResult['ERRORS']['FATAL']))
 							else
 							{
 								echo Loc::getMessage('SPOD_ORDER_CANCELED');
+                                if ($USER->IsAuthorized() && array_intersect([20,29], $USER->GetUserGroupArray())) {
+                                    ?>
+                                    <p class="reason_canceled">Причина отмены:
+                                        <span><?=$arResult['REASON_CANCELED']?></span></p>
+                                    <?
+                                }
 							}
 							?></strong>
 					</div>

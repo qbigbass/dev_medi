@@ -1,3 +1,10 @@
+.reason_canceled {
+	font: normal normal 15px "roboto_ltregular", arial, sans-serif;
+}
+.reason_canceled span {
+	color: #b55353;
+
+}
 .base_price_old {
 	text-decoration: line-through;
 }
