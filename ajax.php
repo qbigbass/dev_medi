@@ -869,12 +869,8 @@ endif; ?>
                 if (isset($arShowButtonsElm['PROPERTY_NO_CART_BUTTON_VALUE'])
                     && $arShowButtonsElm['PROPERTY_NO_CART_BUTTON_VALUE'] == 'Да'
                 ) {
-                    if (($arSects[0]['ID'] == 354 || $arSects[0]['ID'] == 93) && $USER->IsAuthorized()
-                        && !empty(array_intersect([20, 1], $USER->GetUserGroupArray()))) {
-                        $arLastOffer["PRODUCT"]['DISPLAY_BUTTONS']['CART_BUTTON'] = true;
-                    } else {
-                        $arLastOffer["PRODUCT"]['DISPLAY_BUTTONS']['CART_BUTTON'] = false;
-                    }
+                    $arLastOffer["PRODUCT"]['DISPLAY_BUTTONS']['CART_BUTTON'] = false;
+                    
                 }
                 
                 // Показывать или скрывать кнопку "Забронировать в салоне"
@@ -890,6 +886,43 @@ endif; ?>
                     && $arShowButtonsElm["PRODUCT"]['PROPERTIES']['INSOLE_BUTTON']['VALUE'] == 'Да'
                 ) {
                     $arLastOffer["PRODUCT"]['DISPLAY_BUTTONS']['INSOLE_BUTTON'] = true;
+                }
+            }
+    
+    
+            global  $USER;
+            // Проверка для показа кнопки салонам
+            if ($USER->IsAuthorized()
+                && !empty(array_intersect([20, 1], $USER->GetUserGroupArray())))
+            {
+                $rsUsers = CUser::GetList(($by="id"), ($order="desc"), ['ID'=>$USER->GetID()], ['SELECT'=>['UF_SKLAD']]);
+                if ($salonUser = $rsUsers->GetNext())
+                {
+                    $arLastOffer['SALON'] = $salonUser;
+                }
+        
+                $filter = array(
+                    "ACTIVE" => "Y",
+                    "PRODUCT_ID" => $arLastOffer["PRODUCT"]["ID"],
+                    "+SITE_ID" => SITE_ID,
+                    "XML_ID" => $arLastOffer['SALON']['UF_SKLAD']
+                );
+                $rsProps = CCatalogStore::GetList(
+                    array('TITLE' => 'ASC', 'ID' => 'ASC'),
+                    $filter,
+                    false,
+                    false,
+                    ['UF_*', 'PRODUCT_AMOUNT']
+                );
+                if ($salonInfo = $rsProps->GetNext())
+                {
+                    if ($salonInfo['PRODUCT_AMOUNT'] > 0) {
+                        $arLastOffer["PRODUCT"]['SALON'] = $salonInfo;
+                        $arLastOffer["PRODUCT"]['DISPLAY_BUTTONS']['CART_BUTTON'] = true;
+                        $arLastOffer["PRODUCT"]['CAN_BUY'] = 'Y';
+                        $arLastOffer["PRODUCT"]['CATALOG_AVAILABLE'] = 'Y';
+                        $arLastOffer["PRODUCT"]['CATALOG_QUANTITY'] += $salonInfo['PRODUCT_AMOUNT'];
+                    }
                 }
             }
             

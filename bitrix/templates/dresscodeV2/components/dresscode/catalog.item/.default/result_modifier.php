@@ -99,14 +99,42 @@ if (!empty($arResult)) {
     if (isset($arResult['PROPERTIES']['NO_CART_BUTTON']['VALUE'])
         && $arResult['PROPERTIES']['NO_CART_BUTTON']['VALUE'] == 'Да'
     ) {
-        global $USER;
-        if (($arSects[0]['ID'] == 354 || $arSects[0]['ID'] == 93) && $USER->IsAuthorized()
-            && !empty(array_intersect([20, 1], $USER->GetUserGroupArray()))) {
-            $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] = true;
-        } else {
-            $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] = false;
+        $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] = false;
+    }
+    global $USER;
+    // Проверка для показа кнопки салонам
+    if ($USER->IsAuthorized()
+        && !empty(array_intersect([20, 1], $USER->GetUserGroupArray())))
+    {
+        $rsUsers = CUser::GetList(($by="id"), ($order="desc"), ['ID'=>$USER->GetID()], ['SELECT'=>['UF_SKLAD']]);
+        if ($salonUser = $rsUsers->GetNext())
+        {
+            $arResult['SALON'] = $salonUser;
+        }
+        $filter = array(
+            "ACTIVE" => "Y",
+            "PRODUCT_ID" => $arResult['ID'],
+            "+SITE_ID" => SITE_ID,
+            "XML_ID" => $arResult['SALON']['UF_SKLAD']
+        );
+        $rsProps = CCatalogStore::GetList(
+            array('TITLE' => 'ASC', 'ID' => 'ASC'),
+            $filter,
+            false,
+            false,
+            ['UF_*', 'PRODUCT_AMOUNT', "XML_ID"]
+        );
+        if ($salonInfo = $rsProps->GetNext())
+        {
+            if ($salonInfo['PRODUCT_AMOUNT'] > 0) {
+                $arResult['DISPLAY_BUTTONS']['CART_BUTTON'] = true;
+                $arResult['CAN_BUY'] = 'Y';
+                $arResult['CATALOG_AVAILABLE'] = 'Y';
+                $arResult['CATALOG_QUANTITY'] += $salonInfo['PRODUCT_AMOUNT'];
+            }
         }
     }
+    
     
     // Показывать или скрывать кнопку "Забронировать в салоне"
     $arResult['DISPLAY_BUTTONS']['RESERV_BUTTON'] = true;
