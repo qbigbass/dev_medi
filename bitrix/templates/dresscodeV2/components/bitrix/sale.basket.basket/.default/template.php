@@ -102,8 +102,7 @@ if (!empty($arResult["CONFIRM_ORDER"]) && $arResult["CONFIRM_ORDER"] == "Y") {
                 <a href="<?= SITE_DIR ?>personal/cart/order/" id="newOrder"
                    class="show-always btn-simple btn-medium"><?= GetMessage("BASKET_TABS_ORDER_MAKE") ?></a>
                 
-                <? if ($USER->IsAuthorized() && array_intersect([20], $USER->GetUserGroupArray())
-                    && (in_array($USER->GetLogin(), ['kalita', 'shodnenskaya']))) { ?>
+                <? if ($USER->IsAuthorized() && array_intersect([20], $USER->GetUserGroupArray())) { ?>
                     <div class="precheck">
                         <a href="/salons/check/" type="submit" value="Предчек"
                            class="precheck btn-simple btn-medium btn-border">Предчек</a>
