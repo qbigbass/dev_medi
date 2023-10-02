@@ -264,13 +264,11 @@ class DwSkuOffers {
     	//check exist offers
 		$arElement["SKU_EXIST"] = CCatalogSKU::IsExistOffers($productId, $iblockId);
 
-		if($arElement["SKU_EXIST"]){
-
-			if (is_array($arSkuIblockInfo)){
-
+		if ($arElement["SKU_EXIST"]) {
+			if (is_array($arSkuIblockInfo)) {
 				$arSkuProperties = DwSkuOffers::getSkuPropertiesFromIblock($arSkuIblockInfo);
 
-				if(empty($arSkuProperties)){
+				if (empty($arSkuProperties)) {
 					return false;
 				}
 
@@ -290,32 +288,28 @@ class DwSkuOffers {
 				);
 
 				//set offers id filter
-				if(!empty($offersFilterId)){
+				if (!empty($offersFilterId)) {
 					$arOffersFilter["ID"] = $offersFilterId;
 				}
 
 				//if hide not available
-				if($arParams["HIDE_NOT_AVAILABLE"] == "Y"){
+				if ($arParams["HIDE_NOT_AVAILABLE"] == "Y") {
 					$arOffersFilter["CATALOG_AVAILABLE"] = "Y";
 				}
 
-				if($arParams["SHOW_DEACTIVATED"] == "Y"){
+				if ($arParams["SHOW_DEACTIVATED"] == "Y") {
 					$arOffersFilter["ACTIVE"] = "";
 					$arOffersFilter["ACTIVE_DATE"] = "";
 				}
 
 				//additional filter
-				if(!empty($arParams["FILTER"])){
-
+				if (!empty($arParams["FILTER"])) {
 					//parse smart filter params
-					if(!empty($arParams["FILTER"]["OFFERS"])){
+					if (!empty($arParams["FILTER"]["OFFERS"])) {
 						$arOffersFilter = array_merge($arOffersFilter, $arParams["FILTER"]["OFFERS"]);
-					}
-
-					else{
+					} else {
 						$arOffersFilter = array_merge($arOffersFilter, $arParams["FILTER"]);
 					}
-
 				}
 
 				//sku offers sort
@@ -335,7 +329,6 @@ class DwSkuOffers {
 					"DATE_MODIFY",
 					"TIMESTAMP_X",
 					"DATE_ACTIVE_TO",
-					// "DETAIL_PAGE_URL",
 					"DETAIL_PICTURE",
 					"PREVIEW_PICTURE",
 					"DATE_ACTIVE_FROM",
@@ -345,7 +338,8 @@ class DwSkuOffers {
 					"CATALOG_SUBSCRIBE",
 					"CATALOG_QUANTITY_TRACE",
 					"CATALOG_CAN_BUY_ZERO",
-					"CANONICAL_PAGE_URL"
+					"CANONICAL_PAGE_URL",
+					"PROPERTY_SELECTED_SIZE_CHARACT"
 				);
 
 				//create arrays
@@ -354,17 +348,14 @@ class DwSkuOffers {
 
 				// get sku offers
 				$rsOffersMx = CIBlockElement::GetList($arOffersSort, $arOffersFilter, false, false, $arOffersSelect);
-				while($arSkuMx = $rsOffersMx->GetNextElement()){
-
+				while ($arSkuMx = $rsOffersMx->GetNextElement()) {
 					$arSkuFieldsMx = $arSkuMx->GetFields();
 					$arSkuPropertiesMx = $arSkuMx->GetProperties(array("ID" => "ASC"), array("ID" => $arSkuPropertiesId, "EMPTY" => "N"));
 
                     $filter = array(
         				"ACTIVE" => "Y",
         				"PRODUCT_ID" => $arSkuFieldsMx["ID"],
-        				"+SITE_ID" => SITE_ID,
-        				//"SHIPPING_CENTER" => 'Y',
-
+        				"+SITE_ID" => SITE_ID
         			);
 
         			$rsProps = CCatalogStore::GetList(
@@ -375,119 +366,76 @@ class DwSkuOffers {
         				array("ID", "PRODUCT_AMOUNT")
         			);
         			$amount = 0;
-        			while ($prop = $rsProps->GetNext())
-        			{
+        			while ($prop = $rsProps->GetNext()) {
         				$amount += $prop["PRODUCT_AMOUNT"];
         				$arSkuFieldsMx['storeamounts'][] = $prop;
         			}
-        			if ($amount == 0)
-        			{
+
+					if ($amount == 0) {
         				$arSkuFieldsMx["CATALOG_QUANTITY"] = 0;
         				$arSkuFieldsMx["CATALOG_AVAILABLE"] = "N";
         				$arSkuFieldsMx["CATALOG_QUANTITY_TRACE"] ="Y";
         				$arSkuFieldsMx["CATALOG_CAN_BUY_ZERO"] = "N";
         			}
-
 					//write
 					$arElement["SKU_OFFERS"][$arSkuFieldsMx["ID"]] = array_merge($arSkuFieldsMx, array("PROPERTIES" => $arSkuPropertiesMx));
-
 					//write links _CIBElement
 					$arElement["SKU_OFFERS_LINK"][$arSkuFieldsMx["ID"]] = $arSkuMx;
-
 				}
-
 			}
-
 		}
 
-		if(!empty($arElement["SKU_OFFERS"])){
-
+		if (!empty($arElement["SKU_OFFERS"])) {
 			//sort offers params
 			//disable sort offers (sort from properties)
 			$offersEnableSort = false;
 			//standart sort
 			$offersLastSort = 500;
 
-			//if set first sku offer
-			if(!empty($firstSkuOfferId) && !empty($arElement["SKU_OFFERS"][$firstSkuOfferId])){
-
-				//copy offer by index
-				$arTmpOffer["SKU_OFFERS"][$firstSkuOfferId] = $arElement["SKU_OFFERS"][$firstSkuOfferId];
-				//delete offer by index
-				unset($arElement["SKU_OFFERS"][$firstSkuOfferId]);
-				//Insert first
-				$arElement["SKU_OFFERS"] = $arTmpOffer["SKU_OFFERS"] + $arElement["SKU_OFFERS"];
-				//enable sort flag (sort replace first sku offer by func params)
-				$offersEnableSort = true;
-				//set first index
-				$firstOfferIndex = $firstSkuOfferId;
-
-			}
-
-			//else calc from base sort
-			else{
-
-				//first offer key
-				$firstOfferIndex = key($arElement["SKU_OFFERS"]);
-
-				if($arElement["SKU_OFFERS"][$firstOfferIndex]["SORT"] != $offersLastSort){
-					//enable sort offers (sort from sku offers)
-					$offersEnableSort = true;
+			$firstOfferIndex = 0;
+			// Установим активный sku у товара по св-ву "Активная размерная характеристика"
+			foreach ($arElement["SKU_OFFERS"] as $offerId => $offerData) {
+				if ($offerData["PROPERTY_SELECTED_SIZE_CHARACT_VALUE"] === "Y") {
+					$firstOfferIndex = $offerId;
+					break;
 				}
-
 			}
 
+			if ($arElement["SKU_OFFERS"][$firstOfferIndex]["SORT"] != $offersLastSort) {
+				//enable sort offers (sort from sku offers)
+				$offersEnableSort = true;
+			}
 		}
 
-		if(!empty($arElement["SKU_OFFERS"]) && !empty($arSkuProperties)){
-
+		if (!empty($arElement["SKU_OFFERS"]) && !empty($arSkuProperties)) {
 			//tmp sku properties
 			$arElement["SKU_PROPERTIES"] = $arSkuProperties;
-
 			//check valid sku properties
 			foreach ($arElement["SKU_PROPERTIES"] as $ip => $arProp){
-
 				//check valid sku properties values
 				foreach ($arProp["VALUES"] as $ipv => $arPropValue){
-
 					$find = false;
 					//check values for all offers if not found delete
 					foreach ($arElement["SKU_OFFERS"] as $ipo => $arOffer){
-
 						//check for highload
-						if(!empty($arProp["HIGHLOAD"]) && $arProp["HIGHLOAD"] == "Y"){
-
-							if($arOffer["PROPERTIES"][$arProp["CODE"]]["VALUE"] == $arPropValue["UF_XML_ID"]){
+						if (!empty($arProp["HIGHLOAD"]) && $arProp["HIGHLOAD"] == "Y") {
+							if ($arOffer["PROPERTIES"][$arProp["CODE"]]["VALUE"] == $arPropValue["UF_XML_ID"]) {
 								$find = true;
 								break(1);
 							}
-
-						}
-						//check for after property
-						else{
-                            /*if (is_array($arOffer["PROPERTIES"][$arProp["CODE"]]["VALUE"])){
-                                if (in_array($arPropValue["VALUE"], $arOffer["PROPERTIES"][$arProp["CODE"]]["VALUE"]))
-                                {
-                                    $find = true;
-    								break(1);
-                                }
-                            }
-                            else*/if($arOffer["PROPERTIES"][$arProp["CODE"]]["VALUE"] == $arPropValue["VALUE"]){
+						} else {
+							//check for after property
+                            if ($arOffer["PROPERTIES"][$arProp["CODE"]]["VALUE"] == $arPropValue["VALUE"]) {
 								$find = true;
 								break(1);
 							}
-
 						}
-
 					}
-
 					//delete invalid values
-					if(!$find){
+					if (!$find) {
 						unset($arElement["SKU_PROPERTIES"][$ip]["VALUES"][$ipv]);
 					}
-
 				}
-
 			}
 
 			//array for save property levels
@@ -496,52 +444,36 @@ class DwSkuOffers {
 			$iter = 0;
 
 			//set active offer
-			foreach ($arElement["SKU_PROPERTIES"] as $ip => $arProp){
-
-				if(!empty($arProp["VALUES"])){
-
+			foreach ($arElement["SKU_PROPERTIES"] as $ip => $arProp) {
+				if (!empty($arProp["VALUES"])) {
 					//get all values for current property
 					$arKeys = array_keys($arProp["VALUES"]);
 					$selectedUse = false;
-
 					//first iteration
-					if($iter === 0){
-
+					if ($iter === 0) {
 						//if enabled offers sort
-						if($offersEnableSort){
-
+						if ($offersEnableSort) {
 							//write first offers value by sort
-
 							//set property selected
 							$arElement["SKU_PROPERTIES"][$ip]["VALUES"][$arElement["SKU_OFFERS"][$firstOfferIndex]["PROPERTIES"][$ip]["VALUE"]]["SELECTED"] = "Y";
-
 							//write values for current level
 							$arPropClean[$ip] = array(
 								"PROPERTY" => $ip,
 								"VALUE"    => $arElement["SKU_OFFERS"][$firstOfferIndex]["PROPERTIES"][$ip]["VALUE"],
 								"HIGHLOAD" => $arProp["HIGHLOAD"]
 							);
-
-						}
-
-						else{
-
+						} else {
 							//write first value
-
 							//set property selected
 							$arElement["SKU_PROPERTIES"][$ip]["VALUES"][$arKeys[0]]["SELECTED"] = "Y";
-
 							//write values for current level
 							$arPropClean[$ip] = array(
 								"PROPERTY" => $ip,
 								"VALUE"    => $arKeys[0],
 								"HIGHLOAD" => $arProp["HIGHLOAD"]
 							);
-
 						}
-
-					}else{
-
+					} else {
 						//level >= 2
 						//found selected property
 						foreach ($arKeys as $key => $keyValue){
@@ -566,57 +498,41 @@ class DwSkuOffers {
 
 									//check values for previous level
 									foreach ($arPropClean as $ic => $arNextClean){
-
 										//if value is not in this sentence
-										if($arOffer["PROPERTIES"][$arNextClean["PROPERTY"]]["VALUE"] != $arNextClean["VALUE"]){
-
-											if($ic == $ip){
+										if ($arOffer["PROPERTIES"][$arNextClean["PROPERTY"]]["VALUE"] != $arNextClean["VALUE"]) {
+											if ($ic == $ip) {
 												break(2);
 											}
-
 											//set disable flag
 											$disabled = true;
-
 											//unset selected flag
 											$selected = false;
-
 											break(1);
-
 										}
-
 									}
 
 									//if enable offers sort
-									if($offersEnableSort && $disabled == false){
+									if ($offersEnableSort && $disabled == false) {
 										break(1);
 									}
 
 									//if disabled offers sort
-									if(!$offersEnableSort){
-
-										if($selected && !$selectedUse){
-
+									if (!$offersEnableSort) {
+										if ($selected && !$selectedUse) {
 											//set selected use flag
 											$selectedUse = true;
-
 											//set property selected
 											$arElement["SKU_PROPERTIES"][$ip]["VALUES"][$keyValue]["SELECTED"] = "Y";
-
 											//write values for current level
 											$arPropClean[$ip] = array(
 												"PROPERTY" => $ip,
 												"VALUE"    => $keyValue,
 												"HIGHLOAD" => $arProp["HIGHLOAD"]
 											);
-
 											break(1);
-
 										}
-
 									}
-
 								}
-
 							}
 
 							//disable property values
@@ -626,9 +542,8 @@ class DwSkuOffers {
 
 						}
 
-
 						//if enable offers sort
-						if($offersEnableSort){
+						if ($offersEnableSort) {
 
 							//set property selected
 							$arElement["SKU_PROPERTIES"][$ip]["VALUES"][$arElement["SKU_OFFERS"][$firstOfferIndex]["PROPERTIES"][$ip]["VALUE"]]["SELECTED"] = "Y";
@@ -639,16 +554,11 @@ class DwSkuOffers {
 								"VALUE"    => $arElement["SKU_OFFERS"][$firstOfferIndex]["PROPERTIES"][$ip]["VALUE"],
 								"HIGHLOAD" => $arProp["HIGHLOAD"]
 							);
-
 						}
-
 					}
-
 					//next iteration
 					$iter++;
-
 				}
-
 			}
 
 			//get sku pictures
@@ -668,10 +578,8 @@ class DwSkuOffers {
 
 			//write info for active sku offer
 			foreach ($arElement["SKU_OFFERS"] as $ir => $arOffer){
-
 				//set active flag
 				$active = true;
-
 				//if disabled offers sort
 				//else first sku offer
 				if(!$offersEnableSort){
@@ -696,14 +604,12 @@ class DwSkuOffers {
 					$arElement["PRODUCT_PRICE_ALLOW_FILTER"] = array();
 
 					if(!empty($arParams["PRODUCT_PRICE_CODE"])){
-
 						//get available prices code & id
 						$arPricesInfo = DwPrices::getPriceInfo($arParams["PRODUCT_PRICE_CODE"], $arSkuIblockInfo["IBLOCK_ID"]);
 						if(!empty($arPricesInfo)){
 					    	$arElement["PRODUCT_PRICE_ALLOW"] = $arPricesInfo["ALLOW"];
 						    $arElement["PRODUCT_PRICE_ALLOW_FILTER"] = $arPricesInfo["ALLOW_FILTER"];
 						}
-
 					}
 
 					//get prices
@@ -803,20 +709,14 @@ class DwSkuOffers {
 					//set edit links
 					$arElement["EDIT_LINK"] = $arButtons["edit"]["edit_element"]["ACTION_URL"];
 					$arElement["DELETE_LINK"] = $arButtons["edit"]["delete_element"]["ACTION_URL"];
-
-
 				}
-
-				//break each
-				if($offersEnableSort){
+				if ($offersEnableSort) {
+					//break each
 					break(1);
 				}
-
 			}
-		}
-
-		//empty offers
-		else{
+		} else {
+			//empty offers
 			return false;
 		}
 
