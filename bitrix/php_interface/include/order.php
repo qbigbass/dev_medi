@@ -19,8 +19,99 @@ if (defined("ADMIN_SECTION")) {
         'OnSaleOrderBeforeSaved',
         'saleOrderSavedLmxCalculate'
     );
-    
-    
+}
+
+Main\EventManager::getInstance()->addEventHandler(
+    'sale',
+    'OnSaleOrderSaved',
+    'ChangeActiveSelectedSizeSku'
+);
+
+function ChangeActiveSelectedSizeSku(Main\Event $event) {
+    // Пересчитаем остатки SKU и изменим активную размерную характеристику у товара
+    $order = $event->getParameter("ENTITY");
+    $isNew = $event->getParameter("IS_NEW");
+    $arDataOffer = [];
+
+    if ($isNew) {
+        $basket = $order->getBasket();
+        foreach ($basket as $basketItem) {
+            $offerId = $basketItem->getProductId();
+            $objElement = CIBlockElement::GetList(
+                [],
+                [
+                    'ID' => $offerId,
+                    'IBLOCK_ID' => 19
+                ],
+                false,
+                false,
+                [
+                    'ID',
+                    'CATALOG_AVAILABLE',
+                    'SORT',
+                    'PROPERTY_SELECTED_SIZE_CHARACT'
+                ]
+            );
+
+            while ($arElement = $objElement->GetNext()) {
+                $arDataOffer[$offerId] = $arElement;
+            }
+        }
+
+        if (!empty($arDataOffer)) {
+
+            $GLOBALS["NOT_RUN_UPDATE_SORT_PRODUCT_CATALOG"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSortProductCatalog
+
+            foreach ($arDataOffer as $skuId => $data) {
+                if ($data['PROPERTY_SELECTED_SIZE_CHARACT_VALUE'] === 'Y' && $data['CATALOG_AVAILABLE'] !== 'Y') {
+                    // Торговое предложение с выбранной размерной характеристикой закончилось.
+                    // Необходимо изменить выбранную размерную характеристику у товара
+                    $skuProductData = CCatalogSku::GetProductInfo($skuId);
+
+                    $offersListProduct = CCatalogSKU::getOffersList(
+                        $skuProductData['ID'],
+                        0,
+                        [
+                            'ACTIVE' => 'Y',
+                            'CATALOG_AVAILABLE' => 'Y',
+                        ],
+                        ['ID', 'SORT'],
+                        [],
+                        []
+                    );
+
+                    if (!empty($offersListProduct)) {
+                        // Найдем следующий по полю "Сортировка" доступный SKU
+                        foreach ($offersListProduct as $productId => &$arrOffers) {
+                            usort($arrOffers, function ($a, $b) {
+                                return ($a['SORT'] - $b['SORT']);
+                            });
+                        }
+
+                        unset($productId);
+
+                        foreach ($offersListProduct as $productId => $offersList) {
+                            // Для первого доступного SKU устанавливаем чекбокс у св-ва "Активная размерная характеристика"
+                            $propertyValues = [
+                                "SELECTED_SIZE_CHARACT" => 16684
+                            ];
+                            $nextActiveOfferId = $offersList[0]['ID'];
+
+                            CIBlockElement::SetPropertyValuesEx($nextActiveOfferId, "19", $propertyValues);
+
+                            // Для текущего SKU (который стал недоступен) снимаем чекбокс у св-ва "Активная размерная характеристика"
+                            $propertyValues = [
+                                "SELECTED_SIZE_CHARACT" => ''
+                            ];
+
+                            CIBlockElement::SetPropertyValuesEx($skuId, "19", $propertyValues);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 
