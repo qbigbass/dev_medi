@@ -48,9 +48,6 @@ $arrOffersProductsSort = [];
 $arrOffersUpdated = [];
 
 if (!empty($arrOffersProducts)) {
-
-    $GLOBALS["NOT_RUN_UPDATE_SORT_PRODUCT_CATALOG"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSortProductCatalog
-
     // Отсортируем ТП по полю "Сортировка"
     foreach ($arrOffersProducts as $productId => $arrOffers) {
         foreach ($arrOffers as $offerId => $offerData) {
