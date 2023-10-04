@@ -155,7 +155,7 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
         $arElement["PARENT_PRODUCT_ID"] = $skuParentProduct["ID"];
         $arElement["PARENT_PRODUCT_IBLOCK_ID"] = $skuParentProduct["IBLOCK_ID"];
     }
-    
+
     // op = operation id
     //set id, iblock for calc sku
     $opIblockId = empty($skuParentProduct) ? $arParams["IBLOCK_ID"] : $arElement["PARENT_PRODUCT_IBLOCK_ID"];
@@ -196,7 +196,7 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
         unset($arSelect['TIMESTAMP_X']);
         unset($arSelect['TAGS']);
     }
-    
+
     //prepare to select parent product from sku
     if (!empty($skuParentProduct) || !empty($productContainOffers)) {
         
@@ -218,12 +218,10 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
         //select from base
         $rsBaseProduct = CIBlockElement::GetList(array(), $arFilter, false, false, $arSelect);
         if ($oBaseProduct = $rsBaseProduct->GetNextElement()) {
-            
             //write
             $arElement["PARENT_PRODUCT"] = $oBaseProduct->GetFields();
             $arElement["PARENT_PRODUCT"]["PROPERTIES"] = $oBaseProduct->GetProperties(array("sort" => "asc", "name" => "asc"), array("EMPTY" => "N"));
-            
-            
+
             if ($card != 'small') {
                 //set seo params from parent product
                 $seoValues = new \Bitrix\Iblock\InheritedProperty\ElementValues($arElement["PARENT_PRODUCT"]["IBLOCK_ID"], $arElement["PARENT_PRODUCT"]["ID"]);
@@ -240,8 +238,7 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             
             //set name from parent product
             $arElement["DETAIL_PAGE_URL"] = $arElement["PARENT_PRODUCT"]["DETAIL_PAGE_URL"];
-            
-            
+
             if ($card != 'small') {
                 //set preview text from parent product
                 $arElement["PREVIEW_TEXT"] = $arElement["PARENT_PRODUCT"]["PREVIEW_TEXT"];
@@ -255,32 +252,13 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             if (!empty($arElement["PARENT_PRODUCT"]["DETAIL_PICTURE"])) {
                 $arElement["PICTURE"] = CFile::ResizeImageGet($arElement["PARENT_PRODUCT"]["DETAIL_PICTURE"], array("width" => $arParams["PICTURE_WIDTH"], "height" => $arParams["PICTURE_HEIGHT"]), BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, $arParams["IMAGE_QUALITY"]);
             }
-            
-            
+
             if ($card != 'small') {
                 if (!empty($arElement["PARENT_PRODUCT"]["CANONICAL_PAGE_URL"])) {
                     $arElement["CANONICAL_PAGE_URL"] = $arElement["PARENT_PRODUCT"]["CANONICAL_PAGE_URL"];
                 }
             }
-            
-            //edit buttons
-            /*$arButtons = CIBlock::GetPanelButtons(
-                $arElement["PARENT_PRODUCT"]["IBLOCK_ID"],
-                $arElement["PARENT_PRODUCT"]["ID"],
-                $arElement["PARENT_PRODUCT"]["IBLOCK_SECTION_ID"],
-                array("SECTION_BUTTONS" => true,
-                      "SESSID" => true,
-                      "CATALOG" => true
-                )
-            );
-
-            $arElement["PARENT_PRODUCT"]["EDIT_LINK"] = $arButtons["edit"]["edit_element"]["ACTION_URL"];
-            $arElement["PARENT_PRODUCT"]["DELETE_LINK"] = $arButtons["edit"]["delete_element"]["ACTION_URL"];
-            */
-            
-            
         }
-        
     }
     
     if (!empty($arElement['PARENT_PRODUCT']['PROPERTIES']['ATT_BRAND']['VALUE'])) {
@@ -292,19 +270,8 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             $arElement['PARENT_PRODUCT']['BRAND_ACTIVE'] = $arElmBrand['PROPERTY_ATT_BRAND_PROPERTY_SHOW_VALUE_VALUE'];
         }
     }
-    
-    
-    /*if (!empty($arElement['PARENT_PRODUCT']['PROPERTIES']['ATT_BRAND']['VALUE']))
-    {
-        $obElmBrand = CIBlockElement::GetList([], ["IBLOCK_ID"=>  $arElement['PARENT_PRODUCT']['IBLOCK_ID'], "ID" => $arElement['PARENT_PRODUCT']['ID']], false, false, ["PROPERTY_ATT_BRAND.NAME"] );
 
-        if ($arElmBrand = $obElmBrand->GetNext()) {
-            $arElement['PARENT_PRODUCT']['BRAND'] = $arElmBrand['PROPERTY_ATT_BRAND_NAME'];
-        }
-    }*/
-    
     //prepare to select product from arParams
-    
     //if product has sku exist
     if (!empty($skuParentProduct) || !empty($productContainOffers)) {
         
@@ -335,25 +302,20 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
         
         //set filter for sku offers
         if (!empty($arParams["PRODUCT_SKU_FILTER"])) {
-            
             //clear section id for sku
             if (isset($arParams["PRODUCT_SKU_FILTER"]["SECTION_ID"])) {
                 unset($arParams["PRODUCT_SKU_FILTER"]["SECTION_ID"]);
             }
-            
             //clear tags
             if (isset($arParams["PRODUCT_SKU_FILTER"]["?TAGS"])) {
                 unset($arParams["PRODUCT_SKU_FILTER"]["?TAGS"]);
             }
-            
             //clear product's iblock id
             if (isset($arParams["PRODUCT_SKU_FILTER"]["IBLOCK_ID"])) {
                 unset($arParams["PRODUCT_SKU_FILTER"]["IBLOCK_ID"]);
             }
-            
             //save filter
             $arSkuParams["FILTER"] = $arParams["PRODUCT_SKU_FILTER"];
-            
         }
         
         $arSkuOffersFromProduct = DwSkuOffers::getSkuFromProduct(
@@ -365,22 +327,14 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             $arSkuParams, //send sku params
             $opCurrency // currency
         );
+
         //set result from sku offers
         if (!empty($arSkuOffersFromProduct)) {
-            
             if (!empty($arElement)) {
-                
                 //merge properties (parent product & main product)
                 $arSkuOffersFromProduct["PROPERTIES"] = array_merge($arElement["PARENT_PRODUCT"]["PROPERTIES"], $arSkuOffersFromProduct["PROPERTIES"]);
-                
                 //merge parent product & sku offer
                 $arElement = array_merge($arElement, $arSkuOffersFromProduct);
-                
-                //create display properties
-                // foreach ($arElement["PROPERTIES"] as $arNextProperty){
-                // 	// $arElement["DISPLAY_PROPERTIES"][$arNextProperty["CODE"]] = CIBlockFormatProperties::GetDisplayValue($arElement, $arNextProperty, "catalog_out");
-                // }
-                
             }
             
             //info from sku iblock
@@ -406,15 +360,12 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             //end
             $CACHE_MANAGER->EndTagCache();
             
-        } // else element not found
-        else {
-            
+        } else {
+            // else element not found
             //abort cache
             $obExtraCache->AbortDataCache();
-            
             //clear
             $arElement = array();
-            
             //404 message
             if ($arParams["DETAIL_ELEMENT"] == "Y") {
                 Iblock\Component\Tools::process404(
@@ -427,7 +378,6 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
             }
             
         }
-        
     } //product not have sku
     else {
         
@@ -628,8 +578,6 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
         }
         
         // проверка доступности товара на основных складах
-        //if (!defined("SITE_ID")) define("SITE_ID", "s1");
-        
         if ($arElement['CATALOG_QUANTITY'] > 0) {
             $sumAmount = 0; // общее количество товара в салонах
             $mainStoreAmount = 0; // количество на складах
@@ -679,32 +627,15 @@ if ($arParams["CACHE_TYPE"] != "N" && $obExtraCache->InitCache($arParams["CACHE_
                 $arElement["CATALOG_QUANTITY"] = "0";
             }
         }
-        
-        //extra
-        
-        //timer
-        /*$arElement["EXTRA_SETTINGS"]["TIMER_UNIQ_ID"] = $this->randString();
-        if(!empty($arElement["PROPERTIES"]["TIMER_DATE"]["VALUE"])){
-            $dateDiff = MakeTimeStamp($arElement["PROPERTIES"]["TIMER_DATE"]["VALUE"], "DD.MM.YYYY HH:MI:SS") - time();
-            $arElement["EXTRA_SETTINGS"]["SHOW_TIMER"] = $dateDiff > 0;
-        }elseif(!empty($arElement["PROPERTIES"]["TIMER_LOOP"]["VALUE"])){
-            $arElement["EXTRA_SETTINGS"]["SHOW_TIMER"] = true;
-        }else{
-            $arElement["EXTRA_SETTINGS"]["SHOW_TIMER"] = false;
-        }
-*/
+
         //save cache
         $obExtraCache->EndDataCache($arElement);
-        
         //drop
         unset($obExtraCache);
-        
         //write end array
         $arResult = $arElement;
         unset($arElement);
-        
     }
-    
 }
 
 //check include modules

@@ -385,6 +385,7 @@ class DwSkuOffers {
 			}
 		}
 
+		$firstOfferIndex = 0;
 		if (!empty($arElement["SKU_OFFERS"])) {
 			//sort offers params
 			//disable sort offers (sort from properties)
@@ -392,7 +393,6 @@ class DwSkuOffers {
 			//standart sort
 			$offersLastSort = 500;
 
-			$firstOfferIndex = 0;
 			// Установим активный sku у товара по св-ву "Активная размерная характеристика"
 			foreach ($arElement["SKU_OFFERS"] as $offerId => $offerData) {
 				if ($offerData["PROPERTY_SELECTED_SIZE_CHARACT_VALUE"] === "Y") {
@@ -477,16 +477,12 @@ class DwSkuOffers {
 						//level >= 2
 						//found selected property
 						foreach ($arKeys as $key => $keyValue){
-
 							//set disable flag
 							$disabled = true;
-
 							//get value for check
 							$checkValue = $arElement["SKU_PROPERTIES"][$ip]["VALUES"][$keyValue]["VALUE"];
-
 							//each all offers
 							foreach ($arElement["SKU_OFFERS"] as $io => $arOffer){
-
 								//check values
 								if($arOffer["PROPERTIES"][$ip]["VALUE"] == $checkValue){
 
@@ -539,15 +535,11 @@ class DwSkuOffers {
 							if($disabled){
 								$arElement["SKU_PROPERTIES"][$ip]["VALUES"][$keyValue]["DISABLED"] = "Y";
 							}
-
 						}
-
 						//if enable offers sort
 						if ($offersEnableSort) {
-
 							//set property selected
 							$arElement["SKU_PROPERTIES"][$ip]["VALUES"][$arElement["SKU_OFFERS"][$firstOfferIndex]["PROPERTIES"][$ip]["VALUE"]]["SELECTED"] = "Y";
-
 							//write values for current level
 							$arPropClean[$ip] = array(
 								"PROPERTY" => $ip,
@@ -577,143 +569,137 @@ class DwSkuOffers {
 			}
 
 			//write info for active sku offer
-			foreach ($arElement["SKU_OFFERS"] as $ir => $arOffer){
-				//set active flag
-				$active = true;
-				//if disabled offers sort
-				//else first sku offer
-				if(!$offersEnableSort){
-					//to check save values for current sku offer
-					foreach ($arPropClean as $ic => $arNextClean){
-						if($arOffer["PROPERTIES"][$arNextClean["PROPERTY"]]["VALUE"] != $arNextClean["VALUE"]){
-							//unset active flag
-							$active = false;
-							break(1);
-						}
+			$arOffer = $arElement["SKU_OFFERS"][$firstOfferIndex];
+
+			//set active flag
+			$active = true;
+			//if disabled offers sort
+			//else first sku offer
+			if (!$offersEnableSort) {
+				//to check save values for current sku offer
+				foreach ($arPropClean as $ic => $arNextClean){
+					if($arOffer["PROPERTIES"][$arNextClean["PROPERTY"]]["VALUE"] != $arNextClean["VALUE"]){
+						//unset active flag
+						$active = false;
+						break(1);
+					}
+				}
+			}
+
+			//save info for active offer
+			if ($active) {
+				$arElement["~ID"] = $productId;
+				$arElement["ID"] = $arOffer["ID"];
+				//get price info
+				$arElement["PRODUCT_PRICE_ALLOW"] = array();
+				$arElement["PRODUCT_PRICE_ALLOW_FILTER"] = array();
+
+				if(!empty($arParams["PRODUCT_PRICE_CODE"])){
+					//get available prices code & id
+					$arPricesInfo = DwPrices::getPriceInfo($arParams["PRODUCT_PRICE_CODE"], $arSkuIblockInfo["IBLOCK_ID"]);
+					if(!empty($arPricesInfo)){
+						$arElement["PRODUCT_PRICE_ALLOW"] = $arPricesInfo["ALLOW"];
+						$arElement["PRODUCT_PRICE_ALLOW_FILTER"] = $arPricesInfo["ALLOW_FILTER"];
 					}
 				}
 
-				//save info for active offer
-				if($active){
+				//get prices
+				$arElement["PRICE"] = DwPrices::getPricesByProductId($arElement["ID"], $arElement["PRODUCT_PRICE_ALLOW"], $arElement["PRODUCT_PRICE_ALLOW_FILTER"], $arParams["PRODUCT_PRICE_CODE"], $arElement["IBLOCK_ID"], $opCurrency);
 
-					$arElement["~ID"] = $productId;
-					$arElement["ID"] = $arOffer["ID"];
+				//if > 0 display [?] for more price table
+				$arElement["EXTRA_SETTINGS"]["COUNT_PRICES"] = $arElement["PRICE"]["COUNT_PRICES"];
 
-					//get price info
-					$arElement["PRODUCT_PRICE_ALLOW"] = array();
-					$arElement["PRODUCT_PRICE_ALLOW_FILTER"] = array();
-
-					if(!empty($arParams["PRODUCT_PRICE_CODE"])){
-						//get available prices code & id
-						$arPricesInfo = DwPrices::getPriceInfo($arParams["PRODUCT_PRICE_CODE"], $arSkuIblockInfo["IBLOCK_ID"]);
-						if(!empty($arPricesInfo)){
-					    	$arElement["PRODUCT_PRICE_ALLOW"] = $arPricesInfo["ALLOW"];
-						    $arElement["PRODUCT_PRICE_ALLOW_FILTER"] = $arPricesInfo["ALLOW_FILTER"];
-						}
-					}
-
-					//get prices
-					$arElement["PRICE"] = DwPrices::getPricesByProductId($arElement["ID"], $arElement["PRODUCT_PRICE_ALLOW"], $arElement["PRODUCT_PRICE_ALLOW_FILTER"], $arParams["PRODUCT_PRICE_CODE"], $arElement["IBLOCK_ID"], $opCurrency);
-
-					//if > 0 display [?] for more price table
-					$arElement["EXTRA_SETTINGS"]["COUNT_PRICES"] = $arElement["PRICE"]["COUNT_PRICES"];
-
-					//set main picture
-					if(!empty($arOffer["DETAIL_PICTURE"])){
-						$arElement["PICTURE"] = CFile::ResizeImageGet($arOffer["DETAIL_PICTURE"], array("width" => $arParams["PICTURE_WIDTH"], "height" => $arParams["PICTURE_HEIGHT"]), BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, $arParams["PICTURE_QUALITY"]);
-					}
-
-					//stores info
-					$arElement["EXTRA_SETTINGS"]["STORES_MAX_QUANTITY"] = 0;
-					$rsStore = CCatalogStoreProduct::GetList(array(), array("PRODUCT_ID" => $arOffer["ID"]), false, false, array("ID", "AMOUNT"));
-					while($arNextStore = $rsStore->GetNext()){
-						$arElement["EXTRA_SETTINGS"]["STORES"][] = $arNextStore;
-						if($arNextStore["AMOUNT"] > $arElement["EXTRA_SETTINGS"]["STORES_MAX_QUANTITY"]){
-							$arElement["EXTRA_SETTINGS"]["STORES_MAX_QUANTITY"] = $arNextStore["AMOUNT"];
-						}
-					}
-
-					//get full properties
-					$arOffer["PROPERTIES"] = $arElement["SKU_OFFERS_LINK"][$arOffer["ID"]]->GetProperties(
-						array("ID" => "ASC"), array("EMPTY" => "N")
-					);
-
-					//set more information
-					$arElement["CODE"] = $arOffer["CODE"];
-					$arElement["SKU_INFO"] = $arSkuIblockInfo;
-					$arElement["IBLOCK_ID"] = $arOffer["IBLOCK_ID"];
-					$arElement["PROPERTIES"] = $arOffer["PROPERTIES"];
-					$arElement["TIMESTAMP_X"] = $arOffer["TIMESTAMP_X"];
-					$arElement["DATE_CREATE"] = $arOffer["DATE_CREATE"];
-					$arElement["DETAIL_PICTURE"] = $arOffer["DETAIL_PICTURE"];
-					// $arElement["DETAIL_PAGE_URL"] = $arOffer["DETAIL_PAGE_URL"];
-					$arElement["PREVIEW_PICTURE"] = $arOffer["PREVIEW_PICTURE"];
-					$arElement["CATALOG_MEASURE"] = $arOffer["CATALOG_MEASURE"];
-					$arElement["CATALOG_QUANTITY"] = $arOffer["CATALOG_QUANTITY"];
-					$arElement["CATALOG_AVAILABLE"] = $arOffer["CATALOG_AVAILABLE"];
-					$arElement["CATALOG_SUBSCRIBE"] = $arOffer["CATALOG_SUBSCRIBE"];
-					$arElement["CANONICAL_PAGE_URL"] = $arOffer["CANONICAL_PAGE_URL"];
-					$arElement["CATALOG_CAN_BUY_ZERO"] = $arOffer["CATALOG_CAN_BUY_ZERO"];
-					$arElement["CATALOG_QUANTITY_TRACE"] = $arOffer["CATALOG_QUANTITY_TRACE"];
-
-					//extra settings
-
-					//set base currency
-					$arElement["EXTRA_SETTINGS"]["CURRENCY"] = empty($opCurrency) ? $arElement["PRICE"]["RESULT_PRICE"]["CURRENCY"] : $opCurrency;
-
-					//get measures
-					$rsMeasure = CCatalogMeasure::getList(
-						array(),
-						array(
-							"ID" => $arElement["CATALOG_MEASURE"]
-						),
-						false,
-						false,
-						false
-					);
-
-					while($arNextMeasure = $rsMeasure->Fetch()){
-						$arElement["EXTRA_SETTINGS"]["MEASURES"][$arNextMeasure["ID"]] = $arNextMeasure;
-					}
-
-					//get measure ratio for product
-					//default ratio
-					$arElement["EXTRA_SETTINGS"]["BASKET_STEP"] = 1;
-
-					//get ratio from BD
-					$rsMeasureRatio = CCatalogMeasureRatio::getList(
-						array(),
-						array("PRODUCT_ID" => intval($arOffer["ID"])),
-						false,
-						false,
-						array()
-					);
-
-					if($arProductMeasureRatio = $rsMeasureRatio->Fetch()){
-						if(!empty($arProductMeasureRatio["RATIO"])){
-							$arElement["EXTRA_SETTINGS"]["BASKET_STEP"] = $arProductMeasureRatio["RATIO"];
-						}
-					}
-
-					//get pannel buttons info
-					$arButtons = CIBlock::GetPanelButtons(
-						$arElement["IBLOCK_ID"],
-						$arElement["ID"],
-						0,
-						array("SECTION_BUTTONS" => false,
-							  "SESSID" => true,
-							  "CATALOG" => false
-						)
-					);
-
-					//set edit links
-					$arElement["EDIT_LINK"] = $arButtons["edit"]["edit_element"]["ACTION_URL"];
-					$arElement["DELETE_LINK"] = $arButtons["edit"]["delete_element"]["ACTION_URL"];
+				//set main picture
+				if(!empty($arOffer["DETAIL_PICTURE"])){
+					$arElement["PICTURE"] = CFile::ResizeImageGet($arOffer["DETAIL_PICTURE"], array("width" => $arParams["PICTURE_WIDTH"], "height" => $arParams["PICTURE_HEIGHT"]), BX_RESIZE_IMAGE_PROPORTIONAL, false, false, false, $arParams["PICTURE_QUALITY"]);
 				}
-				if ($offersEnableSort) {
-					//break each
-					break(1);
+
+				//stores info
+				$arElement["EXTRA_SETTINGS"]["STORES_MAX_QUANTITY"] = 0;
+				$rsStore = CCatalogStoreProduct::GetList(array(), array("PRODUCT_ID" => $arOffer["ID"]), false, false, array("ID", "AMOUNT"));
+				while($arNextStore = $rsStore->GetNext()){
+					$arElement["EXTRA_SETTINGS"]["STORES"][] = $arNextStore;
+					if($arNextStore["AMOUNT"] > $arElement["EXTRA_SETTINGS"]["STORES_MAX_QUANTITY"]){
+						$arElement["EXTRA_SETTINGS"]["STORES_MAX_QUANTITY"] = $arNextStore["AMOUNT"];
+					}
 				}
+
+				//get full properties
+				$arOffer["PROPERTIES"] = $arElement["SKU_OFFERS_LINK"][$arOffer["ID"]]->GetProperties(
+					array("ID" => "ASC"), array("EMPTY" => "N")
+				);
+
+				//set more information
+				$arElement["CODE"] = $arOffer["CODE"];
+				$arElement["SKU_INFO"] = $arSkuIblockInfo;
+				$arElement["IBLOCK_ID"] = $arOffer["IBLOCK_ID"];
+				$arElement["PROPERTIES"] = $arOffer["PROPERTIES"];
+				$arElement["TIMESTAMP_X"] = $arOffer["TIMESTAMP_X"];
+				$arElement["DATE_CREATE"] = $arOffer["DATE_CREATE"];
+				$arElement["DETAIL_PICTURE"] = $arOffer["DETAIL_PICTURE"];
+				// $arElement["DETAIL_PAGE_URL"] = $arOffer["DETAIL_PAGE_URL"];
+				$arElement["PREVIEW_PICTURE"] = $arOffer["PREVIEW_PICTURE"];
+				$arElement["CATALOG_MEASURE"] = $arOffer["CATALOG_MEASURE"];
+				$arElement["CATALOG_QUANTITY"] = $arOffer["CATALOG_QUANTITY"];
+				$arElement["CATALOG_AVAILABLE"] = $arOffer["CATALOG_AVAILABLE"];
+				$arElement["CATALOG_SUBSCRIBE"] = $arOffer["CATALOG_SUBSCRIBE"];
+				$arElement["CANONICAL_PAGE_URL"] = $arOffer["CANONICAL_PAGE_URL"];
+				$arElement["CATALOG_CAN_BUY_ZERO"] = $arOffer["CATALOG_CAN_BUY_ZERO"];
+				$arElement["CATALOG_QUANTITY_TRACE"] = $arOffer["CATALOG_QUANTITY_TRACE"];
+
+				//extra settings
+
+				//set base currency
+				$arElement["EXTRA_SETTINGS"]["CURRENCY"] = empty($opCurrency) ? $arElement["PRICE"]["RESULT_PRICE"]["CURRENCY"] : $opCurrency;
+
+				//get measures
+				$rsMeasure = CCatalogMeasure::getList(
+					array(),
+					array(
+						"ID" => $arElement["CATALOG_MEASURE"]
+					),
+					false,
+					false,
+					false
+				);
+
+				while($arNextMeasure = $rsMeasure->Fetch()){
+					$arElement["EXTRA_SETTINGS"]["MEASURES"][$arNextMeasure["ID"]] = $arNextMeasure;
+				}
+
+				//get measure ratio for product
+				//default ratio
+				$arElement["EXTRA_SETTINGS"]["BASKET_STEP"] = 1;
+
+				//get ratio from BD
+				$rsMeasureRatio = CCatalogMeasureRatio::getList(
+					array(),
+					array("PRODUCT_ID" => intval($arOffer["ID"])),
+					false,
+					false,
+					array()
+				);
+
+				if($arProductMeasureRatio = $rsMeasureRatio->Fetch()){
+					if(!empty($arProductMeasureRatio["RATIO"])){
+						$arElement["EXTRA_SETTINGS"]["BASKET_STEP"] = $arProductMeasureRatio["RATIO"];
+					}
+				}
+
+				//get pannel buttons info
+				$arButtons = CIBlock::GetPanelButtons(
+					$arElement["IBLOCK_ID"],
+					$arElement["ID"],
+					0,
+					array("SECTION_BUTTONS" => false,
+						  "SESSID" => true,
+						  "CATALOG" => false
+					)
+				);
+
+				//set edit links
+				$arElement["EDIT_LINK"] = $arButtons["edit"]["edit_element"]["ACTION_URL"];
+				$arElement["DELETE_LINK"] = $arButtons["edit"]["delete_element"]["ACTION_URL"];
 			}
 		} else {
 			//empty offers
