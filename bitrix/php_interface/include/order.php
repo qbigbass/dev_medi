@@ -31,7 +31,7 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
     // Пересчитаем остатки SKU и изменим активную размерную характеристику у товара
     $order = $event->getParameter("ENTITY");
     $isNew = $event->getParameter("IS_NEW");
-    $arDataOffer = [];
+    $arDataOffer = []; // Все ТП в корзине заказа
 
     if ($isNew) {
         $basket = $order->getBasket();
@@ -60,14 +60,17 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
 
         if (!empty($arDataOffer)) {
 
-            $GLOBALS["NOT_RUN_UPDATE_SORT_PRODUCT_CATALOG"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSortProductCatalog
+            // Найдем все подразделы раздела "Ортопедическая обувь" (ID=88)
+            $arrSubSections = getSubSectionsSection(88);
 
             foreach ($arDataOffer as $skuId => $data) {
                 if ($data['PROPERTY_SELECTED_SIZE_CHARACT_VALUE'] === 'Y' && $data['CATALOG_AVAILABLE'] !== 'Y') {
                     // Торговое предложение с выбранной размерной характеристикой закончилось.
                     // Необходимо изменить выбранную размерную характеристику у товара
                     $skuProductData = CCatalogSku::GetProductInfo($skuId);
+                    $skuProductId = $skuProductData['ID'];
 
+                    // Найдем все доступные ТП у товара $skuProductId
                     $offersListProduct = CCatalogSKU::getOffersList(
                         $skuProductData['ID'],
                         0,
@@ -75,37 +78,108 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
                             'ACTIVE' => 'Y',
                             'CATALOG_AVAILABLE' => 'Y',
                         ],
-                        ['ID', 'SORT'],
-                        [],
-                        []
+                        [
+                            'ID',
+                            'SORT'
+                        ]
                     );
 
+                    $arrOfferIds = [];
+
                     if (!empty($offersListProduct)) {
-                        // Найдем следующий по полю "Сортировка" доступный SKU
+                        // Отсортируем найденные ТП по полю "Сортировка" по возрастанию
                         foreach ($offersListProduct as $productId => &$arrOffers) {
+                            foreach ($arrOffers as $id => $dataSku) {
+                                $arrOfferIds[] = $id;
+                            }
                             usort($arrOffers, function ($a, $b) {
                                 return ($a['SORT'] - $b['SORT']);
                             });
                         }
+                    }
 
-                        unset($productId);
+                    // Найдем разделы к которым принадлежит товар
+                    $arrElemGroupSections = getGroupsElements([$skuProductId]);
 
-                        foreach ($offersListProduct as $productId => $offersList) {
-                            // Для первого доступного SKU устанавливаем чекбокс у св-ва "Активная размерная характеристика"
-                            $propertyValues = [
-                                "SELECTED_SIZE_CHARACT" => 16684
-                            ];
-                            $nextActiveOfferId = $offersList[0]['ID'];
+                    // Проверим принадлежность товара к разделу Обувь
+                    $isShoes = false;
+                    if (!empty($arrElemGroupSections[$skuProductId])) {
+                        foreach ($arrElemGroupSections[$skuProductId] as $productSectionId) {
+                            if (in_array($productSectionId, $arrSubSections)) {
+                                $isShoes = true;
+                                break;
+                            }
+                        }
+                    }
 
-                            CIBlockElement::SetPropertyValuesEx($nextActiveOfferId, "19", $propertyValues);
+                    if ($isShoes) {
+                        $filter = [
+                            "ACTIVE" => "Y",
+                            "PRODUCT_ID" => $arrOfferIds,
+                            "+SITE_ID" => SITE_ID,
+                            [
+                                "LOGIC" => "OR",
+                                ["UF_STORE" => true],
+                                ["UF_SHOES_STORE" => true]
+                            ]
+                        ];
+                    } else {
+                        $filter = [
+                            "ACTIVE" => "Y",
+                            "PRODUCT_ID" => $arrOfferIds,
+                            "+SITE_ID" => SITE_ID,
+                            "UF_STORE" => true,
+                        ];
+                    }
 
-                            // Для текущего SKU (который стал недоступен) снимаем чекбокс у св-ва "Активная размерная характеристика"
-                            $propertyValues = [
-                                "SELECTED_SIZE_CHARACT" => ''
-                            ];
+                    if (SITE_ID == 's2') $filter['SITE_ID'] = SITE_ID;
 
-                            CIBlockElement::SetPropertyValuesEx($skuId, "19", $propertyValues);
-                            break;
+                    $rsProps = CCatalogStore::GetList(
+                        array('TITLE' => 'ASC', 'ID' => 'ASC'),
+                        $filter,
+                        false,
+                        false,
+                        ["ID", "ACTIVE", "ELEMENT_ID", "PRODUCT_AMOUNT", "UF_STORE", "SITE_ID"]
+                    );
+
+                    $arrStoreOffer = [];
+
+                    while ($mStore = $rsProps->GetNext()) {
+                        $arrStoreOffer[$mStore['ELEMENT_ID']] += $mStore['PRODUCT_AMOUNT'];
+                    }
+
+                    // исключить онлайн продажу, только бронь в салоне
+                    $exceptionOffers = ["41078", "41079", "41080", "41081", "41082", "41083", "41084", "41085", "41086"];
+                    if (!empty($arrStoreOffer)) {
+                        foreach ($arrStoreOffer as $xmlId => $sumStoreAmount) {
+                            if (in_array($xmlId, $exceptionOffers)) {
+                                $arrStoreOffer[$xmlId] = 0;
+                            }
+                        }
+
+                        // Найдем следующий по полю "Сортировка" доступный SKU
+                        unset($arrOffers);
+                        foreach ($offersListProduct as $productId => $arrOffers) {
+                            foreach ($arrOffers as $index => $dataSku) {
+                                $xmlId = $dataSku['ID'];
+                                if ($arrStoreOffer[$xmlId] > 0) {
+                                    // Для первого доступного SKU устанавливаем чекбокс у св-ва "Активная размерная характеристика"
+                                    $propertyValues = [
+                                        "SELECTED_SIZE_CHARACT" => 16684
+                                    ];
+                                    $nextActiveOfferId = $xmlId;
+
+                                    CIBlockElement::SetPropertyValuesEx($nextActiveOfferId, "19", $propertyValues);
+
+                                    // Для текущего SKU (который стал недоступен) снимаем чекбокс у св-ва "Активная размерная характеристика"
+                                    $propertyValues = [
+                                        "SELECTED_SIZE_CHARACT" => ''
+                                    ];
+
+                                    CIBlockElement::SetPropertyValuesEx($skuId, "19", $propertyValues);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
