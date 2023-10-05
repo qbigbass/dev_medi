@@ -72,7 +72,7 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
 
                     // Найдем все доступные ТП у товара $skuProductId
                     $offersListProduct = CCatalogSKU::getOffersList(
-                        $skuProductData['ID'],
+                        $skuProductId,
                         0,
                         [
                             'ACTIVE' => 'Y',
@@ -159,6 +159,9 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
 
                         // Найдем следующий по полю "Сортировка" доступный SKU
                         unset($arrOffers);
+
+                        $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeOffer
+
                         foreach ($offersListProduct as $productId => $arrOffers) {
                             foreach ($arrOffers as $index => $dataSku) {
                                 $xmlId = $dataSku['ID'];
