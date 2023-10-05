@@ -1083,3 +1083,186 @@ function imageXmlSitemapGen()
     $dom->save($_SERVER['DOCUMENT_ROOT'] . "/sitemap-image.xml");
     return 'imageXmlSitemapGen();';
 }
+
+// При обновлении поля "Сортировка" у элемента в ИБ "Пакет предложений" изменяется активная размерная характеристика у ТП
+AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", "UpdateSelectedSizeOffer");
+function UpdateSelectedSizeOffer(&$arFields)
+{
+    if ($arFields['IBLOCK_ID'] == 19 && !$GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_OFFER"]) {
+        // Изменение в ИБ "Пакет предложений"
+        // Получим старое значение св-ва "Активная размерная характеристика" у ТП
+        $objElemOffer = CIBlockElement::GetList(
+            ["ID" => "ASC"],
+            [
+                "IBLOCK_ID" => "19",
+                "ID" => $arFields["ID"]
+            ],
+            false,
+            false,
+            ["ID", "IBLOCK_ID", "PROPERTY_SELECTED_SIZE_CHARACT"]
+        );
+
+        while ($elem = $objElemOffer->Fetch()) {
+            $selectedSizeOfferBefore = $elem["PROPERTY_SELECTED_SIZE_CHARACT_VALUE"];
+        }
+
+        // Получим новое значение св-ва "Активная размерная характеристика" у ТП
+        if (!empty($arFields["PROPERTY_VALUES"])) {
+            foreach ($arFields["PROPERTY_VALUES"] as $propId => $arrValues) {
+                if ($propId == 505) {
+                    $selectedSizeOfferAfter = $arrValues[0]["VALUE"];
+                }
+            }
+        }
+
+        if ($selectedSizeOfferBefore !== $selectedSizeOfferAfter) {
+            // Изменилось значение св-ва "Активная размерная характеристика" у ТП,
+            // снимем/установим чекбокс следующему по сортировке и доступности ТП,
+            // принадлежавшего тому же товару
+            $skuProductData = CCatalogSku::GetProductInfo($arFields["ID"]);
+            $skuProductId = $skuProductData['ID'];
+            // Найдем все доступные ТП у товара $skuProductId
+            $offersListProduct = CCatalogSKU::getOffersList(
+                $skuProductId,
+                0,
+                [
+                    'ACTIVE' => 'Y',
+                    'CATALOG_AVAILABLE' => 'Y',
+                    '!ID' => $arFields["ID"]
+                ],
+                [
+                    'ID',
+                    'SORT'
+                ],
+                [
+                    'CODE' => [
+                        'SELECTED_SIZE_CHARACT'
+                    ]
+                ]
+            );
+
+            $arrOfferIds = [];
+
+            if (!empty($offersListProduct)) {
+                // Отсортируем найденные ТП по полю "Сортировка" по возрастанию
+                foreach ($offersListProduct as $productId => &$arrOffers) {
+                    foreach ($arrOffers as $id => $dataSku) {
+                        $arrOfferIds[] = $id;
+                    }
+                    usort($arrOffers, function ($a, $b) {
+                        return ($a['SORT'] - $b['SORT']);
+                    });
+                }
+            }
+
+            // Найдем все подразделы раздела "Ортопедическая обувь" (ID=88)
+            $arrSubSections = getSubSectionsSection(88);
+            // Найдем разделы к которым принадлежит товар
+            $arrElemGroupSections = getGroupsElements([$skuProductId]);
+            // Проверим принадлежность товара к разделу Обувь
+            $isShoes = false;
+            if (!empty($arrElemGroupSections[$skuProductId])) {
+                foreach ($arrElemGroupSections[$skuProductId] as $productSectionId) {
+                    if (in_array($productSectionId, $arrSubSections)) {
+                        $isShoes = true;
+                        break;
+                    }
+                }
+            }
+
+            $sideId = 's1'; // Проверим доступность ТП по складам в г.Москва
+
+            if ($isShoes) {
+                $filter = [
+                    "ACTIVE" => "Y",
+                    "PRODUCT_ID" => $arrOfferIds,
+                    "+SITE_ID" => $sideId,
+                    [
+                        "LOGIC" => "OR",
+                        ["UF_STORE" => true],
+                        ["UF_SHOES_STORE" => true]
+                    ]
+                ];
+            } else {
+                $filter = [
+                    "ACTIVE" => "Y",
+                    "PRODUCT_ID" => $arrOfferIds,
+                    "+SITE_ID" => $sideId,
+                    "UF_STORE" => true,
+                ];
+            }
+
+            $rsProps = CCatalogStore::GetList(
+                array('TITLE' => 'ASC', 'ID' => 'ASC'),
+                $filter,
+                false,
+                false,
+                ["ID", "ACTIVE", "ELEMENT_ID", "PRODUCT_AMOUNT", "UF_STORE", "SITE_ID"]
+            );
+
+            $arrStoreOffer = [];
+            while ($mStore = $rsProps->GetNext()) {
+                $arrStoreOffer[$mStore['ELEMENT_ID']] += $mStore['PRODUCT_AMOUNT'];
+            }
+
+            // исключить онлайн продажу, только бронь в салоне
+            $exceptionOffers = ["41078", "41079", "41080", "41081", "41082", "41083", "41084", "41085", "41086"];
+
+            if (!empty($arrStoreOffer)) {
+                foreach ($arrStoreOffer as $xmlId => $sumStoreAmount) {
+                    if (in_array($xmlId, $exceptionOffers)) {
+                        $arrStoreOffer[$xmlId] = 0;
+                    }
+                }
+
+                // Найдем следующий по полю "Сортировка" доступный SKU
+                unset($arrOffers);
+
+                $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeOffer
+
+                $checkSelectedSizeOffer = true;
+                $currentSelectedSizeOfferId = 0;
+                if ($selectedSizeOfferAfter > 0) {
+                    // Нужно снять чекбокс в св-ве "Активная размерная характеристика" у другого ТП
+                    $checkSelectedSizeOffer = false;
+                    // Найдем другое ТП с активным чекбоксом в св-ве "Активная размерная характеристика"
+                    foreach ($offersListProduct as $itemId => $arrOffers) {
+                        foreach ($arrOffers as $index => $offerData) {
+                            if ($offerData['PROPERTIES']['SELECTED_SIZE_CHARACT']['VALUE'] == 'Y') {
+                                $currentSelectedSizeOfferId = $offerData['ID'];
+                                break 2;
+                            }
+                        }
+                    }
+                }
+
+                foreach ($offersListProduct as $productId => $arrOffers) {
+                    foreach ($arrOffers as $index => $dataSku) {
+                        $xmlId = $dataSku['ID'];
+
+                        if (!$checkSelectedSizeOffer && $currentSelectedSizeOfferId > 0) {
+                            // Снимаем чекбокс в св-ве "Активная размерная характеристика" у другого ТП
+                            $propertyValues = [
+                                "SELECTED_SIZE_CHARACT" => ''
+                            ];
+
+                            CIBlockElement::SetPropertyValuesEx($currentSelectedSizeOfferId, "19", $propertyValues);
+                            break 2;
+                        }
+
+                        // Устанавливаем чекбокс у св-ва "Активная размерная характеристика" для первого доступного SKU
+                        if ($arrStoreOffer[$xmlId] > 0) {
+                            $propertyValues = [
+                                "SELECTED_SIZE_CHARACT" => 16684
+                            ];
+                            $nextActiveOfferId = $xmlId;
+
+                            CIBlockElement::SetPropertyValuesEx($nextActiveOfferId, "19", $propertyValues);
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

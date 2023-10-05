@@ -398,3 +398,4 @@ if (!function_exists("getSubSectionsSection")) {
         return $arrSubSections;
     }
 }
+
