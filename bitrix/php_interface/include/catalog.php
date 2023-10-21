@@ -1084,7 +1084,7 @@ function imageXmlSitemapGen()
     return 'imageXmlSitemapGen();';
 }
 
-// При обновлении поля "Сортировка" у элемента в ИБ "Пакет предложений" изменяется активная размерная характеристика у ТП
+// При обновлении свойства "Активная размерная характеристика" у элемента в ИБ "Пакет предложений" изменяется активная размерная характеристика у ТП
 AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", "UpdateSelectedSizeOffer");
 function UpdateSelectedSizeOffer(&$arFields)
 {
