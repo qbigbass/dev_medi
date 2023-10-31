@@ -16,8 +16,18 @@ function UpdateSortProduct(&$arFields) {
         $newValueSortBrand = 0;
         // Получим новое значение св-ва
         if (!empty($arFields["PROPERTY_VALUES"])) {
+
+            // Найдем ID св-ва "Значение сортировки бренда"
+            $arFilterBrandProps = [
+                'IBLOCK_ID' => $arFields['IBLOCK_ID'],
+                'CODE' => 'SORT_PRODUCT_BRAND',
+            ];
+            $objProp = CIBlockProperty::GetList(array(), $arFilterBrandProps);
+            $arPropSortProductBrand = $objProp->Fetch();
+            $propSortProductBrandId = $arPropSortProductBrand["ID"];
+
             foreach ($arFields["PROPERTY_VALUES"] as $propId => $arrValues) {
-                if ($propId == 504) {
+                if ($propId == $propSortProductBrandId) {
                     if (!empty($arrValues)) {
                         foreach ($arrValues as $key => $data) {
                             $newValueSortBrand = $data["VALUE"]; // Актуальное значение в св-ве "Значение сортировки бренда"
