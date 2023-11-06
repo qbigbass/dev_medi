@@ -49,7 +49,8 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
                     'ID',
                     'CATALOG_AVAILABLE',
                     'SORT',
-                    'PROPERTY_SELECTED_SIZE_CHARACT'
+                    'PROPERTY_SELECTED_SIZE_CHARACT',
+                    'PROPERTY_SELECTED_SIZE_CHARACT_SPB'
                 ]
             );
 
@@ -64,7 +65,20 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
             $arrSubSections = getSubSectionsSection(88);
 
             foreach ($arDataOffer as $skuId => $data) {
-                if ($data['PROPERTY_SELECTED_SIZE_CHARACT_VALUE'] === 'Y' && $data['CATALOG_AVAILABLE'] !== 'Y') {
+
+                $isActiveSelectedSize = false;
+                if (SITE_ID == 's2') {
+                    // Заказ сделан в г. Санкт-Перербург
+                    if ($data['PROPERTY_SELECTED_SIZE_CHARACT_SPB_VALUE'] === 'Y') {
+                        $isActiveSelectedSize = true;
+                    }
+                } else {
+                    if ($data['PROPERTY_SELECTED_SIZE_CHARACT_VALUE'] === 'Y') {
+                        $isActiveSelectedSize = true;
+                    }
+                }
+
+                if ($isActiveSelectedSize && $data['CATALOG_AVAILABLE'] !== 'Y') {
                     // Торговое предложение с выбранной размерной характеристикой закончилось.
                     // Необходимо изменить выбранную размерную характеристику у товара
                     $skuProductData = CCatalogSku::GetProductInfo($skuId);
@@ -116,7 +130,6 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
                         $filter = [
                             "ACTIVE" => "Y",
                             "PRODUCT_ID" => $arrOfferIds,
-                            "+SITE_ID" => SITE_ID,
                             [
                                 "LOGIC" => "OR",
                                 ["UF_STORE" => true],
@@ -127,12 +140,15 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
                         $filter = [
                             "ACTIVE" => "Y",
                             "PRODUCT_ID" => $arrOfferIds,
-                            "+SITE_ID" => SITE_ID,
                             "UF_STORE" => true,
                         ];
                     }
 
-                    if (SITE_ID == 's2') $filter['SITE_ID'] = SITE_ID;
+                    if (SITE_ID == 's2') {
+                        $filter['SITE_ID'] = SITE_ID;
+                    } else {
+                        $filter['+SITE_ID'] = SITE_ID;
+                    }
 
                     $rsProps = CCatalogStore::GetList(
                         array('TITLE' => 'ASC', 'ID' => 'ASC'),
@@ -162,25 +178,35 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
 
                         $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeOffer
 
-                        foreach ($offersListProduct as $productId => $arrOffers) {
-                            foreach ($arrOffers as $index => $dataSku) {
-                                $xmlId = $dataSku['ID'];
-                                if ($arrStoreOffer[$xmlId] > 0) {
-                                    // Для первого доступного SKU устанавливаем чекбокс у св-ва "Активная размерная характеристика"
-                                    $propertyValues = [
-                                        "SELECTED_SIZE_CHARACT" => 16684
-                                    ];
-                                    $nextActiveOfferId = $xmlId;
+                        $strCodePropSelectedSize = '';
+                        if (SITE_ID == 's2') {
+                            $strCodePropSelectedSize = "SELECTED_SIZE_CHARACT_SPB";
+                        } else {
+                            $strCodePropSelectedSize = "SELECTED_SIZE_CHARACT";
+                        }
+                        $valueEnumSelectedSize = getEnumSelectedCheckbox(19, $strCodePropSelectedSize);
 
-                                    CIBlockElement::SetPropertyValuesEx($nextActiveOfferId, "19", $propertyValues);
+                        if ($valueEnumSelectedSize > 0) {
+                            foreach ($offersListProduct as $productId => $arrOffers) {
+                                foreach ($arrOffers as $index => $dataSku) {
+                                    $xmlId = $dataSku['ID'];
+                                    if ($arrStoreOffer[$xmlId] > 0) {
+                                        // Для первого доступного SKU устанавливаем чекбокс у св-ва "Активная размерная характеристика"
+                                        $propertyValues = [
+                                            $strCodePropSelectedSize => $valueEnumSelectedSize
+                                        ];
+                                        $nextActiveOfferId = $xmlId;
 
-                                    // Для текущего SKU (который стал недоступен) снимаем чекбокс у св-ва "Активная размерная характеристика"
-                                    $propertyValues = [
-                                        "SELECTED_SIZE_CHARACT" => ''
-                                    ];
+                                        CIBlockElement::SetPropertyValuesEx($nextActiveOfferId, "19", $propertyValues);
 
-                                    CIBlockElement::SetPropertyValuesEx($skuId, "19", $propertyValues);
-                                    break;
+                                        // Для текущего SKU (который стал недоступен) снимаем чекбокс у св-ва "Активная размерная характеристика"
+                                        $propertyValues = [
+                                            $strCodePropSelectedSize => ''
+                                        ];
+
+                                        CIBlockElement::SetPropertyValuesEx($skuId, "19", $propertyValues);
+                                        break;
+                                    }
                                 }
                             }
                         }
