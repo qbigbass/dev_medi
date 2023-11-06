@@ -399,3 +399,23 @@ if (!function_exists("getSubSectionsSection")) {
     }
 }
 
+if (!function_exists("getEnumSelectedCheckbox")) {
+    function getEnumSelectedCheckbox($iblockId, $codeProp): int
+    {
+        $valueId = 0;
+
+        $arFilterProp = [
+            'IBLOCK_ID' => $iblockId,
+            'CODE' => $codeProp,
+        ];
+        $objProp = CIBlockPropertyEnum::GetList([], $arFilterProp);
+        while ($enumField = $objProp->GetNext()) {
+            if ($enumField['VALUE'] === 'Y') {
+                $valueId = (int)$enumField['ID'];
+            }
+        }
+        
+        return $valueId;
+    }
+}
+
