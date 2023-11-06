@@ -339,7 +339,8 @@ class DwSkuOffers {
 					"CATALOG_QUANTITY_TRACE",
 					"CATALOG_CAN_BUY_ZERO",
 					"CANONICAL_PAGE_URL",
-					"PROPERTY_SELECTED_SIZE_CHARACT"
+					"PROPERTY_SELECTED_SIZE_CHARACT",
+					"PROPERTY_SELECTED_SIZE_CHARACT_SPB"
 				);
 
 				//create arrays
@@ -395,9 +396,18 @@ class DwSkuOffers {
 
 			// Установим активный sku у товара по св-ву "Активная размерная характеристика"
 			foreach ($arElement["SKU_OFFERS"] as $offerId => $offerData) {
-				if ($offerData["PROPERTY_SELECTED_SIZE_CHARACT_VALUE"] === "Y") {
-					$firstOfferIndex = $offerId;
-					break;
+				if (SITE_ID !== 's2') {
+					// Выбранны другие города
+					if ($offerData["PROPERTY_SELECTED_SIZE_CHARACT_VALUE"] === "Y") {
+						$firstOfferIndex = $offerId;
+						break;
+					}
+				} else {
+					// Выбран г. Санкт-Перербург
+					if ($offerData["PROPERTY_SELECTED_SIZE_CHARACT_SPB_VALUE"] === "Y") {
+						$firstOfferIndex = $offerId;
+						break;
+					}
 				}
 			}
 
