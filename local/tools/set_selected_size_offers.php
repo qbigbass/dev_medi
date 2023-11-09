@@ -68,9 +68,11 @@ if (!empty($arrOffersProducts)) {
         $arrOffersUpdated[] = current($arrOffersProductsSort[$productId]);
     }
 
+    $valueEnumSelectedSize = getEnumSelectedCheckbox(19, "SELECTED_SIZE_CHARACT");
+
     foreach ($arrOffersUpdated as $id) {
         $propertyValues = [
-            "SELECTED_SIZE_CHARACT" => 16684
+            "SELECTED_SIZE_CHARACT" => $valueEnumSelectedSize
         ];
 
         // Заполняем св-во "Активная размерная характеристика" (Для Москвы и др городов кроме Санкт Петербурга)
@@ -229,10 +231,12 @@ if (!empty($arrOffersProducts)) {
         }
     }
 
+    $valueEnumSelectedSize = getEnumSelectedCheckbox(19, "SELECTED_SIZE_CHARACT_SPB");
+
     if (!empty($arrOffersUpdated)) {
         foreach ($arrOffersUpdated as $productId => $skuId) {
             $propertyValues = [
-                "SELECTED_SIZE_CHARACT_SPB" => 16685
+                "SELECTED_SIZE_CHARACT_SPB" => $valueEnumSelectedSize
             ];
 
             // Заполняем св-во "Активная размерная характеристика СБП" (Для г. Санкт Петербург)
