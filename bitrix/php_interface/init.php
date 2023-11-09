@@ -429,3 +429,24 @@ if (!function_exists("getEnumSelectedCheckbox")) {
         return $valueId;
     }
 }
+
+if (!function_exists("getPropIdByCode")) {
+    function getPropIdByCode($iblockId, $codeProp) : int
+    {
+        $valueId = 0;
+
+        // Найдем ID св-ва "Значение сортировки бренда"
+        $arFilterBrandProps = [
+            'IBLOCK_ID' => $iblockId,
+            'CODE' => $codeProp,
+        ];
+        $objProp = CIBlockProperty::GetList(array(), $arFilterBrandProps);
+        $arProp = $objProp->Fetch();
+
+        if ($arProp["ID"] > 0) {
+            $valueId = $arProp["ID"];
+        }
+
+        return $valueId;
+    }
+}
