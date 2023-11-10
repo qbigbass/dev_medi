@@ -177,6 +177,7 @@ function ChangeActiveSelectedSizeSku(Main\Event $event) {
                         unset($arrOffers);
 
                         $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeOffer
+                        $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_SPB_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeSpbOffer
 
                         $strCodePropSelectedSize = '';
                         if (SITE_ID == 's2') {

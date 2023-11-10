@@ -55,6 +55,8 @@ if (!empty($arrOffersProducts)) {
 
     $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeOffer
 
+    $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_SPB_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeSpbOffer
+
     $arrOffers = []; // Найденные ТП
     $arrProductIdsSkuIds = []; // Массив товаров с Ids ТП
     // Отсортируем ТП по полю "Сортировка"
