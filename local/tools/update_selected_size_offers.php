@@ -42,13 +42,15 @@ while ($elem = $objElemProduct->Fetch()) {
     $arrProducts[] = $elem["ID"];
 }
 
+$valueEnumSelectedSize = getEnumSelectedCheckbox(19, "SELECTED_SIZE_CHARACT");
+
 // Получим все предложения с активной опцией "Активная размерная характеристики" для всех ранее полученных товаров
 $arrOffersProducts = CCatalogSKU::getOffersList(
     $arrProducts,
     17,
     [
         "ACTIVE" => "Y",
-        "PROPERTY_SELECTED_SIZE_CHARACT" => 16684
+        "PROPERTY_SELECTED_SIZE_CHARACT" => $valueEnumSelectedSize
     ],
     [
         "ID",
@@ -60,6 +62,8 @@ $arrOffersProducts = CCatalogSKU::getOffersList(
 if (!empty($arrOffersProducts)) {
 
     $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeOffer
+
+    $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_SPB_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeSpbOffer
 
     // Проверим у выбранных ТП доступность на складах в г.Москва
     $arrOffers = []; // Найденные ТП
@@ -291,7 +295,7 @@ if (!empty($arrOffersProducts)) {
 
                             // Устанавливаем чекбокс у св-ва "Активная размерная характеристика" для первого доступного SKU
                             $propertyValues = [
-                                "SELECTED_SIZE_CHARACT" => 16684
+                                "SELECTED_SIZE_CHARACT" => $valueEnumSelectedSize
                             ];
                             $nextActiveOfferId = $xmlId;
 

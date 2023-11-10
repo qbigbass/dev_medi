@@ -1463,7 +1463,7 @@ function UpdateSelectedSizeSpbOffer(&$arFields)
                                 "SELECTED_SIZE_CHARACT_SPB" => $valueEnumSelectedSizeSpb
                             ];
                             $nextActiveOfferId = $xmlId;
-                            
+
                             CIBlockElement::SetPropertyValuesEx($nextActiveOfferId, "19", $propertyValues);
                             break 2;
                         }
