@@ -6,21 +6,21 @@ use Bitrix\Main;
 class DwSkuOffers {
 
 	//get sku properties
-    public static function getSkuPropertiesFromIblock($arSkuIblockInfo){
+	public static function getSkuPropertiesFromIblock($arSkuIblockInfo){
 
-    	global $USER;
-    	global $DB;
+		global $USER;
+		global $DB;
 
-    	//$arSkuIblockInfo
-    	//$arSkuIblockInfo["IBLOCK_ID"]
+		//$arSkuIblockInfo
+		//$arSkuIblockInfo["IBLOCK_ID"]
 
-    	//Print properties less than sorting ($skuSortParams)
-    	$skuSortParams = 100;
-    	$skuPictureParamsWidth = 30;
-    	$skuPictureParamsHeight = 30;
-    	$skuPictureParamsQuality = 100;
+		//Print properties less than sorting ($skuSortParams)
+		$skuSortParams = 100;
+		$skuPictureParamsWidth = 30;
+		$skuPictureParamsHeight = 30;
+		$skuPictureParamsQuality = 100;
 
-    	$arResult = array();
+		$arResult = array();
 
 		if(!empty($arSkuIblockInfo)){
 
@@ -48,7 +48,7 @@ class DwSkuOffers {
 			}
 
 			if($obExtraCache->InitCache($cacheTime, $cacheID, $cacheDir)){
-			   $arResult = $obExtraCache->GetVars();
+				$arResult = $obExtraCache->GetVars();
 			}
 
 			elseif($obExtraCache->StartDataCache()){
@@ -121,7 +121,7 @@ class DwSkuOffers {
 						//get highload values
 						$hlblock = \Bitrix\Highloadblock\HighloadBlockTable::getList(array("filter" => array("TABLE_NAME" => $arNextProperty["USER_TYPE_SETTINGS"]["TABLE_NAME"])))->fetch();
 
-					    if(!empty($hlblock)){
+						if(!empty($hlblock)){
 
 							$hlblock_requests = HL\HighloadBlockTable::getById($hlblock["ID"])->fetch();
 							$entity_requests = HL\HighloadBlockTable::compileEntity($hlblock_requests);
@@ -129,7 +129,7 @@ class DwSkuOffers {
 
 							$main_query_requests = new Entity\Query($entity_requests_data_class);
 							$main_query_requests->setSelect(array("*"));
-                            $main_query_requests->setOrder(array("UF_SORT"=>"ASC")); // сортировка значений свойства по полю UF_SORT
+							$main_query_requests->setOrder(array("UF_SORT"=>"ASC")); // сортировка значений свойства по полю UF_SORT
 							$result_requests = $main_query_requests->exec();
 							$result_requests = new CDBResult($result_requests);
 
@@ -225,7 +225,7 @@ class DwSkuOffers {
 				$CACHE_MANAGER->EndTagCache();
 
 				//save cache
- 				$obExtraCache->EndDataCache($arResult);
+				$obExtraCache->EndDataCache($arResult);
 
 			}
 
@@ -238,30 +238,30 @@ class DwSkuOffers {
 
 		return $arResult;
 
-    } // end getSkuPropertiesFromIblock
+	} // end getSkuPropertiesFromIblock
 
 	//get sku properties
-    public static function getSkuFromProduct($productId, $iblockId = 0, $offersFilterId = false, $firstSkuOfferId = false, $arSkuIblockInfo, $arParams, $opCurrency = null){
+	public static function getSkuFromProduct($productId, $iblockId = 0, $offersFilterId = false, $firstSkuOfferId = false, $arSkuIblockInfo, $arParams, $opCurrency = null){
 
-    	global $USER;
+		global $USER;
 
-    	//set default params
+		//set default params
 		$arParams["PICTURE_WIDTH"] = !empty($arParams["PICTURE_WIDTH"]) ? $arParams["PICTURE_WIDTH"] : 200;
 		$arParams["PICTURE_HEIGHT"] = !empty($arParams["PICTURE_HEIGHT"]) ? $arParams["PICTURE_HEIGHT"] : 250;
 		$arParams["PICTURE_QUALITY"] = !empty($arParams["PICTURE_QUALITY"]) ? $arParams["PICTURE_QUALITY"] : 80;
 		$arParams["SHOW_DEACTIVATED"] = !empty($arParams["SHOW_DEACTIVATED"]) ? $arParams["SHOW_DEACTIVATED"] : "N";
-    	$arParams["HIDE_NOT_AVAILABLE"] = !empty($arParams["HIDE_NOT_AVAILABLE"]) ? $arParams["HIDE_NOT_AVAILABLE"] : "N";
+		$arParams["HIDE_NOT_AVAILABLE"] = !empty($arParams["HIDE_NOT_AVAILABLE"]) ? $arParams["HIDE_NOT_AVAILABLE"] : "N";
 		$arParams["PRODUCT_PRICE_CODE"] = !empty($arParams["PRODUCT_PRICE_CODE"]) ? $arParams["PRODUCT_PRICE_CODE"] : array();
 
 		//additional params
-    	$skuPictureParamsWidth = 30;
-    	$skuPictureParamsHeight = 30;
-    	$skuPictureParamsQuality = 100;
+		$skuPictureParamsWidth = 30;
+		$skuPictureParamsHeight = 30;
+		$skuPictureParamsQuality = 100;
 
-    	//property name for print image
-    	//$colorPropertyName = "COLOR";
+		//property name for print image
+		//$colorPropertyName = "COLOR";
 
-    	//check exist offers
+		//check exist offers
 		$arElement["SKU_EXIST"] = CCatalogSKU::IsExistOffers($productId, $iblockId);
 
 		if ($arElement["SKU_EXIST"]) {
@@ -283,8 +283,7 @@ class DwSkuOffers {
 					"IBLOCK_ID" => $arSkuIblockInfo["IBLOCK_ID"],
 					"PROPERTY_".$arSkuIblockInfo["SKU_PROPERTY_ID"] => $productId,
 					"INCLUDE_SUBSECTIONS" => "N",
-					"ACTIVE" => "Y",
-                    "PROPERTY_REGION_VALUE" => $GLOBALS['medi']['region_cities'][SITE_ID]
+					"ACTIVE" => "Y"
 				);
 
 				//set offers id filter
@@ -307,8 +306,6 @@ class DwSkuOffers {
 					//parse smart filter params
 					if (!empty($arParams["FILTER"]["OFFERS"])) {
 						$arOffersFilter = array_merge($arOffersFilter, $arParams["FILTER"]["OFFERS"]);
-					} else {
-						$arOffersFilter = array_merge($arOffersFilter, $arParams["FILTER"]);
 					}
 				}
 
@@ -353,31 +350,30 @@ class DwSkuOffers {
 					$arSkuFieldsMx = $arSkuMx->GetFields();
 					$arSkuPropertiesMx = $arSkuMx->GetProperties(array("ID" => "ASC"), array("ID" => $arSkuPropertiesId, "EMPTY" => "N"));
 
-                    $filter = array(
-        				"ACTIVE" => "Y",
-        				"PRODUCT_ID" => $arSkuFieldsMx["ID"],
-        				"+SITE_ID" => SITE_ID
-        			);
+					$filter = array(
+						"ACTIVE" => "Y",
+						"PRODUCT_ID" => $arSkuFieldsMx["ID"]
+					);
 
-        			$rsProps = CCatalogStore::GetList(
-        				array('TITLE' => 'ASC', 'ID' => 'ASC'),
-        				$filter,
-        				false,
-        				false,
-        				array("ID", "PRODUCT_AMOUNT")
-        			);
-        			$amount = 0;
-        			while ($prop = $rsProps->GetNext()) {
-        				$amount += $prop["PRODUCT_AMOUNT"];
-        				$arSkuFieldsMx['storeamounts'][] = $prop;
-        			}
+					$rsProps = CCatalogStore::GetList(
+						array('TITLE' => 'ASC', 'ID' => 'ASC'),
+						$filter,
+						false,
+						false,
+						array("ID", "PRODUCT_AMOUNT")
+					);
+					$amount = 0;
+					while ($prop = $rsProps->GetNext()) {
+						$amount += $prop["PRODUCT_AMOUNT"];
+						$arSkuFieldsMx['storeamounts'][] = $prop;
+					}
 
 					if ($amount == 0) {
-        				$arSkuFieldsMx["CATALOG_QUANTITY"] = 0;
-        				$arSkuFieldsMx["CATALOG_AVAILABLE"] = "N";
-        				$arSkuFieldsMx["CATALOG_QUANTITY_TRACE"] ="Y";
-        				$arSkuFieldsMx["CATALOG_CAN_BUY_ZERO"] = "N";
-        			}
+						$arSkuFieldsMx["CATALOG_QUANTITY"] = 0;
+						$arSkuFieldsMx["CATALOG_AVAILABLE"] = "N";
+						$arSkuFieldsMx["CATALOG_QUANTITY_TRACE"] ="Y";
+						$arSkuFieldsMx["CATALOG_CAN_BUY_ZERO"] = "N";
+					}
 					//write
 					$arElement["SKU_OFFERS"][$arSkuFieldsMx["ID"]] = array_merge($arSkuFieldsMx, array("PROPERTIES" => $arSkuPropertiesMx));
 					//write links _CIBElement
@@ -390,7 +386,7 @@ class DwSkuOffers {
 		if (!empty($arElement["SKU_OFFERS"])) {
 			//sort offers params
 			//disable sort offers (sort from properties)
-			$offersEnableSort = false;
+			$offersEnableSort = true;
 			//standart sort
 			$offersLastSort = 500;
 
@@ -409,11 +405,6 @@ class DwSkuOffers {
 						break;
 					}
 				}
-			}
-
-			if ($arElement["SKU_OFFERS"][$firstOfferIndex]["SORT"] != $offersLastSort) {
-				//enable sort offers (sort from sku offers)
-				$offersEnableSort = true;
 			}
 		}
 
@@ -435,7 +426,7 @@ class DwSkuOffers {
 							}
 						} else {
 							//check for after property
-                            if ($arOffer["PROPERTIES"][$arProp["CODE"]]["VALUE"] == $arPropValue["VALUE"]) {
+							if ($arOffer["PROPERTIES"][$arProp["CODE"]]["VALUE"] == $arPropValue["VALUE"]) {
 								$find = true;
 								break(1);
 							}
@@ -452,7 +443,6 @@ class DwSkuOffers {
 			$arPropClean = array();
 			//counter
 			$iter = 0;
-
 			//set active offer
 			foreach ($arElement["SKU_PROPERTIES"] as $ip => $arProp) {
 				if (!empty($arProp["VALUES"])) {
@@ -580,22 +570,8 @@ class DwSkuOffers {
 
 			//write info for active sku offer
 			$arOffer = $arElement["SKU_OFFERS"][$firstOfferIndex];
-
 			//set active flag
 			$active = true;
-			//if disabled offers sort
-			//else first sku offer
-			if (!$offersEnableSort) {
-				//to check save values for current sku offer
-				foreach ($arPropClean as $ic => $arNextClean){
-					if($arOffer["PROPERTIES"][$arNextClean["PROPERTY"]]["VALUE"] != $arNextClean["VALUE"]){
-						//unset active flag
-						$active = false;
-						break(1);
-					}
-				}
-			}
-
 			//save info for active offer
 			if ($active) {
 				$arElement["~ID"] = $productId;
@@ -715,7 +691,7 @@ class DwSkuOffers {
 			//empty offers
 			return false;
 		}
-
+		
 		return $arElement;
 
 	}//end getSkuFromProduct
