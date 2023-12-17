@@ -13,8 +13,6 @@ if (strlen($argv[1])) {
     } elseif ($argv[1] === 'dev2') {
         $_SERVER['DOCUMENT_ROOT'] = "/home/bitrix/ext_www/dev2.medi-salon.ru/";
     }
-} else {
-    $_SERVER['DOCUMENT_ROOT'] = "E:/htdocs/medi-salon/domains/local.medi-salon.ru";
 }
 
 require_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php");
@@ -78,6 +76,7 @@ if (!empty($arrOffersProducts)) {
         ];
 
         // Заполняем св-во "Активная размерная характеристика" (Для Москвы и др городов кроме Санкт Петербурга)
+        // на основании минимального значения в поле "Сортировка" у ТП
         CIBlockElement::SetPropertyValuesEx($id, "19", $propertyValues);
     }
 
