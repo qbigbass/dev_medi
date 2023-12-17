@@ -1,5 +1,10 @@
 <?php
-/* Скрипт для обновления св-ва "Активная размерная характеристика" у всех ТП после импорта каталога из 1С */
+/**
+ * Скрипт для обновления св-ва "Активная размерная характеристика" у всех ТП после импорта каталога из 1С
+ * Св-во "Активная размерная характеристика" актуально для всех городов, кроме г. Санкт-Перербург
+ */
+
+
 define("NO_KEEP_STATISTIC", true);
 define("NOT_CHECK_PERMISSIONS",true);
 
@@ -9,8 +14,6 @@ if (strlen($argv[1])) {
     } elseif ($argv[1] === 'dev2') {
         $_SERVER['DOCUMENT_ROOT'] = "/home/bitrix/ext_www/dev2.medi-salon.ru/";
     }
-} else {
-    $_SERVER['DOCUMENT_ROOT'] = "E:/htdocs/medi-salon/domains/local.medi-salon.ru";
 }
 
 require_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php");

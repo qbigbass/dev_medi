@@ -1,5 +1,9 @@
 <?php
-/* Скрипт для обновления св-ва "Активная размерная характеристика СПБ" у всех ТП после импорта каталога из 1С */
+
+/**
+ * Скрипт для обновления св-ва "Активная размерная характеристика СПБ" у всех ТП после импорта каталога из 1С
+ * Св-во "Активная размерная характеристика СПБ" актуально только для г. Санкт-Перербург
+ */
 define("NO_KEEP_STATISTIC", true);
 define("NOT_CHECK_PERMISSIONS",true);
 
@@ -9,8 +13,6 @@ if (strlen($argv[1])) {
     } elseif ($argv[1] === 'dev2') {
         $_SERVER['DOCUMENT_ROOT'] = "/home/bitrix/ext_www/dev2.medi-salon.ru/";
     }
-} else {
-    $_SERVER['DOCUMENT_ROOT'] = "E:/htdocs/medi-salon/domains/local.medi-salon.ru";
 }
 
 require_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php");
@@ -65,7 +67,7 @@ if (!empty($arrOffersProducts)) {
 
     $GLOBALS["NOT_RUN_UPDATE_SELECTED_SIZE_OFFER"] = true; // Блокируем запуск обработчика события OnBeforeIBlockElementUpdate с функцией UpdateSelectedSizeOffer
 
-    // Проверим у выбранных ТП доступность на складах в г.Москва
+    // Проверим у выбранных ТП доступность на складах в г.Санкт-Петербург
     $arrOffers = []; // Найденные ТП
     $arrOfferProduct = [];
     foreach ($arrOffersProducts as $productId => $offers) {
