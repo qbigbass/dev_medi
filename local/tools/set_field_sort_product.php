@@ -8,8 +8,6 @@ if (strlen($argv[1])) {
         $_SERVER['DOCUMENT_ROOT'] = "/home/bitrix/www/";
     } elseif ($argv[1] === 'dev2') {
         $_SERVER['DOCUMENT_ROOT'] = "/home/bitrix/ext_www/dev2.medi-salon.ru/";
-    } else {
-        die();
     }
 }
 
